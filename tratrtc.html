@@ -400,7 +400,7 @@ var TT = (function(){
             "程式名稱": "無縫接軌計劃前導網頁",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Alpha 0.1",
+            "版本": "Alpha 0.1.1",
             "產生日期": "2015/07/31"
         },
         zxcv: 1
@@ -449,7 +449,7 @@ var TT = (function(){
             	{
             		id: "tra_xibu",
                     name: "西部幹線(縱貫線)",
-                    color: "#000000",
+                    color: "#000050",
             		dir: "1",
             		station: ["tra_1001","tra_1003","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1012"]
             	}
@@ -470,6 +470,13 @@ var TT = (function(){
                 {id:"trtc_089", name: "忠孝新生", estring: "zhongxiaoxinsheng"},
                 {id:"trtc_088", name: "善島寺", estring: "shandaosishandaotemple"},
                 {id:"trtc_051", name: "台北車站", estring: "taipeichezhantaipeimainstation"},
+                {id:"trtc_086", name: "西門", estring: "ximen"},
+                {id:"trtc_085", name: "龍山寺", estring: "longshansilongshantemple"},
+                {id:"trtc_084", name: "江子翠", estring: "jiangzicui"},
+                {id:"trtc_083", name: "新埔", estring: "xinpu"},
+                {id:"trtc_082", name: "板橋", estring: "banqiao"},
+                {id:"trtc_081", name: "府中", estring: "fuzhong"},
+                {id:"trtc_080", name: "亞東醫院", estring: "yadongyiyuanfareasternhospital"},
                 //SongShanXinDian Line
                 {id:"trtc_111", name: "松山", estring: "songshan"},
                 {id:"trtc_110", name: "南京三民", estring: "nanjingsanmin"},
@@ -478,7 +485,10 @@ var TT = (function(){
                 {id:"trtc_132", name: "松江南京", estring: "songjiangnanjing"},
                 {id:"trtc_053", name: "中山", estring: "zhongshan"},
                 {id:"trtc_105", name: "北門", estring: "beimen"},
-                {id:"trtc_086", name: "西門", estring: "ximen"}
+                {id:"trtc_043", name: "小南門", estring: "xiaonanmen"},
+                {id:"trtc_042", name: "中正紀念堂", estring: "zhongzhengjiniantangchiangkaishekmemorialhall"},
+                {id:"trtc_041", name: "古亭", estring: "guting"},
+                {id:"trtc_040", name: "台電大樓", estring: "taidiandaloutaipowerbuilding"}
             ],
             line: [
                 {
@@ -486,24 +496,26 @@ var TT = (function(){
                     name: "板南線(5)",
                     color: "#005eb8",
                     dir: "1",
-                    station: ["trtc_031","trtc_097","trtc_096","trtc_095","trtc_094","trtc_093","trtc_092","trtc_091","trtc_010","trtc_089","trtc_088","trtc_051","trtc_086"]
+                    station: ["trtc_031","trtc_097","trtc_096","trtc_095","trtc_094","trtc_093","trtc_092","trtc_091","trtc_010","trtc_089","trtc_088","trtc_051","trtc_086","trtc_085","trtc_084","trtc_083","trtc_082","trtc_081","trtc_080"]
                 }, {
                     id: "trtc_3",
                     name: "松山新店線(3)",
                     color: "#007749",
                     dir: "1",
-                    station: ["trtc_111","trtc_110","trtc_109","trtc_009","trtc_132","trtc_053","trtc_105","trtc_086"]
+                    station: ["trtc_111","trtc_110","trtc_109","trtc_009","trtc_132","trtc_053","trtc_105","trtc_086","trtc_043","trtc_042","trtc_041","trtc_040"]
                 }
             ],
             offset_time: {
                 "trtc_5": {
                     "trtc_097": {
                         "LineDir": "1", "trtc_031":-2, "trtc_097":0, "trtc_096":2, "trtc_095":4, "trtc_094":6, "trtc_093":8, "trtc_092":9, "trtc_091":11, "trtc_010":12, "trtc_089":15, "trtc_088":16, "trtc_051":18, "trtc_086":21
+                            , "trtc_085":23, "trtc_084":27, "trtc_083":28, "trtc_082":30, "trtc_081":32, "trtc_080":34
                     }
                 },
                 "trtc_3": {
                     "trtc_111": {
                         "LineDir": "1", "trtc_111":0, "trtc_110":3, "trtc_109":5, "trtc_009":7, "trtc_132":9, "trtc_053":11, "trtc_105":14, "trtc_086":16
+                            , "trtc_043":18, "trtc_042":19, "trtc_041":21, "trtc_040":23
                     }
                 }
             },
@@ -1536,10 +1548,13 @@ var TT = (function(){
             Line.station = ary;
             return Line;
         },
-        getTRA_stationDataOfID: function(id){
+        getTRA_stationDataOfID: function(id, lineID){
             var ary=TT.data.tra.station_ary;
             for(var i=0; i<ary.length; i++){
                 if(ary[i].id==id){
+                    if(lineID){
+                        return $.extend({byLine: lineID}, ary[i]);
+                    }
                     return ary[i];
                 }
             }
@@ -1748,10 +1763,13 @@ var TT = (function(){
             }
             return 'trtc_' + num;
         },
-        getTRTC_stationDataOfID: function(id){
+        getTRTC_stationDataOfID: function(id, lineID){
             var ary=TT.data.trtc.station_ary;
             for(var i=0; i<ary.length; i++){
                 if(ary[i].id==id){
+                    if(lineID){
+                        return $.extend({byLine: lineID}, ary[i]);
+                    }
                     return ary[i];
                 }
             }
@@ -2376,7 +2394,7 @@ var TT = (function(){
             TT.ui.center.home.trtc.divTitle = TT.ui.createDiv('tt_home_trtc_title', 'title', TT.ui.center.home.trtc.id);
             TT.ui.center.home.trtc.divTitle.innerHTML = '台北捷運 TRTC';
             TT.ui.center.home.trtc.divText1 = TT.ui.createDiv('tt_home_trtc_text1', 'text', TT.ui.center.home.trtc.id);
-            TT.ui.center.home.trtc.divText1.innerHTML = '<p>因沒有台北捷運如台鐵的每列班車資訊，目前台北捷運的資料以網友ronnywang自台北捷運官網轉換出來的csv檔轉成json後匯入，松山站因原資料沒有時刻表故僅手動輸入平日時刻，沒有時刻表的車站會以站間行駛時間做相對計算。<span style="color:#FF4020;">台北捷運路由僅建立板南線南港展覽館站至西門站，松山新店線松山站至西門站</span>，行車時間均以台北捷運官方網站查詢之<span style="color:#1FB020;">站間行駛時間相加或相減於南港站及松山站</span>，故時間上可能與真正的到站時刻表有一兩分鐘的誤差。</p>' +
+            TT.ui.center.home.trtc.divText1.innerHTML = '<p>因沒有台北捷運如台鐵的每列班車資訊，目前台北捷運的資料以網友ronnywang自台北捷運官網轉換出來的csv檔轉成json後匯入，松山站因原資料沒有時刻表故僅手動輸入平日時刻，沒有時刻表的車站會以站間行駛時間做相對計算。<span style="color:#FF4020;">台北捷運路由僅建立板南線南港展覽館站至亞東醫院站，松山新店線松山站至台電大樓站</span>，行車時間均以台北捷運官方網站查詢之<span style="color:#1FB020;">站間行駛時間相加或相減於南港站及松山站</span>，故時間上可能與真正的到站時刻表有一兩分鐘的誤差。</p>' +
                 '<p>替換時刻表檔案請在網頁同目錄下儲存 <a target="_new" href="ronnywang_trtc.json">ronnywang_trtc.json</a> </p>';
             
             //Program Frame
@@ -2407,7 +2425,7 @@ var TT = (function(){
                         '<li>HTML CODE 的 BODY 保持內容乾淨，UI以 createElement 的方式附加上去，元件內容則可以 innerHTML 直接設計。</li>' +
                         '<li>轉乘步行時間存在 TT.data.transStation 下各站的 walkMinute，理論上每一種轉乘方式都要建立一個轉乘站，例如台北站台鐵捷運之間就要建立台鐵至板南線、台鐵至淡水信義線、板南線至淡水信義線，分別存放步行時間並成為該兩種路線的路由點。</li>' +
                         '<li>轉乘路由方式存在 TT.data.routeMap 下，目前以人工方式整理可能的路由。</li>' +
-                        '<li>當車站下拉選單超過五十個選項以上時需著手進行車站選擇器的新 UI 調整，不適合再使用單一個 SELECT 元件。</li>' +
+                        '<li>下拉上背景色，當車站下拉選單超過兩百個選項以上時需著手進行車站選擇器的新 UI 調整，不適合再使用單純的 SELECT 元件。</li>' +
                         //'<li></li>' +
                     '</ul>' +
                 '</p>' +
@@ -2629,14 +2647,14 @@ var TT = (function(){
             var traAry = new Array(), trtcAry = new Array(), allAry = new Array(), tmpA;
             for(var i=0; i<TT.data.tra.line.length; i++){
                 for(var j=0; j<TT.data.tra.line[i].station.length; j++){
-                    tmpA = TT.fn.getTRA_stationDataOfID(TT.data.tra.line[i].station[j]);
+                    tmpA = TT.fn.getTRA_stationDataOfID(TT.data.tra.line[i].station[j], TT.data.tra.line[i].id);
                     traAry.push(tmpA);
                     allAry.push(tmpA);
                 }
             }
             for(var i=0; i<TT.data.trtc.line.length; i++){
                 for(var j=0; j<TT.data.trtc.line[i].station.length; j++){
-                    tmpA = TT.fn.getTRTC_stationDataOfID(TT.data.trtc.line[i].station[j]);
+                    tmpA = TT.fn.getTRTC_stationDataOfID(TT.data.trtc.line[i].station[j], TT.data.trtc.line[i].id);
                     trtcAry.push(tmpA);
                     allAry.push(tmpA);
                 }
@@ -2649,11 +2667,12 @@ var TT = (function(){
             div.id = cfg.id;
             
             var optSt = (function(){
-                var company, cmpStr = '', rt='';
+                var company, cmpStr = '', lineC, rt='';
                 for(var i=0; i<allAry.length; i++){
                     company = TT.fn.getCompanyOfStation(allAry[i].id);
+                    lineC = (allAry[i].byLine) ? 'background-color:' + TT.fn.getCommon_lineColor(allAry[i].byLine) + ';' : '';
                     cmpStr = '(' + company.toUpperCase() + ')';
-                    rt += '<option value="' + allAry[i].id + '">' + allAry[i].name + cmpStr + '</option>';
+                    rt += '<option value="' + allAry[i].id + '" style="' + lineC + 'color:#FFC;">' + allAry[i].name + cmpStr + '</option>';
                 }
                 return rt;
             })();
