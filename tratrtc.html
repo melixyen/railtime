@@ -123,6 +123,19 @@ body {
     padding-bottom: 5px;
 }
 
+.tt_ck_route_sh{
+    display:inline-block; border:1px solid #222;
+    background-color: #EFBCDF;
+    margin: 10px;
+}
+.tt_ck_route_sh .stag{
+    color: #FDFDFD;
+    background-color: #9c6f2e;
+    border:1px solid #812;
+    display:inline-block;
+    margin-right: 8px;
+}
+
 .timeTableTrainRouteBox{
     margin: 10px 50px 20px 50px;
     padding: 5px 0px;
@@ -379,6 +392,7 @@ body {
 //      完成 getCommon_timeRangeBestByFromTo 整理最佳選擇 , 接下來 UI 印出最佳時間列車
 //      完成 findTrain 與選項 UI , 接下來 printTrain 印出所有路線
 //      完成 getData2JSON 及 saveDataJSON2Data 可由工具編輯 TT.data 內的資料但不含時刻表檔案
+//      完成 createTrainRouteSelectBox 可勾選隱藏不想要經過的路徑
 var TT = (function(){
 
     var TT = {//name space TT for TimeTable
@@ -400,8 +414,8 @@ var TT = (function(){
             "程式名稱": "無縫接軌計劃前導網頁",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Alpha 0.1.1",
-            "產生日期": "2015/07/31"
+            "版本": "Alpha 0.1.2",
+            "產生日期": "2015/08/04"
         },
         zxcv: 1
     }
@@ -434,6 +448,7 @@ var TT = (function(){
                 {id:"tra_1006", name: "南港", estring: "nangang"},
                 {id:"tra_1007", name: "松山", estring: "songshan"},
                 {id:"tra_1008", name: "臺北", estring: "taipeitaibei"},
+                {id:"tra_1011", name: "板橋", estring: "banqiao"},
                 {id:"tra_1012", name: "樹林", estring: "shulin"},
                 {id:"tra_1025", name: "新竹", estring: "hsinchu"},
                 {id:"tra_1305", name: "苗栗", estring: "miaoli"},
@@ -451,7 +466,7 @@ var TT = (function(){
                     name: "西部幹線(縱貫線)",
                     color: "#000050",
             		dir: "1",
-            		station: ["tra_1001","tra_1003","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1012"]
+            		station: ["tra_1001","tra_1003","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1011","tra_1012"]
             	}
             ]
         },
@@ -592,6 +607,11 @@ var TT = (function(){
                     changeLine: ["tra_xibu", "trtc_5"],
                     changeStation: ['tra_1008','trtc_051'],
                     walkMinute: 6
+                }, {
+                    id: 'banqiao1', name: "板橋",
+                    changeLine: ["tra_xibu", "trtc_5"],
+                    changeStation: ['tra_1011','trtc_082'],
+                    walkMinute: 7
                 }
         ],
         routeMap: [
@@ -617,6 +637,10 @@ var TT = (function(){
                     {
                         line: ["tra_xibu", "trtc_5"],
                         transStation: ["taipei1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_5"],
+                        transStation: ["banqiao1"]
                     }
                 ]
             }, {
@@ -2810,11 +2834,42 @@ var TT = (function(){
             
             return div;
         },
+        createTrainRouteSelectBox: function(aryRoute){
+            var rDiv = TT.ui.center.timeTable.displayDiv.routeDiv;
+            var routeBy = '', routeP, tmpS = '', st = '', ht ='', ckDom, hDiv = document.createElement('div');
+            for(var tc=0; tc<aryRoute.length; tc++){
+                routeP = aryRoute[tc];
+                routeBy = ''; st = ''; tmpS='';
+                for(var i=0; i<routeP.length; i++){
+                    if(routeP[i].transStation){
+                        tmpS += '<div class="stag">' + routeP[i].transStation.name + '</div>';
+                    }
+                }
+                st = '經由' + ' ' + tmpS;
+                routeBy = '<div class="tt_ck_route_sh">' +
+                    '<input type="checkbox" id="tt_timeTable_ckRoute_' + tc + '" class="ckRoute" checked>' + st +
+                '</div>';
+                ht += routeBy;
+            }
+            hDiv.innerHTML = ht;
+            rDiv.appendChild(hDiv);
+            for(var tc=0; tc<aryRoute.length; tc++){
+                ckDom = document.getElementById('tt_timeTable_ckRoute_' + tc);
+                ckDom.addEventListener('change', function(e){
+                    var ckcss = e.target.id.replace('tt_timeTable_ckRoute_','.tt_search_route_css_');
+                    if(e.target.checked==true){
+                        $(ckcss).show();
+                    }else{
+                        $(ckcss).hide();
+                    }
+                }, false);
+            }
+        },
         createTrainRouteTimeBox: function(routeP, ct, renderID){
             if(!renderID) renderID = TT.ui.center.timeTable.displayDiv.trainDiv.id;
             var id = 'timeTableTrainRouteBox_' + ct;
             var div = document.createElement('div');
-            div.className = 'timeTableTrainRouteBox';
+            div.className = 'timeTableTrainRouteBox' + ' tt_search_route_css_' + routeP.routeIndex;
             div.id = id;
             
             function createTimeBox(tbd, startTime, endTime){
@@ -3114,6 +3169,7 @@ var TT = (function(){
             //Clear Old
             document.getElementById(TT.ui.center.timeTable.displayDiv.routeDiv.id).innerHTML = '';
             document.getElementById(TT.ui.center.timeTable.displayDiv.trainDiv.id).innerHTML = '';
+            TT.ui.createTrainRouteSelectBox(aryRoute);
             for(var i=0; i<fRouteAry.length; i++){
                 tDiv = TT.ui.createTrainRouteTimeBox(fRouteAry[i], i);
             }
