@@ -439,26 +439,36 @@ var TT = (function(){
         			{"id": "1150", "name": "柴油車", "ename": "na"}
         		]
         	},
-            station_ary: [
-                {id:"tra_1001", name: "基隆", estring: "keelung"},
-                {id:"tra_1003", name: "七堵", estring: "qidu"},
-                {id:"tra_1004", name: "五堵", estring: "wudu"},
-                {id:"tra_1005", name: "汐止", estring: "xizhi"},
-                {id:"tra_1031", name: "汐科", estring: "xike"},
-                {id:"tra_1006", name: "南港", estring: "nangang"},
-                {id:"tra_1007", name: "松山", estring: "songshan"},
-                {id:"tra_1008", name: "臺北", estring: "taipeitaibei"},
-                {id:"tra_1011", name: "板橋", estring: "banqiao"},
-                {id:"tra_1012", name: "樹林", estring: "shulin"},
-                {id:"tra_1025", name: "新竹", estring: "hsinchu"},
-                {id:"tra_1305", name: "苗栗", estring: "miaoli"},
-                {id:"tra_1120", name: "彰化", estring: "changhua"},
-                {id:"tra_1238", name: "高雄", estring: "kaohsiunggaoxung"},
-                {id:"tra_1406", name: "屏東", estring: "pingtungpingdong"},
-                {id:"tra_1804", name: "瑞芳", estring: "ruifang"},
-                {id:"tra_1827", name: "蘇澳", estring: "suao"},
-                {id:"tra_1715", name: "花蓮", estring: "hualienhualian"},
-                {id:"tra_1632", name: "台東", estring: "taitungtaidong"}
+            station_ary: [//big: e for big station of east(dongbu), w for big station of west(xibu), s for south link(nanhuei)
+                {id:"tra_1001", name: "基隆", estring: "keelung", sect: "taipei_keelung"},
+                {id:"tra_1029", name: "三坑", estring: "sankeng", sect: "taipei_keelung"},
+                {id:"tra_1002", name: "八堵", estring: "badu", sect: "taipei_keelung", big: 'e'},
+                {id:"tra_1003", name: "七堵", estring: "qidu", sect: "taipei_keelung", big: 'ew'},
+                {id:"tra_1030", name: "百福", estring: "baifu", sect: "taipei_keelung"},
+                {id:"tra_1004", name: "五堵", estring: "wudu", sect: "taipei"},
+                {id:"tra_1005", name: "汐止", estring: "xizhi", sect: "taipei", big: 'w'},
+                {id:"tra_1031", name: "汐科", estring: "xike", sect: "taipei"},
+                {id:"tra_1006", name: "南港", estring: "nangang", sect: "taipei"},
+                {id:"tra_1007", name: "松山", estring: "songshan", sect: "taipei", big: 'ew', bigMaster: true},
+                {id:"tra_1008", name: "臺北", estring: "taipeitaibei", sect: "taipei", big: 'ew', bigMaster: true},
+                {id:"tra_1009", name: "萬華", estring: "wanhua", sect: "taipei"},
+                {id:"tra_1011", name: "板橋", estring: "banqiao", sect: "taipei", big: 'ew', bigMaster: true},
+                {id:"tra_1032", name: "浮洲", estring: "fuzhou", sect: "taipei"},
+                {id:"tra_1012", name: "樹林", estring: "shulin", sect: "taipei", big: 'e'},
+                {id:"tra_1013", name: "山佳", estring: "shanjia", sect: "taipei"},
+                {id:"tra_1014", name: "鶯歌", estring: "yingge", sect: "taipei"},
+                {id:"tra_1015", name: "桃園", estring: "taoyuan", sect: "taoyuan", big: 'w'},
+                {id:"tra_1016", name: "內壢", estring: "neili", sect: "taoyuan"},
+                {id:"tra_1017", name: "中壢", estring: "zhongli", sect: "taoyuan", big: 'w'},
+                {id:"tra_1025", name: "新竹", estring: "hsinchu", sect: "xinzhu", big: 'w'},
+                {id:"tra_1305", name: "苗栗", estring: "miaoli", sect: "miaoli", big: 'w'},
+                {id:"tra_1120", name: "彰化", estring: "changhua", sect: "zhanghua", big: 'w'},
+                {id:"tra_1238", name: "高雄", estring: "kaohsiunggaoxung", sect: "gaoxung", big: 'ws'},
+                {id:"tra_1406", name: "屏東", estring: "pingtungpingdong", sect: "pingdong", big: 'ws'},
+                {id:"tra_1804", name: "瑞芳", estring: "ruifang", sect: "taipei_east", big: 'e'},
+                {id:"tra_1827", name: "蘇澳", estring: "suao", sect: "yilan"},
+                {id:"tra_1715", name: "花蓮", estring: "hualienhualian", sect: "hualian", big: 'e'},
+                {id:"tra_1632", name: "台東", estring: "taitungtaidong", sect: "taidong", big: 'es'}
             ],
             line: [
             	{
@@ -466,7 +476,8 @@ var TT = (function(){
                     name: "西部幹線(縱貫線)",
                     color: "#000050",
             		dir: "1",
-            		station: ["tra_1001","tra_1003","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1011","tra_1012"]
+            		station: ["tra_1001","tra_1029","tra_1002","tra_1003","tra_1030","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1011","tra_1032","tra_1012","tra_1013","tra_1014",//taipei
+                        "tra_1015","tra_1016","tra_1017"]
             	}
             ]
         },
@@ -483,7 +494,7 @@ var TT = (function(){
                 {id:"trtc_091", name: "忠孝敦化", estring: "zhongxiaodunhua"},
                 {id:"trtc_010", name: "忠孝復興", estring: "zhongxiaofuxing"},
                 {id:"trtc_089", name: "忠孝新生", estring: "zhongxiaoxinsheng"},
-                {id:"trtc_088", name: "善島寺", estring: "shandaosishandaotemple"},
+                {id:"trtc_088", name: "善導寺", estring: "shandaosishandaotemple"},
                 {id:"trtc_051", name: "台北車站", estring: "taipeichezhantaipeimainstation"},
                 {id:"trtc_086", name: "西門", estring: "ximen"},
                 {id:"trtc_085", name: "龍山寺", estring: "longshansilongshantemple"},
@@ -2846,6 +2857,7 @@ var TT = (function(){
                     }
                 }
                 st = '經由' + ' ' + tmpS;
+                if(routeP.length==1 && !(routeP[0].transStation)) st = '直達';
                 routeBy = '<div class="tt_ck_route_sh">' +
                     '<input type="checkbox" id="tt_timeTable_ckRoute_' + tc + '" class="ckRoute" checked>' + st +
                 '</div>';
