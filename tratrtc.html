@@ -486,7 +486,7 @@ var TT = (function(){
                     name: "西部幹線(縱貫線)",
                     color: "#000050",
             		dir: "1",
-            		station: ["tra_1001","tra_1029","tra_1002","tra_1003","tra_1030","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1011","tra_1032","tra_1012","tra_1013","tra_1014",//taipei
+            		station: ["tra_1001","tra_1029","tra_1002","tra_1003","tra_1030","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1009","tra_1011","tra_1032","tra_1012","tra_1013","tra_1014",//taipei
                         "tra_1015","tra_1016","tra_1017"]
             	}
             ]
@@ -1887,7 +1887,7 @@ var TT = (function(){
             }
             setTimeout(function(){
                 TT.fn.getTRA_XML(url, successFn, errorFn);
-            },10);
+            },100);
         },
         getTRA_TimeTable2Data: function(weekString, cbFn){
             if(weekString==null) weekString = '0123456';//0 for sunday
