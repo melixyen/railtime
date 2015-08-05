@@ -74,6 +74,7 @@ body {
     display: block;
 }
 .centerPage .selectStationOut .selectStationIn,  .centerPage .findButtonDiv,
+.centerPage .selectWeekOut .selectWeekIn,
 .centerPage .selectTimeOut .selectTimeIn{
     padding: 5px;
 }
@@ -280,6 +281,12 @@ body {
     padding: 0 10px;
 }
 
+.defineFontStyle1{
+    color: #302010;
+    font-weight: 500;
+    background-color: #D0C0F0;
+}
+
 .mask{
     display: none;
     position: absolute;
@@ -393,6 +400,8 @@ body {
 //      完成 findTrain 與選項 UI , 接下來 printTrain 印出所有路線
 //      完成 getData2JSON 及 saveDataJSON2Data 可由工具編輯 TT.data 內的資料但不含時刻表檔案
 //      完成 createTrainRouteSelectBox 可勾選隱藏不想要經過的路徑
+//      完成 createWeekSelect 可以選擇使用星期幾去搜尋
+//      完成 getTRTC_stationOnOutArea 可查詢 TRTC 站是否在非重疊區
 var TT = (function(){
 
     var TT = {//name space TT for TimeTable
@@ -410,12 +419,13 @@ var TT = (function(){
         timeHour: ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'],
         timeMinSec: ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29',
                     '30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59'],
+        weekStringAry: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
         programAbout: {
             "程式名稱": "無縫接軌計劃前導網頁",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Alpha 0.1.2",
-            "產生日期": "2015/08/04"
+            "版本": "Alpha 0.1.3",
+            "產生日期": "2015/08/05"
         },
         zxcv: 1
     }
@@ -495,7 +505,6 @@ var TT = (function(){
                 {id:"trtc_010", name: "忠孝復興", estring: "zhongxiaofuxing"},
                 {id:"trtc_089", name: "忠孝新生", estring: "zhongxiaoxinsheng"},
                 {id:"trtc_088", name: "善導寺", estring: "shandaosishandaotemple"},
-                {id:"trtc_051", name: "台北車站", estring: "taipeichezhantaipeimainstation"},
                 {id:"trtc_086", name: "西門", estring: "ximen"},
                 {id:"trtc_085", name: "龍山寺", estring: "longshansilongshantemple"},
                 {id:"trtc_084", name: "江子翠", estring: "jiangzicui"},
@@ -503,18 +512,77 @@ var TT = (function(){
                 {id:"trtc_082", name: "板橋", estring: "banqiao"},
                 {id:"trtc_081", name: "府中", estring: "fuzhong"},
                 {id:"trtc_080", name: "亞東醫院", estring: "yadongyiyuanfareasternhospital"},
+                {id:"trtc_079", name: "海山", estring: "haishan"},
+                {id:"trtc_078", name: "土城", estring: "tucheng"},
+                {id:"trtc_077", name: "永寧", estring: "yongning"},
+                {id:"trtc_076", name: "頂埔", estring: "dingpu"},
+                //TamsuiXinyi Line
+                {id:"trtc_071", name: "淡水", estring: "tamsui"},
+                {id:"trtc_070", name: "紅樹林", estring: "hongshulin"},
+                {id:"trtc_069", name: "竹圍", estring: "zhuwei"},
+                {id:"trtc_068", name: "關渡", estring: "guandu"},
+                {id:"trtc_067", name: "忠義", estring: "zhongyi"},
+                {id:"trtc_066", name: "復興崗", estring: "fuxinggang"},
+                {id:"trtc_064", name: "北投", estring: "beitou"},
+                {id:"trtc_063", name: "奇岩", estring: "qiyan"},
+                {id:"trtc_062", name: "唭哩岸", estring: "qilian"},
+                {id:"trtc_061", name: "石牌", estring: "shipai"},
+                {id:"trtc_060", name: "明德", estring: "mingde"},
+                {id:"trtc_059", name: "芝山", estring: "zhishan"},
+                {id:"trtc_058", name: "士林", estring: "shilin"},
+                {id:"trtc_057", name: "劍潭", estring: "jiantan"},
+                {id:"trtc_056", name: "圓山", estring: "yuanshan"},
+                {id:"trtc_055", name: "民權西路", estring: "mingquanwrdmingquanxilu"},
+                {id:"trtc_054", name: "雙連", estring: "shuanglian"},
+                {id:"trtc_053", name: "中山", estring: "zhongshan"},
+                {id:"trtc_051", name: "台北車站", estring: "taipeichezhantaipeimainstation"},
+                {id:"trtc_050", name: "台大醫院", estring: "taidayiyuanntuhospital"},
+                {id:"trtc_134", name: "東門", estring: "dongmen"},
+                {id:"trtc_103", name: "大安森林公園", estring: "daanparkdaansenlingongyuan"},
+                {id:"trtc_011", name: "大安", estring: "daan"},
+                {id:"trtc_101", name: "信義安和", estring: "xinyianhe"},
+                {id:"trtc_100", name: "台北101/世貿", estring: "taipei101worldtradecentertaipei101shimao"},
+                {id:"trtc_099", name: "象山", estring: "xiangshan"},
+                //ZhongHeXinLu Line
+                {id:"trtc_048", name: "南勢角", estring: "nanshijiao"},
+                {id:"trtc_047", name: "景安", estring: "jingan"},
+                {id:"trtc_046", name: "永安市場", estring: "yonganshichangyonganmarket"},
+                {id:"trtc_045", name: "頂溪", estring: "dingxi"},
+                {id:"trtc_131", name: "行天宮", estring: "xingtiantemplexingtiangong"},
+                {id:"trtc_130", name: "中山國小", estring: "zhongshanguoxiaozhongshanelementaryschool"},
+                {id:"trtc_128", name: "大橋頭", estring: "daqiaotou"},
+                {id:"trtc_127", name: "台北橋", estring: "taibeiqiaotaipeibridge"},
+                {id:"trtc_126", name: "菜寮", estring: "cailiao"},
+                {id:"trtc_125", name: "三重", estring: "sanchong"},
+                {id:"trtc_124", name: "先嗇宮", estring: "xiansetemplexiansegong"},
+                {id:"trtc_123", name: "頭前庄", estring: "touqianzhuang"},
+                {id:"trtc_122", name: "新莊", estring: "xinzhuang"},
+                {id:"trtc_121", name: "輔大", estring: "fudafujenuniversity"},
+                {id:"trtc_180", name: "丹鳳", estring: "danfeng"},
+                {id:"trtc_179", name: "迴龍", estring: "huilong"},
+                {id:"trtc_178", name: "三重國小", estring: "sanchongguoxiaosanchongelementaryschool"},
+                {id:"trtc_177", name: "三和國中", estring: "sanheguozhongsanhejuniorhighschool"},
+                {id:"trtc_176", name: "徐匯中學", estring: "xuhuizhongxuestignatiushighschool"},
+                {id:"trtc_175", name: "三民高中", estring: "sanmingaozhongsanminseniorhighschool"},
+                {id:"trtc_174", name: "蘆洲", estring: "luzhou"},
                 //SongShanXinDian Line
                 {id:"trtc_111", name: "松山", estring: "songshan"},
                 {id:"trtc_110", name: "南京三民", estring: "nanjingsanmin"},
                 {id:"trtc_109", name: "台北小巨蛋", estring: "taipeiarenataibeixiaojudan"},
                 {id:"trtc_009", name: "南京復興", estring: "nanjingfuxing"},
                 {id:"trtc_132", name: "松江南京", estring: "songjiangnanjing"},
-                {id:"trtc_053", name: "中山", estring: "zhongshan"},
                 {id:"trtc_105", name: "北門", estring: "beimen"},
                 {id:"trtc_043", name: "小南門", estring: "xiaonanmen"},
                 {id:"trtc_042", name: "中正紀念堂", estring: "zhongzhengjiniantangchiangkaishekmemorialhall"},
                 {id:"trtc_041", name: "古亭", estring: "guting"},
-                {id:"trtc_040", name: "台電大樓", estring: "taidiandaloutaipowerbuilding"}
+                {id:"trtc_040", name: "台電大樓", estring: "taidiandaloutaipowerbuilding"},
+                {id:"trtc_039", name: "公館", estring: "gongguan"},
+                {id:"trtc_038", name: "萬隆", estring: "wanlong"},
+                {id:"trtc_037", name: "景美", estring: "jingmei"},
+                {id:"trtc_036", name: "大坪林", estring: "dapinglin"},
+                {id:"trtc_035", name: "七張", estring: "qizhang"},
+                {id:"trtc_034", name: "新店區公所", estring: "xindiandistrictofficexindianqugongsuo"},
+                {id:"trtc_033", name: "新店", estring: "jingmei"}
             ],
             line: [
                 {
@@ -522,26 +590,61 @@ var TT = (function(){
                     name: "板南線(5)",
                     color: "#005eb8",
                     dir: "1",
-                    station: ["trtc_031","trtc_097","trtc_096","trtc_095","trtc_094","trtc_093","trtc_092","trtc_091","trtc_010","trtc_089","trtc_088","trtc_051","trtc_086","trtc_085","trtc_084","trtc_083","trtc_082","trtc_081","trtc_080"]
+                    outArea: [{
+                        dir: "1",
+                        station: "trtc_079~trtc_076",
+                        transAt: "trtc_080",
+                        waitingNextMinute: 4
+                    }],
+                    station: ["trtc_031","trtc_097","trtc_096","trtc_095","trtc_094","trtc_093","trtc_092","trtc_091","trtc_010","trtc_089","trtc_088","trtc_051","trtc_086","trtc_085","trtc_084","trtc_083","trtc_082","trtc_081","trtc_080","trtc_079","trtc_078","trtc_077","trtc_076"]
+                }, {
+                    id: "trtc_2",
+                    name: "淡水信義線(2)",
+                    color: "#cb2c30",
+                    dir: "1",
+                    outArea: [{
+                        dir: "1",
+                        station: "trtc_071~trtc_066",
+                        transAt: "trtc_064",
+                        waitingNextMinute: 4
+                    }, {
+                        dir: "1",
+                        station: "trtc_101~trtc_099",
+                        transAt: "trtc_011",
+                        waitingNextMinute: 4
+                    }],
+                    station: ["trtc_071","trtc_070","trtc_069","trtc_068","trtc_067","trtc_066","trtc_064","trtc_063","trtc_062","trtc_061","trtc_060","trtc_059","trtc_058","trtc_057","trtc_056","trtc_055","trtc_054","trtc_053","trtc_051","trtc_050","trtc_042","trtc_134","trtc_103","trtc_011","trtc_101","trtc_100","trtc_099"]
                 }, {
                     id: "trtc_3",
                     name: "松山新店線(3)",
                     color: "#007749",
                     dir: "1",
-                    station: ["trtc_111","trtc_110","trtc_109","trtc_009","trtc_132","trtc_053","trtc_105","trtc_086","trtc_043","trtc_042","trtc_041","trtc_040"]
+                    outArea: [{
+                        dir: "1",
+                        station: "trtc_039~trtc_033",
+                        transAt: "trtc_040",
+                        waitingNextMinute: 4
+                    }],
+                    station: ["trtc_111","trtc_110","trtc_109","trtc_009","trtc_132","trtc_053","trtc_105","trtc_086","trtc_043","trtc_042","trtc_041","trtc_040","trtc_039","trtc_038","trtc_037","trtc_036","trtc_035","trtc_034","trtc_033"]
                 }
             ],
             offset_time: {
                 "trtc_5": {
                     "trtc_097": {
                         "LineDir": "1", "trtc_031":-2, "trtc_097":0, "trtc_096":2, "trtc_095":4, "trtc_094":6, "trtc_093":8, "trtc_092":9, "trtc_091":11, "trtc_010":12, "trtc_089":15, "trtc_088":16, "trtc_051":18, "trtc_086":21
-                            , "trtc_085":23, "trtc_084":27, "trtc_083":28, "trtc_082":30, "trtc_081":32, "trtc_080":34
+                            , "trtc_085":23, "trtc_084":27, "trtc_083":28, "trtc_082":30, "trtc_081":32, "trtc_080":34, "trtc_079":37, "trtc_078":39, "trtc_077":41, "trtc_076":45
+                    }
+                },
+                "trtc_2": {
+                    "trtc_071": {
+                        "LineDir": "1", "trtc_071":0, "trtc_070":3, "trtc_069":6, "trtc_068":9, "trtc_067":11, "trtc_066":13, "trtc_064":16, "trtc_063":18, "trtc_062":19, "trtc_061":21, "trtc_060":23, "trtc_059":24, "trtc_058":26, "trtc_057":28, "trtc_056":31, "trtc_055":33, "trtc_054":34, "trtc_053":35, "trtc_051":37
+                            , "trtc_050":39, "trtc_042":41, "trtc_134":44, "trtc_103":46, "trtc_011":47, "trtc_101":49, "trtc_100":51, "trtc_099":53
                     }
                 },
                 "trtc_3": {
                     "trtc_111": {
                         "LineDir": "1", "trtc_111":0, "trtc_110":3, "trtc_109":5, "trtc_009":7, "trtc_132":9, "trtc_053":11, "trtc_105":14, "trtc_086":16
-                            , "trtc_043":18, "trtc_042":19, "trtc_041":21, "trtc_040":23
+                            , "trtc_043":18, "trtc_042":19, "trtc_041":21, "trtc_040":23, "trtc_039":24, "trtc_038":27, "trtc_037":29, "trtc_036":31, "trtc_035":32, "trtc_034":34, "trtc_033":36
                     }
                 }
             },
@@ -614,10 +717,30 @@ var TT = (function(){
                     changeStation: ['trtc_086','trtc_086'],
                     walkMinute: 1
                 }, {
+                    id: 'zhongshan1', name: "中山",
+                    changeLine: ["trtc_3", "trtc_2"],
+                    changeStation: ['trtc_053','trtc_053'],
+                    walkMinute: 1
+                }, {
                     id: 'taipei1', name: "台北",
                     changeLine: ["tra_xibu", "trtc_5"],
                     changeStation: ['tra_1008','trtc_051'],
                     walkMinute: 6
+                }, {
+                    id: 'taipei2', name: "台北",
+                    changeLine: ["tra_xibu", "trtc_2"],
+                    changeStation: ['tra_1008','trtc_051'],
+                    walkMinute: 3
+                }, {
+                    id: 'taipei3', name: "台北",
+                    changeLine: ["trtc_5", "trtc_2"],
+                    changeStation: ['trtc_051','trtc_051'],
+                    walkMinute: 3
+                }, {
+                    id: 'cksmh1', name: "中正紀念堂",
+                    changeLine: ["trtc_3", "trtc_2"],
+                    changeStation: ['trtc_042','trtc_042'],
+                    walkMinute: 1
                 }, {
                     id: 'banqiao1', name: "板橋",
                     changeLine: ["tra_xibu", "trtc_5"],
@@ -636,6 +759,14 @@ var TT = (function(){
                     {
                         line: ["tra_xibu", "trtc_5", "trtc_3"],
                         transStation: ["taipei1", "ximen1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_5", "trtc_3"],
+                        transStation: ["banqiao1", "ximen1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_2", "trtc_3"],
+                        transStation: ["taipei2", "cksmh1"]
                     }
                 ]
             }, {
@@ -652,6 +783,38 @@ var TT = (function(){
                     {
                         line: ["tra_xibu", "trtc_5"],
                         transStation: ["banqiao1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["tra_xibu","trtc_2"],
+                route: [
+                    {
+                        line: ["tra_xibu", "trtc_2"],
+                        transStation: ["taipei2"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_5","trtc_2"],
+                route: [
+                    {
+                        line: ["trtc_5", "trtc_2"],
+                        transStation: ["taipei3"]
+                    },
+                    {
+                        line: ["trtc_5", "trtc_3", "trtc_2"],
+                        transStation: ["ximen1", "cksmh1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_3","trtc_2"],
+                route: [
+                    {
+                        line: ["trtc_3", "trtc_2"],
+                        transStation: ["cksmh1"]
+                    },
+                    {
+                        line: ["trtc_3", "trtc_2"],
+                        transStation: ["zhongshan1"]
                     }
                 ]
             }, {
@@ -1341,6 +1504,7 @@ var TT = (function(){
                 for(var i=0; i<aLine.length; i++){
                     for(var j=0; j<bLine.length; j++){
                         var tmpA = TT.fn.getRoute_mapOfFromToLine(aLine[i],bLine[j]);
+                        if(!tmpA.route) return false;
                         tmpA.fromStation = a;
                         tmpA.toStation = b;
                         tmpA = giveRouteTakeRange(tmpA);
@@ -1454,7 +1618,7 @@ var TT = (function(){
             var dir = TT.fn.getTRA_LineDirByFromTo(a,b);
             if(!timeTable){
                 timeTable = TT.fn.getTRA_dayTimeTable();
-            }else if(typeof(timeInfo)=='string'){
+            }else if(typeof(timeTable)=='string'){
                 timeTable = TT.fn.getTRA_dayTimeTable(timeTable);
             }
             
@@ -1721,7 +1885,9 @@ var TT = (function(){
                         cbFn('error');
                     }
             }
-            TT.fn.getTRA_XML(url, successFn, errorFn);
+            setTimeout(function(){
+                TT.fn.getTRA_XML(url, successFn, errorFn);
+            },10);
         },
         getTRA_TimeTable2Data: function(weekString, cbFn){
             if(weekString==null) weekString = '0123456';//0 for sunday
@@ -1913,6 +2079,11 @@ var TT = (function(){
                     stTime = lineTime['trtc_097'];
                     stOffset = TT.data.trtc.offset_time['trtc_5']['trtc_097'][stationID];
                     if(dir.toString() != TT.data.trtc.offset_time['trtc_5']['trtc_097']['LineDir']) stOffset = 0-stOffset;
+                }
+                if(line=='trtc_2'){
+                    stTime = lineTime['trtc_071'];
+                    stOffset = TT.data.trtc.offset_time['trtc_2']['trtc_071'][stationID];
+                    if(dir.toString() != TT.data.trtc.offset_time['trtc_2']['trtc_071']['LineDir']) stOffset = 0-stOffset;
                 }
                 if(line=='trtc_3'){
                     stTime = lineTime['trtc_111'];
@@ -2119,6 +2290,7 @@ var TT = (function(){
             line = TT.fn.getTRTC_lineCheckOrDefault(a, b, line);
             if(line){
                 var baseStation = '';
+                if(line=='trtc_2') baseStation = 'trtc_071';
                 if(line=='trtc_3') baseStation = 'trtc_111';
                 if(line=='trtc_5') baseStation = 'trtc_097';
                 var lineA = TT.data.trtc.offset_time[line][baseStation];
@@ -2128,6 +2300,59 @@ var TT = (function(){
             }else{
                 return false;
             }
+        },
+        getTRTC_overStringStationAry: function(str, line, dir){
+            var lineObj;
+            TT.data.trtc.line.map(function(obj){
+                if(obj.id == line) lineObj = obj;
+            });
+            if(!lineObj) return false;
+            if(!dir) dir = lineObj.dir;
+            
+            var stAry = lineObj.station;
+            var rt = new Array(), st, ary, flag=0;
+            if(str.indexOf('~')>=0){
+                ary = str.split('~');
+                if(dir != lineObj.dir) ary = ary.reverse();
+                if(ary[0]==null || ary[0]=='') ary[0] = stAry[0];
+                if(ary[1]==null || ary[1]=='') ary[1] = stAry[stAry.length-1];
+                for(var i=0; i<stAry.length; i++){
+                    st = stAry[i];
+                    if(st==ary[0]) flag=1;
+                    if(flag==1){
+                        rt.push(st);
+                    }
+                    if(st==ary[1]) flag=2;
+                    if(flag==2){
+                        break;
+                    }
+                }
+            }
+            return rt;
+        },
+        getTRTC_stationOnOutArea: function(a, b, line){
+            var lineObj;
+            TT.data.trtc.line.map(function(obj){
+                if(obj.id == line) lineObj = obj;
+            });
+            if(!lineObj) return false;
+            
+            var rt = false, art = false, tmpAry;
+            if(lineObj.outArea && lineObj.outArea.length > 0){
+                lineObj.outArea.map(function(obj){
+                    tmpAry = TT.fn.getTRTC_overStringStationAry(obj.station, line);
+                    for(var i=0; i<tmpAry.length; i++){
+                        if(b==tmpAry[i] && a!=obj.transAt){
+                            rt = obj;
+                        }
+                        if(a==tmpAry[i]){
+                            art = obj;
+                        }
+                    }
+                });
+                if(art) rt = false;//Both a and b on out area
+            }
+            return rt;
         },
         getTRTC_allTimeByFromTo: function(a, b, line, w){
             if(!w) w = TT.defined.defaultTRAWeekday;
@@ -2139,10 +2364,12 @@ var TT = (function(){
             }
             var aTime = TT.fn.getTRTC_stationTime(a, line, dir, w);
             var offsetTime = TT.fn.getTRTC_needTimeBySameLineFromTo(a, b, line);
+            var outArea=TT.fn.getTRTC_stationOnOutArea(a, b, line);
+            var outAreaOffsetSec = (outArea) ? outArea.waitingNextMinute*60 : 0;
             var aryFromToTime = new Array();
             var tmpBTime
             for(var i=0; i<aTime.length; i++){
-                tmpBTime = (TT.fn.transTime2Sec(aTime[i]) + (offsetTime*60))%86400;
+                tmpBTime = (TT.fn.transTime2Sec(aTime[i]) + (offsetTime*60))%86400 + outAreaOffsetSec;
                 tmpBTime = TT.fn.transSec2Time(tmpBTime);
                 aryFromToTime.push([aTime[i], tmpBTime]);
             } 
@@ -2429,7 +2656,7 @@ var TT = (function(){
             TT.ui.center.home.trtc.divTitle = TT.ui.createDiv('tt_home_trtc_title', 'title', TT.ui.center.home.trtc.id);
             TT.ui.center.home.trtc.divTitle.innerHTML = '台北捷運 TRTC';
             TT.ui.center.home.trtc.divText1 = TT.ui.createDiv('tt_home_trtc_text1', 'text', TT.ui.center.home.trtc.id);
-            TT.ui.center.home.trtc.divText1.innerHTML = '<p>因沒有台北捷運如台鐵的每列班車資訊，目前台北捷運的資料以網友ronnywang自台北捷運官網轉換出來的csv檔轉成json後匯入，松山站因原資料沒有時刻表故僅手動輸入平日時刻，沒有時刻表的車站會以站間行駛時間做相對計算。<span style="color:#FF4020;">台北捷運路由僅建立板南線南港展覽館站至亞東醫院站，松山新店線松山站至台電大樓站</span>，行車時間均以台北捷運官方網站查詢之<span style="color:#1FB020;">站間行駛時間相加或相減於南港站及松山站</span>，故時間上可能與真正的到站時刻表有一兩分鐘的誤差。</p>' +
+            TT.ui.center.home.trtc.divText1.innerHTML = '<p>因沒有台北捷運如台鐵的每列班車資訊，目前台北捷運的資料以網友ronnywang自台北捷運官網轉換出來的csv檔轉成json後匯入，沒有時刻表的車站會以站間行駛時間做相對計算。<span style="color:#FF4020;">台北捷運路由僅建立板南線、松山新店線、淡水信義線</span>，行車時間均以台北捷運官方網站查詢之<span style="color:#1FB020;">站間行駛時間相加或相減於南港站及松山站及淡水站</span>，故時間上可能與真正的到站時刻有一兩分鐘的誤差。</p>' +
                 '<p>替換時刻表檔案請在網頁同目錄下儲存 <a target="_new" href="ronnywang_trtc.json">ronnywang_trtc.json</a> </p>';
             
             //Program Frame
@@ -2458,7 +2685,7 @@ var TT = (function(){
                         '<li>前導網頁的 HTML、Javascript、CSS 存放於單一網頁檔內，不使用任何壓縮 code 或 Build 方式才運作，轉為正式版時才進行分拆作業。</li>' +
                         '<li>Name Space 為 TT，進入點為 TT.initFn()，底層演算法和工具存放於 TT.fn 下，與網頁外觀顯示相關存放於 TT.ui 下，基礎資料存放於 TT.data 下，基本定義存放於 TT.defined 下，當次搜尋結果存放於 TT.now 下。</li>' +
                         '<li>HTML CODE 的 BODY 保持內容乾淨，UI以 createElement 的方式附加上去，元件內容則可以 innerHTML 直接設計。</li>' +
-                        '<li>轉乘步行時間存在 TT.data.transStation 下各站的 walkMinute，理論上每一種轉乘方式都要建立一個轉乘站，例如台北站台鐵捷運之間就要建立台鐵至板南線、台鐵至淡水信義線、板南線至淡水信義線，分別存放步行時間並成為該兩種路線的路由點。</li>' +
+                        '<li>轉乘步行時間存在 TT.data.transStation 下各站的 walkMinute，理論上每一種轉乘方式都要建立一個轉乘站，例如台北站台鐵捷運之間就要建立台鐵至板南線、台鐵至淡水信義線、板南線至淡水信義線，分別存放步行時間並成為該種路線的路由點。</li>' +
                         '<li>轉乘路由方式存在 TT.data.routeMap 下，目前以人工方式整理可能的路由。</li>' +
                         '<li>下拉上背景色，當車站下拉選單超過兩百個選項以上時需著手進行車站選擇器的新 UI 調整，不適合再使用單純的 SELECT 元件。</li>' +
                         //'<li></li>' +
@@ -2466,9 +2693,7 @@ var TT = (function(){
                 '</p>' +
                 '<p>前導網頁的運作現況' +
                     '<ul>' +
-                        '<li>目前無法選擇日期或平假日，以所有軌道運輸系統星期二當天的時刻表資料為基礎，台鐵時刻表資料來自政府公開資訊內台鐵 2015 年 7 月 28 日的時刻表 XML 檔。</li>' +
-                        '<li>台鐵部分目前只開放基隆、七堵、五堵至台北及樹林站。</li>' +
-                        '<li>轉乘站目前只有建立松山站與南港站與台北站在TRA與TRTC間的轉乘，西門站在TRTC內轉乘，故無法查詢由板橋站或台北捷運其他各站轉乘的路由。</li>' +
+                        '<li>台鐵部分目前只開放基隆至中壢站。</li>' +
                         '<li>台北捷運的部分目前僅建立部分車站資料台北捷運說明框內敘述。</li>' +
                         '<li>台北捷運無台鐵般詳細的每列車到站與離站資訊，時間上均採用相對計算方式於台北捷運說明框內敘述。</li>' +
                         '<li>因為將資料載入到前端做計算，好處是連續查詢都在前端完成不用跑伺服器速度快，壞處是在運算效能低落的裝置上計算較慢。</li>' +
@@ -2506,16 +2731,19 @@ var TT = (function(){
             TT.ui.center.timeTable.controlDiv.preSettingDiv = TT.ui.createPreSetting({id: 'ttc_preSetting', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.stationSelectDiv = TT.ui.createTakeStation({id: 'ttc_stationSelect', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.timeSelectDiv = TT.ui.createTakeTimeSelect({id: 'ttc_timeSelect', renderID: 'tt_timeTable_control'});
+            TT.ui.center.timeTable.controlDiv.weekSelectDiv = TT.ui.createWeekSelect({id: 'ttc_weekSelect', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.depArrDiv = TT.ui.createTakeTimeFindDepArr({id: 'ttc_ADSelect', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.findButtonDiv = TT.ui.createTakeFindButton({id: 'ttc_findButton', renderID: 'tt_timeTable_control'});
             var defaultFromStation = (localStorage.getItem('defaultFromStation')) ? localStorage.getItem('defaultFromStation') : 'tra_1005',
                 defaultToStation = (localStorage.getItem('defaultToStation')) ? localStorage.getItem('defaultToStation') : 'trtc_093',
+                defaultSearchDay = new Date().getDay(),
                 defaultStartTime = (localStorage.getItem('defaultStartTime')) ? localStorage.getItem('defaultStartTime') : '07:00',
                 defaultEndTime = (localStorage.getItem('defaultEndTime')) ? localStorage.getItem('defaultEndTime') : '09:00';
             TT.ui.center.timeTable.controlDiv.stationSelectDiv.fnSetStart(defaultFromStation);
             TT.ui.center.timeTable.controlDiv.stationSelectDiv.fnSetEnd(defaultToStation);
             TT.ui.center.timeTable.controlDiv.timeSelectDiv.fnSetStartTime(defaultStartTime);
             TT.ui.center.timeTable.controlDiv.timeSelectDiv.fnSetEndTime(defaultEndTime);
+            TT.ui.center.timeTable.controlDiv.weekSelectDiv.fnSetDay(defaultSearchDay);
             
             //Display Frame
             TT.ui.center.timeTable.displayDiv = TT.ui.createDiv('tt_timeTable_display', 'ttbDisplay', TT.ui.center.timeTable.id);
@@ -2845,6 +3073,45 @@ var TT = (function(){
             
             return div;
         },
+        createWeekSelect: function(cfg){
+            cfg = cfg || {};
+            if(!cfg.id) cfg.id = TT.ui.genRandomId();
+            if(!cfg.cls) cfg.cls = '';
+            if(!cfg.fieldText) cfg.fieldText = '星期幾要搭乘呢？';
+            var div = document.createElement('div');
+            div.id = cfg.id;
+            
+            var weekOpt = (function(){
+                var rt = '', sty = '', weekStringAry = TT.defined.weekStringAry;
+                for(var i=0; i<7; i++){
+                    sty = (i==0) ? ' style="background-color:#FFAABC;"' : (i==6) ? ' style="background-color:#44DFAA;"' : ' style="background-color:#EEE;"'
+                    rt += '<option value="' + i + '" ' + sty + '>' + weekStringAry[i] + '</option>';
+                }
+                return rt;
+            })();
+            
+            div.innerHTML = '' +
+            '<div class="selectWeekOut">' +
+                '<div class="selectWeekIn" id="' + cfg.id + '_startTimeDiv">' +
+                    '<span>' + cfg.fieldText + '</span>' +
+                    '<span><select id="' + cfg.id + '_selector">' + weekOpt + '</select></span>' +
+                '</div>' +
+            '</div>';
+            
+            if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
+            
+            div.fnSetDay = function(val){
+                val = val.toString();
+                document.getElementById(cfg.id + '_selector').value = val;
+                return val;
+            }
+            div.fnGetDay = function(){
+                return document.getElementById(cfg.id + '_selector').value;
+            }
+            
+            return div;
+        
+        },
         createTrainRouteSelectBox: function(aryRoute){
             var rDiv = TT.ui.center.timeTable.displayDiv.routeDiv;
             var routeBy = '', routeP, tmpS = '', st = '', ht ='', ckDom, hDiv = document.createElement('div');
@@ -2924,8 +3191,13 @@ var TT = (function(){
                         '<div>' + '車種: ' + TT.fn.getTRA_carClassName(info['CarClass'], {color: true}) + '</div>' +
                     '</div>';
                 }else if(TT.fn.getCompanyOfStation(line)=='trtc'){
+                    var trtcSpe = '捷運到站時間是以站間行駛時間做相對計算，可能有幾分鐘的誤差。';
+                    var outArea=TT.fn.getTRTC_stationOnOutArea(tbd.takeRange[0], tbd.takeRange[1], line);
+                    if(outArea){
+                        trtcSpe = '目的地在非重疊區，請留意是否需要在<span class="defineFontStyle1">' + TT.fn.getTRTC_stationDataOfID(outArea.transAt).name + '</span>改搭下一班，到達時間已預留改搭候車時間。';
+                    }
                     rt = '<div class="infoBox">' +
-                        '<span class="trtcArriveTimeInfo">' + '捷運到站時間是以站間行駛時間做相對計算，可能有幾分鐘的誤差。' + '</span>' +
+                        '<span class="trtcArriveTimeInfo">' + trtcSpe + '</span>' +
                     '</div>';
                 }
                 return rt;
@@ -3055,6 +3327,7 @@ var TT = (function(){
             }
         },
         findTrain: function(cbFn){
+            var w = TT.ui.center.timeTable.controlDiv.weekSelectDiv.fnGetDay();
             function fnAfterCheck(){
                 
                 var controlDiv = TT.ui.center.timeTable.controlDiv;
@@ -3063,8 +3336,9 @@ var TT = (function(){
                 var flagAD = controlDiv.depArrDiv.fnGetValue();
                 var a = controlDiv.stationSelectDiv.fnGetStart();
                 var b = controlDiv.stationSelectDiv.fnGetEnd();
+                //var w = controlDiv.weekSelectDiv.fnGetDay();
                 
-                var aryRoute = TT.fn.getCommon_timeRangeBestByFromTo(a,b,startTime,endTime,flagAD);
+                var aryRoute = TT.fn.getCommon_timeRangeBestByFromTo(a,b,startTime,endTime,flagAD,w);
                 TT.ui.printStatus('尋找列車班次完成');TT.msg.show('尋找完成',200);
                 TT.ui.printTrain(aryRoute, cbFn);
                 
@@ -3075,9 +3349,9 @@ var TT = (function(){
             }
             
             function fnCheck(){
-                var a1 = TT.fn.checkTRA_dayTimeIsLoaded();
+                var a1 = TT.fn.checkTRA_dayTimeIsLoaded(w);
                 if(!a1){
-                    TT.fn.getTRA_TimeTable2Data(TT.defined.defaultTRAWeekday, fnCheck);
+                    TT.fn.getTRA_TimeTable2Data(w, fnCheck);
                     return false;
                 }
                 var a2 = TT.fn.checkTRTC_rnwTimeTableIsLoaded();
