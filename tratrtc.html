@@ -424,8 +424,8 @@ var TT = (function(){
             "程式名稱": "無縫接軌計劃前導網頁",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Alpha 0.1.3",
-            "產生日期": "2015/08/05"
+            "版本": "Alpha 0.1.4",
+            "產生日期": "2015/08/06"
         },
         zxcv: 1
     }
@@ -626,6 +626,27 @@ var TT = (function(){
                         waitingNextMinute: 4
                     }],
                     station: ["trtc_111","trtc_110","trtc_109","trtc_009","trtc_132","trtc_053","trtc_105","trtc_086","trtc_043","trtc_042","trtc_041","trtc_040","trtc_039","trtc_038","trtc_037","trtc_036","trtc_035","trtc_034","trtc_033"]
+                }, {
+                    id: "trtc_4",
+                    name: "中和新蘆線(4)",
+                    color: "#ffa300",
+                    dir: "1",
+                    splitStation: ['trtc_128'],
+                    outArea: [{
+                        dir: "1",
+                        station: "trtc_127~trtc_179",
+                        transAt: "trtc_128",
+                        isSubLine: true,
+                        waitingNextMinute: 4
+                    }, {
+                        dir: "1",
+                        station: "trtc_178~trtc_174",
+                        transAt: "trtc_128",
+                        isSubLine: true,
+                        waitingNextMinute: 4
+                    }],
+                    station: ["trtc_048","trtc_047","trtc_046","trtc_045","trtc_041","trtc_134","trtc_089","trtc_132","trtc_131","trtc_130","trtc_055","trtc_128","trtc_127","trtc_126","trtc_125","trtc_124","trtc_123","trtc_122","trtc_121","trtc_180","trtc_179",
+                        "trtc_178", "trtc_177", "trtc_176", "trtc_175", "trtc_174"]
                 }
             ],
             offset_time: {
@@ -645,6 +666,13 @@ var TT = (function(){
                     "trtc_111": {
                         "LineDir": "1", "trtc_111":0, "trtc_110":3, "trtc_109":5, "trtc_009":7, "trtc_132":9, "trtc_053":11, "trtc_105":14, "trtc_086":16
                             , "trtc_043":18, "trtc_042":19, "trtc_041":21, "trtc_040":23, "trtc_039":24, "trtc_038":27, "trtc_037":29, "trtc_036":31, "trtc_035":32, "trtc_034":34, "trtc_033":36
+                    }
+                },
+                "trtc_4": {
+                    "trtc_048": {
+                        "LineDir": "1", "trtc_048":0, "trtc_047":2, "trtc_046":4, "trtc_045":6, "trtc_041":10, "trtc_134":14, "trtc_089":16, "trtc_132":19, "trtc_131":20, "trtc_130":24, "trtc_055":25, "trtc_128":26
+                            , "trtc_127":29, "trtc_126":31, "trtc_125":33, "trtc_124":35, "trtc_123":38, "trtc_122":39, "trtc_121":42, "trtc_180":44, "trtc_179":47
+                            , "trtc_178":29, "trtc_177":32, "trtc_176":33, "trtc_175":35, "trtc_174":38
                     }
                 }
             },
@@ -746,6 +774,36 @@ var TT = (function(){
                     changeLine: ["tra_xibu", "trtc_5"],
                     changeStation: ['tra_1011','trtc_082'],
                     walkMinute: 7
+                }, {
+                    id: 'mqxl1', name: "民權西路",
+                    changeLine: ["trtc_2", "trtc_4"],
+                    changeStation: ['trtc_055','trtc_055'],
+                    walkMinute: 3
+                }, {
+                    id: 'dongmen1', name: "東門",
+                    changeLine: ["trtc_2", "trtc_4"],
+                    changeStation: ['trtc_134','trtc_134'],
+                    walkMinute: 1
+                }, {
+                    id: 'guting1', name: "古亭",
+                    changeLine: ["trtc_3", "trtc_4"],
+                    changeStation: ['trtc_041','trtc_041'],
+                    walkMinute: 1
+                }, {
+                    id: 'zhongxiaoxs1', name: "忠孝新生",
+                    changeLine: ["trtc_5", "trtc_4"],
+                    changeStation: ['trtc_089','trtc_089'],
+                    walkMinute: 2
+                }, {
+                    id: 'sjnanjing1', name: "松江南京",
+                    changeLine: ["trtc_3", "trtc_4"],
+                    changeStation: ['trtc_132','trtc_132'],
+                    walkMinute: 2
+                }, {
+                    id: 'daqiaotou1', name: "大橋頭",
+                    changeLine: ["trtc_4", "trtc_4"],
+                    changeStation: ['trtc_128','trtc_128'],
+                    walkMinute: 1
                 }
         ],
         routeMap: [
@@ -794,6 +852,26 @@ var TT = (function(){
                     }
                 ]
             }, {
+                fromToLine: ["tra_xibu","trtc_4"],
+                route: [
+                    {
+                        line: ["tra_xibu", "trtc_2", "trtc_4"],
+                        transStation: ["taipei2", "dongmen1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_2", "trtc_4"],
+                        transStation: ["taipei2", "mqxl1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_2", "trtc_3", "trtc_4"],
+                        transStation: ["taipei2", "cksmh1", "guting1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_3", "trtc_4"],
+                        transStation: ["songshan1","sjnanjing1"]
+                    }
+                ]
+            }, {
                 fromToLine: ["trtc_5","trtc_2"],
                 route: [
                     {
@@ -803,6 +881,22 @@ var TT = (function(){
                     {
                         line: ["trtc_5", "trtc_3", "trtc_2"],
                         transStation: ["ximen1", "cksmh1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_4","trtc_2"],
+                route: [
+                    {
+                        line: ["trtc_4", "trtc_2"],
+                        transStation: ["dongmen1"]
+                    },
+                    {
+                        line: ["trtc_4", "trtc_2"],
+                        transStation: ["mqxl1"]
+                    },
+                    {
+                        line: ["trtc_4", "trtc_3", "trtc_2"],
+                        transStation: ["guting1", "cksmh1"]
                     }
                 ]
             }, {
@@ -827,6 +921,38 @@ var TT = (function(){
                     {
                         line: ["trtc_3", "tra_xibu", "trtc_5"],
                         transStation: ["songshan1", "nangang1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_4","trtc_5"],
+                route: [
+                    {
+                        line: ["trtc_4", "trtc_5"],
+                        transStation: ["zhongxiaoxs1"]
+                    },
+                    {
+                        line: ["trtc_4", "trtc_3", "trtc_5"],
+                        transStation: ["guting1", "ximen1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_3","trtc_4"],
+                route: [
+                    {
+                        line: ["trtc_3", "trtc_4"],
+                        transStation: ["guting1"]
+                    },
+                    {
+                        line: ["trtc_3", "trtc_4"],
+                        transStation: ["sjnanjing1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_4","trtc_4"],
+                route: [
+                    {
+                        line: ["trtc_4", "trtc_4"],
+                        transStation: ["daqiaotou1"]
                     }
                 ]
             }
@@ -913,7 +1039,6 @@ var TT = (function(){
         me.resetPosition = function(){
             var dh = TT.fn.getDocumentHeight(), dw = TT.fn.getDocumentWidth();
             var wh = me.el.clientHeight, ww = me.el.clientWidth;
-            console.log(dh);
             
             var top = Math.ceil((dh-wh)/2);
             var left = Math.ceil((dw-ww)/2);
@@ -1579,7 +1704,14 @@ var TT = (function(){
                         return false;
                     break;
                     case 'trtc':
+                        var ary = TT.fn.getTRTC_stationOnSameLine(a,b), lineData;
                         if(TT.fn.getTRTC_stationOnSameLine(a,b)){
+                            for(var i=0; i<ary.length; i++){
+                                lineData = TT.fn.getTRTC_lineData(ary[i]);
+                                if(lineData.splitStation && lineData.splitStation.length>0){
+                                    if(TT.fn.getTRTC_stationOnDiffSplitOutArea(a,b,lineData.id)) return true;
+                                }
+                            }
                             return false;
                         }else{
                             return true;
@@ -2010,6 +2142,10 @@ var TT = (function(){
             if(rnwTime!=false){
                 return rnwTime;
             }
+            if(rnwTime==false && stationID == 'trtc_071'){//No Tamsui Timetable
+                var hslTime = TT.fn.getTRTC_rnw_stationTime('trtc_070', line, dir, w);
+                return offsetTimeFn(hslTime, -3);
+            }
             if(!w) w = TT.defined.defaultTRAWeekday;
             w = parseInt(w);
             if(!line){
@@ -2089,6 +2225,11 @@ var TT = (function(){
                     stTime = lineTime['trtc_111'];
                     stOffset = TT.data.trtc.offset_time['trtc_3']['trtc_111'][stationID];
                     if(dir.toString() != TT.data.trtc.offset_time['trtc_3']['trtc_111']['LineDir']) stOffset = 0-stOffset;
+                }
+                if(line=='trtc_4'){
+                    stTime = lineTime['trtc_048'];
+                    stOffset = TT.data.trtc.offset_time['trtc_4']['trtc_048'][stationID];
+                    if(dir.toString() != TT.data.trtc.offset_time['trtc_4']['trtc_048']['LineDir']) stOffset = 0-stOffset;
                 }
                 if(stOffset != 0){
                 }else{
@@ -2292,6 +2433,7 @@ var TT = (function(){
                 var baseStation = '';
                 if(line=='trtc_2') baseStation = 'trtc_071';
                 if(line=='trtc_3') baseStation = 'trtc_111';
+                if(line=='trtc_4') baseStation = 'trtc_048';
                 if(line=='trtc_5') baseStation = 'trtc_097';
                 var lineA = TT.data.trtc.offset_time[line][baseStation];
                 var aOffset = lineA[a];
@@ -2302,10 +2444,10 @@ var TT = (function(){
             }
         },
         getTRTC_overStringStationAry: function(str, line, dir){
-            var lineObj;
-            TT.data.trtc.line.map(function(obj){
-                if(obj.id == line) lineObj = obj;
-            });
+            var lineObj = TT.fn.getTRTC_lineData(line);
+            //TT.data.trtc.line.map(function(obj){
+                //if(obj.id == line) lineObj = obj;
+            //});
             if(!lineObj) return false;
             if(!dir) dir = lineObj.dir;
             
@@ -2330,11 +2472,39 @@ var TT = (function(){
             }
             return rt;
         },
+        getTRTC_stationOnDiffSplitOutArea: function(a, b, line){
+            var lineObj = TT.fn.getTRTC_lineData(line);
+            if(!lineObj) return false;
+            
+            var brt = false, art = false, bStationAry, aStationAry, rt = false, tmpAry;
+            if(lineObj.outArea && lineObj.outArea.length > 0){
+                lineObj.outArea.map(function(obj){
+                    tmpAry = TT.fn.getTRTC_overStringStationAry(obj.station, line);
+                    for(var i=0; i<tmpAry.length; i++){
+                        if(b==tmpAry[i]){
+                            brt = obj;
+                            bStationAry = tmpAry;
+                        }
+                        if(a==tmpAry[i]){
+                            art = obj;
+                            aStationAry = tmpAry;
+                        }
+                    }
+                });
+                if(art.station!=brt.station && art.transAt==brt.transAt){
+                    rt = {
+                        line: line,
+                        splitStation: art.transAt,
+                        transStationID: art.transStationID,
+                        takeRange: [a,b],
+                        stationAry:[aStationAry,bStationAry]
+                    };
+                }
+            }
+            return rt;
+        },
         getTRTC_stationOnOutArea: function(a, b, line){
-            var lineObj;
-            TT.data.trtc.line.map(function(obj){
-                if(obj.id == line) lineObj = obj;
-            });
+            var lineObj = TT.fn.getTRTC_lineData(line);
             if(!lineObj) return false;
             
             var rt = false, art = false, tmpAry;
@@ -2345,7 +2515,10 @@ var TT = (function(){
                         if(b==tmpAry[i] && a!=obj.transAt){
                             rt = obj;
                         }
-                        if(a==tmpAry[i]){
+                        if(b==tmpAry[i] && a==obj.transAt && obj.isSubLine){
+                            rt = obj;
+                        }
+                        if(a==tmpAry[i] && !(obj.isSubLine && a==obj.transAt)){
                             art = obj;
                         }
                     }
@@ -2365,11 +2538,18 @@ var TT = (function(){
             var aTime = TT.fn.getTRTC_stationTime(a, line, dir, w);
             var offsetTime = TT.fn.getTRTC_needTimeBySameLineFromTo(a, b, line);
             var outArea=TT.fn.getTRTC_stationOnOutArea(a, b, line);
-            var outAreaOffsetSec = (outArea) ? outArea.waitingNextMinute*60 : 0;
+            //var outAreaOffsetSec = (outArea) ? outArea.waitingNextMinute*60 : 0;
             var aryFromToTime = new Array();
-            var tmpBTime
+            var tmpBTime, tmpATime, tmpANTime;
             for(var i=0; i<aTime.length; i++){
-                tmpBTime = (TT.fn.transTime2Sec(aTime[i]) + (offsetTime*60))%86400 + outAreaOffsetSec;
+                /*if(outAreaOffsetSec > 0){
+                    if(aTime[i+1]){
+                        tmpATime = TT.fn.transTime2Sec(aTime[i], true);
+                        tmpANTime = TT.fn.transTime2Sec(aTime[i+1], true);
+                        outAreaOffsetSec = tmpANTime - tmpATime;
+                    }
+                }*/
+                tmpBTime = (TT.fn.transTime2Sec(aTime[i]) + (offsetTime*60))%86400;// + outAreaOffsetSec;
                 tmpBTime = TT.fn.transSec2Time(tmpBTime);
                 aryFromToTime.push([aTime[i], tmpBTime]);
             } 
@@ -2531,18 +2711,23 @@ var TT = (function(){
                 return intA.toString();
             }
         },
-        transTime2Sec: function(str){
+        transTime2Sec: function(str,offsetTomorrow){
             if (str == null || str == '') {
                 str = '0';
             }
-            var aryA = str.split(':');
+            var aryA = str.split(':'), rt;
             if (aryA.length <= 1) {
-                return parseInt(str,10);
+                rt = parseInt(str,10);
             } else if (aryA.length == 2) {
-                return parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60;
+                rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60;
             } else if (aryA.length == 3) {
-                return parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60 + parseInt(aryA[2],10);
+                rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60 + parseInt(aryA[2],10);
             }
+            
+            if(offsetTomorrow && rt < TT.fn.transTime2Sec(TT.fn.getDefaultDayLastTime())){
+                rt = rt + 86400;
+            }
+            return rt;
         },
         transSec2Time: function(sec){
             var tid = 0,
@@ -2590,6 +2775,10 @@ var TT = (function(){
                 sysTop = document.body.scrollTop;
             }
             return sysTop;
+        },
+        centerTimeTableDisplayDivClear: function(){
+            TT.ui.center.timeTable.displayDiv.trainDiv.innerHTML = '';
+            TT.ui.center.timeTable.displayDiv.routeDiv.innerHTML = '';
         },
         createDiv: function(id, cls, appendT){
             var dom = document.createElement('div');
@@ -2656,7 +2845,7 @@ var TT = (function(){
             TT.ui.center.home.trtc.divTitle = TT.ui.createDiv('tt_home_trtc_title', 'title', TT.ui.center.home.trtc.id);
             TT.ui.center.home.trtc.divTitle.innerHTML = '台北捷運 TRTC';
             TT.ui.center.home.trtc.divText1 = TT.ui.createDiv('tt_home_trtc_text1', 'text', TT.ui.center.home.trtc.id);
-            TT.ui.center.home.trtc.divText1.innerHTML = '<p>因沒有台北捷運如台鐵的每列班車資訊，目前台北捷運的資料以網友ronnywang自台北捷運官網轉換出來的csv檔轉成json後匯入，沒有時刻表的車站會以站間行駛時間做相對計算。<span style="color:#FF4020;">台北捷運路由僅建立板南線、松山新店線、淡水信義線</span>，行車時間均以台北捷運官方網站查詢之<span style="color:#1FB020;">站間行駛時間相加或相減於南港站及松山站及淡水站</span>，故時間上可能與真正的到站時刻有一兩分鐘的誤差。</p>' +
+            TT.ui.center.home.trtc.divText1.innerHTML = '<p>因沒有台北捷運如台鐵的每列班車資訊，目前台北捷運的資料以網友ronnywang自台北捷運官網轉換出來的csv檔轉成json後匯入，沒有時刻表的車站會以站間行駛時間做相對計算。<span style="color:#FF4020;">台北捷運無法查詢新北投線、小碧潭線、文湖線</span>，行車時間均以台北捷運官方網站查詢之<span style="color:#1FB020;">站間行駛時間相加或相減於南港站、松山站、淡水站及南勢角站</span>，故時間上可能與真正的到站時刻有一兩分鐘的誤差。</p>' +
                 '<p>替換時刻表檔案請在網頁同目錄下儲存 <a target="_new" href="ronnywang_trtc.json">ronnywang_trtc.json</a> </p>';
             
             //Program Frame
@@ -2935,7 +3124,7 @@ var TT = (function(){
                     company = TT.fn.getCompanyOfStation(allAry[i].id);
                     lineC = (allAry[i].byLine) ? 'background-color:' + TT.fn.getCommon_lineColor(allAry[i].byLine) + ';' : '';
                     cmpStr = '(' + company.toUpperCase() + ')';
-                    rt += '<option value="' + allAry[i].id + '" style="' + lineC + 'color:#FFC;">' + allAry[i].name + cmpStr + '</option>';
+                    rt += '<option value="' + allAry[i].id + '" style="' + lineC + 'color:#EEF;">' + allAry[i].name + cmpStr + '</option>';
                 }
                 return rt;
             })();
@@ -3124,7 +3313,7 @@ var TT = (function(){
                     }
                 }
                 st = '經由' + ' ' + tmpS;
-                if(routeP.length==1 && !(routeP[0].transStation)) st = '直達';
+                if(routeP.length==1 && !(routeP[0].transStation)) st = '<span style="background-color:' + TT.fn.getCommon_lineColor(routeP[0].line) + ';" class="stag">' + TT.fn.getCommon_lineName(routeP[0].line) + '</span>' + '直達';
                 routeBy = '<div class="tt_ck_route_sh">' +
                     '<input type="checkbox" id="tt_timeTable_ckRoute_' + tc + '" class="ckRoute" checked>' + st +
                 '</div>';
@@ -3191,10 +3380,10 @@ var TT = (function(){
                         '<div>' + '車種: ' + TT.fn.getTRA_carClassName(info['CarClass'], {color: true}) + '</div>' +
                     '</div>';
                 }else if(TT.fn.getCompanyOfStation(line)=='trtc'){
-                    var trtcSpe = '捷運到站時間是以站間行駛時間做相對計算，可能有幾分鐘的誤差。';
+                    var trtcSpe = '捷運到站時間是以官方站間行駛時間做相對計算。';
                     var outArea=TT.fn.getTRTC_stationOnOutArea(tbd.takeRange[0], tbd.takeRange[1], line);
                     if(outArea){
-                        trtcSpe = '目的地在非重疊區，請留意是否需要在<span class="defineFontStyle1">' + TT.fn.getTRTC_stationDataOfID(outArea.transAt).name + '</span>改搭下一班，到達時間已預留改搭候車時間。';
+                        trtcSpe = '請留意是否需在<span class="defineFontStyle1">' + TT.fn.getTRTC_stationDataOfID(outArea.transAt).name + '</span>改搭下一班車，因目的地並非每班車都有到。';
                     }
                     rt = '<div class="infoBox">' +
                         '<span class="trtcArriveTimeInfo">' + trtcSpe + '</span>' +
@@ -3318,7 +3507,7 @@ var TT = (function(){
                     mask: true,
                     cls: 'transStationWalkTimeWindow',
                     onShow: function(thisA){
-                        TT.ui.center.timeTable.displayDiv.trainDiv.innerHTML = '';
+                        TT.ui.centerTimeTableDisplayDivClear();
                         updateCDiv();
                         thisA.resetPosition();
                     }
