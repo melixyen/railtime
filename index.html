@@ -1,58 +1,3811 @@
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>Railtime by melixyen</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Railtime</h1>
-      <h2 class="project-tagline">Cross Taiwan All Railway Company Find Timetable</h2>
-      <a href="https://github.com/melixyen/railtime" class="btn">View on GitHub</a>
-      <a href="https://github.com/melixyen/railtime/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/melixyen/railtime/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
 
-    <section class="main-content">
-      <h3>
-<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title>Cross TRA TRTC Time</title>
+<style type="text/css">
+@charset "utf-8";
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here <a href="https://guides.github.com/features/mastering-markdown/">using GitHub Flavored Markdown</a>, select a template crafted by a designer, and publish. After your page is generated, you can check out the new <code>gh-pages</code> branch locally. If you’re using GitHub for Mac or GitHub for Windows, simply sync your repository and you’ll see the new branch.</p>
+body {
+    /*font-family:'細明體', "PMingLiU";*/
+    font-size: 14px;
+    margin: 0px;
+}
 
-<h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+.headerBar{
+    position: fixed;
+    height: 40px;
+    max-height: 40px;
+    overflow: hidden;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    line-height: 28px;
+    background-color: #FFF;
+}
+.headerButton{
+    display: inline;
+    margin: 3px 6px;
+    border: 2px solid #22CCEF;
+    background-color: #4BE9F2;
+    color: #5E5E5E;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+}
+@supports (display: flex) {
+    .headerBar{
+        display: -webkit-flex;
+        display: flex;
+    }
+    .headerButton{
+        -webkit-flex: 1;
+        flex: 1;
+    }
+}
 
-<p>We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.</p>
+.statusBar{
+    position: fixed;
+    height: 20px;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    background-color: #DDD;
+    padding-left: 20px;
+    color: #5E3B70;
+    line-height: 18px;
+    font-size: 12px;
+}
 
-<h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating pages manually</h3>
+.center{
+    border: 2px solid #4EBCD5;
+    margin: 40px 10px 20px;
+}
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+.centerPage{
+    margin: 3px;
+    display: none;
+    padding-top: 15px;
+}
+.centerPage.show{
+    display: block;
+}
+.centerPage .selectStationOut .selectStationIn,  .centerPage .findButtonDiv,
+.centerPage .selectWeekOut .selectWeekIn,
+.centerPage .selectTimeOut .selectTimeIn{
+    padding: 5px;
+}
 
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+.center .frameA{
+    border: 1px solid #2E9CB5;
+    margin: 10px auto;
+    max-width: 1000px;
+    padding: 3px;
+}
+.center .frameA .title{
+    font-weight: bold;
+    font-size: 16px;
+    color: #444;
+    margin: 3px;
+}
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+.center .frameB{
+    border: 1px solid #4E9CD5;
+    margin: 10px auto;
+    padding: 3px;
+}
 
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+.center .ttbDisplay{
+    border: 1px solid #4E8CE5;
+    margin: 10px auto;
+    max-width: 1000px;
+}
 
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
+.center .ttbDisplay .route{
+    background-color: #FCF9FD;
+    border-bottom: 1px solid #4A4C55;
+    margin: 0px;
+    min-height: 50px;
+    width: 100%;
+}
+.center .ttbDisplay .train{
+    background-color: #FEFEFE;
+    margin: 0px;
+    min-height: 200px;
+    width: 100%;
+}
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/melixyen/railtime">Railtime</a> is maintained by <a href="https://github.com/melixyen">melixyen</a>.</span>
+.center .preSetting{
+    border-bottom: 1px solid #2C2C2C;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
+.tt_ck_route_sh{
+    display:inline-block; border:1px solid #222;
+    background-color: #EFBCDF;
+    margin: 10px;
+}
+.tt_ck_route_sh .stag{
+    color: #FDFDFD;
+    background-color: #9c6f2e;
+    border:1px solid #812;
+    display:inline-block;
+    margin-right: 8px;
+}
 
-    </section>
+.timeTableTrainRouteBox{
+    margin: 10px 50px 20px 50px;
+    padding: 5px 0px;
+    border-bottom: 2px solid #041239;
+}
+.timeTableTrainRouteBox .header{
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #D2E5BA;
+}
+.timeTableTrainRouteBox .header .sub{
+    display: inline;
+    margin: 3px 20px 3px 0px;
+}
+.timeTableTrainRouteBox .header .num{
+    color: #901111;
+    font-size: 14px;
+}
+.timeTableTrainRouteBox .header .count .val{
+    color: #FF2C0E;
+}
+.timeTableTrainRouteBox .header .totalTime .val{
+    color: #1F9C8E;
+}
+.timeTableTrainRouteBox .header .startTime .val, .timeTableTrainRouteBox .header .endTime .val{
+    color: #1F6CFE;
+}
+.timeTableTrainRouteBox .header .backTop{
+    cursor: pointer;
+    font-size: 12px;
+    color: #CE9D1B;
+    margin-left: 30px;
+}
 
-  
-  </body>
+.timeTableTrainRouteBox .table th{
+    margin: 3px 10px;
+    background-color: #B7EFF0;
+    color: #2E0E1E;
+    font-size: 16px;
+    font-weight: 400;
+    border: 2px solid #FDFDFD;
+}
+.timeTableTrainRouteBox .table td{
+    margin: 3px 10px;
+    color: #2E0E1E;
+    font-size: 14px;
+    font-weight: 400;
+}
+.timeTableTrainRouteBox .table .sect{
+    min-width: 40px;
+}
+.timeTableTrainRouteBox .table .time{
+    min-width: 70px;
+}
+.timeTableTrainRouteBox .table .station{
+    min-width: 120px;
+}
+.timeTableTrainRouteBox .table .info{
+    min-width: 150px;
+}
+.timeTableTrainRouteBox .table .line{
+    min-width: 250px;
+}
+.timeTableTrainRouteBox .table .other{
+    min-width: 80px;
+}
+.timeTableTrainRouteBox .table td.sect{
+    color: #BD122B;
+}
+.timeTableTrainRouteBox .table .timeBox .value, .timeTableTrainRouteBox .table .stationBox .value{
+    min-height: 20px;
+    font-size: 120%;
+}
+.timeTableTrainRouteBox .table .timeBox .deep, .timeTableTrainRouteBox .table .stationBox .deep{
+    text-align: center;
+    min-height: 50px;
+}
+.timeTableTrainRouteBox .table .timeBox .deep .minute{
+    line-height: 50px;
+    color: #8E8E8E;
+}
+.timeTableTrainRouteBox .table .deep .line_color{
+    border: 1px solid #000000;
+    width: 5px;
+    height: 48px;
+    overflow: hidden;
+}
+.timeTableTrainRouteBox .table .deep .line_color .bd{
+    height: 48px;
+    border-left: 5px dashed #000000;
+}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_2, .timeTableTrainRouteBox .table .deep .line_color.trtc_2 .bd{border-color: #cb2c30;}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_3, .timeTableTrainRouteBox .table .deep .line_color.trtc_3 .bd{border-color: #007749;}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_4, .timeTableTrainRouteBox .table .deep .line_color.trtc_4 .bd{border-color: #ffa300;}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_5, .timeTableTrainRouteBox .table .deep .line_color.trtc_5 .bd{border-color: #005eb8;}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_2 .bd,
+.timeTableTrainRouteBox .table .deep .line_color.trtc_3 .bd,
+.timeTableTrainRouteBox .table .deep .line_color.trtc_4 .bd,
+.timeTableTrainRouteBox .table .deep .line_color.trtc_5 .bd{
+    border-style: solid;
+}
+.timeTableTrainRouteBox .table td.transStation{
+    color: #9D92AB;
+    border-bottom: 1px solid #CCC;
+}
+.timeTableTrainRouteBox .table .trtcArriveTimeInfo{
+    font-size: 80%;
+    color: #AA2010;
+}
+
+.editTool .tag{
+    display: block;
+    width: 100%;
+    height: 40px;
+}
+.editTool .tag .tagSelect{
+    /*display: inline;*/
+    float: left;
+    margin: 0px 10px;
+    padding: 5px;
+    border: 2px solid #2C2E2F;
+    background-color: #EEC;
+    cursor: pointer;
+}
+.editTool .tag .tagSelect.selected{background-color: #DCE;}
+.editTool .editor{
+    width: 100%;
+}
+.editTool .editor textarea{
+    width: 90%;
+    height: 400px;
+}
+.editTool .editor .btnDiv{
+    display: inline;
+    margin: 0 10px 0 0;
+}
+
+.ckWeekLoaded{
+    background-color: #FF0000;
+    color: #FFF;
+    display: inline;
+    padding: 0 10px;
+}
+
+.defineFontStyle1{
+    color: #302010;
+    font-weight: 500;
+    background-color: #D0C0F0;
+}
+
+.mask{
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(210,210,210,0.6);
+    text-align: center;
+    z-index: 105;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+.mask .text{
+    position: relative;
+    font-size: 24px;
+    color: #EF7879;
+}
+.mask.show{
+    display: -webkit-flex;
+    display: flex;
+}
+.systemButton{
+    cursor: pointer;
+    border: 2px solid #999;
+    background-color: #DDD;
+    min-height: 30px;
+    line-height: 26px;
+    padding: 2px 12px;
+    display: inline;
+    margin: 0px 5px;
+}
+
+.msg.show{
+    min-width: 100px;
+    max-width: 50%;
+    //min-height: 40px;
+    padding: 20px;
+    background-color: #2080D0;
+    color: #FFF;
+    position: absolute;
+    opacity: 1;
+    transition: opacity 0.9s ease 0.1s;
+    z-index: 151;
+    text-align: center;
+}
+.msg.show.afterEffect{opacity: 0;}
+
+.ttWindow{
+    display: inline-block;
+    padding: 20px;
+    background-color: #3F9EED;
+    border: 2px solid #948522;
+    position: absolute;
+    top: 0px;
+    height: 0px;
+}
+.ttWindow .inner{
+    background-color: #F2F2F2;
+    min-width: 160px;
+    min-height: 100px;
+}
+.ttWindow .ttWindowClose, .ttMapSelector .ttWindowClose{
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #4D5F5F;
+    position: absolute;
+    right: 0px;
+    top: 2px;
+    cursor: pointer;
+}
+
+.ttMapSelector{
+    display: inline-block;
+    padding: 5px;
+    background-color: #FFF;
+    border: none;
+    position: absolute;
+    top: 0px;
+    min-height: 500px;
+}
+.ttMapSelector .main{
+    position: relative;
+    left: 0px;
+    top: 20px;
+}
+
+.transStationWalkTimeWindow .contentBox{
+    margin: 10px;
+}
+.transStationWalkTimeWindow .buttonBox{
+    margin: 10px;
+}
+.transStationWalkTimeWindow .buttonBox button{
+    margin-right: 10px;
+}
+.transStationWalkTimeWindow .stationName{
+    color:#307F98;
+    font-weight:bold;
+}
+.transStationWalkTimeWindow .minute{
+    width: 40px;
+    text-align: right;
+    font-size: 120%;
+}
+
+</style>
+<!--<link rel="stylesheet" type="text/css" href="x.css" />-->
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type="text/javascript">
+//進度: 完成 getTRA_timeRangeByFromTo，可尋找某一時段間往來兩站的班次
+//      完成 getTRA_timeRangeByFromTo 資料加上 getFromToTime , 接下來製作 TRTC 兩站時間查詢
+//      完成 getTRTC_allTimeByFromTo 查全部兩站時間, 接下來製作時間範圍內查證
+//      完成 getTRTC_timeRangeByFromTo 查台北捷運兩站範圍內時間 , 接下來製作跨台鐵捷運查詢
+//      完成 getRoute_needRouteByFromTo 查兩站間是否需路由 , 接下來製作路由查詢正反向回傳路由
+//      完成 getRoute_allRouteByFromTo 查兩站間路由 , 接下來製作路由上所有時間查詢
+//      完成 getCommon_timeRangeByFromTo 查兩站間的時間 , 接下來 getCommon_timeTakeByFromTo
+//      完成 getCommon_timeTakeByFromTo 對接時間內的 next prev , 接下按照 flagAD 整理每一組的最佳選擇
+//      完成 getCommon_timeRangeBestByFromTo 整理最佳選擇 , 接下來 UI 印出最佳時間列車
+//      完成 findTrain 與選項 UI , 接下來 printTrain 印出所有路線
+//      完成 getData2JSON 及 saveDataJSON2Data 可由工具編輯 TT.data 內的資料但不含時刻表檔案
+//      完成 createTrainRouteSelectBox 可勾選隱藏不想要經過的路徑
+//      完成 createWeekSelect 可以選擇使用星期幾去搜尋
+//      完成 getTRTC_stationOnOutArea 可查詢 TRTC 站是否在非重疊區
+var TT = (function(){
+
+    var TT = {//name space TT for TimeTable
+        data: {}
+    }
+    
+    TT.defined = {
+        defaultCrossDayTime: '04:00:00',
+        defaultTRAWeekday: '2',
+        defaultMaskText: 'Loading...',
+        stringOfTRA: '台灣鐵路局',
+        stringOfTRASimple: '台鐵',
+        stringOfTRTC: '台北捷運',
+        stringOfTRTCSimple: '北捷',
+        timeHour: ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'],
+        timeMinSec: ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29',
+                    '30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59'],
+        weekStringAry: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+        programAbout: {
+            "程式名稱": "無縫接軌計劃前導網頁",
+            "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
+            '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
+            "版本": "Alpha 0.1.4",
+            "產生日期": "2015/08/06"
+        },
+        zxcv: 1
+    }
+    
+    TT.data = {
+        tra: {
+        	defined: {
+        		"CarClass": [
+        			{"id": "1100", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "1101", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "1102", "name": "太魯閣號", "ename": "Tze-Chiang Limited Express(Tarko)", "color": "#FD8A10"},
+        			{"id": "1107", "name": "普悠瑪號", "ename": "Tze-Chiang Limited Express(Puyuma)", "color": "#ff0030"},
+        			{"id": "1108", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "1110", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
+        			{"id": "1120", "name": "復興", "ename": "Fu-Hsing Semi Express", "color": "#32CFBC"},
+        			{"id": "1130", "name": "電車", "ename": "Electric Multiple Unit"},
+        			{"id": "1131", "name": "區間車", "ename": "Local Train"},
+        			{"id": "1132", "name": "區間快", "ename": "Fast Local Train", "color": "#32CFBC"},
+        			{"id": "1140", "name": "普快車", "ename": "Ordinary train"},
+        			{"id": "1141", "name": "柴快車", "ename": "Disel Rail Car"},
+        			{"id": "1150", "name": "柴油車", "ename": "na"}
+        		]
+        	},
+            station_ary: [//big: e for big station of east(dongbu), w for big station of west(xibu), s for south link(nanhuei)
+                {id:"tra_1001", name: "基隆", estring: "keelung", sect: "taipei,keelung"},
+                {id:"tra_1029", name: "三坑", estring: "sankeng", sect: "taipei,keelung"},
+                {id:"tra_1002", name: "八堵", estring: "badu", sect: "taipei,keelung", big: 'e'},
+                {id:"tra_1003", name: "七堵", estring: "qidu", sect: "taipei,keelung", big: 'ew'},
+                {id:"tra_1030", name: "百福", estring: "baifu", sect: "taipei,keelung"},
+                {id:"tra_1004", name: "五堵", estring: "wudu", sect: "taipei"},
+                {id:"tra_1005", name: "汐止", estring: "xizhi", sect: "taipei", big: 'w'},
+                {id:"tra_1031", name: "汐科", estring: "xike", sect: "taipei"},
+                {id:"tra_1006", name: "南港", estring: "nangang", sect: "taipei"},
+                {id:"tra_1007", name: "松山", estring: "songshan", sect: "taipei", big: 'ew', bigMaster: true},
+                {id:"tra_1008", name: "臺北", estring: "taipeitaibei", sect: "taipei", big: 'ew', bigMaster: true},
+                {id:"tra_1009", name: "萬華", estring: "wanhua", sect: "taipei"},
+                {id:"tra_1011", name: "板橋", estring: "banqiao", sect: "taipei", big: 'ew', bigMaster: true},
+                {id:"tra_1032", name: "浮洲", estring: "fuzhou", sect: "taipei"},
+                {id:"tra_1012", name: "樹林", estring: "shulin", sect: "taipei", big: 'e'},
+                {id:"tra_1013", name: "山佳", estring: "shanjia", sect: "taipei"},
+                {id:"tra_1014", name: "鶯歌", estring: "yingge", sect: "taipei"},
+                {id:"tra_1015", name: "桃園", estring: "taoyuan", sect: "taoyuan", big: 'w'},
+                {id:"tra_1016", name: "內壢", estring: "neili", sect: "taoyuan"},
+                {id:"tra_1017", name: "中壢", estring: "zhongli", sect: "taoyuan", big: 'w'},
+                {id:"tra_1025", name: "新竹", estring: "hsinchu", sect: "xinzhu", big: 'w'},
+                {id:"tra_1305", name: "苗栗", estring: "miaoli", sect: "miaoli", big: 'w'},
+                {id:"tra_1120", name: "彰化", estring: "changhua", sect: "zhanghua", big: 'w'},
+                {id:"tra_1238", name: "高雄", estring: "kaohsiunggaoxung", sect: "gaoxung", big: 'ws'},
+                {id:"tra_1406", name: "屏東", estring: "pingtungpingdong", sect: "pingdong", big: 'ws'},
+                {id:"tra_1804", name: "瑞芳", estring: "ruifang", sect: "taipei_east", big: 'e'},
+                {id:"tra_1827", name: "蘇澳", estring: "suao", sect: "yilan"},
+                {id:"tra_1715", name: "花蓮", estring: "hualienhualian", sect: "hualian", big: 'e'},
+                {id:"tra_1632", name: "台東", estring: "taitungtaidong", sect: "taidong", big: 'es'}
+            ],
+            line: [
+            	{
+            		id: "tra_xibu",
+                    name: "西部幹線(縱貫線)",
+                    color: "#000050",
+            		dir: "1",
+            		station: ["tra_1001","tra_1029","tra_1002","tra_1003","tra_1030","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1009","tra_1011","tra_1032","tra_1012","tra_1013","tra_1014",//taipei
+                        "tra_1015","tra_1016","tra_1017"]
+            	}
+            ]
+        },
+        trtc: {
+            station_ary: [
+                //Bannan Line
+                {id:"trtc_031", name: "南港展覽館", estring: "nangangzhanlanguantaipeinangangexhibitioncenter"},
+                {id:"trtc_097", name: "南港", estring: "nangang"},
+                {id:"trtc_096", name: "昆陽", estring: "kunyang"},
+                {id:"trtc_095", name: "後山埤", estring: "houshanpi"},
+                {id:"trtc_094", name: "永春", estring: "yongchun"},
+                {id:"trtc_093", name: "市政府", estring: "taipeicityhallshizhengfu"},
+                {id:"trtc_092", name: "國父紀念館", estring: "sunyatsenmemorialhallguofujinianguan"},
+                {id:"trtc_091", name: "忠孝敦化", estring: "zhongxiaodunhua"},
+                {id:"trtc_010", name: "忠孝復興", estring: "zhongxiaofuxing"},
+                {id:"trtc_089", name: "忠孝新生", estring: "zhongxiaoxinsheng"},
+                {id:"trtc_088", name: "善導寺", estring: "shandaosishandaotemple"},
+                {id:"trtc_086", name: "西門", estring: "ximen"},
+                {id:"trtc_085", name: "龍山寺", estring: "longshansilongshantemple"},
+                {id:"trtc_084", name: "江子翠", estring: "jiangzicui"},
+                {id:"trtc_083", name: "新埔", estring: "xinpu"},
+                {id:"trtc_082", name: "板橋", estring: "banqiao"},
+                {id:"trtc_081", name: "府中", estring: "fuzhong"},
+                {id:"trtc_080", name: "亞東醫院", estring: "yadongyiyuanfareasternhospital"},
+                {id:"trtc_079", name: "海山", estring: "haishan"},
+                {id:"trtc_078", name: "土城", estring: "tucheng"},
+                {id:"trtc_077", name: "永寧", estring: "yongning"},
+                {id:"trtc_076", name: "頂埔", estring: "dingpu"},
+                //TamsuiXinyi Line
+                {id:"trtc_071", name: "淡水", estring: "tamsui"},
+                {id:"trtc_070", name: "紅樹林", estring: "hongshulin"},
+                {id:"trtc_069", name: "竹圍", estring: "zhuwei"},
+                {id:"trtc_068", name: "關渡", estring: "guandu"},
+                {id:"trtc_067", name: "忠義", estring: "zhongyi"},
+                {id:"trtc_066", name: "復興崗", estring: "fuxinggang"},
+                {id:"trtc_064", name: "北投", estring: "beitou"},
+                {id:"trtc_063", name: "奇岩", estring: "qiyan"},
+                {id:"trtc_062", name: "唭哩岸", estring: "qilian"},
+                {id:"trtc_061", name: "石牌", estring: "shipai"},
+                {id:"trtc_060", name: "明德", estring: "mingde"},
+                {id:"trtc_059", name: "芝山", estring: "zhishan"},
+                {id:"trtc_058", name: "士林", estring: "shilin"},
+                {id:"trtc_057", name: "劍潭", estring: "jiantan"},
+                {id:"trtc_056", name: "圓山", estring: "yuanshan"},
+                {id:"trtc_055", name: "民權西路", estring: "mingquanwrdmingquanxilu"},
+                {id:"trtc_054", name: "雙連", estring: "shuanglian"},
+                {id:"trtc_053", name: "中山", estring: "zhongshan"},
+                {id:"trtc_051", name: "台北車站", estring: "taipeichezhantaipeimainstation"},
+                {id:"trtc_050", name: "台大醫院", estring: "taidayiyuanntuhospital"},
+                {id:"trtc_134", name: "東門", estring: "dongmen"},
+                {id:"trtc_103", name: "大安森林公園", estring: "daanparkdaansenlingongyuan"},
+                {id:"trtc_011", name: "大安", estring: "daan"},
+                {id:"trtc_101", name: "信義安和", estring: "xinyianhe"},
+                {id:"trtc_100", name: "台北101/世貿", estring: "taipei101worldtradecentertaipei101shimao"},
+                {id:"trtc_099", name: "象山", estring: "xiangshan"},
+                //ZhongHeXinLu Line
+                {id:"trtc_048", name: "南勢角", estring: "nanshijiao"},
+                {id:"trtc_047", name: "景安", estring: "jingan"},
+                {id:"trtc_046", name: "永安市場", estring: "yonganshichangyonganmarket"},
+                {id:"trtc_045", name: "頂溪", estring: "dingxi"},
+                {id:"trtc_131", name: "行天宮", estring: "xingtiantemplexingtiangong"},
+                {id:"trtc_130", name: "中山國小", estring: "zhongshanguoxiaozhongshanelementaryschool"},
+                {id:"trtc_128", name: "大橋頭", estring: "daqiaotou"},
+                {id:"trtc_127", name: "台北橋", estring: "taibeiqiaotaipeibridge"},
+                {id:"trtc_126", name: "菜寮", estring: "cailiao"},
+                {id:"trtc_125", name: "三重", estring: "sanchong"},
+                {id:"trtc_124", name: "先嗇宮", estring: "xiansetemplexiansegong"},
+                {id:"trtc_123", name: "頭前庄", estring: "touqianzhuang"},
+                {id:"trtc_122", name: "新莊", estring: "xinzhuang"},
+                {id:"trtc_121", name: "輔大", estring: "fudafujenuniversity"},
+                {id:"trtc_180", name: "丹鳳", estring: "danfeng"},
+                {id:"trtc_179", name: "迴龍", estring: "huilong"},
+                {id:"trtc_178", name: "三重國小", estring: "sanchongguoxiaosanchongelementaryschool"},
+                {id:"trtc_177", name: "三和國中", estring: "sanheguozhongsanhejuniorhighschool"},
+                {id:"trtc_176", name: "徐匯中學", estring: "xuhuizhongxuestignatiushighschool"},
+                {id:"trtc_175", name: "三民高中", estring: "sanmingaozhongsanminseniorhighschool"},
+                {id:"trtc_174", name: "蘆洲", estring: "luzhou"},
+                //SongShanXinDian Line
+                {id:"trtc_111", name: "松山", estring: "songshan"},
+                {id:"trtc_110", name: "南京三民", estring: "nanjingsanmin"},
+                {id:"trtc_109", name: "台北小巨蛋", estring: "taipeiarenataibeixiaojudan"},
+                {id:"trtc_009", name: "南京復興", estring: "nanjingfuxing"},
+                {id:"trtc_132", name: "松江南京", estring: "songjiangnanjing"},
+                {id:"trtc_105", name: "北門", estring: "beimen"},
+                {id:"trtc_043", name: "小南門", estring: "xiaonanmen"},
+                {id:"trtc_042", name: "中正紀念堂", estring: "zhongzhengjiniantangchiangkaishekmemorialhall"},
+                {id:"trtc_041", name: "古亭", estring: "guting"},
+                {id:"trtc_040", name: "台電大樓", estring: "taidiandaloutaipowerbuilding"},
+                {id:"trtc_039", name: "公館", estring: "gongguan"},
+                {id:"trtc_038", name: "萬隆", estring: "wanlong"},
+                {id:"trtc_037", name: "景美", estring: "jingmei"},
+                {id:"trtc_036", name: "大坪林", estring: "dapinglin"},
+                {id:"trtc_035", name: "七張", estring: "qizhang"},
+                {id:"trtc_034", name: "新店區公所", estring: "xindiandistrictofficexindianqugongsuo"},
+                {id:"trtc_033", name: "新店", estring: "jingmei"}
+            ],
+            line: [
+                {
+                    id: "trtc_5",
+                    name: "板南線(5)",
+                    color: "#005eb8",
+                    dir: "1",
+                    outArea: [{
+                        dir: "1",
+                        station: "trtc_079~trtc_076",
+                        transAt: "trtc_080",
+                        waitingNextMinute: 4
+                    }],
+                    station: ["trtc_031","trtc_097","trtc_096","trtc_095","trtc_094","trtc_093","trtc_092","trtc_091","trtc_010","trtc_089","trtc_088","trtc_051","trtc_086","trtc_085","trtc_084","trtc_083","trtc_082","trtc_081","trtc_080","trtc_079","trtc_078","trtc_077","trtc_076"]
+                }, {
+                    id: "trtc_2",
+                    name: "淡水信義線(2)",
+                    color: "#cb2c30",
+                    dir: "1",
+                    outArea: [{
+                        dir: "1",
+                        station: "trtc_071~trtc_066",
+                        transAt: "trtc_064",
+                        waitingNextMinute: 4
+                    }, {
+                        dir: "1",
+                        station: "trtc_101~trtc_099",
+                        transAt: "trtc_011",
+                        waitingNextMinute: 4
+                    }],
+                    station: ["trtc_071","trtc_070","trtc_069","trtc_068","trtc_067","trtc_066","trtc_064","trtc_063","trtc_062","trtc_061","trtc_060","trtc_059","trtc_058","trtc_057","trtc_056","trtc_055","trtc_054","trtc_053","trtc_051","trtc_050","trtc_042","trtc_134","trtc_103","trtc_011","trtc_101","trtc_100","trtc_099"]
+                }, {
+                    id: "trtc_3",
+                    name: "松山新店線(3)",
+                    color: "#007749",
+                    dir: "1",
+                    outArea: [{
+                        dir: "1",
+                        station: "trtc_039~trtc_033",
+                        transAt: "trtc_040",
+                        waitingNextMinute: 4
+                    }],
+                    station: ["trtc_111","trtc_110","trtc_109","trtc_009","trtc_132","trtc_053","trtc_105","trtc_086","trtc_043","trtc_042","trtc_041","trtc_040","trtc_039","trtc_038","trtc_037","trtc_036","trtc_035","trtc_034","trtc_033"]
+                }, {
+                    id: "trtc_4",
+                    name: "中和新蘆線(4)",
+                    color: "#ffa300",
+                    dir: "1",
+                    splitStation: ['trtc_128'],
+                    outArea: [{
+                        dir: "1",
+                        station: "trtc_127~trtc_179",
+                        transAt: "trtc_128",
+                        isSubLine: true,
+                        waitingNextMinute: 4
+                    }, {
+                        dir: "1",
+                        station: "trtc_178~trtc_174",
+                        transAt: "trtc_128",
+                        isSubLine: true,
+                        waitingNextMinute: 4
+                    }],
+                    station: ["trtc_048","trtc_047","trtc_046","trtc_045","trtc_041","trtc_134","trtc_089","trtc_132","trtc_131","trtc_130","trtc_055","trtc_128","trtc_127","trtc_126","trtc_125","trtc_124","trtc_123","trtc_122","trtc_121","trtc_180","trtc_179",
+                        "trtc_178", "trtc_177", "trtc_176", "trtc_175", "trtc_174"]
+                }
+            ],
+            offset_time: {
+                "trtc_5": {
+                    "trtc_097": {
+                        "LineDir": "1", "trtc_031":-2, "trtc_097":0, "trtc_096":2, "trtc_095":4, "trtc_094":6, "trtc_093":8, "trtc_092":9, "trtc_091":11, "trtc_010":12, "trtc_089":15, "trtc_088":16, "trtc_051":18, "trtc_086":21
+                            , "trtc_085":23, "trtc_084":27, "trtc_083":28, "trtc_082":30, "trtc_081":32, "trtc_080":34, "trtc_079":37, "trtc_078":39, "trtc_077":41, "trtc_076":45
+                    }
+                },
+                "trtc_2": {
+                    "trtc_071": {
+                        "LineDir": "1", "trtc_071":0, "trtc_070":3, "trtc_069":6, "trtc_068":9, "trtc_067":11, "trtc_066":13, "trtc_064":16, "trtc_063":18, "trtc_062":19, "trtc_061":21, "trtc_060":23, "trtc_059":24, "trtc_058":26, "trtc_057":28, "trtc_056":31, "trtc_055":33, "trtc_054":34, "trtc_053":35, "trtc_051":37
+                            , "trtc_050":39, "trtc_042":41, "trtc_134":44, "trtc_103":46, "trtc_011":47, "trtc_101":49, "trtc_100":51, "trtc_099":53
+                    }
+                },
+                "trtc_3": {
+                    "trtc_111": {
+                        "LineDir": "1", "trtc_111":0, "trtc_110":3, "trtc_109":5, "trtc_009":7, "trtc_132":9, "trtc_053":11, "trtc_105":14, "trtc_086":16
+                            , "trtc_043":18, "trtc_042":19, "trtc_041":21, "trtc_040":23, "trtc_039":24, "trtc_038":27, "trtc_037":29, "trtc_036":31, "trtc_035":32, "trtc_034":34, "trtc_033":36
+                    }
+                },
+                "trtc_4": {
+                    "trtc_048": {
+                        "LineDir": "1", "trtc_048":0, "trtc_047":2, "trtc_046":4, "trtc_045":6, "trtc_041":10, "trtc_134":14, "trtc_089":16, "trtc_132":19, "trtc_131":20, "trtc_130":24, "trtc_055":25, "trtc_128":26
+                            , "trtc_127":29, "trtc_126":31, "trtc_125":33, "trtc_124":35, "trtc_123":38, "trtc_122":39, "trtc_121":42, "trtc_180":44, "trtc_179":47
+                            , "trtc_178":29, "trtc_177":32, "trtc_176":33, "trtc_175":35, "trtc_174":38
+                    }
+                }
+            },
+            station_time: {
+                "trtc_3": {
+                    "trtc_111": {
+                        weekday: [
+                            [//Xindian to SongShan
+                                [],[],[],[],[],[],
+                                ["07","13","19","26","30","36","40","43","19","52","57"],
+                                ["00","04","07","10","13","16","19","21","24","27","30","33","36","39","42","45","48","51","54","57"],
+                                ["00","03","06","09","12","15","18","21","24","27","30","33","36","39","42","45","48","51","54","57"],
+                                ["00","03","06","10","12","15","18","22","24","27","30","34","38","42","46","50","54","58"],
+                                ["02","06","10","14","18","22","26","30","34","38","42","46","50","54","58"],
+                                ["02","06","10","14","18","22","26","30","34","38","42","46","50","54","58"],
+                                ["02","06","10","14","18","22","26","30","34","38","42","46","50","54","58"],
+                                ["02","06","10","14","18","22","26","30","34","38","42","46","50","54","58"],
+                                ["02","06","10","14","18","22","26","30","34","38","42","46","50","54","58"],
+                                ["02","06","10","14","18","22","26","30","34","38","42","46","50","54","58"],
+                                ["02","06","10","14","18","22","26","30","34","38","42","46","50","54","58"],
+                                ["03","06","11","15","18","21","24","27","30","33","36","39","42","45","48","51","54","57"],
+                                ["03","06","09","12","15","18","21","24","27","30","33","36","39","42","45","48","51","54","57"],
+                                ["00","03","06","09","12","16","19","21","24","27","30","33","37","39","42","46","48","51","54","58"],
+                                ["01","05","08","11","15","19","22","26","29","33","36","40","43","47","50","54","57"],
+                                ["01","04","07","11","15","18","22","25","29","32","36","39","43","46","50","53","57"],
+                                ["00","04","07","11","14","18","21","25","28","32","35","39","43","48","52","55"],
+                                ["00","05","11","15","24","36","48"],
+                                ["00","12","24","35","42","54"]
+                            ], [//SongShan to Xindian
+                                [],[],[],[],[],[],
+                                ["00","04","14","21","27","32","36","40","43","45","49","52","54","57"],
+                                ["00","04","07","10","13","16","18","21","24","27","30","33","36","39","42","45","48","51","54","57"],
+                                ["00","03","06","09","12","15","18","21","24","27","30","33","36","39","42","45","48","51","54","57"],
+                                ["00","03","07","12","15","19","24","27","31","35","39","43","47","51","55","59"],
+                                ["03","07","11","15","19","23","27","31","35","39","43","47","51","55","59"],
+                                ["03","07","11","15","19","23","27","31","35","39","43","47","51","55","59"],
+                                ["03","07","11","15","19","23","27","31","35","39","43","47","51","55","59"],
+                                ["03","07","11","15","19","23","27","31","35","39","43","47","51","55","59"],
+                                ["03","07","11","15","19","23","27","31","35","39","43","47","51","55","59"],
+                                ["03","07","11","15","19","23","27","31","35","39","43","47","51","55","59"],
+                                ["03","07","11","15","19","23","27","31","35","39","43","47","51","54","57"],
+                                ["00","03","06","08","12","15","18","21","24","27","30","33","36","39","42","45","48","51","54","57"],
+                                ["00","03","06","09","12","15","18","21","24","27","30","33","36","39","42","45","48","51","54","57",],
+                                ["00","03","06","09","13","16","20","23","27","30","34","36","40","44","48","51","55","58"],
+                                ["02","05","09","12","16","19","23","26","30","33","37","40","44","47","51","54","58"],
+                                ["01","05","08","12","15","19","22","26","29","33","36","40","43","47","50","54","57"],
+                                ["01","04","08","11","15","18","22","25","28","32","36","39","44","49","52","55"],
+                                ["00","06","12","18","24","36","48"],
+                                ["00"]
+                            ]
+                        ]
+                    }
+                }
+            }
+        },
+        transStation: [
+                {
+                    id: 'nangang1', name: "南港",
+                    changeLine: ["tra_xibu", "trtc_5"],
+                    changeStation: ['tra_1006','trtc_097'],
+                    walkMinute: 4
+                }, {
+                    id: 'songshan1', name: "松山",
+                    changeLine: ["tra_xibu", "trtc_3"],
+                    changeStation: ['tra_1007','trtc_111'],
+                    walkMinute: 5
+                }, {
+                    id: 'ximen1', name: "西門",
+                    changeLine: ["trtc_5", "trtc_3"],
+                    changeStation: ['trtc_086','trtc_086'],
+                    walkMinute: 1
+                }, {
+                    id: 'zhongshan1', name: "中山",
+                    changeLine: ["trtc_3", "trtc_2"],
+                    changeStation: ['trtc_053','trtc_053'],
+                    walkMinute: 2
+                }, {
+                    id: 'taipei1', name: "台北",
+                    changeLine: ["tra_xibu", "trtc_5"],
+                    changeStation: ['tra_1008','trtc_051'],
+                    walkMinute: 6
+                }, {
+                    id: 'taipei2', name: "台北",
+                    changeLine: ["tra_xibu", "trtc_2"],
+                    changeStation: ['tra_1008','trtc_051'],
+                    walkMinute: 3
+                }, {
+                    id: 'taipei3', name: "台北",
+                    changeLine: ["trtc_5", "trtc_2"],
+                    changeStation: ['trtc_051','trtc_051'],
+                    walkMinute: 3
+                }, {
+                    id: 'cksmh1', name: "中正紀念堂",
+                    changeLine: ["trtc_3", "trtc_2"],
+                    changeStation: ['trtc_042','trtc_042'],
+                    walkMinute: 1
+                }, {
+                    id: 'banqiao1', name: "板橋",
+                    changeLine: ["tra_xibu", "trtc_5"],
+                    changeStation: ['tra_1011','trtc_082'],
+                    walkMinute: 7
+                }, {
+                    id: 'mqxl1', name: "民權西路",
+                    changeLine: ["trtc_2", "trtc_4"],
+                    changeStation: ['trtc_055','trtc_055'],
+                    walkMinute: 3
+                }, {
+                    id: 'dongmen1', name: "東門",
+                    changeLine: ["trtc_2", "trtc_4"],
+                    changeStation: ['trtc_134','trtc_134'],
+                    walkMinute: 1
+                }, {
+                    id: 'guting1', name: "古亭",
+                    changeLine: ["trtc_3", "trtc_4"],
+                    changeStation: ['trtc_041','trtc_041'],
+                    walkMinute: 1
+                }, {
+                    id: 'zhongxiaoxs1', name: "忠孝新生",
+                    changeLine: ["trtc_5", "trtc_4"],
+                    changeStation: ['trtc_089','trtc_089'],
+                    walkMinute: 2
+                }, {
+                    id: 'sjnanjing1', name: "松江南京",
+                    changeLine: ["trtc_3", "trtc_4"],
+                    changeStation: ['trtc_132','trtc_132'],
+                    walkMinute: 2
+                }, {
+                    id: 'daqiaotou1', name: "大橋頭",
+                    changeLine: ["trtc_4", "trtc_4"],
+                    changeStation: ['trtc_128','trtc_128'],
+                    walkMinute: 1
+                }
+        ],
+        routeMap: [
+            {
+                fromToLine: ["tra_xibu","trtc_3"],
+                route: [
+                    {
+                        line: ["tra_xibu", "trtc_3"],
+                        transStation: ["songshan1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_5", "trtc_3"],
+                        transStation: ["taipei1", "ximen1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_5", "trtc_3"],
+                        transStation: ["banqiao1", "ximen1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_2", "trtc_3"],
+                        transStation: ["taipei2", "cksmh1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["tra_xibu","trtc_5"],
+                route: [
+                    {
+                        line: ["tra_xibu", "trtc_5"],
+                        transStation: ["nangang1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_5"],
+                        transStation: ["taipei1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_5"],
+                        transStation: ["banqiao1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["tra_xibu","trtc_2"],
+                route: [
+                    {
+                        line: ["tra_xibu", "trtc_2"],
+                        transStation: ["taipei2"]
+                    }
+                ]
+            }, {
+                fromToLine: ["tra_xibu","trtc_4"],
+                route: [
+                    {
+                        line: ["tra_xibu", "trtc_2", "trtc_4"],
+                        transStation: ["taipei2", "dongmen1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_2", "trtc_4"],
+                        transStation: ["taipei2", "mqxl1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_2", "trtc_3", "trtc_4"],
+                        transStation: ["taipei2", "cksmh1", "guting1"]
+                    },
+                    {
+                        line: ["tra_xibu", "trtc_3", "trtc_4"],
+                        transStation: ["songshan1","sjnanjing1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_5","trtc_2"],
+                route: [
+                    {
+                        line: ["trtc_5", "trtc_2"],
+                        transStation: ["taipei3"]
+                    },
+                    {
+                        line: ["trtc_5", "trtc_3", "trtc_2"],
+                        transStation: ["ximen1", "cksmh1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_4","trtc_2"],
+                route: [
+                    {
+                        line: ["trtc_4", "trtc_2"],
+                        transStation: ["dongmen1"]
+                    },
+                    {
+                        line: ["trtc_4", "trtc_2"],
+                        transStation: ["mqxl1"]
+                    },
+                    {
+                        line: ["trtc_4", "trtc_3", "trtc_2"],
+                        transStation: ["guting1", "cksmh1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_3","trtc_2"],
+                route: [
+                    {
+                        line: ["trtc_3", "trtc_2"],
+                        transStation: ["cksmh1"]
+                    },
+                    {
+                        line: ["trtc_3", "trtc_2"],
+                        transStation: ["zhongshan1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_3","trtc_5"],
+                route: [
+                    {
+                        line: ["trtc_3", "trtc_5"],
+                        transStation: ["ximen1"]
+                    },
+                    {
+                        line: ["trtc_3", "tra_xibu", "trtc_5"],
+                        transStation: ["songshan1", "nangang1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_4","trtc_5"],
+                route: [
+                    {
+                        line: ["trtc_4", "trtc_5"],
+                        transStation: ["zhongxiaoxs1"]
+                    },
+                    {
+                        line: ["trtc_4", "trtc_3", "trtc_5"],
+                        transStation: ["guting1", "ximen1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_3","trtc_4"],
+                route: [
+                    {
+                        line: ["trtc_3", "trtc_4"],
+                        transStation: ["guting1"]
+                    },
+                    {
+                        line: ["trtc_3", "trtc_4"],
+                        transStation: ["sjnanjing1"]
+                    }
+                ]
+            }, {
+                fromToLine: ["trtc_4","trtc_4"],
+                route: [
+                    {
+                        line: ["trtc_4", "trtc_4"],
+                        transStation: ["daqiaotou1"]
+                    }
+                ]
+            }
+        ]
+    }
+    
+    function classWindow(ucfg){
+        ucfg = ucfg || {};
+        defaultCfg = {
+            mask: false,
+            height: 'auto',
+            width: 'auto',
+            baseClass: ' ttWindow',
+            cls: '',
+            id: TT.ui.genRandomId(),
+            div: '',
+            items: [],
+            html: '',
+            renderTo: 'body',
+            onShow: function(){},
+            zIndex: '120'
+        }
+        var cfg = $.extend(defaultCfg, ucfg);
+        if(typeof(cfg.width)=='number') cfg.width = cfg.width + 'px';
+        if(typeof(cfg.height)=='number') cfg.height = cfg.height + 'px';
+        var me = this;
+        
+        me.el = document.createElement('div');
+        me.el.className = cfg.baseClass + ' ' + cfg.cls;
+        me.el.id = cfg.id;
+        me.el.style.zIndex = cfg.zIndex;
+        me.el.style.width = cfg.width;
+        me.el.style.height = cfg.height;
+        me.el.innerHTML = '<div class="inner" id="' + cfg.id + '_inner"></div><div class=" ttWindowClose" closeID="' + cfg.id + '">X</div>';
+        
+        me.getInner = function(){
+            return document.getElementById(cfg.id + '_inner');
+        }
+        me.setInnerHTML = function(html){
+            document.getElementById(cfg.id + '_inner').innerHTML = html;
+        }
+        
+        me.init = function(){
+            if(!document.getElementById(cfg.id)){
+                if(cfg.renderTo=='body'){
+                    document.body.appendChild(me.el);
+                }else{
+                    document.getElementById(cfg.renderTo).appendChild(me.el);
+                }
+                me.inner = me.getInner();
+                if(typeof(cfg.div)=='string'){
+                    me.inner.innerHTML = cfg.div;
+                }else{
+                    me.inner.appendChild(cfg.div);
+                }
+                
+                if(cfg.html != ''){me.inner.innerHTML = cfg.html;}
+                for(var i=0; i<cfg.items.length; i++){
+                    me.inner.appendChild(cfg.items[i]);
+                }
+            }
+            me.el.style.display = 'none';
+        }
+        
+        me.addClass = function(cls){
+            var ary = me.el.className.split(' ');
+            for(var i=0; i<ary.length; i++){
+                if(ary[i]==cls) return me.el.className;
+            }
+            me.el.className = me.el.className + ' ' + cls;
+            return me.el.className;
+        }
+        me.removeClass = function(cls){
+            var ary = me.el.className.split(' '), rt = '';;
+            for(var i=0; i<ary.length; i++){
+                if(ary[i]!=cls){
+                    rt += ' ' + ary[i];
+                }
+            }
+            me.el.className = rt;
+            return rt;
+        }
+        
+        me.resetPosition = function(){
+            var dh = TT.fn.getDocumentHeight(), dw = TT.fn.getDocumentWidth();
+            var wh = me.el.clientHeight, ww = me.el.clientWidth;
+            
+            var top = Math.ceil((dh-wh)/2);
+            var left = Math.ceil((dw-ww)/2);
+            
+            if(top < 0) top = 0;
+            if(left < 0) left = 0;
+            
+            me.setPosition(top, left);
+        }
+        me.setPosition = function(top,left){
+            me.el.style.top = top + 'px';
+            me.el.style.left = left + 'px';
+        }
+        
+        me.show = function(){
+            if(me.isShow) return false;
+            me.isShow = true;
+            me.init();
+            me.el.style.display = '';
+            me.resetPosition();
+            if(cfg.mask){
+                TT.ui.mask(' ');
+            }
+            cfg.onShow(me);
+        }
+        
+        me.close = function(){
+            me.el.style.display = 'none';
+            TT.ui.unmask();
+            me.isShow = false;
+        }
+        me.clickFn = function(e){
+            if(e.target.className.indexOf('ttWindowClose')>=0){
+                var id = e.target.attributes.getNamedItem('closeID');
+                me.close();
+            }
+        }
+        me.el.addEventListener('click', me.clickFn, false);
+    }
+    function classMapSelector(ucfg){
+        ucfg = ucfg || {};
+        defaultCfg = {
+            mask: false,
+            height: 'auto',
+            width: '95%',
+            baseClass: ' ttMapSelector',
+            cls: '',
+            id: TT.ui.genRandomId(),
+            items: [],
+            html: '',
+            isRendered: false,
+            onShow: function(){},
+            zIndex: '130'
+        }
+        var cfg = $.extend(defaultCfg, ucfg);
+        if(typeof(cfg.width)=='number') cfg.width = cfg.width + 'px';
+        if(typeof(cfg.height)=='number') cfg.height = cfg.height + 'px';
+        var me = this;
+        
+        me.el = document.createElement('div');
+        me.el.className = cfg.baseClass + ' ' + cfg.cls;
+        me.el.id = cfg.id;
+        me.el.style.zIndex = cfg.zIndex;
+        me.el.style.width = cfg.width;
+        me.el.style.height = cfg.height;
+        me.el.innerHTML = '<div class="main" id="' + cfg.id + '_main"></div><div class=" ttWindowClose" closeID="' + cfg.id + '">X</div>';
+        
+        me.init = function(){
+            if(!document.getElementById(cfg.id)){
+                document.body.appendChild(me.el);
+                me.isRendered = true;
+            }
+            me.el.style.display = 'none';
+        }
+        
+        me.addClass = function(cls){
+            var ary = me.el.className.split(' ');
+            for(var i=0; i<ary.length; i++){
+                if(ary[i]==cls) return me.el.className;
+            }
+            me.el.className = me.el.className + ' ' + cls;
+            return me.el.className;
+        }
+        me.removeClass = function(cls){
+            var ary = me.el.className.split(' '), rt = '';;
+            for(var i=0; i<ary.length; i++){
+                if(ary[i]!=cls){
+                    rt += ' ' + ary[i];
+                }
+            }
+            me.el.className = rt;
+            return rt;
+        }
+        
+        me.resetPosition = function(){
+            var dh = TT.fn.getDocumentHeight(), dw = TT.fn.getDocumentWidth();
+            var wh = me.el.clientHeight, ww = me.el.clientWidth;
+            
+            var top =40;
+            var left = Math.ceil((dw*0.025));
+            
+            me.setPosition(top, left);
+        }
+        me.setPosition = function(top,left){
+            me.el.style.top = top + 'px';
+            me.el.style.left = left + 'px';
+        }
+        
+        me.show = function(){
+            if(me.isShow) return false;
+            me.isShow = true;
+            me.init();
+            me.el.style.display = '';
+            me.resetPosition();
+            //TT.ui.mask(' ');
+            cfg.onShow(me);
+        }
+        
+        me.close = function(){
+            me.el.style.display = 'none';
+            //TT.ui.unmask();
+            me.isShow = false;
+        }
+        me.clickFn = function(e){
+            if(e.target.className.indexOf('ttWindowClose')>=0){
+                var id = e.target.attributes.getNamedItem('closeID');
+                me.close();
+            }
+        }
+        me.el.addEventListener('click', me.clickFn, false);
+    }
+    TT.lib = {
+        classWindow: classWindow,
+        classMapSelector: classMapSelector
+    }
+
+    TT.fn = {
+        /*makeMinOfAry: function(){
+            if(!TT.tmpA){
+                TT.tmpA = '';
+            }
+            var dom = document.getElementById('testA');
+            var str = dom.value;
+            if(str.length==2){
+                TT.tmpA = TT.tmpA + '"' + str + '",';
+                dom.value = '';
+                document.getElementById('testB').value = TT.tmpA;
+            }
+        },
+        clearMinOfAry: function(){
+            TT.tmpA = '';
+        },*/
+        checkEquaArrayStartEnd: function(ary1, ary2){
+            if(ary1[0]==ary2[0] && ary1[ary1.length-1]==ary2[ary2.length-1]){
+                return true;
+            }else if(ary1[0]==ary2[ary2.length-1] && ary1[ary1.length-1]==ary2[0]){
+                return true;
+            }else{
+                return false;
+            }
+        },
+        checkIsFunction: function(cbFn){
+            return (typeof(cbFn)=='function');
+        },
+        checkIsError: function(str){
+            var rt = false;
+            if(typeof(str)=='string'){
+                rt=/error|fail/ig.test(str);
+            }
+            return rt;
+        },
+        checkOnTimeRange: function(time, startTime, endTime){
+            var crossDaySec = TT.fn.transTime2Sec(TT.defined.defaultCrossDayTime);
+            time = TT.fn.transTime2Sec(time);
+            startTime = TT.fn.transTime2Sec(startTime);
+            endTime = TT.fn.transTime2Sec(endTime);
+            
+            if(time < crossDaySec) time+=86400;
+            if(startTime < crossDaySec) startTime+=86400;
+            if(endTime < crossDaySec) endTime+=86400;
+            
+            return (time >= startTime && time <= endTime);
+        },
+        checkTRA_dayTimeIsLoaded: function(w){
+            if(w==null) w = TT.defined.defaultTRAWeekday;
+            return (TT.data.tra.timeTable && TT.data.tra.timeTable[parseInt(w,10)]) ? true : false;
+        },
+        checkTRTC_rnwTimeTableIsLoaded: function(){
+            return (TT.data.trtc.rnwTimeTable) ? true : false;
+        },
+        getDefaultDayLastTime: function(){
+            return TT.fn.transSec2Time(TT.fn.transTime2Sec(TT.defined.defaultCrossDayTime)-1);
+        },
+        getDocumentHeight: function(){
+            return document.documentElement.clientHeight;
+        },
+        getDocumentWidth: function(){
+            return document.documentElement.clientWidth;
+        },
+        getCommon_lineColor: function(line){
+            var cp = TT.fn.getCompanyOfStation(line);
+                var lineObj = {},rt = '#000000';
+                switch(cp){
+                    case 'tra':
+                        lineObj = TT.data.tra.line;
+                    break;
+                    case 'trtc':
+                        lineObj = TT.data.trtc.line;
+                    break;
+                    default:
+                        return false;
+                    break;
+                }
+                for(var i=0; i<lineObj.length; i++){
+                    if(lineObj[i].id==line){
+                        rt = lineObj[i].color;
+                        break;
+                    }
+                }
+                return rt;
+        },
+        getCommon_lineName: function(line){
+            var cp = TT.fn.getCompanyOfStation(line);
+            var cpSimpleName = (function(){
+                switch(cp){
+                    case 'tra':
+                        return TT.defined.stringOfTRASimple;
+                    break;
+                    case 'trtc':
+                        return TT.defined.stringOfTRTCSimple;
+                    break;
+                    default:
+                        return '其他';
+                    break;
+                }
+            })();
+            var cpLineName = (function(){
+                var lineObj = {},rt = '';
+                switch(cp){
+                    case 'tra':
+                        lineObj = TT.data.tra.line;
+                    break;
+                    case 'trtc':
+                        lineObj = TT.data.trtc.line;
+                    break;
+                    default:
+                        return false;
+                    break;
+                }
+                for(var i=0; i<lineObj.length; i++){
+                    if(lineObj[i].id==line){
+                        rt = lineObj[i].name;
+                        break;
+                    }
+                }
+                return rt;
+            })();
+            return '[' + cpSimpleName + '] ' + cpLineName;
+        },
+        getCommon_stationOnWhatLine: function(st){
+            var aComp = TT.fn.getCompanyOfStation(st);
+            
+            switch(aComp){
+                case 'tra':
+                    return TT.fn.getTRA_stationOnWhatLine(st);
+                break;
+                case 'trtc':
+                    return TT.fn.getTRTC_stationOnWhatLine(st);
+                break;
+            }
+            return false;
+        },
+        getCommon_theTransRouteByFromTo: function(a, b){
+            var objR = TT.fn.getRoute_allRouteByFromTo(a, b);
+            var rt = new Array();
+            if(objR.isRoute){
+                var routeT = objR.getAllTakeMethod();
+            }else{
+                var routeT = new Array();
+                for(var i=0; i<objR.length; i++){
+                    routeT.push([{
+                        company: TT.fn.getCompanyOfStation(a),
+                        line: objR[i],
+                        takeRange: [a,b]
+                    }]);
+                }
+            }
+            return routeT;
+        },
+        getCommon_timeRangeBestByFromTo: function(a, b, startTime, endTime, flagAD, w){
+            if(flagAD===undefined) flagAD = true;
+            var aryRouteAll = TT.fn.getCommon_timeTakeByFromTo(a, b, startTime, endTime, flagAD, w);
+            var aryP = new Array(), rt = new Array();
+            
+            function getBest(routeA){
+                var trainBest = new Array(), trainM, pointer;
+                if(flagAD==true){
+                    var routeB = routeA[0];
+                    for(var i=0; i<routeB.formatTimeTable.length; i++){
+                        if(routeB.formatTimeTable[i].onTimeRange==true && routeB.formatTimeTable[i].bestStart){
+                            trainBest.push(routeB.formatTimeTable[i]);
+                        }else if(routeB.formatTimeTable[i].onTimeRange==true && i==routeB.formatTimeTable.length-1 && routeB.formatTimeTable[i].nextPointer>0){
+                            trainBest.push(routeB.formatTimeTable[i]);
+                        }
+                    }
+                }else{
+                    var routeB = routeA[routeA.length-1];
+                    var flagFirstAlready = false;
+                    for(var i=0; i<routeB.formatTimeTable.length; i++){
+                        if(!flagFirstAlready && routeA.length>1 && routeB.formatTimeTable[i].onTimeRange==true){
+                            flagFirstAlready = true;
+                            trainBest.push(routeB.formatTimeTable[i]);
+                        }else if(routeB.formatTimeTable[i].onTimeRange==true && routeB.formatTimeTable[i].bestEnd){
+                            trainBest.push(routeB.formatTimeTable[i]);
+                        }
+                    }
+                }
+                return trainBest;
+            }
+            
+            function getLink(routeA, trainBest){
+                var aryT = new Array();
+                if(flagAD==true){
+                    for(var tb=0; tb<trainBest.length; tb++){
+                        aryT.push(new Array());
+                        for(var i=0; i<routeA.length; i++){
+                            if(i==0){
+                                aryT[tb][i] = trainBest[tb];
+                            }else{
+                                aryT[tb][i] = routeA[i].formatTimeTable[aryT[tb][i-1].nextPointer];
+                            } 
+                        }
+                    }
+                }else{
+                    for(var tb=0; tb<trainBest.length; tb++){
+                        aryT.push(new Array());
+                        for(var i=routeA.length-1; i>=0; i--){
+                            if(i==routeA.length-1){
+                                aryT[tb][i] = trainBest[tb];
+                            }else{
+                                aryT[tb][i] = routeA[i].formatTimeTable[aryT[tb][i+1].prevPointer];
+                            } 
+                        }
+                    }
+                }
+                return aryT;
+            }
+            
+            function matchBestTrain(routeA, bestAry){
+                for(var i=0; i<routeA.length; i++){
+                    routeA[i].bestTrain = new Array();
+                    routeA[i].bestLink = new Array();
+                    for(var j=0; j<bestAry.length; j++){
+                        routeA[i].bestTrain.push(bestAry[j][i]);
+                        routeA[i].bestLink.push(bestAry[j]);
+                    }
+                    //If only 1 route direct just use on time range for best
+                    if(routeA.length==1 && bestAry.length==0){
+                        for(var j=0; j<routeA[i].formatTimeTable.length; j++){
+                            if(routeA[i].formatTimeTable[j].onTimeRange){
+                                routeA[i].bestTrain.push(routeA[i].formatTimeTable[j]);
+                                routeA[i].bestLink.push([routeA[i].formatTimeTable[j]]);
+                            }
+                        }
+                    }
+                }
+                return routeA;
+            }
+            
+            for(var i=0; i<aryRouteAll.length; i++){
+                aryP[i] = getLink(aryRouteAll[i], getBest(aryRouteAll[i]));
+                aryRouteAll[i] = matchBestTrain(aryRouteAll[i], aryP[i]);
+                //rt.push({
+                    //route: aryRouteAll[i],
+                    //bestRouteLink: getLink(aryRouteAll[i], getBest(aryRouteAll[i]))
+                //});
+            }
+            
+            return aryRouteAll;
+            //return rt;
+        },
+        getCommon_timeTakeByFromTo: function(a, b, startTime, endTime, flagAD, w){
+            if(flagAD===undefined) flagAD = true;
+            if(!startTime) startTime = TT.defined.defaultCrossDayTime;
+            if(!endTime) endTime = TT.fn.getDefaultDayLastTime();
+            var sendStartTime = startTime, sendEndTime = endTime, keyFrom, keyTo;
+            if(flagAD==true){
+                sendEndTime = TT.fn.getDefaultDayLastTime();
+            }else{
+                sendStartTime = TT.defined.defaultCrossDayTime;
+            }
+            var aryRouteAll = TT.fn.getCommon_timeRangeByFromTo(a, b, sendStartTime, sendEndTime, flagAD, w);
+            //Use TT.fn.checkOnTimeRange to get which train on time range 
+            
+            function giveOnTimeRange(routeA){
+                var tmpTime;
+                if(flagAD==true){
+                    var routeB = routeA[0];
+                    for(var i=0; i<routeB.formatTimeTable.length; i++){
+                        tmpTime = routeB.formatTimeTable[i].time[0];
+                        routeB.formatTimeTable[i].onTimeRange = TT.fn.checkOnTimeRange(tmpTime, startTime, endTime);
+                    }
+                    routeA[0] = routeB;
+                }else{
+                    var routeB = routeA[routeA.length-1];
+                    for(var i=0; i<routeB.formatTimeTable.length; i++){
+                        tmpTime = routeB.formatTimeTable[i].time[1];
+                        routeB.formatTimeTable[i].onTimeRange = TT.fn.checkOnTimeRange(tmpTime, startTime, endTime);
+                    }
+                    routeA[routeA.length-1] = routeB;
+                }
+                return routeA;
+            }
+            
+            for(var i=0; i<aryRouteAll.length; i++){
+                aryRouteAll[i] = giveOnTimeRange(aryRouteAll[i]);
+            }
+            
+            return aryRouteAll;
+        },
+        getCommon_timeRangeByFromTo: function(a, b, startTime, endTime, flagAD, w){
+            if(flagAD===undefined) flagAD = true;
+            var routeAry = TT.fn.getCommon_theTransRouteByFromTo(a,b);
+            var tmpRouteTime, rt = new Array();
+            
+            function getFormatTime(company, routeB){
+                var ary = new Array(), objA = {}
+                switch(company){
+                    case 'tra':
+                        for(var i=0; i<routeB.timeTable.length; i++){
+                            objA = {
+                                time: routeB.timeTable[i].getFromToTime(),
+                                info: routeB.timeTable[i]
+                            }
+                            ary.push(objA);
+                        }
+                    break;
+                    case 'trtc':
+                        for(var i=0; i<routeB.timeTable.length; i++){
+                            objA = {
+                                time: routeB.timeTable[i],
+                                info: {}
+                            }
+                            ary.push(objA);
+                        }
+                    break;
+                }
+                routeB.formatTimeTable = ary;
+                return routeB;
+            }
+            
+            function getRouteTime(routeA){
+                var startT = startTime, endT = endTime, routeB;
+                if(flagAD==true){
+                    for(var i=0; i<routeA.length; i++){
+                        routeB = routeA[i];               
+                        switch(routeB.company){
+                            case 'tra':
+                                routeB.timeTable = TT.fn.getTRA_timeRangeByFromTo(routeB.takeRange[0], routeB.takeRange[1], startT, endT, flagAD, w);
+                                if(routeB.timeTable[0]) startT = routeB.timeTable[0].getFromToTime(routeB.takeRange[0],routeB.takeRange[1])[1];
+                                //if(routeB.timeTable[routeB.timeTable.length-1]) endT = routeB.timeTable[routeB.timeTable.length-1].getFromToTime(routeB.takeRange[0],routeB.takeRange[1])[1];
+                            break;
+                            case 'trtc':
+                                routeB.timeTable = TT.fn.getTRTC_timeRangeByFromTo(routeB.takeRange[0], routeB.takeRange[1], startT, endT, flagAD, routeB.line, w);
+                                if(routeB.timeTable[0]) startT = routeB.timeTable[0][1];
+                                //if(routeB.timeTable[routeB.timeTable.length-1]) endT = routeB.timeTable[routeB.timeTable.length-1][1];
+                            break;
+                        }
+                        routeB = getFormatTime(routeB.company, routeB);
+                        if(routeB.transStation){
+                                    startT = TT.fn.transSec2Time(TT.fn.transTime2Sec(startT) + routeB.transStation.walkMinute*60);
+                                    //endT = TT.fn.transSec2Time(TT.fn.transTime2Sec(endT) + routeB.transStation.walkMinute*60);
+                        }
+                        routeA[i] = routeB;
+                    }
+                }else{
+                    for(var i=routeA.length-1; i>=0; i--){
+                        routeB = routeA[i];
+                        switch(routeB.company){
+                            case 'tra':
+                                routeB.timeTable = TT.fn.getTRA_timeRangeByFromTo(routeB.takeRange[0], routeB.takeRange[1], startT, endT, flagAD, w);
+                                //startT = routeB.timeTable[0].getFromToTime(routeB.takeRange[0],routeB.takeRange[1])[0];
+                                if(routeB.timeTable[routeB.timeTable.length-1]) endT = routeB.timeTable[routeB.timeTable.length-1].getFromToTime(routeB.takeRange[0],routeB.takeRange[1])[0];
+                            break;
+                            case 'trtc':
+                                routeB.timeTable = TT.fn.getTRTC_timeRangeByFromTo(routeB.takeRange[0], routeB.takeRange[1], startT, endT, flagAD, routeB.line, w);
+                                //startT = routeB.timeTable[0][0];
+                                if(routeB.timeTable[routeB.timeTable.length-1]) endT = routeB.timeTable[routeB.timeTable.length-1][0];
+                            break;
+                        }
+                        routeB = getFormatTime(routeB.company, routeB);
+                        if(routeB.transStation){
+                                    startT = TT.fn.transSec2Time(TT.fn.transTime2Sec(startT) - routeB.transStation.walkMinute*60);
+                                    endT = TT.fn.transSec2Time(TT.fn.transTime2Sec(endT) - routeB.transStation.walkMinute*60);
+                        }
+                        routeA[i] = routeB;
+                    }
+                }
+                return routeA;
+            }
+            
+            function getNextPointer(routeA){
+                var routeB1, routeB2, crossOffsetSec, pointerA = -1, b1EndTime, b2StartTime, b2idx = 0;
+                var crossDaySec = TT.fn.transTime2Sec(TT.defined.defaultCrossDayTime), offset1Day = 86400;
+                for(var tc=0; tc<routeA.length; tc++){
+                    if(routeA[tc].transStation && routeA[tc+1]){//Have next trans
+                        routeB1 = routeA[tc]; routeB2 = routeA[tc+1];
+                        crossOffsetSec = routeB1.transStation.walkMinute*60;
+                        pointerA = -1;
+                        b2idx = 0;
+                        
+                        for(var i=0; i<routeB1.formatTimeTable.length; i++){
+                            b1EndTime = routeB1.formatTimeTable[i].time[1];
+                            b1EndTime = TT.fn.transTime2Sec(b1EndTime) + crossOffsetSec;
+                            if(b1EndTime < crossDaySec) b1EndTime += offset1Day;
+                            for(var j=b2idx; j<routeB2.formatTimeTable.length; j++){
+                                b2StartTime = TT.fn.transTime2Sec(routeB2.formatTimeTable[j].time[0]);
+                                if(b2StartTime < crossDaySec) b2StartTime += offset1Day;
+                                pointerA = -1;
+                                b2idx = j;
+                                routeB2.formatTimeTable[j].prevPointer = i-1;
+                                routeB2.formatTimeTable[j].myPointer = j;
+                                if(routeB1.doNotTakeTrain){routeB2.formatTimeTable[j].bestEnd = true;}
+                                if(b2StartTime >= b1EndTime){
+                                    pointerA = j;
+                                    routeB2.formatTimeTable[j].prevPointer = i;
+                                    routeB2.formatTimeTable[j].bestEnd = true;
+                                    break;
+                                }
+                            }
+                            if(routeB1.formatTimeTable[i-1] && routeB2.doNotTakeTrain){routeB1.formatTimeTable[i-1].bestStart = true;}
+                            if(routeB1.formatTimeTable[i-1] && routeB1.formatTimeTable[i-1].nextPointer != pointerA){
+                                routeB1.formatTimeTable[i-1].bestStart = true;
+                            }
+                            routeB1.formatTimeTable[i].nextPointer = pointerA;
+                            routeB1.formatTimeTable[i].myPointer = i;
+                            if(routeB1.formatTimeTable.length==1 && i==0 && routeB1.formatTimeTable[i].nextPointer>=0){
+                                routeB1.formatTimeTable[i].bestStart = true;
+                            }
+                        }
+                        //routeA[tc] = routeB1;
+                    }
+                }
+                return routeA;
+            }
+            
+            for(var i=0; i<routeAry.length; i++){
+                tmpRouteTime = getRouteTime(routeAry[i]);
+                tmpRouteTime = getNextPointer(tmpRouteTime);
+                rt.push(tmpRouteTime);
+            }
+            
+            return rt;
+        },
+        getCommon_stationDataOfID: function(stid){
+            var cmp = TT.fn.getCompanyOfStation(stid);
+            switch(cmp){
+                case 'tra':
+                    return TT.fn.getTRA_stationDataOfID(stid);
+                break;
+                case 'trtc':
+                    return TT.fn.getTRTC_stationDataOfID(stid);
+                break;
+            }
+            return false;
+        },
+        getCommon_transStationByID: function(tsid){
+            var tsAry = TT.data.transStation;
+            for(var i=0; i<tsAry.length; i++){
+                if(tsAry[i].id==tsid){
+                    return tsAry[i];
+                }
+            }
+            return false;
+        },
+        getCompanyOfStation: function(st){
+            if(st.indexOf('trtc_')==0) return 'trtc';
+            if(st.indexOf('tra_')==0) return 'tra';
+            return false;
+        },
+        getData2JSON: function(node){
+            var obj = {}
+            switch(node){
+                case 'tra':
+                    for(var k in TT.data.tra){
+                        if(k!='timeTable'){
+                            obj[k] = TT.data.tra[k];
+                        }
+                    }
+                break;
+                case 'trtc':
+                    for(var k in TT.data.trtc){
+                        if(k!='rnwTimeTable'){
+                            obj[k] = TT.data.trtc[k];
+                        }
+                    }
+                break;
+                default:
+                            obj = TT.data[node];
+                break;
+            }
+            return JSON.stringify(obj, undefined, 4);
+        },
+        saveDataJSON2Data: function(node, str){
+            var obj = JSON.parse(str);
+            //if(node=='tra' || node=='trtc'){
+                for(var k in TT.data[node]){
+                    if(obj[k]){
+                        TT.data[node][k] = obj[k];
+                    }
+                }
+            //}else{
+                //TT.data[node] = obj;
+            //}
+        },
+        getEncodeStationID: function(sid, comp){
+            return comp + '_' + sid;
+        },
+        getXML_Attribute2Obj: function(xt){
+            var jo = {}, nName = '', nText = '';
+            for(var i=0; i<xt.attributes.length; i++){
+                nName = xt.attributes[i].name;
+                nText = xt.attributes[i].value;
+                jo[nName] = nText;
+            }
+            return jo;
+        },
+        getRoute_allRouteByFromTo: function(a,b){
+            var aComp = TT.fn.getCompanyOfStation(a),
+                bComp = TT.fn.getCompanyOfStation(b);
+            
+            function giveRouteTakeRange(t){
+                for(var i=0; i<t.route.length; i++){
+                    var ary = new Array();
+                    var rr = t.getRouteAt(i);
+                    for(var j=0; j<rr.length; j++){
+                        if(j==0){
+                            ary.push([t.fromStation, rr[j].changeStation[0]]);
+                        }else{
+                            ary.push([rr[j-1].changeStation[1], rr[j].changeStation[0]]);
+                        }
+                    }
+                    ary.push([rr[rr.length-1].changeStation[1], t.toStation]);
+                    t.route[i].takeRange = ary;
+                }
+                
+                t.getTakeMethod = function(ro){
+                    if(!ro) ro=0;
+                    var routeT = t.route[ro];
+                    if(!routeT) return false;
+                    var rt = new Array(), tmpJ = {};
+                    for(var i=0; i<routeT.line.length; i++){
+                        
+                        tmpJ = {
+                            line: routeT.line[i],
+                            takeRange: routeT.takeRange[i],
+                            company: TT.fn.getCompanyOfStation(routeT.line[i])
+                        };
+                        if(routeT.takeRange[i][0]==routeT.takeRange[i][1]) tmpJ.doNotTakeTrain=true;
+                        if(routeT.transStation[i]){
+                            tmpJ.transStationID = routeT.transStation[i];
+                            tmpJ.transStation = TT.fn.getCommon_transStationByID(routeT.transStation[i]);
+                        }
+                        rt.push(tmpJ);
+                    }
+                    return rt;
+                }
+                
+                t.getAllTakeMethod = function(){
+                    var rt = new Array();
+                    for(var i=0; i<t.route.length; i++){
+                        rt.push(t.getTakeMethod(i));
+                    }
+                    return rt;
+                }
+                return t;
+            }
+            
+            if(TT.fn.getRoute_needRouteByFromTo(a,b)){
+                var aLine = TT.fn.getCommon_stationOnWhatLine(a);
+                var bLine = TT.fn.getCommon_stationOnWhatLine(b);
+                var rt = new Array(),tkLen;
+                for(var i=0; i<aLine.length; i++){
+                    for(var j=0; j<bLine.length; j++){
+                        var tmpA = TT.fn.getRoute_mapOfFromToLine(aLine[i],bLine[j]);
+                        if(!tmpA.route) return false;
+                        tmpA.fromStation = a;
+                        tmpA.toStation = b;
+                        tmpA = giveRouteTakeRange(tmpA);
+                        for(var m=0; m<tmpA.route.length; m++){//Check if any first or last station on takeRange is same station
+                            tkLen = tmpA.route[m].takeRange.length;
+                            if(tmpA.route[m].takeRange[tkLen-2] && tmpA.route[m].takeRange[tkLen-2][1]==tmpA.route[m].takeRange[tkLen-1][1]){
+                                tmpA.route.splice(m,1);
+                            }else if(tmpA.route[m].takeRange[1] && tmpA.route[m].takeRange[1][0]==tmpA.route[m].takeRange[0][0]){
+                                tmpA.route.splice(m,1);
+                            }
+                        }
+                        if(tmpA !== false){
+                            rt.push(tmpA);
+                        }
+                    }
+                }
+                
+                if(rt.length > 1){
+                    var tmpRoute = new Array();
+                    for(var i=0; i<rt.length; i++){
+                        for(var j=0; j<rt[i].route.length; j++){
+                            tmpRoute.push(rt[i].route[j]);
+                        }
+                    }
+                    rt[0].route = tmpRoute; 
+                }
+                
+                return rt[0];
+            }else{
+                switch(aComp){
+                    case 'tra':
+                        return TT.fn.getTRA_stationOnWhatLine(a);
+                    break;
+                    case 'trtc':
+                        return TT.fn.getTRTC_stationOnSameLine(a,b);
+                    break;
+                }
+            }
+        },
+        getRoute_directionByFromToLine: function(a,b, routeM){
+            if(routeM.fromToLine[0]==a && routeM.fromToLine[1]==b){
+                return routeM;
+            }else if(routeM.fromToLine[0]==b && routeM.fromToLine[1]==a){
+                routeM.fromToLine = routeM.fromToLine.reverse();
+                for(var i=0; i<routeM.route.length; i++){
+                        routeM.route[i].line = routeM.route[i].line.reverse();
+                        routeM.route[i].transStation = routeM.route[i].transStation.reverse();
+                }
+                return routeM;
+            }else{
+                return false;
+            }
+        },
+        getRoute_mapOfFromToLine: function(a,b){
+            var routeMap = $.extend(true,[],TT.data.routeMap);//TT.data.routeMap;
+            for(var i=0; i<routeMap.length; i++){
+                if(TT.fn.checkEquaArrayStartEnd([a,b], routeMap[i].fromToLine)){
+                    var tmpA = TT.fn.getRoute_directionByFromToLine(a,b,routeMap[i]);
+                    tmpA = TT.fn.giveRoute_mapTool(tmpA);
+                    return tmpA;
+                }
+            }
+            return false;
+        },
+        getRoute_needRouteByFromTo: function(a,b){
+            var aComp = TT.fn.getCompanyOfStation(a);
+            var bComp = TT.fn.getCompanyOfStation(b);
+            
+            if(aComp==bComp){
+                switch(aComp){
+                    case 'tra':
+                        return false;
+                    break;
+                    case 'trtc':
+                        var ary = TT.fn.getTRTC_stationOnSameLine(a,b), lineData;
+                        if(TT.fn.getTRTC_stationOnSameLine(a,b)){
+                            for(var i=0; i<ary.length; i++){
+                                lineData = TT.fn.getTRTC_lineData(ary[i]);
+                                if(lineData.splitStation && lineData.splitStation.length>0){
+                                    if(TT.fn.getTRTC_stationOnDiffSplitOutArea(a,b,lineData.id)) return true;
+                                }
+                            }
+                            return false;
+                        }else{
+                            return true;
+                        }
+                    break;
+                }
+            }else{
+                return true;
+            }
+        },
+        giveRoute_mapTool: function(t){
+            t.isRoute = true;
+            
+            t.getRouteAt = function(ro){
+                if(!ro) ro=0;
+                var route = t.route[ro], tmp;
+                var rAry = new Array();
+                for(var i=0; i<route.transStation.length; i++){
+                    tmp = TT.fn.getCommon_transStationByID(route.transStation[i]);
+                    tmp.fromLine = route.line[i];
+                    tmp.fromCompany = TT.fn.getCompanyOfStation(tmp.fromLine);
+                    tmp.toLine = route.line[i+1];
+                    tmp.toCompany = TT.fn.getCompanyOfStation(tmp.toLine);
+                    if(tmp.fromLine==tmp.changeLine[1]){
+                        tmp.changeLine.reverse();
+                        tmp.changeStation.reverse();
+                    }
+                    rAry.push(tmp);
+                }
+                return rAry;
+            }
+            return t;
+        },
+        //TRA Function
+        getTRA_allTimeByFromTo: function(a,b,timeTable){
+            var dir = TT.fn.getTRA_LineDirByFromTo(a,b);
+            if(!timeTable){
+                timeTable = TT.fn.getTRA_dayTimeTable();
+            }else if(typeof(timeTable)=='string'){
+                timeTable = TT.fn.getTRA_dayTimeTable(timeTable);
+            }
+            
+            var aryTime = new Array();
+            for(var i=0; i<timeTable.length; i++){
+                var timeInfo = timeTable[i].TimeInfo;
+                var aST = TT.fn.getTRA_stationIsOnThisTime(a, timeInfo);
+                var bST = TT.fn.getTRA_stationIsOnThisTime(b, timeInfo);
+                if(aST!==false && bST!==false && timeTable[i].LineDir==dir){
+                    timeTable[i] = TT.fn.giveTRA_timeTableTool(timeTable[i]);
+                    timeTable[i].fromStation = a;
+                    timeTable[i].toStation = b;
+                    aryTime.push(timeTable[i]);
+                }
+            }
+            return aryTime;
+        },
+        getTRA_infoOfCar: function(car, timeTable){
+            if(!timeTable){
+                timeTable = TT.fn.getTRA_dayTimeTable();
+            }else if(typeof(timeInfo)=='string'){
+                timeTable = TT.fn.getTRA_dayTimeTable(timeTable);
+            }
+            
+            for(var i=0; i<timeTable.length; i++){
+                if(timeTable[i].Train==car){
+                    return timeTable[i];
+                }
+            }
+            return false;
+        },
+        getTRA_timeOfStationOnCar: function(stationID, carTime){
+            stationID = TT.fn.getTRA_stationID(stationID);
+            if(carTime.TimeInfo){
+                for(var i=0; i<carTime.TimeInfo.length; i++){
+                    if(carTime.TimeInfo[i].Station==stationID){
+                        var rt = carTime.TimeInfo[i];
+                        rt.carInfo = carTime;
+                        return rt;
+                    }
+                }
+            }
+            return false;
+        },
+        getTRA_timeRangeByFromTo: function(a,b,startTime,endTime,flagAD,timeTable){
+            if(!startTime) startTime = 0;
+            if(!endTime) endTime = 60*60*24-1;
+            timeTable = TT.fn.getTRA_allTimeByFromTo(a,b,timeTable);
+            if(flagAD===undefined) flagAD = true;//true 為出發，false 為到達
+            if(typeof(startTime)!='number') startTime = TT.fn.transTime2Sec(startTime);
+            if(typeof(endTime)!='number') endTime = TT.fn.transTime2Sec(endTime);
+            var crossDaySec = TT.fn.transTime2Sec(TT.defined.defaultCrossDayTime),
+                offset1Day = 86400;
+            
+            function cpTime(ttb){
+                var insEnd = endTime;
+                if(flagAD){
+                    var stationTime = TT.fn.getTRA_timeOfStationOnCar(a,ttb);
+                    var time;
+                    if(stationTime){
+                        time = TT.fn.transTime2Sec(stationTime.DEPTime);
+                    }
+                }else{
+                    var stationTime = TT.fn.getTRA_timeOfStationOnCar(b,ttb);
+                    if(stationTime){
+                        time = TT.fn.transTime2Sec(stationTime.ARRTime);
+                    }
+                }
+                
+                if(insEnd < startTime && insEnd < crossDaySec){
+                    insEnd = insEnd + offset1Day;
+                    if(time < crossDaySec){
+                        time = time + offset1Day;
+                    }
+                }
+                
+                if(time && time >= startTime && time <= insEnd){
+                    ttb.tt_sortTime = time;
+                    return ttb;
+                }else{
+                    return false;
+                }
+            }
+            
+            var aryTime = new Array(),
+                cpT;
+            for(var i=0; i<timeTable.length; i++){
+                cpT = cpTime(timeTable[i]);
+                if(cpT !== false){
+                    aryTime.push(cpT);
+                }
+            }
+            aryTime = aryTime.sort(TT.fn.getTRA_sortByTTSortTime);
+            return aryTime;
+        },
+        getTRA_dayTimeTable: function(w){
+            if(w==null) w = TT.defined.defaultTRAWeekday;
+            if(!TT.fn.checkTRA_dayTimeIsLoaded(w)){
+                return false;
+            }
+            
+            return TT.data.tra.timeTable[parseInt(w,10)];
+        },
+        getTRA_LineDirReverseNum: function(dir){
+            if(dir=='1') return '0';
+            if(dir=='0') return '1';
+        },
+        getTRA_LineDirByFromTo: function(a,b){
+            for(var i=0; i<TT.data.tra.line.length; i++){
+                var Line = TT.data.tra.line[i];
+                var aIndex = TT.fn.getTRA_stationIsOnThisLine(a, Line);
+                var bIndex = TT.fn.getTRA_stationIsOnThisLine(b, Line);
+                if(aIndex!==false && bIndex!==false){
+                    if(aIndex < bIndex){
+                        return Line.dir;
+                    }else{
+                        return TT.fn.getTRA_LineDirReverseNum(Line.dir);
+                    }
+                }
+            }
+        },
+        getTRA_LineRouteReverse: function(Line){
+            var ary;
+            ary = Line.station;
+            Line.dir = TT.fn.getTRA_LineDirReverseNum(Line.dir);
+            Line.station = ary;
+            return Line;
+        },
+        getTRA_stationDataOfID: function(id, lineID){
+            var ary=TT.data.tra.station_ary;
+            for(var i=0; i<ary.length; i++){
+                if(ary[i].id==id){
+                    if(lineID){
+                        return $.extend({byLine: lineID}, ary[i]);
+                    }
+                    return ary[i];
+                }
+            }
+            return false;
+        },
+        getTRA_stationIsOnThisLine: function(stationID, Line){
+            for(var i=0; i<Line.station.length; i++){
+                if(stationID==Line.station[i]) return i;
+            }
+            return false;
+        },
+        getTRA_stationIsOnThisTime: function(stationID, timeInfo){
+            stationID = TT.fn.getTRA_stationID(stationID);
+            for(var i=0; i<timeInfo.length; i++){
+                if(stationID==timeInfo[i].Station) return i;
+            }
+            return false;
+        },
+        getTRA_stationID: function(sid){
+            if(sid.indexOf('tra_')==0){
+                sid = sid.replace('tra_','');
+            }
+            return sid;
+        },
+        getTRA_stationIsOnTimeInfo: function(stationID, timeInfo){
+            stationID = TT.fn.getTRA_stationID(stationID);
+            for(var i=0; i<timeInfo.length; i++){
+                if(timeInfo[i].Station==stationID){
+                    return timeInfo[i];
+                    break;
+                }
+            }
+            return false;
+        },
+        getTRA_stationOnWhatLine: function(st){
+            //var ary = TT.data.tra.station_ary;
+            return ['tra_xibu'];
+        },
+        getTRA_stationTime: function(stationID, dir, w){
+            if(w==null) w = TT.defined.defaultTRAWeekday;
+            if(dir==null) dir = '1';
+            if(!TT.fn.checkTRA_dayTimeIsLoaded(w)){
+                return false;
+            }
+            
+            stationID = TT.fn.getTRA_stationID(stationID);
+            var dayTimeTable = TT.fn.getTRA_dayTimeTable(w);
+            var stationDayTimeAry = new Array();
+            for(var i=0; i<dayTimeTable.length; i++){
+                var timeInfoOfStation = TT.fn.getTRA_stationIsOnTimeInfo(stationID, dayTimeTable[i].TimeInfo);
+                if(timeInfoOfStation && dayTimeTable[i].LineDir==dir){
+                    timeInfoOfStation.CarInfo = dayTimeTable[i];
+                    stationDayTimeAry.push(timeInfoOfStation);
+                }
+            }
+            return stationDayTimeAry;
+        },
+        getTRA_sortByTimeInfoOrder: function(a,b){
+            var intA = parseInt(a.Order,10);
+            var intB = parseInt(b.Order,10);
+            if(intA==intB) return 0;
+            if(intA < intB) return -1;
+            if(intA > intB) return 1;
+        },
+        getTRA_sortByTTSortTime: function(a,b){
+            var intA = parseInt(a.tt_sortTime,10);
+            var intB = parseInt(b.tt_sortTime,10);
+            if(intA==intB) return 0;
+            if(intA < intB) return -1;
+            if(intA > intB) return 1;
+        },
+        getTRA_JSON_by_TRA_XML: function(xml){
+            var aryTRA_Cars = xml.getElementsByTagName('TrainInfo');
+            var rt = new Array();
+            
+            for(var i=0; i<aryTRA_Cars.length; i++){
+                var xt = aryTRA_Cars[i];
+                var jo = TT.fn.getXML_Attribute2Obj(xt);
+                jo.TimeInfo = new Array();
+                var timeInfo = xt.getElementsByTagName('TimeInfo');
+                for(var j=0; j<timeInfo.length; j++){
+                    var timext = timeInfo[j];
+                    var timejo = TT.fn.getXML_Attribute2Obj(timext);
+                    jo.TimeInfo.push(timejo);
+                    jo.TimeInfo.sort(TT.fn.getTRA_sortByTimeInfoOrder);
+                }
+                rt.push(jo);
+            }
+            return rt;
+        },
+        getTRA_XML: function(url, successFn, errorFn){
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'xml',
+                success: function(xml) {
+                    if(typeof(successFn)=='function'){
+                        successFn(xml);
+                    }
+                },
+                error: function(){
+                    if(typeof(errorFn)=='function'){
+                        errorFn();
+                    }
+                }
+            });
+        },
+        getTRA_weekXML: function(w, cbFn){
+            if(!w) w = TT.defined.defaultTRAWeekday;
+            var url = 'w' + w + '.xml';
+            TT.ui.mask();
+            TT.ui.printStatus('讀取台鐵' + TT.ui.transWeekToString(w) + '時刻表中...');
+            
+            function successFn(xml){
+                    TT.ui.printStatus('讀取台鐵' + TT.ui.transWeekToString(w) + '時刻表完成。');
+                    TT.ui.unmask();
+                    if(TT.fn.checkIsFunction(cbFn)){
+                        cbFn(w, xml);
+                    }
+                    TT.ui.updateCenter('home');
+            }
+            
+            function errorFn(){
+                    TT.msg.show('讀取台鐵' + TT.ui.transWeekToString(w) + '時刻表失敗！');
+                    TT.ui.printStatus('讀取台鐵' + TT.ui.transWeekToString(w) + '時刻表失敗！');
+                    TT.ui.unmask();
+                    TT.ui.updateCenter('home');
+                    if(TT.fn.checkIsFunction(cbFn)){
+                        cbFn('error');
+                    }
+            }
+            setTimeout(function(){
+                TT.fn.getTRA_XML(url, successFn, errorFn);
+            },100);
+        },
+        getTRA_TimeTable2Data: function(weekString, cbFn){
+            if(weekString==null) weekString = '0123456';//0 for sunday
+            if(!TT.data.tra.timeTable) TT.data.tra.timeTable = new Array();
+            var countW = -1;
+            function writeFn(w, xml){
+                if(TT.fn.checkIsError(w)){
+                    return false;
+                }
+                var dayJo = TT.fn.getTRA_JSON_by_TRA_XML(xml);
+                TT.data.tra.timeTable[parseInt(w,10)] = dayJo;
+                nextDay();
+            }
+            
+            function nextDay(){
+                countW++;
+                if(countW >= 7){
+                    if(TT.fn.checkIsFunction(cbFn)){
+                        cbFn();
+                    }
+                    return true;
+                }
+                var w = countW.toString();
+                if(TT.data.tra.timeTable[countW] || weekString.indexOf(w)==-1){
+                    nextDay();
+                    return false;
+                }
+                TT.fn.getTRA_weekXML(w, writeFn);
+            }
+            nextDay();
+        },
+        getTRA_carClassName: function(val, cfg){
+            cfg = cfg || {};
+            var data = TT.data.tra.defined["CarClass"], rt = '';
+            for(var i=0; i<data.length; i++){
+                if(data[i].id==val){
+                    if(cfg.eng){
+                        rt = data[i].ename;
+                    }else{
+                        rt = data[i].name;
+                    }
+                    if(cfg.color){
+                        if(data[i].color){
+                            rt = '<span style="color:' + data[i].color + ';">' + rt + '</span>';
+                        }
+                    }
+                    return rt;
+                }
+            }
+        },
+        giveTRA_tool_getFromToTime: function(a,b,ttb){
+                if(!a) a = ttb.fromStation;
+                if(!b) b = ttb.toStation;
+                a = TT.fn.getTRA_stationID(a);
+                b = TT.fn.getTRA_stationID(b);
+                var timeInfo = ttb.TimeInfo;
+                var rt = new Array();
+                for(var i=0; i<timeInfo.length; i++){
+                    if(timeInfo[i].Station==a) rt[0] = timeInfo[i].DEPTime;
+                    if(timeInfo[i].Station==b) rt[1] = timeInfo[i].ARRTime;
+                }
+                return rt;
+        },                        
+        giveTRA_timeTableTool: function(ttb){
+            ttb.getFromToTime = function(a,b){
+                return TT.fn.giveTRA_tool_getFromToTime(a,b,ttb);
+            }
+            return ttb;
+        },
+        //TRTC Function
+        getTRTC_lineNum2Id: function(num){
+            if(typeof(num)=='string'){
+                num = parseInt(num.replace('trtc_',''),10);
+            }
+            return 'trtc_' + num;
+        },
+        getTRTC_stationDataOfID: function(id, lineID){
+            var ary=TT.data.trtc.station_ary;
+            for(var i=0; i<ary.length; i++){
+                if(ary[i].id==id){
+                    if(lineID){
+                        return $.extend({byLine: lineID}, ary[i]);
+                    }
+                    return ary[i];
+                }
+            }
+            return false;
+        },
+        getTRTC_stationOnWhatLine: function(st){
+            var rt = new Array(),
+                line = TT.data.trtc.line;
+            for(var i=0; i<line.length; i++){
+                for(var j=0; j<line[i].station.length; j++){
+                    if(line[i].station[j]==st){
+                        rt.push(line[i].id);
+                        break;
+                    }
+                }
+            }
+            return rt;
+        },
+        getTRTC_stationOnSameLine: function(a,b){
+            var rt = new Array();
+            var aLine = TT.fn.getTRTC_stationOnWhatLine(a);
+            var bLine = TT.fn.getTRTC_stationOnWhatLine(b);
+            for(var i=0; i<aLine.length; i++){
+                for(var j=0; j<bLine.length; j++){
+                    if(bLine[j]==aLine[i]){
+                        rt.push(bLine[j]);
+                        break;
+                    }
+                }
+            }
+            
+            if(rt.length==0) rt = false;
+            return rt;
+        },
+        getTRTC_stationTime: function(stationID, line, dir, w){
+            var rnwTime = TT.fn.getTRTC_rnw_stationTime(stationID, line, dir, w);
+            if(rnwTime!=false){
+                return rnwTime;
+            }
+            if(rnwTime==false && stationID == 'trtc_071'){//No Tamsui Timetable
+                var hslTime = TT.fn.getTRTC_rnw_stationTime('trtc_070', line, dir, w);
+                return offsetTimeFn(hslTime, -3);
+            }
+            if(!w) w = TT.defined.defaultTRAWeekday;
+            w = parseInt(w);
+            if(!line){
+                line = TT.fn.getTRTC_stationOnWhatLine(stationID)[0];
+            }
+            line = TT.fn.getTRTC_lineNum2Id(line);
+            if(!dir){
+                dir=0;
+            }
+            dir = parseInt(dir);
+            
+            var ww = '';
+            switch(w){
+                case 0:
+                    ww = 'sunday';
+                break;
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    ww = 'weekday';
+                break;
+                case 6:
+                    ww = 'saturday';
+                break;
+            }
+            
+            
+            function offsetTimeFn(timeTB, offsetMin){
+                var tmpTime, spliceNum=0, rt=new Array();
+                for(var i=0; i<timeTB.length; i++){
+                    tmpTime = TT.fn.transTime2Sec(timeTB[i]);
+                    tmpTime = tmpTime + (offsetMin*60);
+                    if(tmpTime < 0) tmpTime+=86400;
+                    if(tmpTime > (3600*4) && tmpTime < (3600*6)) spliceNum++;
+                    timeTB[i] = TT.fn.transSec2Time(tmpTime);
+                }
+                if(spliceNum>0) timeTB.splice(0,spliceNum);
+                return timeTB;
+            }
+            
+            function formatTimeFn(ary){
+                var rt = new Array();
+                var tmpA = '', tmpH = '', tmpM = '', tmpS = '00';
+                for(var i=0; i<ary.length; i++){
+                    tmpH = TT.fn.transNum2StrA(i%24);
+                    for(var j=0; j<ary[i].length; j++){
+                        tmpM = TT.fn.transNum2StrA(ary[i][j]);
+                        tmpA = tmpH + ':' + tmpM + ':' + tmpS;
+                        rt.push(tmpA);
+                    }
+                }
+                return rt;
+            }
+            
+            var lineTime = TT.data.trtc.station_time[line];
+            var stOffset = 0;
+            if(lineTime){
+                var stTime = lineTime[stationID];
+            }else{
+                return false;
+            }
+            
+            if(!stTime){
+                if(line=='trtc_5'){
+                    stTime = lineTime['trtc_097'];
+                    stOffset = TT.data.trtc.offset_time['trtc_5']['trtc_097'][stationID];
+                    if(dir.toString() != TT.data.trtc.offset_time['trtc_5']['trtc_097']['LineDir']) stOffset = 0-stOffset;
+                }
+                if(line=='trtc_2'){
+                    stTime = lineTime['trtc_071'];
+                    stOffset = TT.data.trtc.offset_time['trtc_2']['trtc_071'][stationID];
+                    if(dir.toString() != TT.data.trtc.offset_time['trtc_2']['trtc_071']['LineDir']) stOffset = 0-stOffset;
+                }
+                if(line=='trtc_3'){
+                    stTime = lineTime['trtc_111'];
+                    stOffset = TT.data.trtc.offset_time['trtc_3']['trtc_111'][stationID];
+                    if(dir.toString() != TT.data.trtc.offset_time['trtc_3']['trtc_111']['LineDir']) stOffset = 0-stOffset;
+                }
+                if(line=='trtc_4'){
+                    stTime = lineTime['trtc_048'];
+                    stOffset = TT.data.trtc.offset_time['trtc_4']['trtc_048'][stationID];
+                    if(dir.toString() != TT.data.trtc.offset_time['trtc_4']['trtc_048']['LineDir']) stOffset = 0-stOffset;
+                }
+                if(stOffset != 0){
+                }else{
+                    return false;
+                }
+            }
+            
+            if(stTime){
+                var wTime = stTime[ww];
+            }else{
+                return false;
+            }
+            
+            if(wTime){
+                var formatTimeTable = formatTimeFn(wTime[dir]);
+                if(stOffset != 0){
+                    return offsetTimeFn(formatTimeTable, stOffset);
+                }else{
+                    return formatTimeTable;
+                }
+            }else{
+                return false;
+            }
+            
+        },
+        getTRTC_rnw_stationTime: function(stationID, line, dir, w){
+            if(!w) w = TT.defined.defaultTRAWeekday;
+            var chk = TT.fn.checkTRTC_rnwTimeTableIsLoaded();
+            if(!chk) return false;
+            
+            var tmpObj = TT.data.trtc.rnwTimeTable, rt=false, st;
+            if(TT.data.trtc.rnwTimeTable && TT.data.trtc.rnwTimeTable[line] && TT.data.trtc.rnwTimeTable[line][stationID]){
+                st = TT.data.trtc.rnwTimeTable[line][stationID];
+                for(var i=0; i<st.length; i++){
+                    if(st[i].dir==dir && st[i].week.indexOf(w)>=0){
+                        rt = st[i].time;
+                        break;
+                    }
+                }
+            }
+            return rt;
+        },
+        getTRTC_timeTable2Data: function(cbFn){
+            function doBack(json){
+                if(typeof(json)=='string' && json=='error'){
+                    return false;
+                }
+                //Process to TT.data.trtc.rnwTimeTable.line.station{week, time}
+                var tb = {}, tmpObj;
+                for(var i=0; i<json.length; i++){
+                    tmpObj = json[i];
+                    if(!tb[tmpObj.line]) tb[tmpObj.line] = {}
+                    if(!tb[tmpObj.line][tmpObj.id]) tb[tmpObj.line][tmpObj.id] = new Array();
+                    tb[tmpObj.line][tmpObj.id].push({
+                        week: tmpObj.week,
+                        dir: tmpObj.dir,
+                        time: tmpObj.time
+                    });
+                }
+                TT.data.trtc.rnwTimeTable = tb;
+                if(TT.fn.checkIsFunction(cbFn)){
+                    cbFn();
+                }
+            }
+            
+            TT.fn.getTRTC_rnw_timeTableJSON('ronnywang_trtc.json', doBack);
+        },
+        getTRTC_rnw_timeTableJSON: function(url, cbFn){
+            if(!url) url = 'ronnywang_trtc.json';
+            TT.ui.mask();
+            TT.ui.printStatus('讀取台北捷運時刻表中...');
+            
+            function formatRNW_JSON(json){//Format some data
+                var tj, timeData, weekData, tmpName, dirData, lineData;
+                for(var i=0; i<json.length; i++){
+                    tj = json[i];
+                    if(tj["時間"]){
+                        timeData = tj["時間"].split(' ');
+                        json[i].time = timeData;
+                    }
+                    if(tj["中文班次別"]){
+                        switch(tj["中文班次別"]){
+                            case '平常日(週一至週四)':
+                                weekData = '1234';
+                            break;
+                            case '平常日(週一至週五)':
+                                weekData = '12345';
+                            break;
+                            case '平常日(週五)':
+                                weekData = '5';
+                            break;
+                            case '週六':
+                                weekData = '6';
+                            break;
+                            case '週日':
+                                weekData = '0';
+                            break;
+                        }
+                        json[i].week = weekData;
+                    }
+                    if(tj["方向名稱"]){
+                        tmpName = tj["方向名稱"];
+                        if(/亞東醫院|頂埔/.test(tmpName)){
+                            lineData = 'trtc_5';
+                            dirData = '1';
+                        }else if(/南港展覽館/.test(tmpName)){
+                            lineData = 'trtc_5';
+                            dirData = '0';
+                        }else if(/大安|象山/.test(tmpName)){
+                            lineData = 'trtc_2';
+                            dirData = '1';
+                        }else if(/北投|淡水/.test(tmpName)){
+                            lineData = 'trtc_2';
+                            dirData = '0';
+                        }else if(/新店|台電大樓/.test(tmpName)){
+                            lineData = 'trtc_3';
+                            dirData = '1';
+                        }else if(/松山/.test(tmpName)){
+                            lineData = 'trtc_3';
+                            dirData = '0';
+                        }else if(/蘆洲|迴龍/.test(tmpName)){
+                            lineData = 'trtc_4';
+                            dirData = '1';
+                        }else if(/南勢角/.test(tmpName)){
+                            lineData = 'trtc_4';
+                            dirData = '0';
+                        }
+                        json[i].line = lineData;
+                        json[i].dir = dirData;
+                    }
+                    if(tj["車站代碼"]){
+                        json[i].id = 'trtc_' + tj["車站代碼"];
+                    }
+                    if(tj["車站名稱"]){
+                        json[i].name = tj["車站名稱"];
+                    }
+                    //json[i] = tj;
+                }
+                return json;
+            }
+            
+            function successFn(json){
+                    TT.ui.printStatus('讀取台北捷運時刻表完成。');
+                    TT.ui.unmask();
+                    json = formatRNW_JSON(json);
+                    if(TT.fn.checkIsFunction(cbFn)){
+                        cbFn(json);
+                    }
+                    TT.ui.updateCenter('home');
+            }
+            
+            function errorFn(){
+                    TT.ui.printStatus('讀取台北捷運時刻表失敗！');
+                    TT.ui.unmask();
+                    TT.ui.updateCenter('home');
+                    if(TT.fn.checkIsFunction(cbFn)){
+                        cbFn('error');
+                    }
+            }
+            
+            TT.fn.getTRTC_timeTableJSON(url, successFn, errorFn);
+        },
+        getTRTC_timeTableJSON: function(url, successFn, errorFn){
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(json) {
+                    if(typeof(successFn)=='function'){
+                        successFn(json);
+                    }
+                },
+                error: function(){
+                    if(typeof(errorFn)=='function'){
+                        errorFn();
+                    }
+                }
+            });
+        },
+        getTRTC_lineCheckOrDefault: function(a, b, line){
+            var ary1 = TT.fn.getTRTC_stationOnSameLine(a,b);
+            if(ary1){
+                if(line){
+                    var ckFlag = false;
+                    for(var i=0; i<ary1.length; i++){
+                        if(line==ary1[i]) ckFlag = true; 
+                    }
+                    if(!ckFlag) return false;
+                }else{
+                    line = ary1[0];
+                }
+            }else{
+                //fetaure add cross line function
+                return false;
+            }
+            return line;
+        },
+        getTRTC_needTimeBySameLineFromTo: function(a, b, line){
+            line = TT.fn.getTRTC_lineCheckOrDefault(a, b, line);
+            if(line){
+                var baseStation = '';
+                if(line=='trtc_2') baseStation = 'trtc_071';
+                if(line=='trtc_3') baseStation = 'trtc_111';
+                if(line=='trtc_4') baseStation = 'trtc_048';
+                if(line=='trtc_5') baseStation = 'trtc_097';
+                var lineA = TT.data.trtc.offset_time[line][baseStation];
+                var aOffset = lineA[a];
+                var bOffset = lineA[b];
+                return Math.abs(aOffset-bOffset);
+            }else{
+                return false;
+            }
+        },
+        getTRTC_overStringStationAry: function(str, line, dir){
+            var lineObj = TT.fn.getTRTC_lineData(line);
+            //TT.data.trtc.line.map(function(obj){
+                //if(obj.id == line) lineObj = obj;
+            //});
+            if(!lineObj) return false;
+            if(!dir) dir = lineObj.dir;
+            
+            var stAry = lineObj.station;
+            var rt = new Array(), st, ary, flag=0;
+            if(str.indexOf('~')>=0){
+                ary = str.split('~');
+                if(dir != lineObj.dir) ary = ary.reverse();
+                if(ary[0]==null || ary[0]=='') ary[0] = stAry[0];
+                if(ary[1]==null || ary[1]=='') ary[1] = stAry[stAry.length-1];
+                for(var i=0; i<stAry.length; i++){
+                    st = stAry[i];
+                    if(st==ary[0]) flag=1;
+                    if(flag==1){
+                        rt.push(st);
+                    }
+                    if(st==ary[1]) flag=2;
+                    if(flag==2){
+                        break;
+                    }
+                }
+            }
+            return rt;
+        },
+        getTRTC_stationOnDiffSplitOutArea: function(a, b, line){
+            var lineObj = TT.fn.getTRTC_lineData(line);
+            if(!lineObj) return false;
+            
+            var brt = false, art = false, bStationAry, aStationAry, rt = false, tmpAry;
+            if(lineObj.outArea && lineObj.outArea.length > 0){
+                lineObj.outArea.map(function(obj){
+                    tmpAry = TT.fn.getTRTC_overStringStationAry(obj.station, line);
+                    for(var i=0; i<tmpAry.length; i++){
+                        if(b==tmpAry[i]){
+                            brt = obj;
+                            bStationAry = tmpAry;
+                        }
+                        if(a==tmpAry[i]){
+                            art = obj;
+                            aStationAry = tmpAry;
+                        }
+                    }
+                });
+                if(art.station!=brt.station && art.transAt==brt.transAt){
+                    rt = {
+                        line: line,
+                        splitStation: art.transAt,
+                        transStationID: art.transStationID,
+                        takeRange: [a,b],
+                        stationAry:[aStationAry,bStationAry]
+                    };
+                }
+            }
+            return rt;
+        },
+        getTRTC_stationOnOutArea: function(a, b, line){
+            var lineObj = TT.fn.getTRTC_lineData(line);
+            if(!lineObj) return false;
+            
+            var rt = false, art = false, tmpAry;
+            if(lineObj.outArea && lineObj.outArea.length > 0){
+                lineObj.outArea.map(function(obj){
+                    tmpAry = TT.fn.getTRTC_overStringStationAry(obj.station, line);
+                    for(var i=0; i<tmpAry.length; i++){
+                        if(b==tmpAry[i] && a!=obj.transAt){
+                            rt = obj;
+                        }
+                        if(b==tmpAry[i] && a==obj.transAt && obj.isSubLine){
+                            rt = obj;
+                        }
+                        if(a==tmpAry[i] && !(obj.isSubLine && a==obj.transAt)){
+                            art = obj;
+                        }
+                    }
+                });
+                if(art) rt = false;//Both a and b on out area
+            }
+            return rt;
+        },
+        getTRTC_allTimeByFromTo: function(a, b, line, w){
+            if(!w) w = TT.defined.defaultTRAWeekday;
+            var dir = TT.fn.getTRTC_dirByFromTo(a, b);
+            line = TT.fn.getTRTC_lineCheckOrDefault(a, b, line);
+            if(dir===false){
+                //fetaure add cross line function
+                return false;
+            }
+            var aTime = TT.fn.getTRTC_stationTime(a, line, dir, w);
+            var offsetTime = TT.fn.getTRTC_needTimeBySameLineFromTo(a, b, line);
+            var outArea=TT.fn.getTRTC_stationOnOutArea(a, b, line);
+            //var outAreaOffsetSec = (outArea) ? outArea.waitingNextMinute*60 : 0;
+            var aryFromToTime = new Array();
+            var tmpBTime, tmpATime, tmpANTime;
+            for(var i=0; i<aTime.length; i++){
+                /*if(outAreaOffsetSec > 0){
+                    if(aTime[i+1]){
+                        tmpATime = TT.fn.transTime2Sec(aTime[i], true);
+                        tmpANTime = TT.fn.transTime2Sec(aTime[i+1], true);
+                        outAreaOffsetSec = tmpANTime - tmpATime;
+                    }
+                }*/
+                tmpBTime = (TT.fn.transTime2Sec(aTime[i]) + (offsetTime*60))%86400;// + outAreaOffsetSec;
+                tmpBTime = TT.fn.transSec2Time(tmpBTime);
+                aryFromToTime.push([aTime[i], tmpBTime]);
+            } 
+            return aryFromToTime;
+        },
+        getTRTC_timeRangeByFromTo: function(a, b, startTime, endTime, flagAD, line, w){
+            if(flagAD===undefined) flagAD = true;
+            if(!w) w = TT.defined.defaultTRAWeekday;
+            
+            if(!startTime) startTime = 0;
+            if(!endTime) endTime = 60*60*24-1;
+            var timeTable = TT.fn.getTRTC_allTimeByFromTo(a, b, line, w);
+            if(typeof(startTime)!='number') startTime = TT.fn.transTime2Sec(startTime);
+            if(typeof(endTime)!='number') endTime = TT.fn.transTime2Sec(endTime);
+            var crossDaySec = TT.fn.transTime2Sec(TT.defined.defaultCrossDayTime),
+                offset1Day = 86400;
+            
+            function cpTime(ttb){
+                var insEnd = endTime;
+                var time = (flagAD===true) ? TT.fn.transTime2Sec(ttb[0]) : TT.fn.transTime2Sec(ttb[1]);
+                
+                if(insEnd < startTime && insEnd < crossDaySec){
+                    insEnd = insEnd + offset1Day;
+                    if(time < crossDaySec){
+                        time = time + offset1Day;
+                    }
+                }
+                
+                if(insEnd > startTime && insEnd > crossDaySec && time < crossDaySec) return false;
+                
+                if(time && time >= startTime && time <= insEnd){
+                    return ttb;
+                }else{
+                    return false;
+                }
+            }
+            
+            var aryTime = new Array(),
+                cpT;
+            for(var i=0; i<timeTable.length; i++){
+                cpT = cpTime(timeTable[i]);
+                if(cpT !== false){
+                    aryTime.push(cpT);
+                }
+            }
+            aryTime = aryTime.sort(TT.fn.getTRTC_sortByABTime);
+            return aryTime;
+        },
+        getTRTC_sortByABTime: function(a,b){
+            var intA = TT.fn.transTime2Sec(a[0]);
+            var intB = TT.fn.transTime2Sec(b[0]);
+            var crossDaySec = TT.fn.transTime2Sec(TT.defined.defaultCrossDayTime);
+            if(intA < crossDaySec) intA += 86400;
+            if(intB < crossDaySec) intB += 86400;
+            
+            if(intA==intB) return 0;
+            if(intA < intB) return -1;
+            if(intA > intB) return 1;
+        },
+        getTRTC_dirByFromTo: function(a, b, line){
+            line = TT.fn.getTRTC_lineCheckOrDefault(a, b, line);
+            
+            if(line){
+                var lineData = TT.fn.getTRTC_lineData(line);
+                for(var i=0; i<lineData.station.length; i++){
+                    if(lineData.station[i]==a) return lineData.dir;
+                    if(lineData.station[i]==b) return TT.fn.reverseDir(lineData.dir);
+                }
+                return false;
+            }else{
+                return false;
+            }
+        },
+        getTRTC_lineData: function(line){
+            for(var i=0; i<TT.data.trtc.line.length; i++){
+                if(TT.data.trtc.line[i].id==line){
+                    return TT.data.trtc.line[i];
+                }
+            }
+            return false;
+        },
+        mixAllRoute: function(aryRoute, flagAD){
+            var fRouteAry = new Array(), routeA, routeS, routeP, bestLink;
+            for(var tc=0; tc<aryRoute.length; tc++){
+                routeA = aryRoute[tc];
+                bestLink = routeA[0].bestLink;
+                for(var i=0; i<bestLink.length; i++){
+                    routeP = {
+                        linkTime: bestLink[i],
+                        routeIndex: tc,
+                        routeMap: new Array()
+                    }
+                    if(!routeP.linkTime[0]) continue;
+                    for(var j=0; j<routeA.length; j++){
+                        if(!bestLink[i][j]) continue;
+                        routeS = {
+                            company: routeA[j].company,
+                            line: routeA[j].line,
+                            takeRange: routeA[j].takeRange,
+                            origPointer: bestLink[i][j].myPointer,
+                            info: bestLink[i][j].info,
+                            time: bestLink[i][j].time
+                        }
+                        if(routeA[j].transStation){
+                            routeS.transStation = routeA[j].transStation;
+                            routeS.transStationID = routeA[j].transStationID;
+                        }
+                        if(routeA[j].doNotTakeTrain) routeS.doNotTakeTrain = routeA[j].doNotTakeTrain;
+                        routeP.routeMap.push(routeS);
+                    }
+                    var intSortTime;
+                    if(flagAD){
+                        intSortTime = TT.fn.transTime2Sec(routeP.linkTime[0].time[0]);
+                        if(routeP.linkTime[routeP.linkTime.length-1]) intSortTime = TT.fn.transTime2Sec(routeP.linkTime[routeP.linkTime.length-1].time[1]); //If sort always use arr time, open this
+                        if(intSortTime < TT.fn.transTime2Sec(TT.defined.defaultCrossDayTime)) intSortTime += 86400;
+                        routeP.tt_sortTime = intSortTime;
+                    }else{
+                        intSortTime = TT.fn.transTime2Sec(routeP.linkTime[routeP.linkTime.length-1].time[1]);
+                        if(intSortTime < TT.fn.transTime2Sec(TT.defined.defaultCrossDayTime)) intSortTime += 86400;
+                        routeP.tt_sortTime = intSortTime;
+                    }
+                    routeP.travelStartTime = routeP.linkTime[0].time[0];
+                    if(routeP.routeMap[0].doNotTakeTrain && routeP.linkTime[1]){
+                        routeP.travelStartTime = routeP.linkTime[1].time[0];
+                        routeP.travelStartTime = TT.fn.transSec2Time(TT.fn.transTime2Sec(routeP.travelStartTime) - (routeP.routeMap[0].transStation.walkMinute*60));
+                    }
+                    routeP.travelEndTime = routeP.linkTime[routeP.linkTime.length-1].time[1];
+                    if(routeP.routeMap[routeP.linkTime.length-1].doNotTakeTrain && routeP.linkTime[routeP.linkTime.length-2]){
+                        routeP.travelEndTime = routeP.linkTime[routeP.linkTime.length-2].time[1];
+                        routeP.travelEndTime = TT.fn.transSec2Time(TT.fn.transTime2Sec(routeP.travelEndTime) + (routeP.routeMap[routeP.routeMap.length-2].transStation.walkMinute*60));
+                    }
+                    
+                    routeP.travelMinute = (function(){
+                        var st = TT.fn.transTime2Sec(routeP.travelStartTime);
+                        var ed = TT.fn.transTime2Sec(routeP.travelEndTime);
+                        if(ed < st) ed = ed + 86400;
+                        return Math.ceil((ed-st)/60);
+                    })();
+                    fRouteAry.push(routeP);
+                }
+            }
+            fRouteAry = fRouteAry.sort(TT.fn.getTRA_sortByTTSortTime);
+            return fRouteAry;
+        },
+        reverseDir: function(dir){
+            if(dir=="1" || dir==1) return "0";
+            if(dir=="0" || dir==0) return "1";
+        },
+        transTime2HM: function(val){
+            if(typeof(val)=='number') val = TT.fn.transSec2Time(val);
+            var ary = val.split(':');
+            return ary[0] + ':' + ary[1];
+        },
+        transNum2StrA: function(intA){
+            intA = parseInt(intA,10);
+            if(intA <= 9){
+                return '0' + intA;
+            }else{
+                return intA.toString();
+            }
+        },
+        transTime2Sec: function(str,offsetTomorrow){
+            if (str == null || str == '') {
+                str = '0';
+            }
+            var aryA = str.split(':'), rt;
+            if (aryA.length <= 1) {
+                rt = parseInt(str,10);
+            } else if (aryA.length == 2) {
+                rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60;
+            } else if (aryA.length == 3) {
+                rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60 + parseInt(aryA[2],10);
+            }
+            
+            if(offsetTomorrow && rt < TT.fn.transTime2Sec(TT.fn.getDefaultDayLastTime())){
+                rt = rt + 86400;
+            }
+            return rt;
+        },
+        transSec2Time: function(sec){
+            var tid = 0,
+                tih = 0,
+                tim = 0,
+                tis = 0;
+
+            if((sec === '')){
+                return '';
+            }else if(parseInt(sec,10) < 0){
+                sec = 86400 + sec;
+            }
+            
+            sec = parseInt(sec,10);
+            tis = sec % 60;
+            sec = sec - tis;
+            sec = sec / 60;
+            tim = sec % 60;
+            sec = sec - tim;
+            sec = sec / 60
+            tih = sec;
+            
+
+            tih = (tih < 10) ? '0' + tih : tih;
+            tim = (tim < 10) ? '0' + tim : tim;
+            tis = (tis < 10) ? '0' + tis : tis;
+
+            if (tih == 0) {
+                return tih + ':' + tim + ':' + tis;
+            } else {
+                return tih + ':' + tim + ':' + tis;
+            }
+        }
+    }
+    
+    TT.ui = {
+        randomIdNum: 0,
+        bodyScroll: function(val){
+            var sysTop;
+            if(document.documentElement && document.documentElement.scrollTop>0){
+                if(val || val===0) $('body, html').animate({ scrollTop: val }, 400);//document.documentElement.scrollTop = val;
+                sysTop = document.documentElement.scrollTop;
+            }else if(document.body && document.body.scrollTop>0){
+                if(val || val===0) $('body, html').animate({ scrollTop: val }, 400);//document.body.scrollTop = val;
+                sysTop = document.body.scrollTop;
+            }
+            return sysTop;
+        },
+        centerTimeTableDisplayDivClear: function(){
+            TT.ui.center.timeTable.displayDiv.trainDiv.innerHTML = '';
+            TT.ui.center.timeTable.displayDiv.routeDiv.innerHTML = '';
+        },
+        createDiv: function(id, cls, appendT){
+            var dom = document.createElement('div');
+            if(id && id=='_gen') id = TT.ui.genRandomId();
+            if(id) dom.id = id;
+            if(cls) dom.className = cls;
+            if(appendT){
+                if(appendT == 'body'){
+                    document.body.appendChild(dom);
+                }else{
+                    document.getElementById(appendT).appendChild(dom);
+                }
+            }
+            return dom;
+        },
+        createBaseDiv: function(){
+            TT.ui.maskDiv = TT.ui.createDiv('tt_mask', 'mask', 'body');
+            TT.ui.maskText = TT.ui.createDiv('tt_mask_text', 'text', 'tt_mask');
+            TT.ui.maskText.innerHTML = 'Loading...';
+            
+            TT.ui.centerDiv = TT.ui.createDiv('tt_center', 'center', 'body');
+            TT.ui.center = {};
+            
+        },
+        createHome: function(){
+            TT.ui.center.home = TT.ui.createDiv('tt_home', 'centerPage home', TT.ui.centerDiv.id);
+            
+            //TRA Frame
+            TT.ui.center.home.tra = TT.ui.createDiv('tt_home_tra', 'frameA tra', TT.ui.center.home.id);
+            TT.ui.center.home.tra.divTitle = TT.ui.createDiv('tt_home_tra_title', 'title', TT.ui.center.home.tra.id);
+            TT.ui.center.home.tra.divTitle.innerHTML = '台鐵 TRA';
+            TT.ui.center.home.tra.divText1 = TT.ui.createDiv('tt_home_tra_text1', 'text', TT.ui.center.home.tra.id);
+            TT.ui.center.home.tra.divText1.innerHTML = '<p>台鐵時刻表載入自政府資料開放平台之鐵路時刻表，預設載入星期二之時刻表作為查詢平日時刻表基準。</p>' +
+                '<p>替換時刻表檔案請在網頁同目錄下儲存w0.xml ~ w6.xml，w0為星期日。</p>';
+            TT.ui.center.home.tra.divCkWeek = TT.ui.createDiv('tt_home_tra_ckWeek', 'option', TT.ui.center.home.tra.id);
+            TT.ui.center.home.tra.divCkWeek.innerHTML = '<ul>' +
+                '<li><input type="checkbox" id="tt_home_tra_ckWeek_1" class="ckWeek">讀取星期一<div id="tt_home_tra_ckWeekLoaded_1" class="ckWeekLoaded">已讀取</div></li>' +
+                '<li><input type="checkbox" id="tt_home_tra_ckWeek_2" class="ckWeek">讀取星期二(平日)<div id="tt_home_tra_ckWeekLoaded_2" class="ckWeekLoaded">已讀取</div></li>' +
+                '<li><input type="checkbox" id="tt_home_tra_ckWeek_3" class="ckWeek">讀取星期三<div id="tt_home_tra_ckWeekLoaded_3" class="ckWeekLoaded">已讀取</div></li>' +
+                '<li><input type="checkbox" id="tt_home_tra_ckWeek_4" class="ckWeek">讀取星期四<div id="tt_home_tra_ckWeekLoaded_4" class="ckWeekLoaded">已讀取</div></li>' +
+                '<li><input type="checkbox" id="tt_home_tra_ckWeek_5" class="ckWeek">讀取星期五<div id="tt_home_tra_ckWeekLoaded_5" class="ckWeekLoaded">已讀取</div></li>' +
+                '<li><input type="checkbox" id="tt_home_tra_ckWeek_6" class="ckWeek">讀取星期六<div id="tt_home_tra_ckWeekLoaded_6" class="ckWeekLoaded">已讀取</div></li>' +
+                '<li><input type="checkbox" id="tt_home_tra_ckWeek_0" class="ckWeek">讀取星期日<div id="tt_home_tra_ckWeekLoaded_0" class="ckWeekLoaded">已讀取</div></li>' +
+            '</ul>';
+            TT.ui.center.home.tra.buttonReadWeekTimeTable = TT.ui.createSystemButton({
+                id: 'tt_home_tra_btnReadWeekTimeTable', 
+                text: '手動讀取時刻表',
+                appendT: TT.ui.center.home.tra.id,
+                clickFn: function(e){
+                    var aryCkWeek = $('.center .home .frameA.tra input.ckWeek');
+                    var ws = '';
+                    aryCkWeek.each(function(e,t){
+                        var w = t.id.replace('tt_home_tra_ckWeek_','');
+                        if(t.checked==true){
+                            ws += w;
+                        }
+                    });
+                    TT.fn.getTRA_TimeTable2Data(ws);
+                }
+            });
+            
+            //TRTC Frame
+            TT.ui.center.home.trtc = TT.ui.createDiv('tt_home_trtc', 'frameA trtc', TT.ui.center.home.id);
+            TT.ui.center.home.trtc.divTitle = TT.ui.createDiv('tt_home_trtc_title', 'title', TT.ui.center.home.trtc.id);
+            TT.ui.center.home.trtc.divTitle.innerHTML = '台北捷運 TRTC';
+            TT.ui.center.home.trtc.divText1 = TT.ui.createDiv('tt_home_trtc_text1', 'text', TT.ui.center.home.trtc.id);
+            TT.ui.center.home.trtc.divText1.innerHTML = '<p>因沒有台北捷運如台鐵的每列班車資訊，目前台北捷運的資料以網友ronnywang自台北捷運官網轉換出來的csv檔轉成json後匯入，沒有時刻表的車站會以站間行駛時間做相對計算。<span style="color:#FF4020;">台北捷運無法查詢新北投線、小碧潭線、文湖線</span>，行車時間均以台北捷運官方網站查詢之<span style="color:#1FB020;">站間行駛時間相加或相減於南港站、松山站、淡水站及南勢角站</span>，故時間上可能與真正的到站時刻有一兩分鐘的誤差。</p>' +
+                '<p>替換時刻表檔案請在網頁同目錄下儲存 <a target="_new" href="ronnywang_trtc.json">ronnywang_trtc.json</a> </p>';
+            
+            //Program Frame
+            TT.ui.center.home.prog = TT.ui.createDiv('tt_home_prog', 'frameA prog', TT.ui.center.home.id);
+            TT.ui.center.home.prog.divTitle = TT.ui.createDiv('tt_home_prog_title', 'title', TT.ui.center.home.prog.id);
+            TT.ui.center.home.prog.divTitle.innerHTML = '無縫接軌前導網頁說明';
+            TT.ui.center.home.prog.divText1 = TT.ui.createDiv('tt_home_prog_text1', 'text', TT.ui.center.home.prog.id);
+            TT.ui.center.home.prog.divText1.innerHTML = '<p>無縫接軌是建立台灣的跨營運系統間轉乘時間查詢程式，便於研究有效率的轉乘路徑。</p>' +
+                '<p>前導網頁的授權原則' +
+                    '<ul>' +
+                        '<li>無縫接軌前導網頁僅作為評估正式版開發所用，個人以外要進行其他利用請洽原作者。</li>' +
+                        '<li>個人本機使用無需取得授權，也可另寫在產生TT的匿名Function之後重寫要修改的Function，但修改網頁後執行於網頁伺服器上請加註作者名稱於取得版本的作者之後，以區別為個人化版本，版本、發行單位、日期可自由調整。</li>' +
+                        '<li>台北捷運時刻表 JSON 資料轉換自網友 <a target="_new" href="https://sheethub.com/ronnywang/%E5%8F%B0%E5%8C%97%E6%8D%B7%E9%81%8B%E7%8F%AD%E6%AC%A1%E6%99%82%E5%88%BB%E8%A1%A8">ronnywang 網站</a>，相關授權請洽詢他本人</li>' +
+                    '</ul>' +
+                '</p>' +
+                '<p>前導網頁的開發原則' +
+                    '<ul>' +
+                        '<li>除非必要，否則不使用jQuery基本版以外的套件，網頁上的元件盡量以 HTML 原生元件操作以維持相容性並避免其他 library 授權問題，前導網頁不特別要求元件外觀與整體美觀，簡單易讀方便操作修改為原則。</li>' +
+                        '<li>使用 HTML、Javascript、CSS構成，不使用任何伺服器端技術與資料庫，保持未來移植其他平台離線使用可能性。</li>' +
+                        '<li>時刻表與路由資料原則採離線運作，所需要之台鐵或捷運公司時刻表下載後存放在網頁同目錄下讀取。</li>' +
+                        '<li>為方便由本機進行 Ajax 存取，本機開發需相容 Firefox 瀏覽器，在伺服器線上時必需相容 Chrome，其餘瀏覽器(如 Safari、Opera、IE)相容性在前導網頁不特別要求。</li>' +
+                        '<li>時刻表或大型資料以搜尋運用時才讀取為原則，加快進入網頁速度。</li>' +
+                        '<li>有更新開發進度時可以簡單寫一行在 Javascript 開頭的註解區。</li>' +
+                        '<li>軌道的運轉方向與台鐵接近平行者採相同為原則，其餘視點由北往南、由東向西，若相近於逆時針時 dir 為 1，相近於順時針時 dir 為 0。</li>' +
+                        '<li>不使用網路上或它處取得的圖檔以避免圖像授權問題，自行製作的圖檔盡量以 base64 編碼後存於 CSS 來利用。</li>' +
+                        '<li>前導網頁的 HTML、Javascript、CSS 存放於單一網頁檔內，不使用任何壓縮 code 或 Build 方式才運作，轉為正式版時才進行分拆作業。</li>' +
+                        '<li>Name Space 為 TT，進入點為 TT.initFn()，底層演算法和工具存放於 TT.fn 下，與網頁外觀顯示相關存放於 TT.ui 下，基礎資料存放於 TT.data 下，基本定義存放於 TT.defined 下，當次搜尋結果存放於 TT.now 下。</li>' +
+                        '<li>HTML CODE 的 BODY 保持內容乾淨，UI以 createElement 的方式附加上去，元件內容則可以 innerHTML 直接設計。</li>' +
+                        '<li>轉乘步行時間存在 TT.data.transStation 下各站的 walkMinute，理論上每一種轉乘方式都要建立一個轉乘站，例如台北站台鐵捷運之間就要建立台鐵至板南線、台鐵至淡水信義線、板南線至淡水信義線，分別存放步行時間並成為該種路線的路由點。</li>' +
+                        '<li>轉乘路由方式存在 TT.data.routeMap 下，目前以人工方式整理可能的路由。</li>' +
+                        '<li>下拉上背景色，當車站下拉選單超過兩百個選項以上時需著手進行車站選擇器的新 UI 調整，不適合再使用單純的 SELECT 元件。</li>' +
+                        //'<li></li>' +
+                    '</ul>' +
+                '</p>' +
+                '<p>前導網頁的運作現況' +
+                    '<ul>' +
+                        '<li>台鐵部分目前只開放基隆至中壢站。</li>' +
+                        '<li>台北捷運的部分目前僅建立部分車站資料台北捷運說明框內敘述。</li>' +
+                        '<li>台北捷運無台鐵般詳細的每列車到站與離站資訊，時間上均採用相對計算方式於台北捷運說明框內敘述。</li>' +
+                        '<li>因為將資料載入到前端做計算，好處是連續查詢都在前端完成不用跑伺服器速度快，壞處是在運算效能低落的裝置上計算較慢。</li>' +
+                    '</ul>' +
+                '</p>' +
+                '<p>前導網頁轉換至正式版的原則' +
+                    '<ul>' +
+                        '<li>Name Space 原則、Function 拆分原則於正式版可能參考其他意見重新解構。</li>' +
+                        '<li>正式版本命名、開發、授權不需參考無縫接軌前導網頁。</li>' +
+                        '<li>若需製作可於後端伺服器運作的查詢程式，應先評估使用 Node.js。</li>' +
+                    '</ul>' +
+                '</p>' +
+                '<p>關於' +
+                    (function(){
+                        var rt = '';
+                        for(var k in TT.defined.programAbout){
+                            rt += '<li>' + k + ': ' + TT.defined.programAbout[k] + '</li>';
+                        }
+                        return '<ul>' + rt + '</ul>';
+                    })() +
+                '</p>' +
+                '<p></p>' +
+            '';
+            
+        },
+        createTimeTable: function(){
+            if(TT.ui.center.timeTable){
+                TT.ui.center.timeTable.innerHTML = '';
+            }else{
+                TT.ui.center.timeTable = TT.ui.createDiv('tt_timeTable', 'centerPage timeTable', TT.ui.centerDiv.id);
+            }
+            
+            //Control Frame
+            TT.ui.center.timeTable.controlDiv = TT.ui.createDiv('tt_timeTable_control', 'frameA control', TT.ui.center.timeTable.id);
+            TT.ui.center.timeTable.controlDiv.preSettingDiv = TT.ui.createPreSetting({id: 'ttc_preSetting', renderID: 'tt_timeTable_control'});
+            TT.ui.center.timeTable.controlDiv.stationSelectDiv = TT.ui.createTakeStation({id: 'ttc_stationSelect', renderID: 'tt_timeTable_control'});
+            TT.ui.center.timeTable.controlDiv.timeSelectDiv = TT.ui.createTakeTimeSelect({id: 'ttc_timeSelect', renderID: 'tt_timeTable_control'});
+            TT.ui.center.timeTable.controlDiv.weekSelectDiv = TT.ui.createWeekSelect({id: 'ttc_weekSelect', renderID: 'tt_timeTable_control'});
+            TT.ui.center.timeTable.controlDiv.depArrDiv = TT.ui.createTakeTimeFindDepArr({id: 'ttc_ADSelect', renderID: 'tt_timeTable_control'});
+            TT.ui.center.timeTable.controlDiv.findButtonDiv = TT.ui.createTakeFindButton({id: 'ttc_findButton', renderID: 'tt_timeTable_control'});
+            var defaultFromStation = (localStorage.getItem('defaultFromStation')) ? localStorage.getItem('defaultFromStation') : 'tra_1005',
+                defaultToStation = (localStorage.getItem('defaultToStation')) ? localStorage.getItem('defaultToStation') : 'trtc_093',
+                defaultSearchDay = new Date().getDay(),
+                defaultStartTime = (localStorage.getItem('defaultStartTime')) ? localStorage.getItem('defaultStartTime') : '07:00',
+                defaultEndTime = (localStorage.getItem('defaultEndTime')) ? localStorage.getItem('defaultEndTime') : '09:00';
+            TT.ui.center.timeTable.controlDiv.stationSelectDiv.fnSetStart(defaultFromStation);
+            TT.ui.center.timeTable.controlDiv.stationSelectDiv.fnSetEnd(defaultToStation);
+            TT.ui.center.timeTable.controlDiv.timeSelectDiv.fnSetStartTime(defaultStartTime);
+            TT.ui.center.timeTable.controlDiv.timeSelectDiv.fnSetEndTime(defaultEndTime);
+            TT.ui.center.timeTable.controlDiv.weekSelectDiv.fnSetDay(defaultSearchDay);
+            
+            //Display Frame
+            TT.ui.center.timeTable.displayDiv = TT.ui.createDiv('tt_timeTable_display', 'ttbDisplay', TT.ui.center.timeTable.id);
+            TT.ui.center.timeTable.displayDiv.routeDiv = TT.ui.createDiv('tt_timeTable_d_route', 'route', TT.ui.center.timeTable.displayDiv.id);
+            TT.ui.center.timeTable.displayDiv.trainDiv = TT.ui.createDiv('tt_timeTable_d_train', 'train', TT.ui.center.timeTable.displayDiv.id);
+            
+            //Window
+            TT.ui.createTransStationWalkTimeWindow();
+        },
+        createTool: function(){
+            TT.ui.center.tool = TT.ui.createDiv('tt_tool', 'centerPage tool', TT.ui.centerDiv.id);
+            
+            //DATA Frame
+            TT.ui.center.tool.dataDiv = TT.ui.createDiv('tt_tool_data', 'frameA trtc', TT.ui.center.tool.id);
+            TT.ui.center.tool.dataDiv.divTitle = TT.ui.createDiv('tt_tool_data_title', 'title', TT.ui.center.tool.dataDiv.id);
+            TT.ui.center.tool.dataDiv.divTitle.innerHTML = '1. TT.data 編輯工具';
+            TT.ui.center.tool.dataDiv.divText1 = TT.ui.createDiv('tt_tool_data_text1', 'text', TT.ui.center.tool.dataDiv.id);
+            TT.ui.center.tool.dataDiv.divText1.innerHTML = '<p>請由下方選擇要編輯的 TT.data 子節點，資料以 JSON 格式編輯。如果編輯的資料需要重新產生無縫接軌時刻表的選單，例如車站，請儲存完後再按右邊的<span style="color:orange">[重新產生時刻表 UI]</span> 按鈕。</p>';
+            
+            TT.ui.center.tool.dataDiv.divEditTool = (function(dv){
+                var tagDiv = TT.ui.createDiv('tt_tool_data_edit_tag', 'tag');
+                var tagSelect1 = '';
+                for(var k in TT.data){
+                    tagSelect1 += '<div class="tagSelect ' + k + '" tttag="' + k + '">' + k + '</div>';
+                }
+                tagDiv.innerHTML = tagSelect1;
+                
+                var editorDiv = TT.ui.createDiv('tt_tool_data_edit_editor', 'editor');
+                editorDiv.innerHTML = '<textarea class="textarea" id="' + editorDiv.id + '_textarea"></textarea>' +
+                    '<div class="btnDiv"><button class="btnSaveTTDataEditTool">儲存編輯完成的資料</button></div>' +
+                    '<div class="btnDiv"><button class="btnRebuildTimeTableUI">重新產生時刻表 UI</button></div>';
+                
+                var rtDiv = TT.ui.createDiv('tt_tool_data_edit', 'edit', dv.id);
+                rtDiv.className = 'editTool';
+                rtDiv.fnUpdateTag = function(){
+                    var ts = $('.center .editTool .tag .tagSelect');
+                    ts.each(function(m){
+                        ts[m].className = ts[m].className.replace(' selected','');
+                    });
+                    var nowTs = $('.center .editTool .tag .tagSelect.' + TT.editToolTagOn)[0];
+                    nowTs.className = nowTs.className + ' selected';
+                };
+                rtDiv.addEventListener('click', function(e){
+                    var tcls = e.target.className; 
+                    
+                    if(tcls.indexOf('tagSelect')>=0){
+                        tttag = e.target.attributes.getNamedItem('tttag').value;
+                        TT.editToolTagOn = tttag;
+                        document.getElementById(editorDiv.id + '_textarea').value = TT.fn.getData2JSON(tttag);
+                        rtDiv.fnUpdateTag();
+                    }
+                    if(tcls.indexOf('btnSaveTTDataEditTool')>=0){
+                        TT.fn.saveDataJSON2Data(TT.editToolTagOn, document.getElementById(editorDiv.id + '_textarea').value);
+                        TT.msg.show('已更新 TT.data.' + TT.editToolTagOn + ' 的資料');
+                    }
+                    if(tcls.indexOf('btnRebuildTimeTableUI')>=0){
+                        TT.ui.createTimeTable();
+                    }
+                }, false);
+                
+                rtDiv.appendChild(tagDiv);
+                rtDiv.tagDiv = tagDiv;
+                rtDiv.appendChild(editorDiv);
+                rtDiv.editorDiv = editorDiv;
+                return rtDiv;
+            })(TT.ui.center.tool.dataDiv);
+        },
+        createHeader: function(){
+            var dom = document.createElement('div');
+            dom.id = 'tt_headerBar';
+            document.body.appendChild(dom);
+            dom.className = 'headerBar';
+            
+            TT.ui.buttonHome = TT.ui.createHeaderButton({id: 'tt_hdBtn_home', text: '主頁', clickFn: function(e){TT.ui.setCenterActive('home');}});
+            TT.ui.buttonTimeTable = TT.ui.createHeaderButton({id: 'tt_hdBtn_timeTable', text: '無縫接軌時刻表', clickFn: function(e){TT.ui.setCenterActive('timeTable');}});
+            TT.ui.buttonTool = TT.ui.createHeaderButton({id: 'tt_hdBtn_tool', text: '工具', clickFn: function(e){TT.ui.setCenterActive('tool');}});
+            
+            dom.appendChild(TT.ui.buttonHome);
+            dom.appendChild(TT.ui.buttonTimeTable);
+            dom.appendChild(TT.ui.buttonTool);
+        },
+        createButton: function(cfg){
+            //cfg = id, text, cls(class), clickFn
+            if(!cfg.cls){cfg.cls = ' systemButton';}
+            var div = document.createElement('div');
+            div.className = cfg.cls;
+            div.id = cfg.id;
+            div.innerHTML = '<span>' + cfg.text + '</span>';
+            div.addEventListener('click', cfg.clickFn);
+            if(cfg.appendT){
+                if(cfg.appendT == 'body'){
+                    document.body.appendChild(dom);
+                }else{
+                    document.getElementById(cfg.appendT).appendChild(div);
+                }
+            }
+            return div;
+        },
+        createSystemButton: function(cfg){
+            if(!cfg.cls){cfg.cls = '';}
+            cfg.cls = cfg.cls + ' systemButton';
+            return TT.ui.createButton(cfg);
+        },
+        createHeaderButton: function(cfg){
+            if(!cfg.cls){cfg.cls = '';}
+            cfg.cls = cfg.cls + ' headerButton';
+            return TT.ui.createButton(cfg);
+        },
+        createStatus: function(){
+            var dom = document.createElement('div');
+            dom.id = 'tt_statusBar';
+            document.body.appendChild(dom);
+            dom.className = 'statusBar';
+            TT.ui.statusBar = dom;
+        },
+        createTakeFindButton: function(cfg){
+            cfg = cfg || {};
+            if(!cfg.id) cfg.id = TT.ui.genRandomId();
+            if(!cfg.text) cfg.text = '尋找';
+            if(!cfg.cls) cfg.cls = '';
+            if(!cfg.btnCls) cfg.btnCls = '';
+            if(!cfg.clickFn){
+                cfg.clickFn = function(){
+                    TT.ui.findTrain();
+                }
+            }
+            
+            var btn = document.createElement('button');
+            btn.id = cfg.id;
+            btn.className = cfg.btnCls + ' findButton';
+            btn.innerHTML = cfg.text;
+            btn.addEventListener('click', cfg.clickFn);
+            
+            var div = document.createElement('div');
+            div.className = cfg.cls + ' findButtonDiv';
+            div.id = cfg.id+'_div';
+            
+            div.appendChild(btn);
+            
+            if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
+            return div;
+        },
+        createPreSetting: function(cfg){
+            cfg = cfg || {};
+            if(!cfg.id) cfg.id = TT.ui.genRandomId();
+            
+            var div = document.createElement('div');
+            div.id = cfg.id;
+            div.className = 'preSetting';
+            div.innerHTML = '<div class="title">預先調整參數</div>' +
+            '<div><span>' +
+                '<button class="transStationWalkTimeWindow">' + '我在每個轉乘站的步行時間' + '</button>' +
+            '</span></div>';
+            div.addEventListener('click', function(e){
+                if(e.target.className=='transStationWalkTimeWindow') TT.ui.transStationWalkTimeWindow.show();
+            }, false);
+            if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
+            return div;
+        },
+        createTakeStation: function(cfg){
+            cfg = cfg || {};
+            if(!cfg.id) cfg.id = TT.ui.genRandomId();
+            
+            var traAry = new Array(), trtcAry = new Array(), allAry = new Array(), tmpA;
+            for(var i=0; i<TT.data.tra.line.length; i++){
+                for(var j=0; j<TT.data.tra.line[i].station.length; j++){
+                    tmpA = TT.fn.getTRA_stationDataOfID(TT.data.tra.line[i].station[j], TT.data.tra.line[i].id);
+                    traAry.push(tmpA);
+                    allAry.push(tmpA);
+                }
+            }
+            for(var i=0; i<TT.data.trtc.line.length; i++){
+                for(var j=0; j<TT.data.trtc.line[i].station.length; j++){
+                    tmpA = TT.fn.getTRTC_stationDataOfID(TT.data.trtc.line[i].station[j], TT.data.trtc.line[i].id);
+                    trtcAry.push(tmpA);
+                    allAry.push(tmpA);
+                }
+            }
+            if(!TT.ui.mapSelector) TT.ui.mapSelector = new TT.lib.classMapSelector();
+            
+            if(!cfg.fieldText) cfg.fieldText = '';
+            if(!cfg.fieldStartText) cfg.fieldStartText = '出發站:';
+            if(!cfg.fieldEndText) cfg.fieldEndText = '到達站:';
+            var div = document.createElement('div');
+            div.id = cfg.id;
+            
+            var optSt = (function(){
+                var company, cmpStr = '', lineC, rt='';
+                for(var i=0; i<allAry.length; i++){
+                    company = TT.fn.getCompanyOfStation(allAry[i].id);
+                    lineC = (allAry[i].byLine) ? 'background-color:' + TT.fn.getCommon_lineColor(allAry[i].byLine) + ';' : '';
+                    cmpStr = '(' + company.toUpperCase() + ')';
+                    rt += '<option value="' + allAry[i].id + '" style="' + lineC + 'color:#EEF;">' + allAry[i].name + cmpStr + '</option>';
+                }
+                return rt;
+            })();
+            
+            var fieldTextDiv = (cfg.fieldText=='') ? '' : '<div id="' + div.id + '_fieldText">' + '<span>' + cfg.fieldText + '</span>' + '</div>';
+            div.innerHTML = fieldTextDiv +
+            '<div class="selectStationOut">' +
+                '<div class="selectStationIn" id="' + cfg.id + '_in">' +
+                    '<span>' + cfg.fieldStartText + '</span>' +
+                    '<span><select id="' + cfg.id + '_start">' + optSt + '</select></span>' +
+                    '<div style="display:inline-block; width:30px;"></div>' + 
+                    '<span>' + cfg.fieldEndText + '</span>' +
+                    '<span><select id="' + cfg.id + '_end">' + optSt + '</select></span>' +
+                '</div>' +
+            '</div>';
+            
+            if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
+            
+            div.fnGetStart = function(){
+                return document.getElementById(cfg.id + '_start').value;
+            }
+            div.fnGetEnd = function(){
+                return document.getElementById(cfg.id + '_end').value;
+            }
+            div.fnSetStart = function(val){
+                return document.getElementById(cfg.id + '_start').value = val;
+            }
+            div.fnSetEnd = function(val){
+                return document.getElementById(cfg.id + '_end').value = val;
+            }
+            
+            return div;
+            
+        },
+        createTakeTimeFindDepArr: function(cfg){
+            cfg = cfg || {};
+            if(!cfg.id) cfg.id = TT.ui.genRandomId();
+            if(!cfg.flagAD) cfg.flagAD = true;//true=Dep, Default Dep
+            if(!cfg.fieldText) cfg.fieldText = '';
+            if(!cfg.fieldDepText) cfg.fieldDepText = '出發的列車';
+            if(!cfg.fieldArrText) cfg.fieldArrText = '到達的列車';
+            var div = document.createElement('div');
+            div.id = cfg.id;
+            
+            var f0ck = (cfg.flagAD) ? '' : ' checked';
+            var f1ck = (cfg.flagAD) ? ' checked' : '';
+            
+            var fieldTextDiv = (cfg.fieldText=='') ? '' : '<div id="' + div.id + '_fieldText">' + '<span>' + cfg.fieldText + '</span>' + '</div>';
+            div.innerHTML = fieldTextDiv +
+            '<div class="radioAD" id="' + cfg.id + '">' +
+                '<input type="radio" name="' + cfg.id + '_gp" value="1" id="' + cfg.id + '_1" ' + f1ck + '>' + '</span>' + cfg.fieldDepText + '</span>' +
+                '<div style="display:inline-block;width: 50px;"></div>' +
+                '<input type="radio" name="' + cfg.id + '_gp" value="0" id="' + cfg.id + '_0" ' + f0ck + '>' + '</span>' + cfg.fieldArrText + '</span>' +
+            '</div>';
+            
+            div.fnGetValue = function(){
+                return document.getElementById(cfg.id+'_1').checked;
+            }
+            
+            if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
+            
+            return div;
+        },
+        createTakeTimeSelect: function(cfg){
+            cfg = cfg || {};
+            if(!cfg.id) cfg.id = TT.ui.genRandomId();
+            if(!cfg.cls) cfg.cls = '';
+            if(!cfg.fieldText) cfg.fieldText = '';
+            if(!cfg.fieldStartText) cfg.fieldStartText = '從這個時間開始：';
+            if(!cfg.fieldEndText) cfg.fieldEndText = '到這個時間為止：';
+            var div = document.createElement('div');
+            div.id = cfg.id;
+            
+            var hourOpt = (function(){
+                var rt = '', tmp='';
+                for(var i=0; i<24; i++){
+                    tmp = TT.fn.transNum2StrA(i);
+                    rt += '<option value="' + tmp + '">' + tmp + '</option>';
+                }
+                return rt;
+            })();
+            
+            var minOpt = (function(){
+                var rt = '', tmp='';
+                for(var i=0; i<60; i+=5){
+                    tmp = TT.fn.transNum2StrA(i);
+                    rt += '<option value="' + tmp + '">' + tmp + '</option>';
+                }
+                return rt;
+            })();
+            
+            var fieldTextDiv = (cfg.fieldText=='') ? '' : '<div id="' + div.id + '_fieldText">' + '<span>' + cfg.fieldText + '</span>' + '</div>';
+            div.innerHTML = fieldTextDiv +
+            '<div class="selectTimeOut">' +
+                '<div class="selectTimeIn" id="' + cfg.id + '_startTimeDiv">' +
+                    '<span>' + cfg.fieldStartText + '</span>' +
+                    '<span><select id="' + cfg.id + '_startHour">' + hourOpt + '</select></span>' +
+                    '<span>:</span>' + 
+                    '<span><select id="' + cfg.id + '_startMin">' + minOpt + '</select></span>' +
+                '</div>' +
+                '<div class="selectTimeIn" id="' + cfg.id + '_endTimeDiv">' +
+                    '<span>' + cfg.fieldEndText + '</span>' +
+                    '<span><select id="' + cfg.id + '_endHour">' + hourOpt + '</select></span>' +
+                    '<span>:</span>' + 
+                    '<span><select id="' + cfg.id + '_endMin">' + minOpt + '</select></span>' +
+                '</div>' +
+            '</div>';
+            
+            var sh = cfg.id + '_startHour', sm = cfg.id + '_startMin', eh = cfg.id + '_endHour', em = cfg.id + '_endMin';
+            
+            div.fnGetStartTime = function(){
+                var h = document.getElementById(sh).value;
+                var m = document.getElementById(sm).value;
+                return h + ':' + m + ':00';
+            }
+            div.fnGetEndTime = function(){
+                var h = document.getElementById(eh).value;
+                var m = document.getElementById(em).value;
+                return h + ':' + m + ':00';
+            }
+            div.fnSetStartTime = function(val){
+                var aryA = val.split(':');
+                document.getElementById(sh).value = aryA[0];
+                document.getElementById(sm).value = aryA[1];
+                return true;
+            }
+            div.fnSetEndTime = function(val){
+                var aryA = val.split(':');
+                document.getElementById(eh).value = aryA[0];
+                document.getElementById(em).value = aryA[1];
+                return true;
+            }
+            
+            if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
+            
+            return div;
+        },
+        createWeekSelect: function(cfg){
+            cfg = cfg || {};
+            if(!cfg.id) cfg.id = TT.ui.genRandomId();
+            if(!cfg.cls) cfg.cls = '';
+            if(!cfg.fieldText) cfg.fieldText = '星期幾要搭乘呢？';
+            var div = document.createElement('div');
+            div.id = cfg.id;
+            
+            var weekOpt = (function(){
+                var rt = '', sty = '', weekStringAry = TT.defined.weekStringAry;
+                for(var i=0; i<7; i++){
+                    sty = (i==0) ? ' style="background-color:#FFAABC;"' : (i==6) ? ' style="background-color:#44DFAA;"' : ' style="background-color:#EEE;"'
+                    rt += '<option value="' + i + '" ' + sty + '>' + weekStringAry[i] + '</option>';
+                }
+                return rt;
+            })();
+            
+            div.innerHTML = '' +
+            '<div class="selectWeekOut">' +
+                '<div class="selectWeekIn" id="' + cfg.id + '_startTimeDiv">' +
+                    '<span>' + cfg.fieldText + '</span>' +
+                    '<span><select id="' + cfg.id + '_selector">' + weekOpt + '</select></span>' +
+                '</div>' +
+            '</div>';
+            
+            if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
+            
+            div.fnSetDay = function(val){
+                val = val.toString();
+                document.getElementById(cfg.id + '_selector').value = val;
+                return val;
+            }
+            div.fnGetDay = function(){
+                return document.getElementById(cfg.id + '_selector').value;
+            }
+            
+            return div;
+        
+        },
+        createTrainRouteSelectBox: function(aryRoute){
+            var rDiv = TT.ui.center.timeTable.displayDiv.routeDiv;
+            var routeBy = '', routeP, tmpS = '', st = '', ht ='', ckDom, hDiv = document.createElement('div');
+            for(var tc=0; tc<aryRoute.length; tc++){
+                routeP = aryRoute[tc];
+                routeBy = ''; st = ''; tmpS='';
+                for(var i=0; i<routeP.length; i++){
+                    if(routeP[i].transStation){
+                        tmpS += '<div class="stag">' + routeP[i].transStation.name + '</div>';
+                    }
+                }
+                st = '經由' + ' ' + tmpS;
+                if(routeP.length==1 && !(routeP[0].transStation)) st = '<span style="background-color:' + TT.fn.getCommon_lineColor(routeP[0].line) + ';" class="stag">' + TT.fn.getCommon_lineName(routeP[0].line) + '</span>' + '直達';
+                routeBy = '<div class="tt_ck_route_sh">' +
+                    '<input type="checkbox" id="tt_timeTable_ckRoute_' + tc + '" class="ckRoute" checked>' + st +
+                '</div>';
+                ht += routeBy;
+            }
+            hDiv.innerHTML = ht;
+            rDiv.appendChild(hDiv);
+            for(var tc=0; tc<aryRoute.length; tc++){
+                ckDom = document.getElementById('tt_timeTable_ckRoute_' + tc);
+                ckDom.addEventListener('change', function(e){
+                    var ckcss = e.target.id.replace('tt_timeTable_ckRoute_','.tt_search_route_css_');
+                    if(e.target.checked==true){
+                        $(ckcss).show();
+                    }else{
+                        $(ckcss).hide();
+                    }
+                }, false);
+            }
+        },
+        createTrainRouteTimeBox: function(routeP, ct, renderID){
+            if(!renderID) renderID = TT.ui.center.timeTable.displayDiv.trainDiv.id;
+            var id = 'timeTableTrainRouteBox_' + ct;
+            var div = document.createElement('div');
+            div.className = 'timeTableTrainRouteBox' + ' tt_search_route_css_' + routeP.routeIndex;
+            div.id = id;
+            
+            function createTimeBox(tbd, startTime, endTime){
+                if(tbd.doNotTakeTrain) return '';
+                var st = Math.ceil(TT.fn.transTime2Sec(startTime)/60),
+                    ed = Math.ceil(TT.fn.transTime2Sec(endTime)/60),
+                    min;
+                
+                if(ed < st) ed = 1440 + ed;
+                min = ed - st;
+                
+                return '<div class="timeBox">' +
+                    '<div class="value start">' + TT.fn.transTime2HM(startTime) + '</div>' +
+                    '<div class="deep"><div class="minute">' + min + '分' + '</div></div>' +
+                    '<div class="value end">' + TT.fn.transTime2HM(endTime) + '</div>' +
+                '</div>';
+            }
+            function createStationBox(tbd, a, b, line){
+                var aObj = TT.fn.getCommon_stationDataOfID(a);
+                var bObj = TT.fn.getCommon_stationDataOfID(b);
+                if(tbd.doNotTakeTrain) return aObj.name;
+                
+                return '<div class="stationBox">' +
+                    '<div class="value from">' + aObj.name + '</div>' +
+                    '<div class="deep"><div class="line_color ' + line + '"><div class="bd"></div></div>' + '</div>' +
+                    '<div class="value to">' + bObj.name + '</div>' +
+                '</div>';
+            }
+            
+            function createInfoBox(tbd, info, line){
+                if(tbd.doNotTakeTrain) return '';
+                var rt = '';
+                if(TT.fn.getCompanyOfStation(line)=='tra'){//TRA info
+                    var se = '', st = TT.fn.getTRA_stationDataOfID('tra_' + info['TimeInfo'][0].Station).name,
+                        ed = TT.fn.getTRA_stationDataOfID('tra_' + info['TimeInfo'][info['TimeInfo'].length-1].Station).name;
+                    if(st && ed) se = '<div>' + '[' + st + ' -&gt; ' + ed + ']' + '</div>';
+                    rt = '<div class="infoBox">' +
+                        se +
+                        '<div>' + '車次: ' + info['Train'] + '</div>' +
+                        '<div>' + '車種: ' + TT.fn.getTRA_carClassName(info['CarClass'], {color: true}) + '</div>' +
+                    '</div>';
+                }else if(TT.fn.getCompanyOfStation(line)=='trtc'){
+                    var trtcSpe = '捷運到站時間是以官方站間行駛時間做相對計算。';
+                    var outArea=TT.fn.getTRTC_stationOnOutArea(tbd.takeRange[0], tbd.takeRange[1], line);
+                    if(outArea){
+                        trtcSpe = '請留意是否需在<span class="defineFontStyle1">' + TT.fn.getTRTC_stationDataOfID(outArea.transAt).name + '</span>改搭下一班車，因目的地並非每班車都有到。';
+                    }
+                    rt = '<div class="infoBox">' +
+                        '<span class="trtcArriveTimeInfo">' + trtcSpe + '</span>' +
+                    '</div>';
+                }
+                return rt;
+            }
+            
+            function createLineBox(tbd, line){
+                var rt = '',
+                    name = TT.fn.getCommon_lineName(line),
+                    color = TT.fn.getCommon_lineColor(line);
+                var ary = name.split(']');
+                rt = ary[0] + ']' + '<span style="color:' + color + ';">' + ary[1] + '</span>';
+                return rt;
+            }
+            
+            function createTransStationBox(ts){
+                return '轉乘步行時間: ' + ts.walkMinute + '分鐘';
+            }
+            
+            var hDiv = document.createElement('div');
+            hDiv.className = 'header';
+            hDiv.innerHTML = '<div class="sub num">' + 'NO. ' + '<span class="val">' + (ct+1) + '</span>' + '</div>' + 
+                '<div class="sub count">' + '轉乘次數: ' + '<span class="val">' + (routeP.routeMap.length-1) + '</span>' + '</div>' + 
+                '<div class="sub totalTime">' + '花費時間: ' + '<span class="val">' + routeP.travelMinute + ' 分鐘' + '</span>' + '</div>' +
+                '<div class="sub startTime">' + '開始時間: ' + '<span class="val">' + routeP.travelStartTime + '</span>' + '</div>' +
+                '<div class="sub endTime">' + '到達時間: ' + '<span class="val">' + routeP.travelEndTime + '</span>' + '</div>' +
+                '<div class="sub backTop">' + '回到頂端 ' + '</div>';
+            
+            hDiv.addEventListener('click', function(e){
+                var dom = e.target;
+                if(dom.className.indexOf('backTop')>0){
+                    TT.ui.bodyScroll(0);
+                }
+            }, false);
+            var tDiv = document.createElement('div');
+            var tTD = (function(){
+                var td = '', tbd;
+                for(var i=0; i<routeP.routeMap.length; i++){
+                    tbd = routeP.routeMap[i];
+                    td += '<tr>' +
+                        '<td class="sect">' + (i+1) + '</td>' +
+                        '<td class="time">' + createTimeBox(tbd, tbd.time[0], tbd.time[1]) + '</td>' +
+                        '<td class="station">' + createStationBox(tbd, tbd.takeRange[0], tbd.takeRange[1], tbd.line) + '</td>' +
+                        '<td class="info">' + createInfoBox(tbd, tbd.info, tbd.line) + '</td>' +
+                        '<td class="line">' + createLineBox(tbd, tbd.line) + '</td>' +
+                        '<td class="other">' + '' + '</td>' +
+                    '</tr>';
+                    if(tbd.transStation){
+                        td += '<tr>' +
+                            '<td></td>' +
+                            '<td class="time"></td>' +
+                            '<td colspan="3" class="transStation">' + createTransStationBox(tbd.transStation) + '</td>' +
+                            '<td></td>' +
+                        '</tr>';
+                    }
+                }
+                return td;
+            })();
+            tDiv.innerHTML = '<table class="table" cellspacing="5" cellpadding="6">' +
+                '<tr>' +
+                    '<th class="sect">' + '區段' + '</td>' +
+                    '<th class="time">' + '列車時刻' + '</td>' +
+                    '<th class="station">' + '車站' + '</td>' +
+                    '<th class="info">' + '列車資訊' + '</td>' +
+                    '<th class="line">' + '路線資訊' + '</td>' +
+                    '<th class="other">' + '其他' + '</td>' +
+                '</tr>' +
+                tTD +
+            '</table>';
+            div.appendChild(hDiv);
+            div.appendChild(tDiv);
+            document.getElementById(renderID).appendChild(div);
+        },
+        createTransStationWalkTimeWindow: function(){
+            var id = 'tt_transStationWalkTimeWindow:';
+            if(!TT.ui.transStationWalkTimeWindow){
+                
+                function updateCDiv(){
+                    var aryT = TT.data.transStation, ht='', mt='', st='', st1='', st2='', inputID='';
+                    for(var i=0; i<aryT.length; i++){
+                        mt = '在<span class="stationName">{st}</span>往返{st1}與{st2}間的步行時間';
+                        st = aryT[i].name;
+                        st1 = TT.fn.getCommon_lineName(aryT[i]["changeLine"][0]);
+                        st2 = TT.fn.getCommon_lineName(aryT[i]["changeLine"][1]);
+                        mt = mt.replace('{st}',st).replace('{st1}',st1).replace('{st2}',st2);
+                        ht += '<div><input class="minute" type="text" id="' + id + aryT[i].id + '" value="' + aryT[i].walkMinute + '"><span>' + '分鐘' + ' , ' + mt + '</span></div>';
+                    }
+                    cDiv.innerHTML = ht;
+                }
+                
+                function updateData(){
+                    var aryT = TT.data.transStation, stid='', domA;
+                    for(var i=0; i<aryT.length; i++){
+                        stid = aryT[i].id;
+                        domA = document.getElementById(id + stid);
+                        if(domA){
+                            aryT[i].walkMinute = parseInt(domA.value, 10);
+                        }
+                    }
+                }
+                
+                var cDiv = TT.ui.createDiv(id + 'c', 'contentBox');
+                var bDiv = TT.ui.createDiv(id + 'b', 'buttonBox');
+                bDiv.innerHTML = '<span><button id="' + id + 'save">' + '儲存' + '</button></span>' +
+                    '<span><button id="' + id + 'cancel">' + '取消' + '</button></span>';
+                bDiv.addEventListener('click', function(e){
+                    var bid= e.target.id.replace(id,'');
+                    if(bid=='save'){
+                        updateData();
+                        win.close();
+                    }
+                    if(bid=='cancel'){
+                        win.close();
+                    }
+                },false);
+                var win = new TT.lib.classWindow({
+                    id: id,
+                    items: [cDiv, bDiv],
+                    mask: true,
+                    cls: 'transStationWalkTimeWindow',
+                    onShow: function(thisA){
+                        TT.ui.centerTimeTableDisplayDivClear();
+                        updateCDiv();
+                        thisA.resetPosition();
+                    }
+                });
+                TT.ui.transStationWalkTimeWindow = win;
+            }
+        },
+        findTrain: function(cbFn){
+            var w = TT.ui.center.timeTable.controlDiv.weekSelectDiv.fnGetDay();
+            function fnAfterCheck(){
+                
+                var controlDiv = TT.ui.center.timeTable.controlDiv;
+                var startTime = controlDiv.timeSelectDiv.fnGetStartTime();
+                var endTime = controlDiv.timeSelectDiv.fnGetEndTime();
+                var flagAD = controlDiv.depArrDiv.fnGetValue();
+                var a = controlDiv.stationSelectDiv.fnGetStart();
+                var b = controlDiv.stationSelectDiv.fnGetEnd();
+                //var w = controlDiv.weekSelectDiv.fnGetDay();
+                
+                var aryRoute = TT.fn.getCommon_timeRangeBestByFromTo(a,b,startTime,endTime,flagAD,w);
+                TT.ui.printStatus('尋找列車班次完成');TT.msg.show('尋找完成',200);
+                TT.ui.printTrain(aryRoute, cbFn);
+                
+                localStorage.setItem('defaultFromStation', a);
+                localStorage.setItem('defaultToStation', b);
+                localStorage.setItem('defaultStartTime', startTime);
+                localStorage.setItem('defaultEndTime', endTime);
+            }
+            
+            function fnCheck(){
+                var a1 = TT.fn.checkTRA_dayTimeIsLoaded(w);
+                if(!a1){
+                    TT.fn.getTRA_TimeTable2Data(w, fnCheck);
+                    return false;
+                }
+                var a2 = TT.fn.checkTRTC_rnwTimeTableIsLoaded();
+                if(!a2){
+                    TT.fn.getTRTC_timeTable2Data(fnCheck);
+                    return false;
+                }
+                fnAfterCheck();
+            }
+            fnCheck();
+        },
+        genRandomId: function(){
+            return 'ttGenID_' + TT.ui.randomIdNum++;;
+        },
+        getCenterPage: function(str){
+            for(var k in TT.ui.center){
+                if(TT.ui.center[k].id == 'tt_' + str){
+                    return TT.ui.center[k];
+                }
+            }
+            return false;
+        },
+        getCenterActive: function(){
+            for(var k in TT.ui.center){
+                if(TT.ui.center[k].className.indexOf('show')>=0){
+                    return TT.ui.center[k];
+                }
+            }
+            return false;
+        },
+        setCenterActive: function(str){
+            for(var k in TT.ui.center){
+                TT.ui.center[k].className = TT.ui.center[k].className.replace(' show','');
+                if(TT.ui.center[k].id == 'tt_' + str){
+                    var dom = TT.ui.center[k];
+                    TT.ui.center[k].className = TT.ui.center[k].className + ' show';
+                }
+            }
+            return dom;
+        },
+        mask: function(str){
+            if(TT.ui.maskDiv.className.indexOf('show')<0){
+                TT.ui.maskDiv.className = TT.ui.maskDiv.className + ' show';
+            }
+            if(str){
+                TT.ui.maskText.innerHTML = str;
+            }else{
+                TT.ui.maskText.innerHTML = TT.defined.defaultMaskText;
+            }
+        },
+        unmask: function(){
+            TT.ui.maskDiv.className = TT.ui.maskDiv.className.replace(' show','');
+        },
+        msg: (function(){
+            var rt = {};
+            rt.show = function(str, delay){
+                delay = (delay) ? delay : 3000;
+                var div = TT.ui.createDiv('_gen', 'msg show', 'body');
+                div.innerHTML = str;
+                var divWidth = div.offsetWidth, divHeight = div.offsetHeight;
+                var dw = TT.fn.getDocumentWidth(), dh = TT.fn.getDocumentHeight();
+                div.style.top = (dh - divHeight) / 2 + 'px';
+                div.style.left = (dw - divWidth) / 2 + 'px';
+                var time1 = setTimeout(function(){
+                    div.className += ' afterEffect';
+                },delay);
+                var time2 = setTimeout(function(){
+                    document.body.removeChild(div);
+                },delay+1000);
+                div.addEventListener('click', function(e){
+                    clearTimeout(time1);
+                    clearTimeout(time2);
+                    document.body.removeChild(div);
+                }, false);
+                return div;
+            }
+            rt.alert = function(st){
+                alert(st);
+            }
+            
+            return rt;
+        })(),
+        printStatus: function(str){
+            TT.ui.statusBar.innerHTML = str;
+        },
+        printTrain: function(aryRoute, cbFn){
+            var controlDiv = TT.ui.center.timeTable.controlDiv;
+            var startTime = controlDiv.timeSelectDiv.fnGetStartTime();
+            var endTime = controlDiv.timeSelectDiv.fnGetEndTime();
+            var flagAD = controlDiv.depArrDiv.fnGetValue();
+            var a = controlDiv.stationSelectDiv.fnGetStart();
+            var b = controlDiv.stationSelectDiv.fnGetEnd();
+            
+            var fRouteAry = TT.fn.mixAllRoute(aryRoute, flagAD);
+            TT.now = {
+                totalRoute: aryRoute,
+                sortRoute: fRouteAry
+            }
+            
+            var tDiv;
+            //Clear Old
+            document.getElementById(TT.ui.center.timeTable.displayDiv.routeDiv.id).innerHTML = '';
+            document.getElementById(TT.ui.center.timeTable.displayDiv.trainDiv.id).innerHTML = '';
+            TT.ui.createTrainRouteSelectBox(aryRoute);
+            for(var i=0; i<fRouteAry.length; i++){
+                tDiv = TT.ui.createTrainRouteTimeBox(fRouteAry[i], i);
+            }
+            if(fRouteAry.length==0) TT.msg.show('糟糕，系統找不到這個時間內的列車！');
+        },
+        transWeekToString: function(w){
+            w = parseInt(w,10);
+            var ary = ['日','一','二','三','四','五','六'];
+            return '星期' + ary[w];
+        },
+        updateCenter: function(cmd){
+            if(!cmd || /home/g.test(cmd)){
+                var aryCkWeekLoaded = $('.center .home .frameA.tra div.ckWeekLoaded').hide();
+                if(TT.data.tra.timeTable){
+                    for(var i=0; i<TT.data.tra.timeTable.length; i++){
+                        if(TT.fn.checkTRA_dayTimeIsLoaded(i)){
+                            document.getElementById('tt_home_tra_ckWeekLoaded_' + i).style.display = '';
+                        }
+                    }
+                }
+                TT.data.tra.timeTable
+            }
+        }
+    }
+    
+    TT.msg = TT.ui.msg;
+    TT.initFn = function(){
+        TT.ui.createBaseDiv();
+        TT.ui.createHeader();
+        TT.ui.createStatus();
+        
+        TT.ui.createHome();
+        TT.ui.createTimeTable();
+        TT.ui.createTool();
+        TT.ui.setCenterActive('timeTable');//home
+        TT.ui.updateCenter();
+        TT.msg.show('歡迎使用無縫接軌前導網頁。',2000);
+        
+        
+        //TT.fn.getTRA_TimeTable2Data(TT.defined.defaultTRAWeekday);//Default get TRA weekday time
+        //TT.fn.getTRTC_timeTable2Data();//Initital get TRTC time
+    }
+        
+    return TT;
+})()
+
+</script>
+<!-- -->
+<!-- -->
+</head>
+<body onload="TT.initFn()">
+</body>
 </html>
-
