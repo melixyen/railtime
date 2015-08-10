@@ -79,6 +79,26 @@ body {
     padding: 5px;
 }
 
+.centerPage .selectStationOut .selectStationIn .selectStationByLine,
+.centerPage .selectStationOut .selectStationIn .selectStationExchange{
+    display: inline-block;
+    border: 2px solid #1A2;
+    border-radius: 10px;
+    background-color: #2E3;
+    color: #131;
+    padding: 0px 8px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+.centerPage .selectStationOut .selectStationIn .selectStationExchange{
+    border: 2px solid #7CE;
+    background-color: #8EF;
+    color: #357;
+}
+#ttc_stationSelect_start, #ttc_stationSelect_end{
+    background-color: #EEF;
+}
+
 .center .frameA{
     border: 1px solid #2E9CB5;
     margin: 10px auto;
@@ -108,7 +128,7 @@ body {
     background-color: #FCF9FD;
     border-bottom: 1px solid #4A4C55;
     margin: 0px;
-    min-height: 50px;
+    min-height: 80px;
     width: 100%;
 }
 .center .ttbDisplay .train{
@@ -124,6 +144,26 @@ body {
     padding-bottom: 5px;
 }
 
+.define_rail_bgcolor_tra_xibu, .define_rail_bgcolor_trtc_2, .define_rail_bgcolor_trtc_3, .define_rail_bgcolor_trtc_4, .define_rail_bgcolor_trtc_5{
+    color: #EEF !important;
+}
+.define_rail_bgcolor_tra_xibu{
+    background-color: #000050 !important;
+}
+.define_rail_bgcolor_trtc_2{
+    background-color: #cb2c30 !important;
+}
+.define_rail_bgcolor_trtc_3{
+    background-color: #007749 !important;
+}
+.define_rail_bgcolor_trtc_4{
+    background-color: #ffa300 !important;
+    color: #555 !important;
+}
+.define_rail_bgcolor_trtc_5{
+    background-color: #005eb8 !important;
+}
+
 .tt_ck_route_sh{
     display:inline-block; border:1px solid #222;
     background-color: #EFBCDF;
@@ -135,6 +175,38 @@ body {
     border:1px solid #812;
     display:inline-block;
     margin-right: 8px;
+}
+
+.tt_ck_sortby_sh{
+    display:inline-block; 
+    border:1px solid #29A;
+    border-radius: 8px;
+    background-color: #AFBCBF;
+    margin: 5px 10px;
+    padding: 1px 5px 1px 8px;
+    cursor: pointer;
+    position: relative;
+}
+.tt_ck_sortby_sh.select{
+    border:1px solid #2A9;
+    border-left: 20px solid #3E4;;
+    background-color: #AFECAF;
+    color: #5C1B6F;
+}
+.helpForSortBySelectButton .arrow, .helpForRouteCheckBox .arrow{
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    border-right: 8px solid #2A9;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    margin-right: 5px;
+}
+.helpForSortBySelectButton{
+    color: #FEFEFE;
+}
+.helpForRouteCheckBox{
+    color: #2B3D9A;
 }
 
 .timeTableTrainRouteBox{
@@ -366,8 +438,9 @@ body {
 
 .ttMapSelector{
     display: inline-block;
-    padding: 5px;
+    padding: 5px 5px 50px 5px;
     background-color: #FFF;
+    background-color: rgba(255,255,255,0.88);
     border: none;
     position: absolute;
     top: 0px;
@@ -377,6 +450,47 @@ body {
     position: relative;
     left: 0px;
     top: 20px;
+}
+.line_selector{
+    position: relative;
+}
+.line_selector .allLine{
+    color: #FFF;
+    font-size: 160%;
+    width: 300px;
+    max-width: 300px;
+    float: left;
+    left: 20px;
+    top: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.line_selector .allLine .lineName{
+    height: 30px;
+    line-height: 28px;
+    border-top: 0px solid transparent;
+    padding-left: 10px;
+}
+.line_selector .allLine .lineName.select{
+    border-right: 0px solid transparent;
+}
+.line_selector .allStation{
+    color: #FFF;
+    font-size: 160%;
+    width: 300px;
+    text-align: center;
+    max-width: 300px;
+    float: left;
+    left: 320px;
+    top: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.line_selector .allStation .stationName{
+    border-bottom: 2px solid #FFF;
+    height: 30px;
+    line-height: 28px;
+    margin: 0px 30px;
 }
 
 .transStationWalkTimeWindow .contentBox{
@@ -417,6 +531,7 @@ body {
 //      完成 createTrainRouteSelectBox 可勾選隱藏不想要經過的路徑
 //      完成 createWeekSelect 可以選擇使用星期幾去搜尋
 //      完成 getTRTC_stationOnOutArea 可查詢 TRTC 站是否在非重疊區
+//      完成 classMapSelector 路線挑選器基礎視窗
 var TT = (function(){
 
     var TT = {//name space TT for TimeTable
@@ -427,6 +542,7 @@ var TT = (function(){
         defaultCrossDayTime: '04:00:00',
         defaultTRAWeekday: '2',
         defaultMaskText: 'Loading...',
+        railBgcolor: 'define_rail_bgcolor_',
         stringOfTRA: '台灣鐵路局',
         stringOfTRASimple: '台鐵',
         stringOfTRTC: '台北捷運',
@@ -442,6 +558,18 @@ var TT = (function(){
             "版本": "Alpha 0.1.4",
             "產生日期": "2015/08/06"
         },
+        GetP: (function(){
+            var s = location.search, aryParam, tmpParam, rt;
+            if(s.indexOf('?')!=-1){
+                rt = {};
+                aryParam = s.split('?')[1].split('&');
+                aryParam.map(function(tmpA){
+                    tmpParam = tmpA.split('=');
+                    rt[tmpParam[0]] = tmpParam[1];
+                });
+            }
+            return rt;
+        })(),
         zxcv: 1
     }
     
@@ -973,222 +1101,6 @@ var TT = (function(){
             }
         ]
     }
-    
-    function classWindow(ucfg){
-        ucfg = ucfg || {};
-        defaultCfg = {
-            mask: false,
-            height: 'auto',
-            width: 'auto',
-            baseClass: ' ttWindow',
-            cls: '',
-            id: TT.ui.genRandomId(),
-            div: '',
-            items: [],
-            html: '',
-            renderTo: 'body',
-            onShow: function(){},
-            zIndex: '120'
-        }
-        var cfg = $.extend(defaultCfg, ucfg);
-        if(typeof(cfg.width)=='number') cfg.width = cfg.width + 'px';
-        if(typeof(cfg.height)=='number') cfg.height = cfg.height + 'px';
-        var me = this;
-        
-        me.el = document.createElement('div');
-        me.el.className = cfg.baseClass + ' ' + cfg.cls;
-        me.el.id = cfg.id;
-        me.el.style.zIndex = cfg.zIndex;
-        me.el.style.width = cfg.width;
-        me.el.style.height = cfg.height;
-        me.el.innerHTML = '<div class="inner" id="' + cfg.id + '_inner"></div><div class=" ttWindowClose" closeID="' + cfg.id + '">X</div>';
-        
-        me.getInner = function(){
-            return document.getElementById(cfg.id + '_inner');
-        }
-        me.setInnerHTML = function(html){
-            document.getElementById(cfg.id + '_inner').innerHTML = html;
-        }
-        
-        me.init = function(){
-            if(!document.getElementById(cfg.id)){
-                if(cfg.renderTo=='body'){
-                    document.body.appendChild(me.el);
-                }else{
-                    document.getElementById(cfg.renderTo).appendChild(me.el);
-                }
-                me.inner = me.getInner();
-                if(typeof(cfg.div)=='string'){
-                    me.inner.innerHTML = cfg.div;
-                }else{
-                    me.inner.appendChild(cfg.div);
-                }
-                
-                if(cfg.html != ''){me.inner.innerHTML = cfg.html;}
-                for(var i=0; i<cfg.items.length; i++){
-                    me.inner.appendChild(cfg.items[i]);
-                }
-            }
-            me.el.style.display = 'none';
-        }
-        
-        me.addClass = function(cls){
-            var ary = me.el.className.split(' ');
-            for(var i=0; i<ary.length; i++){
-                if(ary[i]==cls) return me.el.className;
-            }
-            me.el.className = me.el.className + ' ' + cls;
-            return me.el.className;
-        }
-        me.removeClass = function(cls){
-            var ary = me.el.className.split(' '), rt = '';;
-            for(var i=0; i<ary.length; i++){
-                if(ary[i]!=cls){
-                    rt += ' ' + ary[i];
-                }
-            }
-            me.el.className = rt;
-            return rt;
-        }
-        
-        me.resetPosition = function(){
-            var dh = TT.fn.getDocumentHeight(), dw = TT.fn.getDocumentWidth();
-            var wh = me.el.clientHeight, ww = me.el.clientWidth;
-            
-            var top = Math.ceil((dh-wh)/2);
-            var left = Math.ceil((dw-ww)/2);
-            
-            if(top < 0) top = 0;
-            if(left < 0) left = 0;
-            
-            me.setPosition(top, left);
-        }
-        me.setPosition = function(top,left){
-            me.el.style.top = top + 'px';
-            me.el.style.left = left + 'px';
-        }
-        
-        me.show = function(){
-            if(me.isShow) return false;
-            me.isShow = true;
-            me.init();
-            me.el.style.display = '';
-            me.resetPosition();
-            if(cfg.mask){
-                TT.ui.mask(' ');
-            }
-            cfg.onShow(me);
-        }
-        
-        me.close = function(){
-            me.el.style.display = 'none';
-            TT.ui.unmask();
-            me.isShow = false;
-        }
-        me.clickFn = function(e){
-            if(e.target.className.indexOf('ttWindowClose')>=0){
-                var id = e.target.attributes.getNamedItem('closeID');
-                me.close();
-            }
-        }
-        me.el.addEventListener('click', me.clickFn, false);
-    }
-    function classMapSelector(ucfg){
-        ucfg = ucfg || {};
-        defaultCfg = {
-            mask: false,
-            height: 'auto',
-            width: '95%',
-            baseClass: ' ttMapSelector',
-            cls: '',
-            id: TT.ui.genRandomId(),
-            items: [],
-            html: '',
-            isRendered: false,
-            onShow: function(){},
-            zIndex: '130'
-        }
-        var cfg = $.extend(defaultCfg, ucfg);
-        if(typeof(cfg.width)=='number') cfg.width = cfg.width + 'px';
-        if(typeof(cfg.height)=='number') cfg.height = cfg.height + 'px';
-        var me = this;
-        
-        me.el = document.createElement('div');
-        me.el.className = cfg.baseClass + ' ' + cfg.cls;
-        me.el.id = cfg.id;
-        me.el.style.zIndex = cfg.zIndex;
-        me.el.style.width = cfg.width;
-        me.el.style.height = cfg.height;
-        me.el.innerHTML = '<div class="main" id="' + cfg.id + '_main"></div><div class=" ttWindowClose" closeID="' + cfg.id + '">X</div>';
-        
-        me.init = function(){
-            if(!document.getElementById(cfg.id)){
-                document.body.appendChild(me.el);
-                me.isRendered = true;
-            }
-            me.el.style.display = 'none';
-        }
-        
-        me.addClass = function(cls){
-            var ary = me.el.className.split(' ');
-            for(var i=0; i<ary.length; i++){
-                if(ary[i]==cls) return me.el.className;
-            }
-            me.el.className = me.el.className + ' ' + cls;
-            return me.el.className;
-        }
-        me.removeClass = function(cls){
-            var ary = me.el.className.split(' '), rt = '';;
-            for(var i=0; i<ary.length; i++){
-                if(ary[i]!=cls){
-                    rt += ' ' + ary[i];
-                }
-            }
-            me.el.className = rt;
-            return rt;
-        }
-        
-        me.resetPosition = function(){
-            var dh = TT.fn.getDocumentHeight(), dw = TT.fn.getDocumentWidth();
-            var wh = me.el.clientHeight, ww = me.el.clientWidth;
-            
-            var top =40;
-            var left = Math.ceil((dw*0.025));
-            
-            me.setPosition(top, left);
-        }
-        me.setPosition = function(top,left){
-            me.el.style.top = top + 'px';
-            me.el.style.left = left + 'px';
-        }
-        
-        me.show = function(){
-            if(me.isShow) return false;
-            me.isShow = true;
-            me.init();
-            me.el.style.display = '';
-            me.resetPosition();
-            //TT.ui.mask(' ');
-            cfg.onShow(me);
-        }
-        
-        me.close = function(){
-            me.el.style.display = 'none';
-            //TT.ui.unmask();
-            me.isShow = false;
-        }
-        me.clickFn = function(e){
-            if(e.target.className.indexOf('ttWindowClose')>=0){
-                var id = e.target.attributes.getNamedItem('closeID');
-                me.close();
-            }
-        }
-        me.el.addEventListener('click', me.clickFn, false);
-    }
-    TT.lib = {
-        classWindow: classWindow,
-        classMapSelector: classMapSelector
-    }
 
     TT.fn = {
         /*makeMinOfAry: function(){
@@ -1252,6 +1164,29 @@ var TT = (function(){
         },
         getDocumentWidth: function(){
             return document.documentElement.clientWidth;
+        },
+        getCommon_allTrainStation: function(){
+            var traAry = new Array(), trtcAry = new Array(), allAry = new Array(), tmpA;
+            for(var i=0; i<TT.data.tra.line.length; i++){
+                for(var j=0; j<TT.data.tra.line[i].station.length; j++){
+                    tmpA = TT.fn.getTRA_stationDataOfID(TT.data.tra.line[i].station[j], TT.data.tra.line[i].id);
+                    traAry.push(tmpA);
+                    allAry.push(tmpA);
+                }
+            }
+            for(var i=0; i<TT.data.trtc.line.length; i++){
+                for(var j=0; j<TT.data.trtc.line[i].station.length; j++){
+                    tmpA = TT.fn.getTRTC_stationDataOfID(TT.data.trtc.line[i].station[j], TT.data.trtc.line[i].id);
+                    trtcAry.push(tmpA);
+                    allAry.push(tmpA);
+                }
+            }
+            
+            return {
+                traAry: traAry,
+                trtcAry: trtcAry,
+                allAry: allAry
+            }
         },
         getCommon_lineColor: function(line){
             var cp = TT.fn.getCompanyOfStation(line);
@@ -2741,8 +2676,9 @@ var TT = (function(){
             }
             return false;
         },
-        mixAllRoute: function(aryRoute, flagAD){
+        mixAllRoute: function(aryRoute, flagAD, sortBy){
             var fRouteAry = new Array(), routeA, routeS, routeP, bestLink;
+            sortBy = (sortBy) ? sortBy : '';
             for(var tc=0; tc<aryRoute.length; tc++){
                 routeA = aryRoute[tc];
                 bestLink = routeA[0].bestLink;
@@ -2753,6 +2689,7 @@ var TT = (function(){
                         routeMap: new Array()
                     }
                     if(!routeP.linkTime[0]) continue;
+                    if(!routeP.linkTime[routeP.linkTime.length-1]) continue;
                     for(var j=0; j<routeA.length; j++){
                         if(!bestLink[i][j]) continue;
                         routeS = {
@@ -2798,6 +2735,8 @@ var TT = (function(){
                         if(ed < st) ed = ed + 86400;
                         return Math.ceil((ed-st)/60);
                     })();
+                    if(sortBy=='travelMinute') routeP.tt_sortTime = routeP.travelMinute;
+                    if(sortBy=='transCount') routeP.tt_sortTime = routeP.linkTime.length;
                     fRouteAry.push(routeP);
                 }
             }
@@ -2871,6 +2810,227 @@ var TT = (function(){
                 return tih + ':' + tim + ':' + tis;
             }
         }
+    }
+    
+    function classWindow(ucfg){
+        ucfg = ucfg || {};
+        defaultCfg = {
+            mask: false,
+            height: 'auto',
+            width: 'auto',
+            baseClass: ' ttWindow',
+            cls: '',
+            id: TT.ui.genRandomId(),
+            div: '',
+            items: [],
+            html: '',
+            renderTo: 'body',
+            onShow: function(){},
+            zIndex: '120'
+        }
+        var cfg = $.extend(defaultCfg, ucfg);
+        if(typeof(cfg.width)=='number') cfg.width = cfg.width + 'px';
+        if(typeof(cfg.height)=='number') cfg.height = cfg.height + 'px';
+        var me = this;
+        
+        me.el = document.createElement('div');
+        me.el.className = cfg.baseClass + ' ' + cfg.cls;
+        me.el.id = cfg.id;
+        me.el.style.zIndex = cfg.zIndex;
+        me.el.style.width = cfg.width;
+        me.el.style.height = cfg.height;
+        me.el.innerHTML = '<div class="inner" id="' + cfg.id + '_inner"></div><div class=" ttWindowClose" closeID="' + cfg.id + '">X</div>';
+        
+        me.getInner = function(){
+            return document.getElementById(cfg.id + '_inner');
+        }
+        me.setInnerHTML = function(html){
+            document.getElementById(cfg.id + '_inner').innerHTML = html;
+        }
+        
+        me.init = function(){
+            if(!document.getElementById(cfg.id)){
+                if(cfg.renderTo=='body'){
+                    document.body.appendChild(me.el);
+                }else{
+                    document.getElementById(cfg.renderTo).appendChild(me.el);
+                }
+                me.inner = me.getInner();
+                if(typeof(cfg.div)=='string'){
+                    me.inner.innerHTML = cfg.div;
+                }else{
+                    me.inner.appendChild(cfg.div);
+                }
+                
+                if(cfg.html != ''){me.inner.innerHTML = cfg.html;}
+                for(var i=0; i<cfg.items.length; i++){
+                    me.inner.appendChild(cfg.items[i]);
+                }
+            }
+            me.el.style.display = 'none';
+        }
+        
+        me.addClass = function(cls){
+            var ary = me.el.className.split(' ');
+            for(var i=0; i<ary.length; i++){
+                if(ary[i]==cls) return me.el.className;
+            }
+            me.el.className = me.el.className + ' ' + cls;
+            return me.el.className;
+        }
+        me.removeClass = function(cls){
+            var ary = me.el.className.split(' '), rt = '';;
+            for(var i=0; i<ary.length; i++){
+                if(ary[i]!=cls){
+                    rt += ' ' + ary[i];
+                }
+            }
+            me.el.className = rt;
+            return rt;
+        }
+        
+        me.resetPosition = function(){
+            var dh = TT.fn.getDocumentHeight(), dw = TT.fn.getDocumentWidth();
+            var wh = me.el.clientHeight, ww = me.el.clientWidth;
+            
+            var top = Math.ceil((dh-wh)/2);
+            var left = Math.ceil((dw-ww)/2);
+            
+            if(top < 0) top = 0;
+            if(left < 0) left = 0;
+            
+            me.setPosition(top, left);
+        }
+        me.setPosition = function(top,left){
+            me.el.style.top = top + 'px';
+            me.el.style.left = left + 'px';
+        }
+        
+        me.show = function(){
+            if(me.isShow) return false;
+            me.isShow = true;
+            me.init();
+            me.el.style.display = '';
+            me.resetPosition();
+            if(cfg.mask){
+                TT.ui.mask(' ');
+            }
+            cfg.onShow(me);
+        }
+        
+        me.close = function(){
+            me.el.style.display = 'none';
+            TT.ui.unmask();
+            me.isShow = false;
+        }
+        me.clickFn = function(e){
+            if(e.target.className.indexOf('ttWindowClose')>=0){
+                var id = e.target.attributes.getNamedItem('closeID');
+                me.close();
+            }
+        }
+        me.el.addEventListener('click', me.clickFn, false);
+    }
+    function classMapSelector(ucfg){
+        ucfg = ucfg || {};
+        defaultCfg = {
+            mask: false,
+            height: 'auto',
+            width: '95%',
+            baseClass: ' ttMapSelector',
+            cls: '',
+            id: TT.ui.genRandomId(),
+            items: [],
+            html: '',
+            isRendered: false,
+            onShow: function(){},
+            zIndex: '132'
+        }
+        var cfg = $.extend(defaultCfg, ucfg);
+        if(typeof(cfg.width)=='number') cfg.width = cfg.width + 'px';
+        if(typeof(cfg.height)=='number') cfg.height = cfg.height + 'px';
+        var me = this;
+        
+        me.el = document.createElement('div');
+        me.el.className = cfg.baseClass + ' ' + cfg.cls;
+        me.el.id = cfg.id;
+        me.el.style.zIndex = cfg.zIndex;
+        me.el.style.width = cfg.width;
+        me.el.style.height = cfg.height;
+        me.el.innerHTML = '<div class="main" id="' + cfg.id + '_main"></div><div class=" ttWindowClose" closeID="' + cfg.id + '">X</div>';
+        
+        me.init = function(){
+            if(!document.getElementById(cfg.id)){
+                document.body.appendChild(me.el);
+                me.isRendered = true;
+                for(var i=0; i<cfg.items.length; i++){
+                    document.getElementById(cfg.id+ '_main').appendChild(cfg.items[i]);
+                }
+            }
+            me.el.style.display = 'none';
+        }
+        
+        me.addClass = function(cls){
+            var ary = me.el.className.split(' ');
+            for(var i=0; i<ary.length; i++){
+                if(ary[i]==cls) return me.el.className;
+            }
+            me.el.className = me.el.className + ' ' + cls;
+            return me.el.className;
+        }
+        me.removeClass = function(cls){
+            var ary = me.el.className.split(' '), rt = '';;
+            for(var i=0; i<ary.length; i++){
+                if(ary[i]!=cls){
+                    rt += ' ' + ary[i];
+                }
+            }
+            me.el.className = rt;
+            return rt;
+        }
+        
+        me.resetPosition = function(){
+            var dh = TT.fn.getDocumentHeight(), dw = TT.fn.getDocumentWidth();
+            var wh = me.el.clientHeight, ww = me.el.clientWidth;
+            
+            var top =40;
+            var left = Math.ceil((dw*0.025));
+            
+            me.setPosition(top, left);
+        }
+        me.setPosition = function(top,left){
+            me.el.style.top = top + 'px';
+            me.el.style.left = left + 'px';
+        }
+        
+        me.show = function(scfg){
+            if(me.isShow) return false;
+            if(typeof(domA)=='string') domA = document.getElementById(domA);
+            TT.ui.bodyScroll(0);
+            me.isShow = true;
+            me.init();
+            me.el.style.display = '';
+            me.resetPosition();
+            //TT.ui.mask(' ');
+            cfg.onShow(me, cfg, scfg);
+        }
+        
+        me.close = function(){
+            me.el.style.display = 'none';
+            //TT.ui.unmask();
+            me.isShow = false;
+        }
+        me.clickFn = function(e){
+            if(e.target.className.indexOf('ttWindowClose')>=0){
+                var id = e.target.attributes.getNamedItem('closeID');
+                me.close();
+            }
+        }
+        me.el.addEventListener('click', me.clickFn, false);
+    }
+    TT.lib = {
+        classWindow: classWindow,
+        classMapSelector: classMapSelector
     }
     
     TT.ui = {
@@ -2976,12 +3136,12 @@ var TT = (function(){
                         '<li>除非必要，否則不使用jQuery基本版以外的套件，網頁上的元件盡量以 HTML 原生元件操作以維持相容性並避免其他 library 授權問題，前導網頁不特別要求元件外觀與整體美觀，簡單易讀方便操作修改為原則。</li>' +
                         '<li>使用 HTML、Javascript、CSS構成，不使用任何伺服器端技術與資料庫，保持未來移植其他平台離線使用可能性。</li>' +
                         '<li>時刻表與路由資料原則採離線運作，所需要之台鐵或捷運公司時刻表下載後存放在網頁同目錄下讀取。</li>' +
-                        '<li>為方便由本機進行 Ajax 存取，本機開發需相容 Firefox 瀏覽器，在伺服器線上時必需相容 Chrome，其餘瀏覽器(如 Safari、Opera、IE)相容性在前導網頁不特別要求。</li>' +
+                       // '<li>為方便由本機進行 Ajax 存取，本機開發需相容 Firefox 瀏覽器，在伺服器線上時必需相容 Chrome，其餘瀏覽器(如 Safari、Opera、IE)相容性在前導網頁不特別要求。</li>' +
                         '<li>時刻表或大型資料以搜尋運用時才讀取為原則，加快進入網頁速度。</li>' +
                         '<li>有更新開發進度時可以簡單寫一行在 Javascript 開頭的註解區。</li>' +
                         '<li>軌道的運轉方向與台鐵接近平行者採相同為原則，其餘視點由北往南、由東向西，若相近於逆時針時 dir 為 1，相近於順時針時 dir 為 0。</li>' +
                         '<li>不使用網路上或它處取得的圖檔以避免圖像授權問題，自行製作的圖檔盡量以 base64 編碼後存於 CSS 來利用。</li>' +
-                        '<li>前導網頁的 HTML、Javascript、CSS 存放於單一網頁檔內，不使用任何壓縮 code 或 Build 方式才運作，轉為正式版時才進行分拆作業。</li>' +
+                        //'<li>前導網頁的 HTML、Javascript、CSS 存放於單一網頁檔內，不使用任何壓縮 code 或 Build 方式才運作，轉為正式版時才進行分拆作業。</li>' +
                         '<li>Name Space 為 TT，進入點為 TT.initFn()，底層演算法和工具存放於 TT.fn 下，與網頁外觀顯示相關存放於 TT.ui 下，基礎資料存放於 TT.data 下，基本定義存放於 TT.defined 下，當次搜尋結果存放於 TT.now 下。</li>' +
                         '<li>HTML CODE 的 BODY 保持內容乾淨，UI以 createElement 的方式附加上去，元件內容則可以 innerHTML 直接設計。</li>' +
                         '<li>轉乘步行時間存在 TT.data.transStation 下各站的 walkMinute，理論上每一種轉乘方式都要建立一個轉乘站，例如台北站台鐵捷運之間就要建立台鐵至板南線、台鐵至淡水信義線、板南線至淡水信義線，分別存放步行時間並成為該種路線的路由點。</li>' +
@@ -3033,11 +3193,21 @@ var TT = (function(){
             TT.ui.center.timeTable.controlDiv.weekSelectDiv = TT.ui.createWeekSelect({id: 'ttc_weekSelect', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.depArrDiv = TT.ui.createTakeTimeFindDepArr({id: 'ttc_ADSelect', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.findButtonDiv = TT.ui.createTakeFindButton({id: 'ttc_findButton', renderID: 'tt_timeTable_control'});
+            //Set default param
             var defaultFromStation = (localStorage.getItem('defaultFromStation')) ? localStorage.getItem('defaultFromStation') : 'tra_1005',
                 defaultToStation = (localStorage.getItem('defaultToStation')) ? localStorage.getItem('defaultToStation') : 'trtc_093',
                 defaultSearchDay = new Date().getDay(),
                 defaultStartTime = (localStorage.getItem('defaultStartTime')) ? localStorage.getItem('defaultStartTime') : '07:00',
                 defaultEndTime = (localStorage.getItem('defaultEndTime')) ? localStorage.getItem('defaultEndTime') : '09:00';
+            //Use Get param
+            var GetP = TT.defined.GetP;
+            if(GetP){
+                if(GetP['a']) defaultFromStation = GetP['a'];
+                if(GetP['b']) defaultToStation = GetP['b'];
+                if(GetP['w']) defaultSearchDay = GetP['w'];
+                if(GetP['startTime']) defaultStartTime = decodeURIComponent(GetP['startTime']);
+                if(GetP['endTime']) defaultEndTime = decodeURIComponent(GetP['endTime']);
+            }
             TT.ui.center.timeTable.controlDiv.stationSelectDiv.fnSetStart(defaultFromStation);
             TT.ui.center.timeTable.controlDiv.stationSelectDiv.fnSetEnd(defaultToStation);
             TT.ui.center.timeTable.controlDiv.timeSelectDiv.fnSetStartTime(defaultStartTime);
@@ -3202,26 +3372,76 @@ var TT = (function(){
             if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
             return div;
         },
+        createMapSelector: function(){
+            if(TT.ui.mapSelector) return false;
+            var cfg = {}, afterSelectCbFn, win;
+            var astObj = TT.fn.getCommon_allTrainStation();
+            var astLine = {};
+            astObj.allAry.map(function(objA){
+                var line = (objA.byLine);
+                if(!astLine[line]) astLine[line] = new Array();
+                astLine[line].push(objA);
+            });
+            
+            var divLine = (function(){
+                var div = document.createElement('div');
+                div.className = 'line_selector';
+                var allHTML, htLine = '', tmpST, htStation = ''; 
+                for(var k in astLine){
+                    htLine += '<div class="lineName ' + TT.defined.railBgcolor + k + '" clickOnLine="1" lineID="' + k + '">' + TT.fn.getCommon_lineName(k) + '</div>';
+                    tmpST = '';
+                    astLine[k].map(function(sta){
+                        tmpST += '<div class="stationName ' + 'mmm'+TT.defined.railBgcolor + k + '" clickOnStation="1" stationID="' + sta.id + '">' + TT.fn.getCommon_stationDataOfID(sta.id).name + '</div>';
+                    });
+                    htStation += '<div style="display:none;" class="stationGroup ' + k + ' ' + TT.defined.railBgcolor + k + '" lineID="' + k + '">' + tmpST + '</div>';
+                }
+                htLine = '<div class="allLine">' + htLine +'</div>';
+                htStation = '<div class="allStation">' + htStation +'</div>';
+                allHTML = htLine + htStation;
+                div.innerHTML = allHTML;
+                
+                div.addEventListener('click', function(e){
+                    var t = e.target;
+                    if(t.attributes.getNamedItem('clickOnLine')){
+                        var id = t.attributes.getNamedItem('lineID').value;
+                        $('.line_selector .allLine .lineName').each(function(idx,dom){
+                            dom.className = dom.className.replace(' select','');
+                        });
+                        $('.line_selector .allStation .stationGroup').hide();
+                        $('.line_selector .allStation .stationGroup.' + id).show();
+                        t.className = t.className + ' select';
+                    }else if(t.attributes.getNamedItem('clickOnStation')){
+                        var id = t.attributes.getNamedItem('stationID').value;
+                        if(afterSelectCbFn){
+                            afterSelectCbFn(id);
+                        }
+                        win.close();
+                        TT.ui.msg.show(TT.fn.getCommon_stationDataOfID(id).name,600);
+                    }
+                }, false);
+                return div;
+            })();
+            var divLineAfterFn = function(){
+            
+            }
+            
+            cfg.items = [divLine];
+            cfg.onShow = function(wwin, wcfg, scfg){
+                //scfg from call show take parameter
+                scfg = scfg || {};
+                afterSelectCbFn = scfg.afterSelectCbFn;
+                win = wwin;
+            }
+            TT.ui.mapSelector = new TT.lib.classMapSelector(cfg);
+        },
         createTakeStation: function(cfg){
             cfg = cfg || {};
             if(!cfg.id) cfg.id = TT.ui.genRandomId();
             
-            var traAry = new Array(), trtcAry = new Array(), allAry = new Array(), tmpA;
-            for(var i=0; i<TT.data.tra.line.length; i++){
-                for(var j=0; j<TT.data.tra.line[i].station.length; j++){
-                    tmpA = TT.fn.getTRA_stationDataOfID(TT.data.tra.line[i].station[j], TT.data.tra.line[i].id);
-                    traAry.push(tmpA);
-                    allAry.push(tmpA);
-                }
-            }
-            for(var i=0; i<TT.data.trtc.line.length; i++){
-                for(var j=0; j<TT.data.trtc.line[i].station.length; j++){
-                    tmpA = TT.fn.getTRTC_stationDataOfID(TT.data.trtc.line[i].station[j], TT.data.trtc.line[i].id);
-                    trtcAry.push(tmpA);
-                    allAry.push(tmpA);
-                }
-            }
-            if(!TT.ui.mapSelector) TT.ui.mapSelector = new TT.lib.classMapSelector();
+            var astObj = TT.fn.getCommon_allTrainStation();
+            var traAry = astObj.traAry, trtcAry = astObj.trtcAry, allAry = astObj.allAry;
+            
+            if(!TT.ui.mapSelector) TT.ui.createMapSelector();
             
             if(!cfg.fieldText) cfg.fieldText = '';
             if(!cfg.fieldStartText) cfg.fieldStartText = '出發站:';
@@ -3233,9 +3453,9 @@ var TT = (function(){
                 var company, cmpStr = '', lineC, rt='';
                 for(var i=0; i<allAry.length; i++){
                     company = TT.fn.getCompanyOfStation(allAry[i].id);
-                    lineC = (allAry[i].byLine) ? 'background-color:' + TT.fn.getCommon_lineColor(allAry[i].byLine) + ';' : '';
+                    //lineC = (allAry[i].byLine) ? 'background-color:' + TT.fn.getCommon_lineColor(allAry[i].byLine) + ';' : '';
                     cmpStr = '(' + company.toUpperCase() + ')';
-                    rt += '<option value="' + allAry[i].id + '" style="' + lineC + 'color:#EEF;">' + allAry[i].name + cmpStr + '</option>';
+                    rt += '<option value="' + allAry[i].id + '" class="' + TT.defined.railBgcolor + allAry[i].byLine + '">' + allAry[i].name + cmpStr + '</option>';
                 }
                 return rt;
             })();
@@ -3243,16 +3463,40 @@ var TT = (function(){
             var fieldTextDiv = (cfg.fieldText=='') ? '' : '<div id="' + div.id + '_fieldText">' + '<span>' + cfg.fieldText + '</span>' + '</div>';
             div.innerHTML = fieldTextDiv +
             '<div class="selectStationOut">' +
-                '<div class="selectStationIn" id="' + cfg.id + '_in">' +
+                '<div class="selectStationIn" id="' + cfg.id + '_fromin">' +
                     '<span>' + cfg.fieldStartText + '</span>' +
                     '<span><select id="' + cfg.id + '_start">' + optSt + '</select></span>' +
-                    '<div style="display:inline-block; width:30px;"></div>' + 
+                    '<div class="selectStationByLine sta_from">' + '依路線選擇車站' + '</div>' +
+                    '<div class="selectStationExchange">' + '起訖點對調' + '</div>' +
+                '</div>' +
+                '<div class="selectStationIn" id="' + cfg.id + '_toin">' +
                     '<span>' + cfg.fieldEndText + '</span>' +
                     '<span><select id="' + cfg.id + '_end">' + optSt + '</select></span>' +
+                    '<div class="selectStationByLine sta_to">' + '依路線選擇車站' + '</div>' +
                 '</div>' +
             '</div>';
             
             if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
+            
+            div.addEventListener('click', function(e){
+                var t = e.target, scfg = {};
+                if(t.className.indexOf('selectStationByLine') != -1){
+                    if(/sta_from/.test(t.className)){
+                        scfg.afterSelectCbFn = function(staID){
+                            div.fnSetStart(staID);
+                        }
+                    }else if(/sta_to/.test(t.className)){
+                        scfg.afterSelectCbFn = function(staID){
+                            div.fnSetEnd(staID);
+                        }
+                    }
+                    TT.ui.mapSelector.show(scfg);
+                }else if(t.className.indexOf('selectStationExchange') != -1){
+                    var tmpV = div.fnGetStart();
+                    div.fnSetStart(div.fnGetEnd());
+                    div.fnSetEnd(tmpV);
+                }
+            }, false);
             
             div.fnGetStart = function(){
                 return document.getElementById(cfg.id + '_start').value;
@@ -3414,6 +3658,33 @@ var TT = (function(){
         },
         createTrainRouteSelectBox: function(aryRoute){
             var rDiv = TT.ui.center.timeTable.displayDiv.routeDiv;
+            var sortByNow = (TT.now.sortBy) ? TT.now.sortBy : '';
+            //+++++++++++ Create sort select box +++++++++++
+            var sdtx = '', sDiv = document.createElement('div');
+            sdtx += '<div class="tt_ck_sortby_sh" id="tt_timeTable_seSortBy_">' + '越早抵達目的地的越上面' + '</div>';
+            sdtx += '<div class="tt_ck_sortby_sh" id="tt_timeTable_seSortBy_travelMinute">' + '花費時間越短的越上面' + '</div>';
+            sdtx += '<div class="tt_ck_sortby_sh" id="tt_timeTable_seSortBy_transCount">' + '轉乘次數越少的越上面' + '</div>';
+            sDiv.innerHTML = sdtx + '<span class="helpForSortBySelectButton"><div class="arrow"></div>' + '點一下，你可以換個排列順序' + '</span>';
+            sDiv.style.borderBottom = '1px solid #23C';
+            sDiv.style.backgroundColor = '#332';
+            sDiv.addEventListener('click', function(e){
+                var t = e.target;
+                var tid = t.id.replace('tt_timeTable_seSortBy_','');
+                if(sortByNow != tid){
+                    var aryCk = new Array();
+                    function callback(){
+                        $('.tt_ck_route_sh .ckRoute').each(function(idx,domA){
+                            domA.checked = aryCk[idx];
+                            changeChecked(domA);
+                        });
+                    }
+                    $('.tt_ck_route_sh .ckRoute').each(function(idx,domA){
+                        aryCk[idx] = domA.checked;
+                    });
+                    TT.ui.printTrain(TT.now.totalRoute, tid, callback);
+                }
+            }, false);
+            //+++++++++++ End sort select box +++++++++++
             var routeBy = '', routeP, tmpS = '', st = '', ht ='', ckDom, hDiv = document.createElement('div');
             for(var tc=0; tc<aryRoute.length; tc++){
                 routeP = aryRoute[tc];
@@ -3424,25 +3695,45 @@ var TT = (function(){
                     }
                 }
                 st = '經由' + ' ' + tmpS;
-                if(routeP.length==1 && !(routeP[0].transStation)) st = '<span style="background-color:' + TT.fn.getCommon_lineColor(routeP[0].line) + ';" class="stag">' + TT.fn.getCommon_lineName(routeP[0].line) + '</span>' + '直達';
+                if(routeP.length==1 && !(routeP[0].transStation)) st = '<span class="stag ' + TT.defined.railBgcolor + routeP[0].line + '">' + TT.fn.getCommon_lineName(routeP[0].line) + '</span>' + '直達';
                 routeBy = '<div class="tt_ck_route_sh">' +
                     '<input type="checkbox" id="tt_timeTable_ckRoute_' + tc + '" class="ckRoute" checked>' + st +
                 '</div>';
                 ht += routeBy;
             }
-            hDiv.innerHTML = ht;
+            hDiv.innerHTML = ht + '<span class="helpForRouteCheckBox"><div class="arrow"></div>' + '把勾取消，隱藏你不想轉乘的路徑' + '</span>';
+            hDiv.style.backgroundColor = '#DEF';
+            rDiv.appendChild(sDiv);
             rDiv.appendChild(hDiv);
-            for(var tc=0; tc<aryRoute.length; tc++){
-                ckDom = document.getElementById('tt_timeTable_ckRoute_' + tc);
-                ckDom.addEventListener('change', function(e){
-                    var ckcss = e.target.id.replace('tt_timeTable_ckRoute_','.tt_search_route_css_');
-                    if(e.target.checked==true){
+            function changeChecked(domCk){
+                    var ckcss = domCk.id.replace('tt_timeTable_ckRoute_','.tt_search_route_css_');
+                    if(domCk.checked==true){
                         $(ckcss).show();
                     }else{
                         $(ckcss).hide();
                     }
+                    
+                    var ct = 0;
+                    $('.timeTableTrainRouteBox').each(function(idx,dom){
+                        if(dom.style.display != 'none'){
+                            ct++;
+                            $('#timeTableTrainRouteBox_' + idx + ' .sub.num span.val')[0].innerHTML = ct;
+                        }
+                    });
+            }
+            for(var tc=0; tc<aryRoute.length; tc++){
+                ckDom = document.getElementById('tt_timeTable_ckRoute_' + tc);
+                ckDom.addEventListener('change', function(e){
+                    changeChecked(e.target);
                 }, false);
             }
+            $('.tt_ck_sortby_sh').each(function(idx,dom){
+                dom.className = dom.className.replace(' select','');
+                var tid = dom.id.replace('tt_timeTable_seSortBy_','');
+                if(tid==sortByNow){
+                    dom.className = dom.className + ' select';
+                }
+            });
         },
         createTrainRouteTimeBox: function(routeP, ct, renderID){
             if(!renderID) renderID = TT.ui.center.timeTable.displayDiv.trainDiv.id;
@@ -3640,12 +3931,25 @@ var TT = (function(){
                 
                 var aryRoute = TT.fn.getCommon_timeRangeBestByFromTo(a,b,startTime,endTime,flagAD,w);
                 TT.ui.printStatus('尋找列車班次完成');TT.msg.show('尋找完成',200);
-                TT.ui.printTrain(aryRoute, cbFn);
+                TT.ui.printTrain(aryRoute,'', cbFn);
                 
                 localStorage.setItem('defaultFromStation', a);
                 localStorage.setItem('defaultToStation', b);
                 localStorage.setItem('defaultStartTime', startTime);
                 localStorage.setItem('defaultEndTime', endTime);
+                
+                //rewrite url Get param
+                var sObj = {
+                    a: a,
+                    b: b,
+                    w: w,
+                    startTime: startTime,
+                    endTime: endTime
+                }
+                var sParam = '?a=' + a + '&b=' + b + '&w=' + w + //'&findTrain=1' +
+                     '&startTime=' + encodeURIComponent(startTime) +
+                     '&endTime=' + encodeURIComponent(endTime);
+                history.pushState(sObj,'',sParam)
             }
             
             function fnCheck(){
@@ -3737,7 +4041,7 @@ var TT = (function(){
         printStatus: function(str){
             TT.ui.statusBar.innerHTML = str;
         },
-        printTrain: function(aryRoute, cbFn){
+        printTrain: function(aryRoute, sortBy, cbFn){
             var controlDiv = TT.ui.center.timeTable.controlDiv;
             var startTime = controlDiv.timeSelectDiv.fnGetStartTime();
             var endTime = controlDiv.timeSelectDiv.fnGetEndTime();
@@ -3745,10 +4049,12 @@ var TT = (function(){
             var a = controlDiv.stationSelectDiv.fnGetStart();
             var b = controlDiv.stationSelectDiv.fnGetEnd();
             
-            var fRouteAry = TT.fn.mixAllRoute(aryRoute, flagAD);
+            //sortBy: '', 'travelMinute'
+            var fRouteAry = TT.fn.mixAllRoute(aryRoute, flagAD, sortBy);
             TT.now = {
                 totalRoute: aryRoute,
-                sortRoute: fRouteAry
+                sortRoute: fRouteAry,
+                sortBy: sortBy
             }
             
             var tDiv;
@@ -3760,6 +4066,7 @@ var TT = (function(){
                 tDiv = TT.ui.createTrainRouteTimeBox(fRouteAry[i], i);
             }
             if(fRouteAry.length==0) TT.msg.show('糟糕，系統找不到這個時間內的列車！');
+            if(TT.fn.checkIsFunction(cbFn)) cbFn();
         },
         transWeekToString: function(w){
             w = parseInt(w,10);
@@ -3794,9 +4101,10 @@ var TT = (function(){
         TT.ui.updateCenter();
         TT.msg.show('歡迎使用無縫接軌前導網頁。',2000);
         
-        
-        //TT.fn.getTRA_TimeTable2Data(TT.defined.defaultTRAWeekday);//Default get TRA weekday time
         //TT.fn.getTRTC_timeTable2Data();//Initital get TRTC time
+        //Check if auto search
+        var GetP = TT.defined.GetP;
+        if(GetP && GetP['findTrain'] && GetP['findTrain']==1) TT.ui.findTrain();
     }
         
     return TT;
