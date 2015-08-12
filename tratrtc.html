@@ -625,8 +625,18 @@ body {
 var TT = (function(){
 
     var TT = {//name space TT for TimeTable
-        data: {}
+        data: {},
+        os: {}
     }
+    
+    TT.os = (function(){
+        var ua = navigator.userAgent;
+        var rt = {
+            isAndroidBrowser: false
+        }
+        if(ua.indexOf('AppleWebKit/') != -1 && ua.indexOf('Mobile Safari/')!=-1) rt.isAndroidBrowser = true;
+        return rt;
+    })();
     
     TT.defined = {
         canUseLocalStorage: (function(){return (window.localStorage) ? true : false;})(),
@@ -3188,7 +3198,6 @@ var TT = (function(){
             
             TT.ui.centerDiv = TT.ui.createDiv('tt_center', 'center', 'body');
             TT.ui.center = {};
-            
         },
         createHome: function(){
             TT.ui.center.home = TT.ui.createDiv('tt_home', 'centerPage home', TT.ui.centerDiv.id);
@@ -4279,7 +4288,11 @@ var TT = (function(){
             var w = TT.fn.getDocumentWidth();
             var ch = h - 64;
             if(ch < 0) ch = 0;
-            TT.ui.centerDiv.style.height = ch + 'px';
+            if(TT.os.isAndroidBrowser){
+                TT.ui.centerDiv.style.height = 'auto';
+            }else{
+                TT.ui.centerDiv.style.height = ch + 'px';
+            }
         },
         transWeekToString: function(w){
             w = parseInt(w,10);
