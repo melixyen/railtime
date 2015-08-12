@@ -1,11 +1,13 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width; initial-scale=1.0" />
+<meta name="description" content="接軌時刻 - 台灣鐵路火車捷運時刻表及路線轉乘查詢系統 Taiwan Railway MRT Timetable Web APP" />
+<meta name="keywords" content="捷運,台鐵,火車,鐵路,時刻表,轉乘,TRA,TRTC,MRT,Timetable,Taiwan Railway,接軌時刻" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<title>接軌時刻 Cross Railway Time Web APP</title>
+<title>接軌時刻 - Taiwan Railway MRT Timetable Web APP</title>
 <style type="text/css">
 @charset "utf-8";
 
@@ -68,6 +70,7 @@ body {
 .center{
     border: 2px solid #4EBCD5;
     margin: 40px 10px 20px;
+    overflow: auto;
 }
 
 .centerPage{
@@ -84,6 +87,7 @@ body {
     padding: 5px;
 }
 
+.help_selectStationByLine,
 .centerPage .selectStationOut .selectStationIn .selectStationByLine,
 .centerPage .selectStationOut .selectStationIn .selectStationExchange{
     display: inline-block;
@@ -172,7 +176,8 @@ body {
 .tt_ck_route_sh{
     display:inline-block; border:1px solid #222;
     background-color: #EFBCDF;
-    margin: 10px;
+    margin: 8px;
+    height: 24px;
 }
 .tt_ck_route_sh .stag{
     color: #FDFDFD;
@@ -183,6 +188,19 @@ body {
 }
 .tt_ck_route_sh .fmin{
     color: #223EED;
+}
+.tt_ck_route_filterPri{
+    display:inline-block; 
+    border:2px solid #BA2;
+    border-radius: 5px;
+    background-color: #EFDC3F;
+    margin: 3px 8px;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    font-size: 140%;
+    line-height: 20px;
+    cursor: pointer;
 }
 
 .tt_ck_sortby_sh{
@@ -304,7 +322,7 @@ body {
 .timeTableTrainRouteBox .timeRouteDiv.showAll .table .info, .timeTableTrainRouteBox .timeRouteDiv.showAll .table .line, .timeTableTrainRouteBox .timeRouteDiv.showAll .table .other{
     display: table-cell;
 }
-.timeTableTrainRouteBox .timeRouteDiv .more{
+.timeTableTrainRouteBox .timeRouteDiv .more, .help_timeTableResultMore{
     width: 40px;
     height: 32px;
     font-size: 200%;
@@ -317,6 +335,10 @@ body {
     border: 1px solid #BBB;
     overflow: hidden;
     cursor: pointer;
+}
+.help_timeTableResultMore{
+    position: static;
+    display: inline-block;
 }
 @media screen and (min-width: 910px) {
     .timeTableTrainRouteBox .timeRouteDiv .more{
@@ -607,6 +629,7 @@ var TT = (function(){
     }
     
     TT.defined = {
+        canUseLocalStorage: (function(){return (window.localStorage) ? true : false;})(),
         defaultCrossDayTime: '04:00:00',
         defaultTRAWeekday: '2',
         defaultMaskText: 'Loading...',
@@ -2744,6 +2767,21 @@ var TT = (function(){
             }
             return false;
         },
+        localData: {
+            getItem: function(name){
+                if(TT.defined.canUseLocalStorage){
+                    return window.localStorage.getItem(name);
+                }
+            },
+            setItem: function(name, val){
+                if(TT.defined.canUseLocalStorage){
+                    return window.localStorage.setItem(name, val);
+                }
+            },
+            list: function(){
+                if(TT.defined.canUseLocalStorage) return window.localStorage;
+            }
+        },
         mixAllRoute: function(aryRoute, flagAD, sortBy){
             var fRouteAry = new Array(), routeA, routeS, routeP, bestLink;
             sortBy = (sortBy) ? sortBy : '';
@@ -3111,12 +3149,18 @@ var TT = (function(){
         bodyScroll: function(val){
             var sysTop;
             if(document.documentElement && document.documentElement.scrollTop>0){
-                if(val || val===0) $('body, html').animate({ scrollTop: val }, 400);//document.documentElement.scrollTop = val;
+                if(val || val===0) document.documentElement.scrollTop = val;
                 sysTop = document.documentElement.scrollTop;
             }else if(document.body && document.body.scrollTop>0){
-                if(val || val===0) $('body, html').animate({ scrollTop: val }, 400);//document.body.scrollTop = val;
+                if(val || val===0) document.body.scrollTop = val;
                 sysTop = document.body.scrollTop;
             }
+            return sysTop;
+        },
+        centerScroll: function(val){
+            var sysTop;
+            if(val || val===0) $(TT.ui.centerDiv).animate({ scrollTop: val }, 400);
+            sysTop = document.body.scrollTop;
             return sysTop;
         },
         centerTimeTableDisplayDivClear: function(){
@@ -3149,17 +3193,41 @@ var TT = (function(){
         createHome: function(){
             TT.ui.center.home = TT.ui.createDiv('tt_home', 'centerPage home', TT.ui.centerDiv.id);
             
+            //HELP Frame
+            TT.ui.center.home.help = TT.ui.createDiv('tt_home_help', 'frameA help', TT.ui.center.home.id);
+            var helpDiv = TT.ui.center.home.help;
+            helpDiv.divTitle = TT.ui.createDiv(helpDiv.id + '_title', 'title', helpDiv.id);
+            helpDiv.divTitle.innerHTML = '說明';
+            helpDiv.divText1 = TT.ui.createDiv(helpDiv.id + '_text1', 'text', helpDiv.id);
+            helpDiv.divText1.innerHTML = '<p>' + '一般使用者進行查詢請使用時刻表功能，研究使用者要調整各項參數與路由可從工具內調整。' + '</p>' +
+                '<p>' + '有關時刻表功能之簡單說明如下' + '</p>' +
+                '<ul>' +
+                    '<li><b>我在每個轉乘站的步行時間：</b>可依個人步行速度或預期誤點可能性調整轉車預留時間。</li>' +
+                    '<li><b>出發站、到達站：</b>可從下拉選單中選擇一個車站，或者從右邊的<div class="help_selectStationByLine">依路線選擇車站</div>中依照路線選擇車站。</li>' +
+                    '<li><b>從這個時間開始、到這個時間為止：</b>調整預計搭車的時間，假設 08:00 後才出發可以設定 08:00 到 09:00 之間，建議間隔不要超過三小時避免搜尋出來的資料過多。</li>' +
+                    '<li><b>出發的列車：</b>設定為出發的列車將會以出發站的時間來做計算。</li>' +
+                    '<li><b>到達的列車：</b>設定為到達的列車將會以到達站的時間來做計算，例如 08:50 前要到市政府站可以設定時間 07:50 開始到 08:50 為止去做查詢。</li>' +
+                '</ul>' +
+                '<p>' + '有關搜尋出結果之簡單說明如下' + '</p>' +
+                '<ul>' +
+                    '<li><b>排序：</b>可依個人需求調整排序的方式，像是越早抵達、花費時間越短之類的需求。</li>' +
+                    '<li><b>路徑：</b>搜尋完會將系統上所有可以轉車的方式列出來，並附有花費時間作參考，可以勾選清除不想看的路徑，例如花費時間太長的或轉車次數太多的。</li>' +
+                    '<li><b>怎麼路徑上有<div class="tt_ck_route_filterPri">1</div><div class="tt_ck_route_filterPri">2</div><div class="tt_ck_route_filterPri">3</div>？</b>那是快速切換只看最快(1)到前三快(3)轉乘路徑。</li>' +
+                    '<li><b>螢幕不夠寬怎麼看全部資訊？</b>網頁部分資訊採用 RWD　呈現，當螢幕不夠寬會隱藏部分資訊，想看完整資訊可點右邊的<div class="help_timeTableResultMore">&gt;&gt;</div>。</li>' +
+                    '<li><b>搜尋完後網址變了？</b>在支援 HTML5 history 功能的瀏覽器上，網址會自動帶上搜尋參數，複製網址給別人連進來可以自動搜尋你當初搜尋的條件。</li>' +
+                '</ul>';
+            
             //TRA Frame
             TT.ui.center.home.tra = TT.ui.createDiv('tt_home_tra', 'frameA tra', TT.ui.center.home.id);
             TT.ui.center.home.tra.divTitle = TT.ui.createDiv('tt_home_tra_title', 'title', TT.ui.center.home.tra.id);
             TT.ui.center.home.tra.divTitle.innerHTML = '台鐵 TRA';
             TT.ui.center.home.tra.divText1 = TT.ui.createDiv('tt_home_tra_text1', 'text', TT.ui.center.home.tra.id);
-            TT.ui.center.home.tra.divText1.innerHTML = '<p>台鐵時刻表載入自政府資料開放平台之鐵路時刻表，預設載入星期二之時刻表作為查詢平日時刻表基準。</p>' +
-                '<p>替換時刻表檔案請在網頁同目錄下儲存w0.xml ~ w6.xml，w0為星期日。</p>';
+            TT.ui.center.home.tra.divText1.innerHTML = '<p>台鐵時刻表載入自政府資料開放平台之鐵路時刻表。</p>' +
+                '<p>下載開發者替換時刻表檔案請在網頁同目錄下儲存w0.xml ~ w6.xml，w0為星期日。</p>';
             TT.ui.center.home.tra.divCkWeek = TT.ui.createDiv('tt_home_tra_ckWeek', 'option', TT.ui.center.home.tra.id);
             TT.ui.center.home.tra.divCkWeek.innerHTML = '<ul>' +
                 '<li><input type="checkbox" id="tt_home_tra_ckWeek_1" class="ckWeek">讀取星期一<div id="tt_home_tra_ckWeekLoaded_1" class="ckWeekLoaded">已讀取</div></li>' +
-                '<li><input type="checkbox" id="tt_home_tra_ckWeek_2" class="ckWeek">讀取星期二(平日)<div id="tt_home_tra_ckWeekLoaded_2" class="ckWeekLoaded">已讀取</div></li>' +
+                '<li><input type="checkbox" id="tt_home_tra_ckWeek_2" class="ckWeek">讀取星期二<div id="tt_home_tra_ckWeekLoaded_2" class="ckWeekLoaded">已讀取</div></li>' +
                 '<li><input type="checkbox" id="tt_home_tra_ckWeek_3" class="ckWeek">讀取星期三<div id="tt_home_tra_ckWeekLoaded_3" class="ckWeekLoaded">已讀取</div></li>' +
                 '<li><input type="checkbox" id="tt_home_tra_ckWeek_4" class="ckWeek">讀取星期四<div id="tt_home_tra_ckWeekLoaded_4" class="ckWeekLoaded">已讀取</div></li>' +
                 '<li><input type="checkbox" id="tt_home_tra_ckWeek_5" class="ckWeek">讀取星期五<div id="tt_home_tra_ckWeekLoaded_5" class="ckWeekLoaded">已讀取</div></li>' +
@@ -3194,12 +3262,12 @@ var TT = (function(){
             //Program Frame
             TT.ui.center.home.prog = TT.ui.createDiv('tt_home_prog', 'frameA prog', TT.ui.center.home.id);
             TT.ui.center.home.prog.divTitle = TT.ui.createDiv('tt_home_prog_title', 'title', TT.ui.center.home.prog.id);
-            TT.ui.center.home.prog.divTitle.innerHTML = '接軌時刻網頁說明';
+            TT.ui.center.home.prog.divTitle.innerHTML = '接軌時刻 Web APP 概述';
             TT.ui.center.home.prog.divText1 = TT.ui.createDiv('tt_home_prog_text1', 'text', TT.ui.center.home.prog.id);
             TT.ui.center.home.prog.divText1.innerHTML = '<p>接軌時刻是建立台灣的跨營運系統間轉乘時間查詢程式，便於研究有效率的轉乘路徑。</p>' +
                 '<p>接軌時刻的授權原則' +
                     '<ul>' +
-                        '<li>任何使用均可 E-Mail 原作者取得授權或新增介接 API，但修改網頁後執行於網頁伺服器上請加註作者名稱於取得版本的作者之後，以區別為個人化版本，版本、發行單位、日期可自由調整。</li>' +
+                        '<li>任何使用均可 E-Mail 原作者取得授權，但修改網頁後執行於網頁伺服器上請加註作者名稱於取得版本的作者之後，以區別為個人化版本，版本、發行單位、日期可自由調整。</li>' +
                         '<li>台北捷運時刻表 JSON 資料轉換自網友 <a target="_new" href="https://sheethub.com/ronnywang/%E5%8F%B0%E5%8C%97%E6%8D%B7%E9%81%8B%E7%8F%AD%E6%AC%A1%E6%99%82%E5%88%BB%E8%A1%A8">ronnywang 網站</a>，相關授權請洽詢他本人</li>' +
                     '</ul>' +
                 '</p>' +
@@ -3250,6 +3318,7 @@ var TT = (function(){
             }else{
                 TT.ui.center.timeTable = TT.ui.createDiv('tt_timeTable', 'centerPage timeTable', TT.ui.centerDiv.id);
             }
+            var localDataFn = TT.fn.localData;
             
             //Control Frame
             TT.ui.center.timeTable.controlDiv = TT.ui.createDiv('tt_timeTable_control', 'frameA control', TT.ui.center.timeTable.id);
@@ -3260,11 +3329,11 @@ var TT = (function(){
             TT.ui.center.timeTable.controlDiv.depArrDiv = TT.ui.createTakeTimeFindDepArr({id: 'ttc_ADSelect', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.findButtonDiv = TT.ui.createTakeFindButton({id: 'ttc_findButton', renderID: 'tt_timeTable_control'});
             //Set default param
-            var defaultFromStation = (localStorage.getItem('defaultFromStation')) ? localStorage.getItem('defaultFromStation') : 'tra_1005',
-                defaultToStation = (localStorage.getItem('defaultToStation')) ? localStorage.getItem('defaultToStation') : 'trtc_093',
+            var defaultFromStation = (localDataFn.getItem('defaultFromStation')) ? localDataFn.getItem('defaultFromStation') : 'tra_1005',
+                defaultToStation = (localDataFn.getItem('defaultToStation')) ? localDataFn.getItem('defaultToStation') : 'trtc_093',
                 defaultSearchDay = new Date().getDay(),
-                defaultStartTime = (localStorage.getItem('defaultStartTime')) ? localStorage.getItem('defaultStartTime') : '07:00',
-                defaultEndTime = (localStorage.getItem('defaultEndTime')) ? localStorage.getItem('defaultEndTime') : '09:00';
+                defaultStartTime = (localDataFn.getItem('defaultStartTime')) ? localDataFn.getItem('defaultStartTime') : '07:00',
+                defaultEndTime = (localDataFn.getItem('defaultEndTime')) ? localDataFn.getItem('defaultEndTime') : '09:00';
             //Use Get param
             var GetP = TT.defined.GetP;
             if(GetP){
@@ -3352,10 +3421,10 @@ var TT = (function(){
             document.body.appendChild(dom);
             dom.className = 'headerBar';
             
-            TT.ui.buttonHome = TT.ui.createHeaderButton({id: 'tt_hdBtn_home', text: '關於', clickFn: function(e){TT.ui.setCenterActive('home');}});
+            TT.ui.buttonHome = TT.ui.createHeaderButton({id: 'tt_hdBtn_home', text: '說明', clickFn: function(e){TT.ui.setCenterActive('home');}});
             TT.ui.buttonTimeTable = TT.ui.createHeaderButton({id: 'tt_hdBtn_timeTable', text: '時刻表', clickFn: function(e){TT.ui.setCenterActive('timeTable');}});
             TT.ui.buttonTool = TT.ui.createHeaderButton({id: 'tt_hdBtn_tool', text: '工具', clickFn: function(e){TT.ui.setCenterActive('tool');}});
-            TT.ui.buttonBackTop = TT.ui.createHeaderButton({id: 'tt_hdBtn_backTop', text: '回到頂端', cls: 'headerButton2', clickFn: function(e){TT.ui.bodyScroll(0);}});
+            TT.ui.buttonBackTop = TT.ui.createHeaderButton({id: 'tt_hdBtn_backTop', text: '回到頂端', cls: 'headerButton2', clickFn: function(e){TT.ui.centerScroll(0);TT.ui.bodyScroll(0);}});
             
             dom.appendChild(TT.ui.buttonHome);
             dom.appendChild(TT.ui.buttonTimeTable);
@@ -3762,7 +3831,7 @@ var TT = (function(){
                 }
             }, false);
             //+++++++++++ End sort select box +++++++++++
-            var routeBy = '', routeP, tmpS = '', st = '', ht ='', ckDom, hDiv = document.createElement('div');
+            var routeBy = '', routeP, tmpS = '', st = '', ht ='', fastestStr='', ckDom, hDiv = document.createElement('div'), sortTC = new Array();
             for(var tc=0; tc<aryRoute.length; tc++){
                 routeP = aryRoute[tc];
                 routeBy = ''; st = ''; tmpS='';
@@ -3771,18 +3840,70 @@ var TT = (function(){
                         tmpS += '<div class="stag">' + routeP[i].transStation.name + '</div>';
                     }
                 }
-                st = '經由' + ' ' + tmpS + '(' + '最快' + ' <span class="fmin">' + routeP[0].total_fastestMinute + '</span> ' + '分鐘' + ')&nbsp;';
-                if(routeP.length==1 && !(routeP[0].transStation)) st = '<span class="stag ' + TT.defined.railBgcolor + routeP[0].line + '">' + TT.fn.getCommon_lineName(routeP[0].line) + '</span>' + '直達';
+                fastestStr = '(' + '最快' + ' <span class="fmin">' + routeP[0].total_fastestMinute + '</span> ' + '分鐘' + ')&nbsp;';
+                st = '經由' + ' ' + tmpS + fastestStr;
+                if(routeP.length==1 && !(routeP[0].transStation)) st = '<span class="stag ' + TT.defined.railBgcolor + routeP[0].line + '">' + TT.fn.getCommon_lineName(routeP[0].line) + '</span>' + '直達' + fastestStr;
                 routeBy = '<div class="tt_ck_route_sh">' +
                     '<input type="checkbox" id="tt_timeTable_ckRoute_' + tc + '" class="ckRoute" checked>' + st +
                 '</div>';
-                ht += routeBy;
+                sortTC.push({id: 'tt_timeTable_ckRoute_' + tc, tc:tc, tt_sortTime: routeP[0].total_fastestMinute, routeBy:routeBy});
+                //ht += routeBy;
             }
+            if(sortTC.length > 1){
+                sortTC = sortTC.sort(TT.fn.getTRA_sortByTTSortTime);
+                ht += '<div class="tt_ck_route_filterPri" tmf="1">1</div>';
+                if(sortTC.length > 2) ht += '<div class="tt_ck_route_filterPri" tmf="2">2</div>';
+                if(sortTC.length > 3) ht += '<div class="tt_ck_route_filterPri" tmf="3">3</div>';
+            }
+            sortTC.map(function(objA){
+                ht += objA.routeBy;
+            });
             hDiv.innerHTML = ht + '<span class="helpForRouteCheckBox"><div class="arrow"></div>' + '把勾取消，隱藏你不想轉乘的路徑' + '</span>';
             hDiv.style.backgroundColor = '#DEF';
+            hDiv.addEventListener('click', function(e){
+                var t = e.target;
+                var tmf = t.attributes.getNamedItem('tmf');
+                if(tmf && tmf.value){
+                    var domCk;
+                    tmf = parseInt(tmf.value,10);
+                    //sortTC.map(function(objA,idx){
+                        //domCk = document.getElementById(objA.id);
+                        //if(idx<tmf){
+                            //domCk.checked = true;
+                        //}else{
+                            //domCk.checked = false;
+                        //}
+                        //changeChecked(domCk);
+                    //});
+                    function callChangeChk(objA, idx){
+                        domCk = document.getElementById(objA.id);
+                        if(idx<tmf){
+                            domCk.checked = true;
+                        }else{
+                            domCk.checked = false;
+                        }
+                        changeChecked(domCk);
+                        idx++;
+                        if(sortTC.length > idx){
+                            setTimeout(function(){
+                                callChangeChk(sortTC[idx], idx);
+                            },10);
+                        }else{
+                            TT.ui.unmask();
+                        }
+                    }
+                    if(TT.now.sortRoute.length > 100){
+                        TT.ui.mask();
+                        setTimeout(function(){ callChangeChk(sortTC[0], 0); },100);
+                    }else{
+                        callChangeChk(sortTC[0], 0);
+                    }
+                }
+            }, false);
             rDiv.appendChild(sDiv);
             rDiv.appendChild(hDiv);
             function changeChecked(domCk){
+                    //if(typeof(domCk)=='string') domCk = document.getElementById(domCk);
                     var ckcss = domCk.id.replace('tt_timeTable_ckRoute_','.tt_search_route_css_');
                     if(domCk.checked==true){
                         $(ckcss).show();
@@ -4003,6 +4124,7 @@ var TT = (function(){
         },
         findTrain: function(cbFn){
             var w = TT.ui.center.timeTable.controlDiv.weekSelectDiv.fnGetDay();
+            var localDataFn = TT.fn.localData;
             function fnAfterCheck(){
                 
                 var controlDiv = TT.ui.center.timeTable.controlDiv;
@@ -4017,10 +4139,10 @@ var TT = (function(){
                 TT.ui.printStatus('尋找列車班次完成');TT.msg.show('尋找完成',200);
                 TT.ui.printTrain(aryRoute,'', cbFn);
                 
-                localStorage.setItem('defaultFromStation', a);
-                localStorage.setItem('defaultToStation', b);
-                localStorage.setItem('defaultStartTime', startTime);
-                localStorage.setItem('defaultEndTime', endTime);
+                localDataFn.setItem('defaultFromStation', a);
+                localDataFn.setItem('defaultToStation', b);
+                localDataFn.setItem('defaultStartTime', startTime);
+                localDataFn.setItem('defaultEndTime', endTime);
                 
                 //rewrite url Get param
                 var sObj = {
@@ -4033,7 +4155,7 @@ var TT = (function(){
                 var sParam = '?a=' + a + '&b=' + b + '&w=' + w + //'&findTrain=1' +
                      '&startTime=' + encodeURIComponent(startTime) +
                      '&endTime=' + encodeURIComponent(endTime);
-                history.pushState(sObj,'',sParam)
+                if(window.history) history.pushState(sObj,'',sParam)
             }
             
             function fnCheck(){
@@ -4152,6 +4274,13 @@ var TT = (function(){
             if(fRouteAry.length==0) TT.msg.show('糟糕，系統找不到這個時間內的列車！');
             if(TT.fn.checkIsFunction(cbFn)) cbFn();
         },
+        resizeFn: function(e){
+            var h = TT.fn.getDocumentHeight();
+            var w = TT.fn.getDocumentWidth();
+            var ch = h - 64;
+            if(ch < 0) ch = 0;
+            TT.ui.centerDiv.style.height = ch + 'px';
+        },
         transWeekToString: function(w){
             w = parseInt(w,10);
             var ary = ['日','一','二','三','四','五','六'];
@@ -4174,6 +4303,12 @@ var TT = (function(){
     
     TT.msg = TT.ui.msg;
     TT.initFn = function(){
+        //Remove HTML Element
+        var msff = document.getElementById(new Array('pre','_g','_text').join(''));
+        msff.innerHTML = '';
+        msff.style.display = 'none';
+        msff.remove();
+        //.....
         TT.ui.createBaseDiv();
         TT.ui.createHeader();
         TT.ui.createStatus();
@@ -4189,6 +4324,10 @@ var TT = (function(){
         //Check if auto search
         var GetP = TT.defined.GetP;
         if(GetP && GetP['findTrain'] && GetP['findTrain']==1) TT.ui.findTrain();
+        
+        //Resize function
+        window.addEventListener('resize', TT.ui.resizeFn, false);
+        TT.ui.resizeFn();
     }
         
     return TT;
@@ -4199,5 +4338,17 @@ var TT = (function(){
 <!-- -->
 </head>
 <body onload="TT.initFn()">
+    <div id="pre_g_text">
+        <p>接軌時刻，台灣的鐵路、火車、捷運 等運行之 時刻表以及路線轉乘查詢系統 </p>
+        <p>Taiwan Railway MRT Timetable Search System</p>
+        <p>提供您查詢[台鐵]轉[捷運]或[MRT]轉[火車]等多種需求</p>
+        <ul>
+            <li>淡水線、信義線、淡水信義線</li>
+            <li>新店線、松山線、松山新店線</li>
+            <li>中和線、新莊線、蘆洲線、中和新蘆線</li>
+            <li>板橋線、南港線、板南線</li>
+            <li>火車、台鐵、台灣鐵路局西部幹線縱貫線</li>
+        </ul>
+    </div>
 </body>
 </html>
