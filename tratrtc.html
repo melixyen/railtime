@@ -506,18 +506,43 @@ body {
 
 .ttMapSelector{
     display: inline-block;
-    padding: 5px 5px 50px 5px;
     background-color: #FFF;
-    background-color: rgba(255,255,255,0.88);
+    background-color: rgba(255,255,255,1);
     border: none;
     position: absolute;
     top: 0px;
+    left: 0px;
     min-height: 500px;
+    overflow: hidden;
 }
 .ttMapSelector .main{
     position: relative;
     left: 0px;
-    top: 20px;
+}
+.ttMapSelector .header{
+    position: relative;
+    left: 0px;
+    height: 30px;
+    max-height: 30px;
+    overflow: hidden;
+}
+.ttMapSelector .header .tabName{
+    float: left;
+    padding: 2px 5px;
+    border: 2px solid #FC98DA;
+    height: 20px;
+    font-size: 16px;
+    color: #3D6A7B;
+    line-height: 20px;
+    background-color: #FDB8EC;
+    cursor: pointer;
+}
+.ttMapSelector .header .tabName.onUse{
+    border: 2px solid #98FCDA;
+    color: #6A3D7B;
+    background-color: #B8FDEC;
+    border-bottom-color: #FFF;
+    border-top-color: #28AC3A;
 }
 .line_selector{
     position: relative;
@@ -622,6 +647,7 @@ body {
 //      完成 getTRTC_stationOnOutArea 可查詢 TRTC 站是否在非重疊區
 //      完成 classMapSelector 路線挑選器基礎視窗
 //      完成 timeTableTrainRouteBox 及路線挑選器簡易的 media query 適應小寬度平台
+//      完成 resetCountOfTrainRouteBox 獨立於所有 checkbox 結束後才呼叫重算 NO. 並改以獨立 ID 命名 span 加快更新速度
 var TT = (function(){
 
     var TT = {//name space TT for TimeTable
@@ -656,8 +682,8 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.2",
-            "產生日期": "2015/08/12"
+            "版本": "Beta 0.3",
+            "產生日期": "2015/08/18"
         },
         GetP: (function(){
             var s = location.search, aryParam, tmpParam, rt;
@@ -2292,6 +2318,10 @@ var TT = (function(){
                 var hslTime = TT.fn.getTRTC_rnw_stationTime('trtc_070', line, dir, w);
                 return offsetTimeFn(hslTime, -3);
             }
+            if(rnwTime==false && stationID == 'trtc_048'){//No Nanshijiao Timetable
+                var hslTime = TT.fn.getTRTC_rnw_stationTime('trtc_047', line, dir, w);
+                return offsetTimeFn(hslTime, -2);
+            }
             if(!w) w = TT.defined.defaultTRAWeekday;
             w = parseInt(w);
             if(!line){
@@ -3057,7 +3087,8 @@ var TT = (function(){
         defaultCfg = {
             mask: false,
             height: 'auto',
-            width: '95%',
+            width: 'auto',
+            autoScroll: false,
             baseClass: ' ttMapSelector',
             cls: '',
             id: TT.ui.genRandomId(),
@@ -3078,17 +3109,38 @@ var TT = (function(){
         me.el.style.zIndex = cfg.zIndex;
         me.el.style.width = cfg.width;
         me.el.style.height = cfg.height;
-        me.el.innerHTML = '<div class="main" id="' + cfg.id + '_main"></div><div class=" ttWindowClose" closeID="' + cfg.id + '">X</div>';
+        if(cfg.overflowStyle) me.el.style.overflow = cfg.overflowStyle;
+        me.el.innerHTML = '<div class="header" id="' + cfg.id + '_header"></div>' + 
+            '<div class="main" id="' + cfg.id + '_main"></div><div class=" ttWindowClose" closeID="' + cfg.id + '">X</div>';
         
         me.init = function(){
             if(!document.getElementById(cfg.id)){
                 document.body.appendChild(me.el);
                 me.isRendered = true;
+                var tmpD;
                 for(var i=0; i<cfg.items.length; i++){
+                    tmpD = '<div class="tabName">' + cfg.items[i].headerText + '</div>';
+                    document.getElementById(cfg.id+ '_header').innerHTML += tmpD;
                     document.getElementById(cfg.id+ '_main').appendChild(cfg.items[i]);
                 }
+                me.itemSwitch(cfg.items[0].headerText);
             }
             me.el.style.display = 'none';
+        }
+        
+        me.itemSwitch = function(val){
+            var dm = document.getElementById(cfg.id + '_header');
+            for(var i=0; i<dm.childNodes.length; i++){
+                dm.childNodes[i].className = dm.childNodes[i].className.replace(' onUse','');
+                cfg.items[i].style.zIndex = '2';
+                cfg.items[i].style.opacity = '0.2';
+                if(val==dm.childNodes[i].innerHTML){
+                    dm.childNodes[i].className = dm.childNodes[i].className + ' onUse';
+                    cfg.items[i].style.opacity = '1';
+                    cfg.items[i].style.zIndex = '5';
+                    me.itemActiveString = val;
+                }
+            }
         }
         
         me.addClass = function(cls){
@@ -3114,10 +3166,19 @@ var TT = (function(){
             var dh = TT.fn.getDocumentHeight(), dw = TT.fn.getDocumentWidth();
             var wh = me.el.clientHeight, ww = me.el.clientWidth;
             
-            var top =40;
-            var left = Math.ceil((dw*0.025));
+            var top = 0;
+            var left = 0;//Math.ceil((dw*0.025));
             
             me.setPosition(top, left);
+            //resize window
+            if(cfg.autoScroll){
+                me.el.style.width = (dw-20) + 'px';
+                me.el.style.height = (dh-20) + 'px';
+                var domMain = document.getElementById(cfg.id + '_main');
+                domMain.style.width = me.el.style.width;
+                domMain.style.height = (dh-50) + 'px';
+                domMain.style.overflow = 'auto';
+            }
         }
         me.setPosition = function(top,left){
             me.el.style.top = top + 'px';
@@ -3132,19 +3193,22 @@ var TT = (function(){
             me.init();
             me.el.style.display = '';
             me.resetPosition();
-            //TT.ui.mask(' ');
+            TT.ui.mask(' ');
             cfg.onShow(me, cfg, scfg);
         }
         
         me.close = function(){
             me.el.style.display = 'none';
-            //TT.ui.unmask();
+            TT.ui.unmask();
             me.isShow = false;
         }
         me.clickFn = function(e){
             if(e.target.className.indexOf('ttWindowClose')>=0){
                 var id = e.target.attributes.getNamedItem('closeID');
                 me.close();
+            }
+            if(e.target.className.indexOf('tabName')!=-1){
+                me.itemSwitch(e.target.innerHTML);
             }
         }
         me.el.addEventListener('click', me.clickFn, false);
@@ -3212,7 +3276,7 @@ var TT = (function(){
                 '<p>' + '有關時刻表功能之簡單說明如下' + '</p>' +
                 '<ul>' +
                     '<li><b>我在每個轉乘站的步行時間：</b>可依個人步行速度或預期誤點可能性調整轉車預留時間。</li>' +
-                    '<li><b>出發站、到達站：</b>可從下拉選單中選擇一個車站，或者從右邊的<div class="help_selectStationByLine">依路線選擇車站</div>中依照路線選擇車站。</li>' +
+                    '<li><b>出發站、到達站：</b>可從下拉選單中選擇一個車站，或者從右邊的<div class="help_selectStationByLine">選擇車站</div>中依照路線選擇車站。</li>' +
                     '<li><b>從這個時間開始、到這個時間為止：</b>調整預計搭車的時間，假設 08:00 後才出發可以設定 08:00 到 09:00 之間，建議間隔不要超過三小時避免搜尋出來的資料過多。</li>' +
                     '<li><b>出發的列車：</b>設定為出發的列車將會以出發站的時間來做計算。</li>' +
                     '<li><b>到達的列車：</b>設定為到達的列車將會以到達站的時間來做計算，例如 08:50 前要到市政府站可以設定時間 07:50 開始到 08:50 為止去做查詢。</li>' +
@@ -3523,6 +3587,7 @@ var TT = (function(){
             var cfg = {}, afterSelectCbFn, win;
             var astObj = TT.fn.getCommon_allTrainStation();
             var astLine = {};
+            cfg.autoScroll = false;//(TT.os.isAndroidBrowser) ? false : true;
             astObj.allAry.map(function(objA){
                 var line = (objA.byLine);
                 if(!astLine[line]) astLine[line] = new Array();
@@ -3545,6 +3610,7 @@ var TT = (function(){
                 htStation = '<div class="allStation">' + htStation +'</div>';
                 allHTML = htLine + htStation;
                 div.innerHTML = allHTML;
+                div.headerText = '使用路線列表選擇車站';
                 
                 div.addEventListener('click', function(e){
                     var t = e.target;
@@ -3571,14 +3637,53 @@ var TT = (function(){
             
             }
             
-            cfg.items = [divLine];
+            
+            var divNet = (function(){
+                var div = document.createElement('div');
+                div.className = 'line_selector';
+                div.headerText = '使用路網圖選擇車站';
+                return div;
+            })();
+            
+            cfg.items = [divLine, divNet];
             cfg.onShow = function(wwin, wcfg, scfg){
                 //scfg from call show take parameter
                 scfg = scfg || {};
                 afterSelectCbFn = scfg.afterSelectCbFn;
                 win = wwin;
+                if(TT.lib.canvasMap && !TT.ui.mapSelector.canvasMap){
+                    var canvasMap = new TT.lib.canvasMap({
+                        baseWidth: 1400, 
+                        baseHeight: 910, 
+                        offsetX: 620
+                    });
+                    canvasMap.initAll();
+                    divNet.style.width = '1400px';
+                    divNet.style.height = '910px';
+                    divNet.appendChild(canvasMap.div);
+                    TT.ui.mapSelector.canvasMap = canvasMap;
+                }
             }
             TT.ui.mapSelector = new TT.lib.classMapSelector(cfg);
+            TT.ui.mapSelector.el.addEventListener('click', function(e){
+                var me = TT.ui.mapSelector;
+                var t = e.target;
+                if(t.className.indexOf('canvasTWRMapButton')!=-1){
+                    if(me.itemActiveString==divNet.headerText){
+                        var id = t.className.split('caTWRMap_')[1];
+                        if(afterSelectCbFn){
+                            afterSelectCbFn(id);
+                        }
+                        win.close();
+                        TT.ui.msg.show(TT.fn.getCommon_stationDataOfID(id).name,600);
+                    }else{
+                        me.itemSwitch(divNet.headerText);
+                    }
+                }
+                if(t.className.indexOf('canvasTWRMapClickDiv')!=-1){
+                    me.itemSwitch(divNet.headerText);
+                }
+            }, false);
         },
         createTakeStation: function(cfg){
             cfg = cfg || {};
@@ -3612,13 +3717,13 @@ var TT = (function(){
                 '<div class="selectStationIn" id="' + cfg.id + '_fromin">' +
                     '<span>' + cfg.fieldStartText + '</span>' +
                     '<span><select id="' + cfg.id + '_start">' + optSt + '</select></span>' +
-                    '<div class="selectStationByLine sta_from">' + '依路線選擇車站' + '</div>' +
+                    '<div class="selectStationByLine sta_from">' + '選擇車站' + '</div>' +
                     '<div class="selectStationExchange">' + '起訖點對調' + '</div>' +
                 '</div>' +
                 '<div class="selectStationIn" id="' + cfg.id + '_toin">' +
                     '<span>' + cfg.fieldEndText + '</span>' +
                     '<span><select id="' + cfg.id + '_end">' + optSt + '</select></span>' +
-                    '<div class="selectStationByLine sta_to">' + '依路線選擇車站' + '</div>' +
+                    '<div class="selectStationByLine sta_to">' + '選擇車站' + '</div>' +
                 '</div>' +
             '</div>';
             
@@ -3823,6 +3928,7 @@ var TT = (function(){
                             domA.checked = aryCk[idx];
                             changeChecked(domA);
                         });
+                        resetCountOfTrainRouteBox();
                         TT.ui.unmask();
                         TT.msg.show('排序已調整',500);
                     }
@@ -3898,6 +4004,7 @@ var TT = (function(){
                                 callChangeChk(sortTC[idx], idx);
                             },10);
                         }else{
+                            resetCountOfTrainRouteBox();
                             TT.ui.unmask();
                         }
                     }
@@ -3915,16 +4022,18 @@ var TT = (function(){
                     //if(typeof(domCk)=='string') domCk = document.getElementById(domCk);
                     var ckcss = domCk.id.replace('tt_timeTable_ckRoute_','.tt_search_route_css_');
                     if(domCk.checked==true){
-                        $(ckcss).show();
+                        $('#' + TT.ui.center.timeTable.displayDiv.trainDiv.id + ' ' + ckcss).show();
                     }else{
-                        $(ckcss).hide();
+                        $('#' + TT.ui.center.timeTable.displayDiv.trainDiv.id + ' ' + ckcss).hide();
                     }
-                    
+            }
+            function resetCountOfTrainRouteBox(){
                     var ct = 0;
-                    $('.timeTableTrainRouteBox').each(function(idx,dom){
+                    $('#' + TT.ui.center.timeTable.displayDiv.trainDiv.id + ' .timeTableTrainRouteBox').each(function(idx,dom){
                         if(dom.style.display != 'none'){
                             ct++;
-                            $('#timeTableTrainRouteBox_' + idx + ' .sub.num span.val')[0].innerHTML = ct;
+                            //$('#timeTableTrainRouteBox_' + idx + ' .sub.num span.val')[0].innerHTML = ct;//Too slow
+                            document.getElementById('timeTableTrainRouteBoxCountVal_' + idx).innerHTML = ct;
                         }
                     });
             }
@@ -3932,6 +4041,7 @@ var TT = (function(){
                 ckDom = document.getElementById('tt_timeTable_ckRoute_' + tc);
                 ckDom.addEventListener('change', function(e){
                     changeChecked(e.target);
+                    resetCountOfTrainRouteBox();
                 }, false);
             }
             $('.tt_ck_sortby_sh').each(function(idx,dom){
@@ -4017,7 +4127,7 @@ var TT = (function(){
             
             var hDiv = document.createElement('div');
             hDiv.className = 'header';
-            hDiv.innerHTML = '<div class="sub num">' + 'NO. ' + '<span class="val">' + (ct+1) + '</span>' + '</div>' + 
+            hDiv.innerHTML = '<div class="sub num">' + 'NO. ' + '<span class="val" id="timeTableTrainRouteBoxCountVal_' + ct + '">' + (ct+1) + '</span>' + '</div>' + 
                 '<div class="sub count">' + '轉乘次數: ' + '<span class="val">' + (routeP.routeMap.length-1) + '</span>' + '</div>' + 
                 '<div class="sub totalTime">' + '花費時間: ' + '<span class="val">' + routeP.travelMinute + ' 分鐘' + '</span>' + '</div>' +
                 '<div class="sub startTime">' + '開始時間: ' + '<span class="val">' + routeP.travelStartTime + '</span>' + '</div>' +
@@ -4344,9 +4454,10 @@ var TT = (function(){
     }
         
     return TT;
-})()
+})();
 
 </script>
+<script type="text/javascript" src="canvasTaiwanRailwayMap.js"></script>
 <!-- -->
 <!-- -->
 </head>
