@@ -153,11 +153,15 @@ body {
     padding-bottom: 5px;
 }
 
-.define_rail_bgcolor_tra_xibu, .define_rail_bgcolor_trtc_2, .define_rail_bgcolor_trtc_3, .define_rail_bgcolor_trtc_4, .define_rail_bgcolor_trtc_5{
+.define_rail_bgcolor_tra_xibu, .define_rail_bgcolor_tra_yilan,
+.define_rail_bgcolor_trtc_2, .define_rail_bgcolor_trtc_3, .define_rail_bgcolor_trtc_4, .define_rail_bgcolor_trtc_5{
     color: #EEF !important;
 }
 .define_rail_bgcolor_tra_xibu{
     background-color: #000050 !important;
+}
+.define_rail_bgcolor_tra_yilan{
+    background-color: #500000 !important;
 }
 .define_rail_bgcolor_trtc_2{
     background-color: #cb2c30 !important;
@@ -304,6 +308,27 @@ body {
 .timeTableTrainRouteBox .table td.sect{
     color: #BD122B;
 }
+.timeTableTrainRouteBox .transStationVideoClick{
+    display: inline-block;
+    margin-left: 18px;
+    padding: 0px 5px;
+    color: #F0FE46;
+    background-color: #202029;
+    border-radius: 8px;
+    cursor: pointer;
+    animation-duration: 1s;
+    animation-name: ccblink;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+@keyframes ccblink{
+    0%{color: #F0FE46;}
+    40%{color: #A0FE66;}
+    70%{color: #80FE86;}
+    100%{color: #A0FE66;}
+}
+
 @media screen and (max-width: 579px) {
     .timeTableTrainRouteBox .table .info, .timeTableTrainRouteBox .table .line, .timeTableTrainRouteBox .table .other{
         display: none;
@@ -682,7 +707,7 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.3",
+            "版本": "Beta 0.3.1",
             "產生日期": "2015/08/18"
         },
         GetP: (function(){
@@ -745,7 +770,15 @@ var TT = (function(){
                 {id:"tra_1120", name: "彰化", estring: "changhua", sect: "zhanghua", big: 'w'},
                 {id:"tra_1238", name: "高雄", estring: "kaohsiunggaoxung", sect: "gaoxung", big: 'ws'},
                 {id:"tra_1406", name: "屏東", estring: "pingtungpingdong", sect: "pingdong", big: 'ws'},
+                {id:"tra_1802", name: "暖暖", estring: "nuannuan", sect: "taipei_east"},
+                {id:"tra_1803", name: "四腳亭", estring: "sijiaoting", sect: "taipei_east"},
                 {id:"tra_1804", name: "瑞芳", estring: "ruifang", sect: "taipei_east", big: 'e'},
+                {id:"tra_1805", name: "猴硐", estring: "houdong", sect: "taipei_east"},
+                {id:"tra_1806", name: "三貂嶺", estring: "sandiaoling", sect: "taipei_east"},
+                {id:"tra_1807", name: "牡丹", estring: "mudan", sect: "taipei_east"},
+                {id:"tra_1808", name: "雙溪", estring: "shuangxi", sect: "taipei_east"},
+                {id:"tra_1809", name: "貢寮", estring: "gongliao", sect: "taipei_east"},
+                {id:"tra_1810", name: "福隆", estring: "fulong", sect: "taipei_east"},
                 {id:"tra_1827", name: "蘇澳", estring: "suao", sect: "yilan"},
                 {id:"tra_1715", name: "花蓮", estring: "hualienhualian", sect: "hualian", big: 'e'},
                 {id:"tra_1632", name: "台東", estring: "taitungtaidong", sect: "taidong", big: 'es'}
@@ -754,11 +787,22 @@ var TT = (function(){
             	{
             		id: "tra_xibu",
                     name: "西部幹線(縱貫線)",
+                    trainSect: ["taipei,keelung", "taipei", "taoyuan", "xinzhu", "miaoli", "zhanghua", "gaoxung"],
                     color: "#000050",
             		dir: "1",
+                    area: 'w',
             		station: ["tra_1001","tra_1029","tra_1002","tra_1003","tra_1030","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1009","tra_1011","tra_1032","tra_1012","tra_1013","tra_1014",//taipei
                         "tra_1015","tra_1016","tra_1017"]
-            	}
+            	}/*, {
+            		id: "tra_yilan",
+                    name: "宜蘭線",
+                    trainSect: ["taipei", "taipei,keelung", "taipei_east", "yilan"],
+                    color: "#500000",
+            		dir: "0",
+                    area: 'e',
+            		station: ["tra_1002","tra_1802","tra_1803","tra_1804","tra_1805","tra_1806","tra_1807","tra_1808","tra_1809","tra_1810",//taipei
+                        "tra_1827"]
+                }*/
             ]
         },
         trtc: {
@@ -1003,12 +1047,17 @@ var TT = (function(){
                     id: 'nangang1', name: "南港",
                     changeLine: ["tra_xibu", "trtc_5"],
                     changeStation: ['tra_1006','trtc_097'],
-                    walkMinute: 4
+                    video: {
+                        //"tra_1006": '<iframe width="420" height="315" src="https://www.youtube.com/embed/AIQETgZdBKM" frameborder="0" allowfullscreen></iframe>',
+                        "tra_1006": {width:420, height:315, src:'https://www.youtube.com/embed/AIQETgZdBKM'},
+                        "trtc_097": {width:420, height:315, src:'https://www.youtube.com/embed/HNBdfyBxMa8'}
+                    },
+                    walkMinute: 5
                 }, {
                     id: 'songshan1', name: "松山",
                     changeLine: ["tra_xibu", "trtc_3"],
                     changeStation: ['tra_1007','trtc_111'],
-                    walkMinute: 5
+                    walkMinute: 6
                 }, {
                     id: 'ximen1', name: "西門",
                     changeLine: ["trtc_5", "trtc_3"],
@@ -1023,12 +1072,12 @@ var TT = (function(){
                     id: 'taipei1', name: "台北",
                     changeLine: ["tra_xibu", "trtc_5"],
                     changeStation: ['tra_1008','trtc_051'],
-                    walkMinute: 6
+                    walkMinute: 7
                 }, {
                     id: 'taipei2', name: "台北",
                     changeLine: ["tra_xibu", "trtc_2"],
                     changeStation: ['tra_1008','trtc_051'],
-                    walkMinute: 3
+                    walkMinute: 4
                 }, {
                     id: 'taipei3', name: "台北",
                     changeLine: ["trtc_5", "trtc_2"],
@@ -1078,6 +1127,7 @@ var TT = (function(){
         ],
         routeMap: [
             {
+                id: 'tra_xibu,trtc_3',
                 fromToLine: ["tra_xibu","trtc_3"],
                 route: [
                     {
@@ -1098,6 +1148,7 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'tra_xibu,trtc_5',
                 fromToLine: ["tra_xibu","trtc_5"],
                 route: [
                     {
@@ -1114,6 +1165,7 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'tra_xibu,trtc_2',
                 fromToLine: ["tra_xibu","trtc_2"],
                 route: [
                     {
@@ -1122,6 +1174,7 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'tra_xibu,trtc_4',
                 fromToLine: ["tra_xibu","trtc_4"],
                 route: [
                     {
@@ -1142,6 +1195,7 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'trtc_5,trtc_2',
                 fromToLine: ["trtc_5","trtc_2"],
                 route: [
                     {
@@ -1154,6 +1208,7 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'trtc_4,trtc_2',
                 fromToLine: ["trtc_4","trtc_2"],
                 route: [
                     {
@@ -1170,6 +1225,7 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'trtc_3,trtc_2',
                 fromToLine: ["trtc_3","trtc_2"],
                 route: [
                     {
@@ -1182,6 +1238,7 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'trtc_3,trtc_5',
                 fromToLine: ["trtc_3","trtc_5"],
                 route: [
                     {
@@ -1194,6 +1251,7 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'trtc_4,trtc_5',
                 fromToLine: ["trtc_4","trtc_5"],
                 route: [
                     {
@@ -1206,6 +1264,7 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'trtc_3,trtc_4',
                 fromToLine: ["trtc_3","trtc_4"],
                 route: [
                     {
@@ -1218,6 +1277,7 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'trtc_4,trtc_4',
                 fromToLine: ["trtc_4","trtc_4"],
                 route: [
                     {
@@ -1893,6 +1953,13 @@ var TT = (function(){
             }else{
                 return true;
             }
+        },
+        getRoute_transStationById: function(id){
+            var d = TT.data.transStation;
+            for(var i=0; i<d.length; i++){
+                if(d[i].id==id) return d[i];
+            }
+            return false;
         },
         giveRoute_mapTool: function(t){
             t.isRoute = true;
@@ -3289,6 +3356,17 @@ var TT = (function(){
                     '<li><b>螢幕不夠寬怎麼看全部資訊？</b>網頁部分資訊採用 RWD　呈現，當螢幕不夠寬會隱藏部分資訊，想看完整資訊可點右邊的<div class="help_timeTableResultMore">&gt;&gt;</div>。</li>' +
                     '<li><b>搜尋完後網址變了？</b>在支援 HTML5 history 功能的瀏覽器上，網址會自動帶上搜尋參數，複製網址給別人連進來可以自動搜尋你當初搜尋的條件。</li>' +
                 '</ul>';
+            //HELP Frame
+            TT.ui.center.home.update = TT.ui.createDiv('tt_home_update', 'frameA update', TT.ui.center.home.id);
+            var updateDiv = TT.ui.center.home.update;
+            updateDiv.divTitle = TT.ui.createDiv(updateDiv.id + '_title', 'title', updateDiv.id);
+            updateDiv.divTitle.innerHTML = '更新';
+            updateDiv.divText1 = TT.ui.createDiv(updateDiv.id + '_text1', 'text', updateDiv.id);
+            updateDiv.divText1.innerHTML = '' +
+                '<div style="height: 80px; overflow-y:scroll; overflow-x:hidden;"><ul>' +
+                    '<li>Beta 0.3.1: 更新南港站提供轉乘教學影片。</li>' +
+                    '<li>Beta 0.3: 新增路網圖選擇器提供北台灣軌道運輸路網站點選擇。</li>' +
+                '</ul><div>';
             
             //TRA Frame
             TT.ui.center.home.tra = TT.ui.createDiv('tt_home_tra', 'frameA tra', TT.ui.center.home.id);
@@ -4121,8 +4199,12 @@ var TT = (function(){
                 return rt;
             }
             
-            function createTransStationBox(ts){
-                return '轉乘步行時間: ' + ts.walkMinute + '分鐘';
+            function createTransStationBox(ts, st){
+                var vLink = '';
+                if(ts.video && ts.video[st]){
+                    vLink = '<div class="transStationVideoClick" tsid="' + ts.id + '" stid="' + st + '">轉乘教學</div>';
+                }
+                return '轉乘步行時間: ' + ts.walkMinute + '分鐘' + vLink;
             }
             
             var hDiv = document.createElement('div');
@@ -4154,7 +4236,7 @@ var TT = (function(){
                         td += '<tr>' +
                             '<td></td>' +
                             '<td class="time"></td>' +
-                            '<td colspan="3" class="transStation">' + createTransStationBox(tbd.transStation) + '</td>' +
+                            '<td colspan="3" class="transStation">' + createTransStationBox(tbd.transStation, tbd.takeRange[1]) + '</td>' +
                             '<td></td>' +
                         '</tr>';
                     }
@@ -4176,6 +4258,15 @@ var TT = (function(){
             tDiv.addEventListener('click', function(e){
                 if(e.target.className.indexOf('more btn')!=-1){
                     e.target.parentNode.className += ' showAll';
+                }
+                if(e.target.className.indexOf('transStationVideoClick')!=-1){
+                    var tsid = e.target.attributes.getNamedItem('tsid').value,
+                        stid = e.target.attributes.getNamedItem('stid').value;
+                    
+                    var tsObj = TT.fn.getRoute_transStationById(tsid);
+                    if(tsObj.video && tsObj.video[stid]){
+                        TT.ui.displayTransVideo(tsObj.video[stid]);
+                    }
                 }
             }, false);
             div.appendChild(hDiv);
@@ -4237,6 +4328,32 @@ var TT = (function(){
                 });
                 TT.ui.transStationWalkTimeWindow = win;
             }
+        },
+        displayTransVideo: function(cfg){
+            cfg = cfg || {};
+            cfg.width = (cfg.width) ? cfg.width : 640;
+            cfg.height = (cfg.height) ? cfg.height : 480;
+            function renderInner(ww){
+                console.log(ww.vcfg.src);
+                        var ifm = '<iframe width="' + ww.vcfg.width + '" height="' + ww.vcfg.height + '" src="' + ww.vcfg.src + '" frameborder="0" allowfullscreen></iframe>';
+                        ww.inner.innerHTML = ifm;
+            }
+            if(!this.win){
+                this.win = new TT.lib.classWindow({
+                    mask: true,
+                    onShow: function(ww){
+                        renderInner(ww);
+                    }
+                });
+            }
+            
+            var win = this.win;
+            win.el.style.width = (cfg.width + 30) + 'px';
+            win.el.style.height = (cfg.height + 60) + 'px';
+            win.vcfg = cfg;
+            win.show();
+            
+            
         },
         findBeforeTrain: function(cbFn){
             TT.ui.findTrain(cbFn);
