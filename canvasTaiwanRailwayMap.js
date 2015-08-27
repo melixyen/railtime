@@ -162,19 +162,39 @@
                     line: [
                         {type: 'station', id: 'tra_1002'},
                         {type: 'station', id: 'tra_1805'},
-                        {type: 'station', id: 'tra_1810'}
+                        {type: 'station', id: 'tra_1811'},
+                        {type: 'station', id: 'tra_1818'},
+                        {type: 'station', id: 'tra_1826'},
+                        {type: 'station', id: 'tra_1827'}
                     ],
                     station: {
                         "tra_1002": {x: pos.badu.x, y: pos.badu.y, name: '八堵', stationClass: 2, noDraw: true},
-                        "tra_1802": {x: pos.badu.x+60, y: pos.badu.y, name: '暖暖', stationClass: 4, noClick: true },
-                        "tra_1803": {x: pos.badu.x+120, y: pos.badu.y, name: '四腳亭', stationClass: 4, noClick: true },
-                        "tra_1804": {x: pos.badu.x+180, y: pos.badu.y, name: '瑞芳', stationClass: 3, noClick: true },
-                        "tra_1805": {x: pos.badu.x+240, y: pos.badu.y, name: '猴硐', stationClass: 4, noClick: true },
-                        "tra_1806": {x: pos.badu.x+240, y: pos.badu.y+60, name: '三貂嶺', stationClass: 4, noClick: true },
-                        "tra_1807": {x: pos.badu.x+240, y: pos.badu.y+90, name: '牡丹', stationClass: 4, noClick: true },
-                        "tra_1808": {x: pos.badu.x+240, y: pos.badu.y+120, name: '雙溪', stationClass: 4, noClick: true },
-                        "tra_1809": {x: pos.badu.x+240, y: pos.badu.y+150, name: '貢寮', stationClass: 4, noClick: true },
-                        "tra_1810": {x: pos.badu.x+240, y: pos.badu.y+180, name: '福隆', stationClass: 4, noClick: true }
+                        "tra_1802": {x: pos.badu.x+60, y: pos.badu.y, name: '暖暖', stationClass: 4 },
+                        "tra_1803": {x: pos.badu.x+120, y: pos.badu.y, name: '四腳亭', stationClass: 4 },
+                        "tra_1804": {x: pos.badu.x+180, y: pos.badu.y, name: '瑞芳', stationClass: 3 },
+                        "tra_1805": {x: pos.badu.x+240, y: pos.badu.y, name: '猴硐', stationClass: 4 },
+                        "tra_1806": {x: pos.badu.x+240, y: pos.badu.y+60, name: '三貂嶺', stationClass: 4 },
+                        "tra_1807": {x: pos.badu.x+240, y: pos.badu.y+90, name: '牡丹', stationClass: 4 },
+                        "tra_1808": {x: pos.badu.x+240, y: pos.badu.y+120, name: '雙溪', stationClass: 4 },
+                        "tra_1809": {x: pos.badu.x+240, y: pos.badu.y+150, name: '貢寮', stationClass: 4 },
+                        "tra_1810": {x: pos.badu.x+240, y: pos.badu.y+180, name: '福隆', stationClass: 3 },
+                        "tra_1811": {x: pos.badu.x+240, y: pos.badu.y+260, name: '石城', stationClass: 4 },
+                        "tra_1812": {x: pos.badu.x+230, y: pos.badu.y+290, name: '大里', stationClass: 4 },
+                        "tra_1813": {x: pos.badu.x+220, y: pos.badu.y+320, name: '大溪', stationClass: 4 },
+                        "tra_1814": {x: pos.badu.x+210, y: pos.badu.y+350, name: '龜山', stationClass: 4 },
+                        "tra_1815": {x: pos.badu.x+200, y: pos.badu.y+380, name: '外澳', stationClass: 4 },
+                        "tra_1816": {x: pos.badu.x+190, y: pos.badu.y+410, name: '頭城', stationClass: 4 },
+                        "tra_1817": {x: pos.badu.x+180, y: pos.badu.y+440, name: '頂埔', stationClass: 4 },
+                        "tra_1818": {x: pos.badu.x+170, y: pos.badu.y+470, name: '礁溪', stationClass: 4 },
+                        "tra_1819": {x: pos.badu.x+170, y: pos.badu.y+500, name: '四城', stationClass: 4 },
+                        "tra_1820": {x: pos.badu.x+170, y: pos.badu.y+530, name: '宜蘭', stationClass: 2 },
+                        "tra_1821": {x: pos.badu.x+170, y: pos.badu.y+560, name: '二結', stationClass: 4 },
+                        "tra_1822": {x: pos.badu.x+170, y: pos.badu.y+590, name: '中里', stationClass: 4 },
+                        "tra_1823": {x: pos.badu.x+170, y: pos.badu.y+620, name: '羅東', stationClass: 2 },
+                        "tra_1824": {x: pos.badu.x+170, y: pos.badu.y+650, name: '冬山', stationClass: 4 },
+                        "tra_1825": {x: pos.badu.x+170, y: pos.badu.y+680, name: '新馬', stationClass: 4 },
+                        "tra_1826": {x: pos.badu.x+170, y: pos.badu.y+710, name: '蘇澳新', stationClass: 4 },
+                        "tra_1827": {x: pos.badu.x+240, y: pos.badu.y+710, name: '蘇澳', stationClass: 2 }
                     }
                 }, {
                     id: "tra_pingxu",
@@ -195,16 +215,16 @@
                         {type: 'station', id: 'tra_1908'}
                     ],
                     station: {
-                        "tra_6103": {x: pos.badu.x+180, y: pos.badu.y-80, name: '海科館', stationClass: 4, noClick: true },
-                        "tra_1804": {x: pos.badu.x+180, y: pos.badu.y, name: '瑞芳', stationClass: 3, noClick: true, noDraw: true},
-                        "tra_1805": {x: pos.badu.x+240, y: pos.badu.y+30, name: '猴硐', stationClass: 4, noClick: true, noDraw: true },
-                        "tra_1806": {x: pos.badu.x+240, y: pos.badu.y+60, name: '三貂嶺', stationClass: 4, noClick: true, noDraw: true },
-                        "tra_1903": {x: pos.badu.x+180, y: pos.badu.y+60, name: '大華', stationClass: 4, noClick: true },
-                        "tra_1904": {x: pos.badu.x+180, y: pos.badu.y+90, name: '十分', stationClass: 4, noClick: true },
-                        "tra_1905": {x: pos.badu.x+180, y: pos.badu.y+120, name: '望古', stationClass: 4, noClick: true },
-                        "tra_1906": {x: pos.badu.x+180, y: pos.badu.y+150, name: '嶺腳', stationClass: 4, noClick: true },
-                        "tra_1907": {x: pos.badu.x+180, y: pos.badu.y+180, name: '平溪', stationClass: 4, noClick: true },
-                        "tra_1908": {x: pos.badu.x+180, y: pos.badu.y+210, name: '菁桐', stationClass: 4, noClick: true }
+                        "tra_6103": {x: pos.badu.x+180, y: pos.badu.y-80, name: '海科館', stationClass: 4 },
+                        "tra_1804": {x: pos.badu.x+180, y: pos.badu.y, name: '瑞芳', stationClass: 3, noDraw: true},
+                        "tra_1805": {x: pos.badu.x+240, y: pos.badu.y+30, name: '猴硐', stationClass: 4, noDraw: true },
+                        "tra_1806": {x: pos.badu.x+240, y: pos.badu.y+60, name: '三貂嶺', stationClass: 4, noDraw: true },
+                        "tra_1903": {x: pos.badu.x+180, y: pos.badu.y+60, name: '大華', stationClass: 4 },
+                        "tra_1904": {x: pos.badu.x+180, y: pos.badu.y+90, name: '十分', stationClass: 4 },
+                        "tra_1905": {x: pos.badu.x+180, y: pos.badu.y+120, name: '望古', stationClass: 4 },
+                        "tra_1906": {x: pos.badu.x+180, y: pos.badu.y+150, name: '嶺腳', stationClass: 4 },
+                        "tra_1907": {x: pos.badu.x+180, y: pos.badu.y+180, name: '平溪', stationClass: 4 },
+                        "tra_1908": {x: pos.badu.x+180, y: pos.badu.y+210, name: '菁桐', stationClass: 4 }
                     }
                 }
             ],
