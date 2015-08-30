@@ -95,6 +95,7 @@
         
         var pos = {
             badu: {x: 750, y: -240},
+            hualian: {x: 920, y: 770},
             tauoyuan: {x: -570, y: 290}
         }
         if(cfg.linePOS) pos = cfg.linePOS;
@@ -193,8 +194,32 @@
                         "tra_1823": {x: pos.badu.x+170, y: pos.badu.y+620, name: '羅東', stationClass: 2 },
                         "tra_1824": {x: pos.badu.x+170, y: pos.badu.y+650, name: '冬山', stationClass: 4 },
                         "tra_1825": {x: pos.badu.x+170, y: pos.badu.y+680, name: '新馬', stationClass: 4 },
-                        "tra_1826": {x: pos.badu.x+170, y: pos.badu.y+710, name: '蘇澳新', stationClass: 4 },
+                        "tra_1826": {x: pos.badu.x+170, y: pos.badu.y+710, name: '蘇澳新', stationClass: 3 },
                         "tra_1827": {x: pos.badu.x+240, y: pos.badu.y+710, name: '蘇澳', stationClass: 2 }
+                    }
+                }, {
+                    id: "tra_beihui",
+                    name: "[台鐵]北迴線",
+                    color: "#004060",
+                    dir: "0",
+                    line: [
+                        {type: 'station', id: 'tra_1826'},
+                        {type: 'station', id: 'tra_1715'}
+                    ],
+                    station: {
+                        "tra_1826": {x: pos.badu.x+170, y: pos.badu.y+710, name: '蘇澳新', stationClass: 3, noDraw: true },
+                        "tra_1703": {x: pos.hualian.x, y: pos.hualian.y-275, name: '永樂', stationClass: 5},
+                        "tra_1704": {x: pos.hualian.x, y: pos.hualian.y-250, name: '東澳', stationClass: 4},
+                        "tra_1705": {x: pos.hualian.x, y: pos.hualian.y-225, name: '南澳', stationClass: 4},
+                        "tra_1706": {x: pos.hualian.x, y: pos.hualian.y-200, name: '武塔', stationClass: 4},
+                        "tra_1708": {x: pos.hualian.x, y: pos.hualian.y-175, name: '漢本', stationClass: 4},
+                        "tra_1709": {x: pos.hualian.x, y: pos.hualian.y-150, name: '和平', stationClass: 4},
+                        "tra_1710": {x: pos.hualian.x, y: pos.hualian.y-125, name: '和仁', stationClass: 4},
+                        "tra_1711": {x: pos.hualian.x, y: pos.hualian.y-100, name: '崇德', stationClass: 4},
+                        "tra_1712": {x: pos.hualian.x, y: pos.hualian.y-75, name: '新城', stationClass: 4},
+                        "tra_1713": {x: pos.hualian.x, y: pos.hualian.y-50, name: '景美', stationClass: 4},
+                        "tra_1714": {x: pos.hualian.x, y: pos.hualian.y-25, name: '北埔', stationClass: 4},
+                        "tra_1715": {x: pos.hualian.x, y: pos.hualian.y, name: '花蓮', stationClass: 0 }
                     }
                 }, {
                     id: "tra_pingxu",
