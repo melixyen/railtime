@@ -717,8 +717,8 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.3.4",
-            "產生日期": "2015/08/30"
+            "版本": "Beta 0.3.5",
+            "產生日期": "2015/08/31"
         },
         displayPri: {
                 "tra": ['tra_beihui','tra_yilan','tra_xibu'],
@@ -2285,6 +2285,10 @@ var TT = (function(){
                 for(var i=0; i<t.route.length; i++){
                     var ary = new Array();
                     var rr = t.getRouteAt(i);
+                    if(!rr || rr.length==0){
+                        t.route[i].takeRange = [t.fromStation, t.toStation];
+                        continue;
+                    }
                     for(var j=0; j<rr.length; j++){
                         if(j==0){
                             ary.push([t.fromStation, rr[j].changeStation[0]]);
@@ -2480,6 +2484,16 @@ var TT = (function(){
                 aObj = TT.fn.getCommon_stationDataOfID(a),
                 bObj = TT.fn.getCommon_stationDataOfID(b);
         	
+            function getNearBig(st, stObj, nearAry){
+        			var anst = (TT.fn.getTRA_LineDirByFromTo(st,nearAry[0])==dir) ? nearAry[0] : nearAry[1];
+        			if(TT.fn.getCommon_stationDataOfID(anst).sect != stObj.sect && nearAry[1]){
+        				if(TT.fn.getCommon_stationDataOfID(nearAry[0]).sect==stObj.sect) anst = nearAry[0];
+        				if(TT.fn.getCommon_stationDataOfID(nearAry[1]).sect==stObj.sect) anst = nearAry[1];
+        			}
+        			if(!anst) anst = nearAry[0];
+                    return anst;
+            }
+            
         	route.map(function(ro){
         		rt.push(ro);
         		aTS = TT.fn.getCommon_stationDataOfID(TT.fn.getCommon_transStationByID(ro.transStation[0]).changeStation[0]);
@@ -2493,27 +2507,30 @@ var TT = (function(){
         		if(asIndex>1 && a!=aNear[0]){
         			var pushFlag = true;
         			lineAry.splice(0,0,aLine);
-        			var anst = (TT.fn.getTRA_LineDirByFromTo(a,aNear[0])==dir) ? aNear[0] : aNear[1];
-        			if(TT.fn.getCommon_stationDataOfID(anst).sect != aObj.sect && aNear[1]){
-        				if(TT.fn.getCommon_stationDataOfID(aNear[0]).sect==aObj.sect) anst = aNear[0];
-        				if(TT.fn.getCommon_stationDataOfID(aNear[1]).sect==aObj.sect) anst = aNear[1];
-        			}
-        			if(!anst) anst = aNear[0];
+                    var anst = getNearBig(a, aObj, aNear);
         			tAry.splice(0,0,TT.fn.getCommon_transStationBySameChangeStation(anst).id);
         		}
         		if(bsIndex>1 && b!=bNear[0]){
         			var pushFlag = true;
         			lineAry.push(bLine);
-        			var bnst = (TT.fn.getTRA_LineDirByFromTo(bNear[0],b)==dir) ? bNear[0] : bNear[1];
-        			if(TT.fn.getCommon_stationDataOfID(bnst).sect != bObj.sect && bNear[1]){
-        				if(TT.fn.getCommon_stationDataOfID(bNear[0]).sect==bObj.sect) bnst = bNear[0];
-        				if(TT.fn.getCommon_stationDataOfID(bNear[1]).sect==bObj.sect) bnst = bNear[1];
-        			}
-        			if(!bnst) bnst = bNear[0];
+                    var bnst = getNearBig(b, bObj, bNear);
         			tAry.push(TT.fn.getCommon_transStationBySameChangeStation(bnst).id);
         		}
         		if(pushFlag) rt.push({line:lineAry, transStation: tAry});
         	});
+            
+            if(route.length==0 && (!aObj.big || !bObj.big) && (TT.fn.getTRA_sectAB(aObj, bObj)>1)){
+                if(!aObj.big){
+                    var anst = getNearBig(a, aObj, aNear);
+                    rt.push({line:[aLine,bLine], transStation: [TT.fn.getCommon_transStationBySameChangeStation(anst).id]});
+                }else if(!bObj.big){
+                    var bnst = getNearBig(b, bObj, bNear);
+                    rt.push({line:[aLine,bLine], transStation: [TT.fn.getCommon_transStationBySameChangeStation(bnst).id]});
+                }
+            }
+            if(rt.length==0){
+                rt.push({line:[aLine,bLine], transStation: []});
+            }
 			routeM.route = rt;
         	return routeM;
         },
@@ -2778,11 +2795,11 @@ var TT = (function(){
                                 for(var i=0; i<ttkrg.length; i++){
                                     aryFullRoute[te][i] = TT.fn.getCommon_theTransRouteByFromTo(ttkrg[i][0], ttkrg[i][1]);
                                     if(te < aryFullTakeRange.length-1){
-                                        ttTs = aryFullTS[te][i];
+                                        ttTS = aryFullTS[te][i];
                                         ttRot = aryFullRoute[te][i];
                                         ttRot.map(function(dmf){
-                                            dmf[dmf.length-1].transStation = ttTs;
-                                            dmf[dmf.length-1].transStationID = ttTs.id;
+                                            dmf[dmf.length-1].transStation = ttTS;
+                                            dmf[dmf.length-1].transStationID = ttTS.id;
                                         });
                                     }
                                 }
@@ -4073,7 +4090,7 @@ var TT = (function(){
     
     function classWindow(ucfg){
         ucfg = ucfg || {};
-        defaultCfg = {
+        var defaultCfg = {
             mask: false,
             height: 'auto',
             width: 'auto',
@@ -4192,7 +4209,7 @@ var TT = (function(){
     }
     function classMapSelector(ucfg){
         ucfg = ucfg || {};
-        defaultCfg = {
+        var defaultCfg = {
             mask: false,
             height: 'auto',
             width: 'auto',
@@ -4405,6 +4422,7 @@ var TT = (function(){
             updateDiv.divText1 = TT.ui.createDiv(updateDiv.id + '_text1', 'text', updateDiv.id);
             updateDiv.divText1.innerHTML = '' +
                 '<div style="height: 80px; overflow-y:scroll; overflow-x:hidden;"><ul>' +
+                    '<li>Beta 0.3.5: 修正西部大站與東部小站間使用轉乘系統。</li>' +
                     '<li>Beta 0.3.4: 新增北迴線的轉乘查詢。</li>' +
                     '<li>Beta 0.3.3: 更新松山站提供轉乘教學影片。</li>' +
                     '<li>Beta 0.3.2: 新增平溪線及宜蘭線的轉乘查詢。</li>' +
