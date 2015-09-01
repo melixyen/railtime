@@ -717,8 +717,8 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.3.5",
-            "產生日期": "2015/08/31"
+            "版本": "Beta 0.3.6",
+            "產生日期": "2015/09/01"
         },
         displayPri: {
                 "tra": ['tra_beihui','tra_yilan','tra_xibu'],
@@ -2422,7 +2422,8 @@ var TT = (function(){
                 }
             }
         },
-        getRoute_directionByFromToLine: function(a,b, routeM){
+        getRoute_directionByFromToLine: function(a,b, routeOM){
+            var routeM = $.extend({},routeOM);
         	var fsFlag = true;
         	//testObj = (routeMap[i].fromToLineReg) ? routeMap[i].fromToLineReg : routeMap[i].fromToLine;
         	if(routeM.fromToLineReg){
@@ -2809,7 +2810,7 @@ var TT = (function(){
                             //console.info($.extend([],aryFullRoute));
                             var aryTotalRoute = new Array();
                             if(aryFullTS.length==1){ //Just a combine b
-                                var tmpAryT1Route = new Array(), tmpSAryT1Route = new Array(), aryR1 = new Array(), tmpC, includeFlag;
+                                var tmpAryT1Route = new Array(), tmpSAryT1Route = new Array(), aryR1 = new Array(), tmpC, tmpCRTS, includeFlag;
                                 aryFullRoute[0].map(function(t1,t1idx){
                                     var tsObj = aryFullTS[0][t1idx];
                                     tmpSAryT1Route[t1idx] = new Array();
@@ -2836,7 +2837,16 @@ var TT = (function(){
                                     t1.map(function(t2, t2idx){
                                         aryR1[t1idx].map(function(tr1,trIdx){
                                             tmpC = $.extend([],aryR1[t1idx][trIdx]);
+                                            tmpCRTS = tmpC[tmpC.length-1].transStation;
                                             for(var i=0; i<t2.length; i++){
+                                                if(i==0 && tmpCRTS && tmpCRTS.changeLine[0]!=t2[i].line && tmpCRTS.changeLine[1]!=t2[i].line){
+                                                    includeFlag = false;
+                                                    if(rs.lineIsSame){
+                                                        if(rs.lineIsSame[tmpCRTS.changeLine[0]] && rs.lineIsSame[tmpCRTS.changeLine[0]].test(t2[i].line)) includeFlag = true;
+                                                        if(rs.lineIsSame[tmpCRTS.changeLine[1]] && rs.lineIsSame[tmpCRTS.changeLine[1]].test(t2[i].line)) includeFlag = true;
+                                                    }
+                                                    if(!includeFlag) return false;
+                                                }
                                                 tmpC.push(t2[i]);
                                             }
                                             aryTotalRoute.push(tmpC);
@@ -2868,7 +2878,6 @@ var TT = (function(){
                                 });
                                 return rtA;
                             })();
-                            
                             
                             rt = {
                                 fromToLine: [aLine, bLine],
@@ -2950,7 +2959,8 @@ var TT = (function(){
                     tmp.fromCompany = TT.fn.getCompanyOfStation(tmp.fromLine);
                     tmp.toLine = bLine;
                     tmp.toCompany = TT.fn.getCompanyOfStation(tmp.toLine);
-                    if(tmp.fromLine==tmp.changeLine[1]){
+                    if(tmp.fromLine!=tmp.changeLine[0] && tmp.toLine!=tmp.changeLine[1]){
+                        TT.fn.dLog('giveRoute_transStationOtherData: aLine and bLine are different of route');
                         tmp.changeLine.reverse();
                         tmp.changeStation.reverse();
                     }
@@ -4422,6 +4432,7 @@ var TT = (function(){
             updateDiv.divText1 = TT.ui.createDiv(updateDiv.id + '_text1', 'text', updateDiv.id);
             updateDiv.divText1.innerHTML = '' +
                 '<div style="height: 80px; overflow-y:scroll; overflow-x:hidden;"><ul>' +
+                    '<li>Beta 0.3.6: 修正東部幹線轉捷運互相查詢後路由會失效的錯誤。</li>' +
                     '<li>Beta 0.3.5: 修正西部大站與東部小站間使用轉乘系統。</li>' +
                     '<li>Beta 0.3.4: 新增北迴線的轉乘查詢。</li>' +
                     '<li>Beta 0.3.3: 更新松山站提供轉乘教學影片。</li>' +
