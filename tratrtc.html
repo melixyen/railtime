@@ -700,7 +700,7 @@ var TT = (function(){
     
     TT.defined = {
         canUseLocalStorage: (function(){return (window.localStorage) ? true : false;})(),
-        debugMode: true,
+        debugMode: false,
         defaultCrossDayTime: '04:00:00',
         defaultTRAWeekday: '2',
         defaultMaskText: 'Loading...',
@@ -803,7 +803,7 @@ var TT = (function(){
                 {id:"tra_1815", name: "外澳", estring: "waiao", sect: "yilan"},
                 {id:"tra_1816", name: "頭城", estring: "toucheng", sect: "yilan", big: 'e'},
                 {id:"tra_1817", name: "頂埔", estring: "dingpu", sect: "yilan"},
-                {id:"tra_1818", name: "礁溪", estring: "jiaoxijiaohsi", sect: "yilan", big: 'e'},
+                {id:"tra_1818", name: "礁溪", estring: "jiaoxijiaohsi", sect: "yilan"},
                 {id:"tra_1819", name: "四城", estring: "sicheng", sect: "yilan"},
                 {id:"tra_1820", name: "宜蘭", estring: "yilan", sect: "yilan", big: 'e'},
                 {id:"tra_1821", name: "二結", estring: "erjie", sect: "yilan"},
@@ -1150,6 +1150,11 @@ var TT = (function(){
                     id: 'yilantra1', name: "宜蘭",
                     changeLine: ["tra_yilan", "tra_yilan"],
                     changeStation: ['tra_1820','tra_1820'],
+                    walkMinute: 4
+                }, {
+                    id: 'toucheng1', name: "頭城",
+                    changeLine: ["tra_yilan", "tra_yilan"],
+                    changeStation: ['tra_1816','tra_1816'],
                     walkMinute: 4
                 }, {
                     id: 'ruifangtra1', name: "瑞芳",
@@ -2486,7 +2491,7 @@ var TT = (function(){
                 bObj = TT.fn.getCommon_stationDataOfID(b);
         	
             function getNearBig(st, stObj, nearAry){
-        			var anst = (TT.fn.getTRA_LineDirByFromTo(st,nearAry[0])==dir) ? nearAry[0] : nearAry[1];
+        			var anst = (TT.fn.getTRA_LineDirByFromTo(st,nearAry[0])=='1') ? nearAry[0] : nearAry[1];
         			if(TT.fn.getCommon_stationDataOfID(anst).sect != stObj.sect && nearAry[1]){
         				if(TT.fn.getCommon_stationDataOfID(nearAry[0]).sect==stObj.sect) anst = nearAry[0];
         				if(TT.fn.getCommon_stationDataOfID(nearAry[1]).sect==stObj.sect) anst = nearAry[1];
@@ -2541,7 +2546,12 @@ var TT = (function(){
             if(area && TT.fn.check_TRA_hasSameBigWord(stObj.big,area)) return [st];
             if(!area && stObj.big) return [st];
             
-            var stationAry = lineData.station, tmpST, rt = new Array(), ast, bst, cflag=false;
+            var tmpST, rt = new Array(), ast, bst, cflag=false;
+            if(lineData.dir=='0'){var stationAry = lineData.station}else{
+                var stationAry = new Array();
+                lineData.station.map(function(ggh){stationAry.push(ggh);});
+                stationAry.reverse();
+            }
             for(var i=0; i<stationAry.length; i++){
                 if(stationAry[i]==st) cflag = true;
                 tmpST = TT.fn.getCommon_stationDataOfID(stationAry[i]);
@@ -2953,7 +2963,6 @@ var TT = (function(){
             return false;
         },
         giveRoute_transStationOtherData: function(t, aLine, bLine){
-            
             var tmp = $.extend({},TT.fn.getCommon_transStationByID(t));
                     tmp.fromLine = aLine;
                     tmp.fromCompany = TT.fn.getCompanyOfStation(tmp.fromLine);
