@@ -57,7 +57,7 @@
         cfg = cfg || {};
         defaultCfg = {
             baseWidth: 1800,//canvas 畫布寬
-            baseHeight: 1100,//canvas 畫布高
+            baseHeight: 1300,//canvas 畫布高
             canTouch: ("ontouchend" in document),
             canvasBgcolor: 'rgba(255,255,255,0.9)',
             canvasID: null,//canvas 的 id，不需要則為 null
@@ -96,7 +96,8 @@
         var pos = {
             badu: {x: 750, y: -240},
             hualian: {x: 920, y: 770},
-            tauoyuan: {x: -570, y: 290}
+            tauoyuan: {x: -570, y: 290},
+            hsinchu: {x: -570, y: 730}
         }
         if(cfg.linePOS) pos = cfg.linePOS;
         
@@ -130,7 +131,7 @@
                         {type: 'station', id: 'tra_1013'},
                         {type: 'station', id: 'tra_1014'},
                         {type: 'station', id: 'tra_1015'},
-                        {type: 'station', id: 'tra_1017'}
+                        {type: 'station', id: 'tra_1028'}
                     ],
             		station: {
                         "tra_1001": {x: pos.badu.x, y: -320, name: '基隆', stationClass: 1 },
@@ -153,7 +154,20 @@
                         "tra_1014": {x: -510, y: 220, name: '鶯歌', stationClass: 4},
                         "tra_1015": {x: pos.tauoyuan.x, y: pos.tauoyuan.y, name: '桃園', stationClass: 1, company: true},
                         "tra_1016": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+100, name: '內壢', stationClass: 4},
-                        "tra_1017": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 2, company: true}
+                        "tra_1017": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 2, company: true},
+                        "tra_1018": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+230, name: '埔心', stationClass: 4},
+                        "tra_1019": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+255, name: '楊梅', stationClass: 4},
+                        "tra_1020": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+285, name: '富岡', stationClass: 4},
+                        "tra_1033": {x: pos.hsinchu.x, y: pos.hsinchu.y-130, name: '北湖', stationClass: 4},
+                        "tra_1021": {x: pos.hsinchu.x, y: pos.hsinchu.y-105, name: '湖口', stationClass: 4},
+                        "tra_1022": {x: pos.hsinchu.x, y: pos.hsinchu.y-80, name: '新豐', stationClass: 4},
+                        "tra_1023": {x: pos.hsinchu.x, y: pos.hsinchu.y-55, name: '竹北', stationClass: 4},
+                        "tra_1024": {x: pos.hsinchu.x, y: pos.hsinchu.y-30, name: '北新竹', stationClass: 4},
+                        "tra_1025": {x: pos.hsinchu.x, y: pos.hsinchu.y, name: '新竹', stationClass: 1},
+                        "tra_xxfd": {x: pos.hsinchu.x, y: pos.hsinchu.y+30, name: '三姓橋', stationClass: 4, noClick: true},
+                        "tra_1026": {x: pos.hsinchu.x, y: pos.hsinchu.y+55, name: '香山', stationClass: 4},
+                        "tra_1027": {x: pos.hsinchu.x, y: pos.hsinchu.y+80, name: '崎頂', stationClass: 4},
+                        "tra_1028": {x: pos.hsinchu.x, y: pos.hsinchu.y+110, name: '竹南', stationClass: 3}
                     } 
                 }, {
                     id: "tra_yilan",
@@ -251,6 +265,33 @@
                         "tra_1907": {x: pos.badu.x+180, y: pos.badu.y+180, name: '平溪', stationClass: 4 },
                         "tra_1908": {x: pos.badu.x+180, y: pos.badu.y+210, name: '菁桐', stationClass: 4 }
                     }
+                }, {
+                    id: "tra_liujia",
+                    name: "[台鐵]六家線",
+                    color: "#403090",
+                    nameTag: {
+                        fontColor: '#FFF',
+                        id:'tra_2203', 
+                        ox: -60, 
+                        oy: 22
+                    },
+                    dir: "0",
+                    line: [
+                        {type: 'station', id: 'tra_1025'},
+                        {type: 'turn', id: 'tra_1025', ox: 14, oy: 0},
+                        {type: 'turn', id: 'tra_1024', ox: 14, oy: 0},
+                        //{type: 'station', id: 'tra_1024'},
+                        {type: 'station', id: 'tra_2203'},
+                        {type: 'station', id: 'tra_2214'}
+                    ],
+                    station: {
+                        "tra_1025": {x: pos.hsinchu.x, y: pos.hsinchu.y, name: '新竹', stationClass: 1, noDraw: true},
+                        "tra_1024": {x: pos.hsinchu.x, y: pos.hsinchu.y-30, name: '北新竹', stationClass: 4, noDraw: true},
+                        "tra_2212": {x: pos.hsinchu.x+50, y: pos.hsinchu.y-30, name: '千甲', stationClass: 4 },
+                        "tra_2213": {x: pos.hsinchu.x+100, y: pos.hsinchu.y-30, name: '新莊', stationClass: 4 },
+                        "tra_2203": {x: pos.hsinchu.x+150, y: pos.hsinchu.y-30, name: '竹中', stationClass: 4 },
+                        "tra_2214": {x: pos.hsinchu.x+150, y: pos.hsinchu.y-60, name: '六家', stationClass: 3, company: true},
+                    }
                 }
             ],
             thsr: [
@@ -275,6 +316,8 @@
                         {type: 'station', id: 'thsr_03'},
                         {type: 'turn', id: 'thsr_04', ox: 150, oy: 0},
                         {type: 'station', id: 'thsr_04'},
+                        {type: 'turn', id: 'thsr_04', ox: 0, oy: 390},
+                        {type: 'station', id: 'thsr_05'},
                         {type: 'station', id: 'thsr_13'}
                     ],
                     station: {
@@ -282,14 +325,14 @@
                         "thsr_02": {x: 0, y: 28, name: '臺北', stationClass: 0, company: true, noClick: true},
                         "thsr_03": {x: -320, y: 158, name: '板橋', stationClass: 1, company: true, noClick: true},
                         "thsr_04": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y-175, name: '桃園', stationClass: 3, company: true, noClick: true},
-                        "thsr_06": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y+230, name: '新竹', stationClass: 4, company: true, noClick: true},
-                        "thsr_07": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y+255, name: '苗栗', stationClass: 4, company: true, noClick: true},
-                        "thsr_08": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y+280, name: '台中', stationClass: 4, company: true, noClick: true},
-                        "thsr_09": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y+305, name: '彰化', stationClass: 4, company: true, noClick: true},
-                        "thsr_10": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y+329, name: '雲林', stationClass: 4, company: true, noClick: true},
-                        "thsr_11": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y+351, name: '嘉義', stationClass: 4, company: true, noClick: true},
-                        "thsr_12": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y+376, name: '台南', stationClass: 4, company: true, noClick: true},
-                        "thsr_13": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y+398, name: '左營', stationClass: 4, company: true, noClick: true}
+                        "thsr_05": {x: pos.hsinchu.x+228, y: pos.hsinchu.y-60, name: '新竹', stationClass: 3, company: true, noClick: true},
+                        "thsr_07": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+0, name: '苗栗', stationClass: 4, company: true, noClick: true},
+                        "thsr_08": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+25, name: '台中', stationClass: 4, company: true, noClick: true},
+                        "thsr_09": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+50, name: '彰化', stationClass: 4, company: true, noClick: true},
+                        "thsr_10": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+75, name: '雲林', stationClass: 4, company: true, noClick: true},
+                        "thsr_11": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+100, name: '嘉義', stationClass: 4, company: true, noClick: true},
+                        "thsr_12": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+125, name: '台南', stationClass: 4, company: true, noClick: true},
+                        "thsr_13": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+150, name: '左營', stationClass: 4, company: true, noClick: true}
                     }
                 }
             ],

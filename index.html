@@ -154,7 +154,7 @@ body {
 }
 
 .define_rail_bgcolor_tra_xibu, .define_rail_bgcolor_tra_yilan, .define_rail_bgcolor_tra_beihui,
-.define_rail_bgcolor_tra_pingxi,
+.define_rail_bgcolor_tra_pingxi, .define_rail_bgcolor_tra_liujia,
 .define_rail_bgcolor_trtc_2, .define_rail_bgcolor_trtc_3, .define_rail_bgcolor_trtc_4, .define_rail_bgcolor_trtc_5{
     color: #EEF !important;
 }
@@ -169,6 +169,9 @@ body {
 }
 .define_rail_bgcolor_tra_pingxi{
     background-color: #003030 !important;
+}
+.define_rail_bgcolor_tra_liujia{
+    background-color: #403090 !important;
 }
 .define_rail_bgcolor_trtc_2{
     background-color: #cb2c30 !important;
@@ -717,9 +720,19 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.3.6",
-            "產生日期": "2015/09/01"
+            "版本": "Beta 0.3.7",
+            "產生日期": "2015/09/02"
         },
+        programUpdateInfo: [
+                    'Beta 0.3.7: 新增新竹地區至竹南以及六家線。',
+                    'Beta 0.3.6: 修正東部幹線轉捷運互相查詢後路由會失效的錯誤。',
+                    'Beta 0.3.5: 修正西部大站與東部小站間使用轉乘系統。',
+                    'Beta 0.3.4: 新增北迴線的轉乘查詢。',
+                    'Beta 0.3.3: 更新松山站提供轉乘教學影片。',
+                    'Beta 0.3.2: 新增平溪線及宜蘭線的轉乘查詢。',
+                    'Beta 0.3.1: 更新南港站提供轉乘教學影片。',
+                    'Beta 0.3: 新增路網圖選擇器提供北台灣軌道運輸路網站點選擇。'
+        ],
         displayPri: {
                 "tra": ['tra_beihui','tra_yilan','tra_xibu'],
                 "trtc": ['trtc_5','trtc_2','trtc_3','trtc_4','trtc_1']
@@ -782,7 +795,18 @@ var TT = (function(){
                 {id:"tra_1015", name: "桃園", estring: "taoyuan", sect: "taoyuan", big: 'w'},
                 {id:"tra_1016", name: "內壢", estring: "neili", sect: "taoyuan"},
                 {id:"tra_1017", name: "中壢", estring: "zhongli", sect: "taoyuan", big: 'w'},
-                {id:"tra_1025", name: "新竹", estring: "hsinchu", sect: "hsinchu", big: 'w'},
+                {id:"tra_1018", name: "埔心", estring: "puxin", sect: "taoyuan"},
+                {id:"tra_1019", name: "楊梅", estring: "yangmei", sect: "taoyuan"},
+                {id:"tra_1020", name: "富岡", estring: "fugan", sect: "taoyuan"},
+                {id:"tra_1033", name: "北湖", estring: "beihu", sect: "hsinchu"},
+                {id:"tra_1021", name: "湖口", estring: "hukou", sect: "hsinchu"},
+                {id:"tra_1022", name: "新豐", estring: "xinfeng", sect: "hsinchu"},
+                {id:"tra_1023", name: "竹北", estring: "zhubei", sect: "hsinchu"},
+                {id:"tra_1024", name: "北新竹", estring: "northhsinchubeixinzhu", sect: "hsinchu"},
+                {id:"tra_1025", name: "新竹", estring: "hsinchuxinzhu", sect: "hsinchu", big: 'w'},
+                {id:"tra_1026", name: "香山", estring: "xiangshan", sect: "hsinchu"},
+                {id:"tra_1027", name: "崎頂", estring: "jidingciding", sect: "hsinchu"},
+                {id:"tra_1028", name: "竹南", estring: "zhunan", sect: "hsinchu", big: 'w'},
                 {id:"tra_1305", name: "苗栗", estring: "miaoli", sect: "miaoli", big: 'w'},
                 {id:"tra_1120", name: "彰化", estring: "changhua", sect: "changhua", big: 'w'},
                 {id:"tra_1238", name: "高雄", estring: "kaohsiunggaoxung", sect: "kaohsiung", big: 'ws'},
@@ -832,21 +856,26 @@ var TT = (function(){
                 {id:"tra_1905", name:"望古", estring:"wanggu", sect:"northeast"},
                 {id:"tra_1906", name:"嶺腳", estring:"lingjiao", sect:"northeast"},
                 {id:"tra_1907", name:"平溪", estring:"pingxipingsi", sect:"northeast"},
-                {id:"tra_1908", name:"菁桐", estring:"jingtong", sect:"northeast"}
+                {id:"tra_1908", name:"菁桐", estring:"jingtong", sect:"northeast"},
+                {id:"tra_2212", name:"千甲", estring:"qianjia", sect:"hsinchu"},
+                {id:"tra_2213", name:"新莊", estring:"xinzhuang", sect:"hsinchu"},
+                {id:"tra_2203", name:"竹中", estring:"zhuzhong", sect:"hsinchu"},
+                {id:"tra_2214", name:"六家", estring:"liujia", sect:"hsinchu"}
             ],
             line: [
             	{
             		id: "tra_xibu",
-                    name: "西部幹線(縱貫線)",
-                    trainSect: ["keelung", "taipei", "taoyuan", "xinzhu", "miaoli", "zhanghua", "gaoxung"],
+                    name: "西部幹線(基隆-竹南)",
+                    trainSect: ["keelung", "taipei", "taoyuan", "hsinchu", "miaoli", "zhanghua", "gaoxung"],
                     color: "#000050",
             		dir: "1",
                     area: 'w',
                     link: {
-                        "tra_yilan": {station: "tra_1002", dir: "0"}
+                        "tra_yilan": {station: "tra_1002", dir: "0"},
+                        "tra_liujia": {station: "tra_1025", dir: "0"}
                     },
             		station: ["tra_1001","tra_1029","tra_1002","tra_1003","tra_1030","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1009","tra_1011","tra_1032","tra_1012","tra_1013","tra_1014",//taipei
-                        "tra_1015","tra_1016","tra_1017"]
+                        "tra_1015","tra_1016","tra_1017","tra_1018","tra_1019","tra_1020","tra_1033","tra_1021","tra_1022","tra_1023","tra_1024","tra_1025","tra_1026","tra_1027","tra_1028"]
             	}, {
             		id: "tra_yilan",
                     name: "宜蘭線",
@@ -885,6 +914,30 @@ var TT = (function(){
                         "tra_yilan": {station: "tra_1806", dir: "1"}
                     },
             		station: ["tra_6103","tra_1804","tra_1805","tra_1806","tra_1903","tra_1904","tra_1905","tra_1906","tra_1907","tra_1908"]
+                }, {
+            		id: "tra_liujia",
+                    name: "六家線",
+                    trainSect: ["hsinchu"],
+                    color: "#403090",
+            		dir: "0",
+                    area: 'w',
+                    protectStation: ["tra_1025"],
+                    link: {
+                        "tra_xibu": {station: "tra_1025", dir: "1"}
+                    },
+            		station: ["tra_1025","tra_1024","tra_2212","tra_2213","tra_2203","tra_2214"]
+                /*}, {
+            		id: "tra_neiwan",
+                    name: "內灣線",
+                    trainSect: ["hsinchu"],
+                    color: "#105010",
+            		dir: "0",
+                    area: 'w',
+                    protectStation: ["tra_1025"],
+                    link: {
+                        "tra_xibu": {station: "tra_1025", dir: "1"}
+                    },
+            		station: ["tra_1025","tra_1804","tra_1805","tra_1806","tra_1903","tra_1904","tra_1905","tra_1906","tra_1907","tra_1908"]*/
                 }
             ]
         },
@@ -1197,6 +1250,16 @@ var TT = (function(){
                     changeStation: ['tra_1017','tra_1017'],
                     walkMinute: 3
                 }, {
+                    id: 'hsinchutra1', name: "新竹",
+                    changeLine: ["tra_xibu", "tra_liujia"],
+                    changeStation: ['tra_1025','tra_1025'],
+                    walkMinute: 4
+                }, {
+                    id: 'zhunantra1', name: "竹南",
+                    changeLine: ["tra_xibu", "tra_xibu"],
+                    changeStation: ['tra_1028','tra_1028'],
+                    walkMinute: 3
+                }, {
                     id: 'nangang1', name: "南港",
                     changeLine: ["tra_xibu", "trtc_5"],
                     changeStation: ['tra_1006','trtc_097'],
@@ -1306,7 +1369,11 @@ var TT = (function(){
             }, {
                 id: 'traInnerTrans_tra_yilan,tra_pingxi',
                 fromToLine: ["tra_yilan","tra_pingxi"],
-                sect: ['northeast','yilan'],
+                fromToLineReg: [
+                	/^tra_pingxi$/,
+                	/^tra_yilan$|^tra_beihui$/
+                ],
+                sect: ['northeast','yilan','beihui','hualian'],
                 route: [
                     {
                         line: ["tra_yilan", "tra_pingxi"],
@@ -1320,7 +1387,7 @@ var TT = (function(){
                 	/^tra_xibu$/,
                 	/^tra_yilan$|^tra_beihui$/
                 ],
-                sect: ['taoyuan','taipei','keelung','northeast','yilan','beihui','hualian'],
+                sect: ['hsinchu','taoyuan','taipei','keelung','northeast','yilan','beihui','hualian'],
                 route: [
                     {
                         line: ["tra_xibu", "tra_yilan"],
@@ -1372,7 +1439,7 @@ var TT = (function(){
             }, {
                 id: 'traInnerTrans_tra_xibu,tra_pingxi',
                 fromToLine: ["tra_xibu","tra_pingxi"],
-                sect: ['taoyuan','taipei','keelung','northeast'],
+                sect: ['hsinchu','taoyuan','taipei','keelung','northeast'],
                 route: [
                     {
                         line: ["tra_yilan", "tra_pingxi"],
@@ -1400,9 +1467,19 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'traInnerTrans_tra_xibu,tra_liujia',
+                fromToLine: ["tra_xibu","tra_liujia"],
+                sect: ['hsinchu','taoyuan','taipei','keelung'],
+                route: [
+                    {
+                        line: ["tra_xibu", "tra_liujia"],
+                        transStation: ["hsinchutra1"]
+                    }
+                ]
+            }, {
                 id: 'tra_xibu,trtc_3',
                 fromToLine: ["tra_xibu","trtc_3"],
-                sect: ['taipei','keelung','taoyuan'],
+                sect: ['taipei','keelung','taoyuan','hsinchu'],
                 route: [
                     {
                         line: ["tra_xibu", "trtc_3"],
@@ -1424,7 +1501,7 @@ var TT = (function(){
             }, {
                 id: 'tra_xibu,trtc_5',
                 fromToLine: ["tra_xibu","trtc_5"],
-                sect: ['taipei','keelung','taoyuan'],
+                sect: ['taipei','keelung','taoyuan','hsinchu'],
                 route: [
                     {
                         line: ["tra_xibu", "trtc_5"],
@@ -1442,7 +1519,7 @@ var TT = (function(){
             }, {
                 id: 'tra_xibu,trtc_2',
                 fromToLine: ["tra_xibu","trtc_2"],
-                sect: ['taipei','keelung','taoyuan'],
+                sect: ['taipei','keelung','taoyuan','hsinchu'],
                 route: [
                     {
                         line: ["tra_xibu", "trtc_2"],
@@ -1452,7 +1529,7 @@ var TT = (function(){
             }, {
                 id: 'tra_xibu,trtc_4',
                 fromToLine: ["tra_xibu","trtc_4"],
-                sect: ['taipei','keelung','taoyuan'],
+                sect: ['taipei','keelung','taoyuan','hsinchu'],
                 route: [
                     {
                         line: ["tra_xibu", "trtc_2", "trtc_4"],
@@ -1601,7 +1678,7 @@ var TT = (function(){
                 rule: [
                     {
                         line: ['tra_yilan','tra_beihui','tra_pingxi'],
-                        sect: ['taoyuan','xinzhu','miaoli','zhanghua','gaoxung','pingdong'],
+                        sect: ['taoyuan','hsinchu','miaoli','zhanghua','gaoxung','pingdong'],
                         station: ["tra_1032","tra_1012","tra_1013","tra_1014"],
                         transStation: 'banqiaotra1'
                     }, {
@@ -1653,9 +1730,9 @@ var TT = (function(){
                 id: 'trtc_trans_tra_east',
                 rType: 'cross',//direct , trans 
                 company: ['trtc','tra'],// cross company serial
-                regLine: /^trtc_1$|^trtc_2$|^trtc_3$|^trtc_4|^trtc_5$|^tra_yilan$|^tra_beihui$|^tra_pingxi$/,
+                regLine: /^trtc_1$|^trtc_2$|^trtc_3$|^trtc_4|^trtc_5$|^tra_yilan$|^tra_beihui$|^tra_pingxi$|^tra_liujia$/,
                 lineIsSame: {
-                    "tra_xibu": /^tra_yilan$|^tra_beihui$|^tra_pingxi$/
+                    "tra_xibu": /^tra_yilan$|^tra_beihui$|^tra_pingxi$|^tra_liujia$/
                 },
                 link: [
                 	{
@@ -1671,30 +1748,12 @@ var TT = (function(){
                 		transStation: [['taipei2']]
                 	}
                 ],
-                //align: [
-                    //{company: 'tra', line: 'tra_xibu', routeSystem: ['tra_r1','tra_r2']}
-                //],
-                sect: ['taipei','keeling','northeast','yilan','beihui','hualian','taidong']
+                sect: ['hsinchu','taoyuan','taipei','keeling','northeast','yilan','beihui','hualian','taidong']
             }
         ]
     }
 
     TT.fn = {
-        /*makeMinOfAry: function(){
-            if(!TT.tmpA){
-                TT.tmpA = '';
-            }
-            var dom = document.getElementById('testA');
-            var str = dom.value;
-            if(str.length==2){
-                TT.tmpA = TT.tmpA + '"' + str + '",';
-                dom.value = '';
-                document.getElementById('testB').value = TT.tmpA;
-            }
-        },
-        clearMinOfAry: function(){
-            TT.tmpA = '';
-        },*/
         checkEquaArrayStartEnd: function(ary1, ary2){
         	if(typeof(ary2[0])=='string' && typeof(ary2[1])=='string'){
 
@@ -1760,29 +1819,6 @@ var TT = (function(){
         checkTRTC_rnwTimeTableIsLoaded: function(){
             return (TT.data.trtc.rnwTimeTable) ? true : false;
         },
-        /*combineLine: function(aObj, bObj, mainID){
-            var masterObj, slaveObj;
-            if(bObj.id==mainID){
-                masterObj = $.extend({},bObj);
-                slaveObj = $.extend({},aObj);
-            }else{
-                masterObj = $.extend({},aObj)
-                slaveObj = $.extend({},bObj);
-            }
-            
-            var upS = new Array(), downS = new Array(), linkStation = new Array(), dir = masterObj.dir;
-            var combineStation = slaveObj.link[mainID].station;
-            var combineDir = slaveObj.link[mainID].dir;
-            var masterStation = new Array();masterObj.station.map(function(df){masterStation.push(df);});
-            var slaveStation = new Array();slaveObj.station.map(function(df){slaveStation.push(df);});
-            if(slaveObj.dir != masterObj.dir) slaveStation.reverse();
-            
-            if(combineDir==masterObj.dir){
-                //linkStation.
-            }else{
-            }
-            
-        },*/
         dLog: function(st){
             if(!TT.defined.debugMode) return false;
             if(window.console) console.log(st);
@@ -1978,8 +2014,8 @@ var TT = (function(){
                             if(i==0){
                                 aryT[tb][i] = trainBest[tb];
                             }else{
-                                aryT[tb][i] = routeA[i].formatTimeTable[aryT[tb][i-1].nextPointer];
-                            } 
+                                aryT[tb][i] = (aryT[tb][i-1]) ? routeA[i].formatTimeTable[aryT[tb][i-1].nextPointer] : null;
+                            }
                         }
                     }
                 }else{
@@ -1990,7 +2026,7 @@ var TT = (function(){
                                 aryT[tb][i] = trainBest[tb];
                             }else{
                                 aryT[tb][i] = routeA[i].formatTimeTable[aryT[tb][i+1].prevPointer];
-                            } 
+                            }
                         }
                     }
                 }
@@ -2021,10 +2057,6 @@ var TT = (function(){
             for(var i=0; i<aryRouteAll.length; i++){
                 aryP[i] = getLink(aryRouteAll[i], getBest(aryRouteAll[i]));
                 aryRouteAll[i] = matchBestTrain(aryRouteAll[i], aryP[i]);
-                //rt.push({
-                    //route: aryRouteAll[i],
-                    //bestRouteLink: getLink(aryRouteAll[i], getBest(aryRouteAll[i]))
-                //});
             }
             
             return aryRouteAll;
@@ -4441,13 +4473,7 @@ var TT = (function(){
             updateDiv.divText1 = TT.ui.createDiv(updateDiv.id + '_text1', 'text', updateDiv.id);
             updateDiv.divText1.innerHTML = '' +
                 '<div style="height: 80px; overflow-y:scroll; overflow-x:hidden;"><ul>' +
-                    '<li>Beta 0.3.6: 修正東部幹線轉捷運互相查詢後路由會失效的錯誤。</li>' +
-                    '<li>Beta 0.3.5: 修正西部大站與東部小站間使用轉乘系統。</li>' +
-                    '<li>Beta 0.3.4: 新增北迴線的轉乘查詢。</li>' +
-                    '<li>Beta 0.3.3: 更新松山站提供轉乘教學影片。</li>' +
-                    '<li>Beta 0.3.2: 新增平溪線及宜蘭線的轉乘查詢。</li>' +
-                    '<li>Beta 0.3.1: 更新南港站提供轉乘教學影片。</li>' +
-                    '<li>Beta 0.3: 新增路網圖選擇器提供北台灣軌道運輸路網站點選擇。</li>' +
+                (function(){ return '<li>' + TT.defined.programUpdateInfo.join('</li><li>') + '</li>'; })() +
                 '</ul><div>';
             
             //TRA Frame
@@ -4814,12 +4840,12 @@ var TT = (function(){
                 if(TT.lib.canvasMap && !TT.ui.mapSelector.canvasMap){
                     var canvasMap = new TT.lib.canvasMap({
                         baseWidth: 1660, 
-                        baseHeight: 1200, 
+                        baseHeight: 1300, 
                         offsetX: 620
                     });
                     canvasMap.initAll();
                     divNet.style.width = '1660px';
-                    divNet.style.height = '1200px';
+                    divNet.style.height = '1300px';
                     divNet.appendChild(canvasMap.div);
                     TT.ui.mapSelector.canvasMap = canvasMap;
                 }
