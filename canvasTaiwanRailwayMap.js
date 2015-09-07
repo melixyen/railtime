@@ -267,11 +267,11 @@
                     }
                 }, {
                     id: "tra_liujia",
-                    name: "[台鐵]六家線",
+                    name: "[台鐵]內灣／六家線",
                     color: "#403090",
                     nameTag: {
                         fontColor: '#FFF',
-                        id:'tra_2203', 
+                        id:'tra_2208', 
                         ox: -60, 
                         oy: 22
                     },
@@ -282,15 +282,25 @@
                         {type: 'turn', id: 'tra_1024', ox: 14, oy: 0},
                         //{type: 'station', id: 'tra_1024'},
                         {type: 'station', id: 'tra_2203'},
-                        {type: 'station', id: 'tra_2214'}
+                        {type: 'station', id: 'tra_2214'},
+                        {type: 'move', id: 'tra_2203'},
+                        {type: 'station', id: 'tra_2210'}
                     ],
                     station: {
                         "tra_1025": {x: pos.hsinchu.x, y: pos.hsinchu.y, name: '新竹', stationClass: 1, noDraw: true},
                         "tra_1024": {x: pos.hsinchu.x, y: pos.hsinchu.y-30, name: '北新竹', stationClass: 4, noDraw: true},
                         "tra_2212": {x: pos.hsinchu.x+50, y: pos.hsinchu.y-30, name: '千甲', stationClass: 4 },
                         "tra_2213": {x: pos.hsinchu.x+100, y: pos.hsinchu.y-30, name: '新莊', stationClass: 4 },
-                        "tra_2203": {x: pos.hsinchu.x+150, y: pos.hsinchu.y-30, name: '竹中', stationClass: 4 },
+                        "tra_2203": {x: pos.hsinchu.x+150, y: pos.hsinchu.y-30, name: '竹中', stationClass: 3 },
                         "tra_2214": {x: pos.hsinchu.x+150, y: pos.hsinchu.y-60, name: '六家', stationClass: 3, company: true},
+                        "tra_2204": {x: pos.hsinchu.x+270, y: pos.hsinchu.y-30, name: '上員', stationClass: 4 },
+                        "tra_2211": {x: pos.hsinchu.x+310, y: pos.hsinchu.y-30, name: '榮華', stationClass: 4 },
+                        "tra_2205": {x: pos.hsinchu.x+350, y: pos.hsinchu.y-30, name: '竹東', stationClass: 4 },
+                        "tra_2206": {x: pos.hsinchu.x+390, y: pos.hsinchu.y-30, name: '橫山', stationClass: 4 },
+                        "tra_2207": {x: pos.hsinchu.x+430, y: pos.hsinchu.y-30, name: '九讚頭', stationClass: 4 },
+                        "tra_2208": {x: pos.hsinchu.x+470, y: pos.hsinchu.y-30, name: '合興', stationClass: 4 },
+                        "tra_2209": {x: pos.hsinchu.x+510, y: pos.hsinchu.y-30, name: '富貴', stationClass: 4 },
+                        "tra_2210": {x: pos.hsinchu.x+550, y: pos.hsinchu.y-30, name: '內灣', stationClass: 3}
                     }
                 }
             ],
