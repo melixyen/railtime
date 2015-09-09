@@ -154,7 +154,7 @@ body {
 }
 
 .define_rail_bgcolor_tra_xibu, .define_rail_bgcolor_tra_yilan, .define_rail_bgcolor_tra_beihui,
-.define_rail_bgcolor_tra_pingxi, .define_rail_bgcolor_tra_liujia, .define_rail_bgcolor_tra_neiwan,
+.define_rail_bgcolor_tra_pingxi, .define_rail_bgcolor_tra_liujia, .define_rail_bgcolor_tra_huadong,
 .define_rail_bgcolor_trtc_2, .define_rail_bgcolor_trtc_3, .define_rail_bgcolor_trtc_4, .define_rail_bgcolor_trtc_5{
     color: #EEF !important;
 }
@@ -173,7 +173,7 @@ body {
 .define_rail_bgcolor_tra_liujia{
     background-color: #403090 !important;
 }
-.define_rail_bgcolor_tra_neiwan{
+.define_rail_bgcolor_tra_huadong{
     background-color: #605040 !important;
 }
 .define_rail_bgcolor_trtc_2{
@@ -256,6 +256,7 @@ body {
     margin: 10px 50px 20px 50px;
     padding: 5px 0px;
     border-bottom: 2px solid #041239;
+    background-color: #FFF;
 }
 .timeTableTrainRouteBox .header{
     display: inline-block;
@@ -279,6 +280,15 @@ body {
 }
 .timeTableTrainRouteBox .header .startTime .val, .timeTableTrainRouteBox .header .endTime .val{
     color: #1F6CFE;
+}
+.timeTableTrainRouteBox .header .printCanvas{
+    color: #DFF2D2;
+    background-color: #30201A;
+    padding: 0px 5px;
+    border: 1px solid #40302A;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
 }
 
 .timeTableTrainRouteBox .timeRouteDiv{
@@ -723,10 +733,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.3.8",
-            "產生日期": "2015/09/07"
+            "版本": "Beta 0.3.9",
+            "產生日期": "2015/09/09"
         },
         programUpdateInfo: [
+                    'Beta 0.3.9: 調整 canvas map，增加截圖功能。',
                     'Beta 0.3.8: 新增內灣線，修正東線可直達六家線。',
                     'Beta 0.3.7: 新增新竹地區至竹南以及六家線。',
                     'Beta 0.3.6: 修正東部幹線轉捷運互相查詢後路由會失效的錯誤。',
@@ -929,15 +940,28 @@ var TT = (function(){
                         "tra_1811","tra_1812","tra_1813","tra_1814","tra_1815","tra_1816","tra_1817","tra_1818","tra_1819","tra_1820","tra_1821","tra_1822","tra_1823","tra_1824","tra_1825","tra_1826","tra_1827"]
                 }, {
             		id: "tra_beihui",
-                    name: "北迴線",
+                    name: "北迴線(蘇澳-花蓮)",
                     trainSect: ["taipei", "keelung", "northeast","yilan","beihui","hualian"],
                     color: "#004060",
             		dir: "0",
                     area: 'e',
                     link: {
                         "tra_yilan": {station: "tra_1826", dir: "1"}
+                        //,"tra_huadong": {station: "tra_1715", dir: "0"}
                     },
             		station: ["tra_1826","tra_1703","tra_1704","tra_1705","tra_1706","tra_1708","tra_1709","tra_1710","tra_1711","tra_1712","tra_1713","tra_1714","tra_1715"]
+                /*}, {
+            		id: "tra_huadong",
+                    name: "台東線",
+                    trainSect: ["taipei", "keelung", "northeast","yilan","beihui","hualian","taidong"],
+                    color: "#605040",
+            		dir: "0",
+                    area: 'e',
+                    link: {
+                        "tra_beihui": {station: "tra_1715", dir: "1"}
+                    },
+            		station: ["tra_1715","tra_1602","tra_1604","tra_1605","tra_1606","tra_1607","tra_1609","tra_1610","tra_1611","tra_1612","tra_1613","tra_1614","tra_1616","tra_1617","tra_1619",
+                        "tra_1621","tra_1622","tra_1623","tra_1624","tra_1625","tra_1626","tra_1628","tra_1629","tra_1630","tra_1631","tra_1632"]*/
                 }, {
             		id: "tra_pingxi",
                     name: "平溪線",
@@ -1212,6 +1236,16 @@ var TT = (function(){
         },
         transStation: [
                 {
+                    id: 'taidongtra1', name: "台東",
+                    changeLine: ["tra_huadong", "tra_huadong"],
+                    changeStation: ['tra_1632','tra_1632'],
+                    walkMinute: 4
+                }, {
+                    id: 'yulitra1', name: "玉里",
+                    changeLine: ["tra_huadong", "tra_huadong"],
+                    changeStation: ['tra_1619','tra_1619'],
+                    walkMinute: 4
+                }, {
                     id: 'hualiantra1', name: "花蓮",
                     changeLine: ["tra_beihui", "tra_beihui"],
                     changeStation: ['tra_1715','tra_1715'],
@@ -2361,6 +2395,13 @@ var TT = (function(){
             }
             return false;
         },
+        getCommon_transStationBySameChangeStation: function(st){
+        	var ts = TT.data.transStation;
+        	for(var i=0; i<ts.length; i++){
+        		if(ts[i].changeStation[0]==st && ts[i].changeStation[1]==st) return ts[i];
+        	}
+        	return false;
+        },
         getCompanyOfLine: function(st){
             return TT.fn.getCompanyOfStation(st);
         },
@@ -2645,128 +2686,6 @@ var TT = (function(){
 
         	//if(rt.length==0) rt = false;
         	return tmpA;
-        },
-        getTRA_sectIndex: function(st){
-        	if(typeof(st)=='string') st = TT.fn.getCommon_stationDataOfID(st);
-        	var sectAry = TT.data.tra.sect_ary;
-        	for(var i=0; i<sectAry.length; i++){
-        		if(st.sect==sectAry[i]) return i;
-        	}
-        },
-        getTRA_sectAB: function(a,b){
-        	var ai = TT.fn.getTRA_sectIndex(a);
-        	var bi = TT.fn.getTRA_sectIndex(b);
-        	return Math.abs(ai-bi);
-        },
-        getCommon_transStationBySameChangeStation: function(st){
-        	var ts = TT.data.transStation;
-        	for(var i=0; i<ts.length; i++){
-        		if(ts[i].changeStation[0]==st && ts[i].changeStation[1]==st) return ts[i];
-        	}
-        	return false;
-        },
-        getTRA_mayUseBoneTrans: function(a, b, aLine, bLine, routeM){
-        	//{line: ['1','2','3'], transStation: ['t1','t2']}
-        	var route = routeM.route, tmpR, aTS, bTS, asIndex, bsIndex,
-        		rt = new Array(),
-        		sectAry = TT.data.tra.sect_ary,
-        		dir = TT.fn.getTRA_LineDirByFromTo(a,b),
-        		aNear = TT.fn.getTRA_nearBigStation(a, aLine),
-        		bNear = TT.fn.getTRA_nearBigStation(b, bLine),
-                aObj = TT.fn.getCommon_stationDataOfID(a),
-                bObj = TT.fn.getCommon_stationDataOfID(b);
-        	
-            function getNearBig(st, stObj, nearAry){
-        			var anst = (TT.fn.getTRA_LineDirByFromTo(st,nearAry[0])=='1') ? nearAry[0] : nearAry[1];
-        			if(TT.fn.getCommon_stationDataOfID(anst).sect != stObj.sect && nearAry[1]){
-        				if(TT.fn.getCommon_stationDataOfID(nearAry[0]).sect==stObj.sect) anst = nearAry[0];
-        				if(TT.fn.getCommon_stationDataOfID(nearAry[1]).sect==stObj.sect) anst = nearAry[1];
-        			}
-                    
-                    if(st=='tra_1032' || st=='tra_1013' || st=='tra_1014') anst = 'tra_1011';
-        			if(!anst) anst = nearAry[0];
-                    return anst;
-            }
-            
-        	route.map(function(ro){
-        		rt.push(ro);
-        		aTS = TT.fn.getCommon_stationDataOfID(TT.fn.getCommon_transStationByID(ro.transStation[0]).changeStation[0]);
-        		bTS = TT.fn.getCommon_stationDataOfID(TT.fn.getCommon_transStationByID(ro.transStation[ro.transStation.length-1]).changeStation[0]);
-        		asIndex = TT.fn.getTRA_sectAB(aObj,aTS);
-        		bsIndex = TT.fn.getTRA_sectAB(bObj,bTS);
-        		var lineAry = new Array(), tAry = new Array();
-        		ro.line.map(function(tl){lineAry.push(tl);});
-        		ro.transStation.map(function(tl){tAry.push(tl);});
-        		var pushFlag = false;
-        		if(asIndex>1 && a!=aNear[0]){
-        			var pushFlag = true;
-        			lineAry.splice(0,0,aLine);
-                    var anst = getNearBig(a, aObj, aNear);
-        			tAry.splice(0,0,TT.fn.getCommon_transStationBySameChangeStation(anst).id);
-        		}
-        		if(bsIndex>1 && b!=bNear[0]){
-        			var pushFlag = true;
-        			lineAry.push(bLine);
-                    var bnst = getNearBig(b, bObj, bNear);
-        			tAry.push(TT.fn.getCommon_transStationBySameChangeStation(bnst).id);
-        		}
-        		if(pushFlag) rt.push({line:lineAry, transStation: tAry});
-        	});
-            
-            if(route.length==0 && (!aObj.big || !bObj.big) && (TT.fn.getTRA_sectAB(aObj, bObj)>1)){
-                if(!aObj.big){
-                    var anst = getNearBig(a, aObj, aNear);
-                    rt.push({line:[aLine,bLine], transStation: [TT.fn.getCommon_transStationBySameChangeStation(anst).id]});
-                }else if(!bObj.big){
-                    var bnst = getNearBig(b, bObj, bNear);
-                    rt.push({line:[aLine,bLine], transStation: [TT.fn.getCommon_transStationBySameChangeStation(bnst).id]});
-                }
-            }
-            if(rt.length==0){
-                rt.push({line:[aLine,bLine], transStation: []});
-            }
-			routeM.route = rt;
-        	return routeM;
-        },
-        getTRA_nearBigStation: function(st, line, area){
-            var stObj = TT.fn.getCommon_stationDataOfID(st);
-            var lineData = TT.fn.getCommon_lineData(line);
-            if(area && TT.fn.check_TRA_hasSameBigWord(stObj.big,area)) return [st];
-            if(!area && stObj.big) return [st];
-            
-            var tmpST, rt = new Array(), ast, bst, cflag=false;
-            if(lineData.dir=='0'){var stationAry = lineData.station}else{
-                var stationAry = new Array();
-                lineData.station.map(function(ggh){stationAry.push(ggh);});
-                stationAry.reverse();
-            }
-            for(var i=0; i<stationAry.length; i++){
-                if(stationAry[i]==st) cflag = true;
-                tmpST = TT.fn.getCommon_stationDataOfID(stationAry[i]);
-                if(area){
-                    if(TT.fn.check_TRA_hasSameBigWord(tmpST.big,area)){
-                        if(!cflag){
-                            ast = stationAry[i];
-                        }else{
-                            bst = stationAry[i];
-                            break;
-                        }
-                    }
-                }else{
-                    if(tmpST.big){
-                        if(!cflag){
-                            ast = stationAry[i];
-                        }else{
-                            bst = stationAry[i];
-                            break;
-                        }
-                    }
-                }
-            }
-            
-            if(ast) rt.push(ast);
-            if(bst) rt.push(bst);
-            return rt;
         },
         getRoute_systemOfTrans: function(cfg){
             cfg = cfg || {}
@@ -3210,7 +3129,7 @@ var TT = (function(){
                 var timeInfo = timeTable[i].TimeInfo;
                 var aST = TT.fn.getTRA_stationIsOnThisTime(a, timeInfo);
                 var bST = TT.fn.getTRA_stationIsOnThisTime(b, timeInfo);
-                var pTimeTable
+                var pTimeTable;
                 if(aST!==false && bST!==false && timeTable[i].LineDir==dir){
                     if(aST > bST) continue;
                     pTimeTable = $.extend({},timeTable[i]);
@@ -3235,6 +3154,121 @@ var TT = (function(){
                 }
             }
             return false;
+        },
+        getTRA_mayUseBoneTrans: function(a, b, aLine, bLine, routeM){
+        	//{line: ['1','2','3'], transStation: ['t1','t2']}
+        	var route = routeM.route, tmpR, aTS, bTS, asIndex, bsIndex,
+        		rt = new Array(),
+        		sectAry = TT.data.tra.sect_ary,
+        		dir = TT.fn.getTRA_LineDirByFromTo(a,b),
+        		aNear = TT.fn.getTRA_nearBigStation(a, aLine),
+        		bNear = TT.fn.getTRA_nearBigStation(b, bLine),
+                aObj = TT.fn.getCommon_stationDataOfID(a),
+                bObj = TT.fn.getCommon_stationDataOfID(b);
+        	
+            function getNearBig(st, stObj, nearAry){
+        			var anst = (TT.fn.getTRA_LineDirByFromTo(st,nearAry[0])=='1') ? nearAry[0] : nearAry[1];
+        			if(TT.fn.getCommon_stationDataOfID(anst).sect != stObj.sect && nearAry[1]){
+        				if(TT.fn.getCommon_stationDataOfID(nearAry[0]).sect==stObj.sect) anst = nearAry[0];
+        				if(TT.fn.getCommon_stationDataOfID(nearAry[1]).sect==stObj.sect) anst = nearAry[1];
+        			}
+                    
+                    if(st=='tra_1032' || st=='tra_1013' || st=='tra_1014') anst = 'tra_1011';
+        			if(!anst) anst = nearAry[0];
+                    return anst;
+            }
+            
+        	route.map(function(ro){
+        		rt.push(ro);
+        		aTS = TT.fn.getCommon_stationDataOfID(TT.fn.getCommon_transStationByID(ro.transStation[0]).changeStation[0]);
+        		bTS = TT.fn.getCommon_stationDataOfID(TT.fn.getCommon_transStationByID(ro.transStation[ro.transStation.length-1]).changeStation[0]);
+        		asIndex = TT.fn.getTRA_sectAB(aObj,aTS);
+        		bsIndex = TT.fn.getTRA_sectAB(bObj,bTS);
+        		var lineAry = new Array(), tAry = new Array();
+        		ro.line.map(function(tl){lineAry.push(tl);});
+        		ro.transStation.map(function(tl){tAry.push(tl);});
+        		var pushFlag = false;
+        		if(asIndex>1 && a!=aNear[0]){
+        			var pushFlag = true;
+        			lineAry.splice(0,0,aLine);
+                    var anst = getNearBig(a, aObj, aNear);
+        			tAry.splice(0,0,TT.fn.getCommon_transStationBySameChangeStation(anst).id);
+        		}
+        		if(bsIndex>1 && b!=bNear[0]){
+        			var pushFlag = true;
+        			lineAry.push(bLine);
+                    var bnst = getNearBig(b, bObj, bNear);
+        			tAry.push(TT.fn.getCommon_transStationBySameChangeStation(bnst).id);
+        		}
+        		if(pushFlag) rt.push({line:lineAry, transStation: tAry});
+        	});
+            
+            if(route.length==0 && (!aObj.big || !bObj.big) && (TT.fn.getTRA_sectAB(aObj, bObj)>1)){
+                if(!aObj.big){
+                    var anst = getNearBig(a, aObj, aNear);
+                    rt.push({line:[aLine,bLine], transStation: [TT.fn.getCommon_transStationBySameChangeStation(anst).id]});
+                }else if(!bObj.big){
+                    var bnst = getNearBig(b, bObj, bNear);
+                    rt.push({line:[aLine,bLine], transStation: [TT.fn.getCommon_transStationBySameChangeStation(bnst).id]});
+                }
+            }
+            if(rt.length==0){
+                rt.push({line:[aLine,bLine], transStation: []});
+            }
+			routeM.route = rt;
+        	return routeM;
+        },
+        getTRA_nearBigStation: function(st, line, area){
+            var stObj = TT.fn.getCommon_stationDataOfID(st);
+            var lineData = TT.fn.getCommon_lineData(line);
+            if(area && TT.fn.check_TRA_hasSameBigWord(stObj.big,area)) return [st];
+            if(!area && stObj.big) return [st];
+            
+            var tmpST, rt = new Array(), ast, bst, cflag=false;
+            if(lineData.dir=='0'){var stationAry = lineData.station}else{
+                var stationAry = new Array();
+                lineData.station.map(function(ggh){stationAry.push(ggh);});
+                stationAry.reverse();
+            }
+            for(var i=0; i<stationAry.length; i++){
+                if(stationAry[i]==st) cflag = true;
+                tmpST = TT.fn.getCommon_stationDataOfID(stationAry[i]);
+                if(area){
+                    if(TT.fn.check_TRA_hasSameBigWord(tmpST.big,area)){
+                        if(!cflag){
+                            ast = stationAry[i];
+                        }else{
+                            bst = stationAry[i];
+                            break;
+                        }
+                    }
+                }else{
+                    if(tmpST.big){
+                        if(!cflag){
+                            ast = stationAry[i];
+                        }else{
+                            bst = stationAry[i];
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if(ast) rt.push(ast);
+            if(bst) rt.push(bst);
+            return rt;
+        },
+        getTRA_sectIndex: function(st){
+        	if(typeof(st)=='string') st = TT.fn.getCommon_stationDataOfID(st);
+        	var sectAry = TT.data.tra.sect_ary;
+        	for(var i=0; i<sectAry.length; i++){
+        		if(st.sect==sectAry[i]) return i;
+        	}
+        },
+        getTRA_sectAB: function(a,b){
+        	var ai = TT.fn.getTRA_sectIndex(a);
+        	var bi = TT.fn.getTRA_sectIndex(b);
+        	return Math.abs(ai-bi);
         },
         getTRA_timeOfStationOnCar: function(stationID, carTime){
             stationID = TT.fn.getTRA_stationID(stationID);
@@ -4572,9 +4606,15 @@ var TT = (function(){
             }
             return sysTop;
         },
-        centerScroll: function(val){
+        centerScroll: function(val, isDirect){
             var sysTop;
-            if(val || val===0) $(TT.ui.centerDiv).animate({ scrollTop: val }, 400);
+            if(val || val===0){
+                if(isDirect){
+                    $(TT.ui.centerDiv).scrollTop(val);
+                }else{
+                    $(TT.ui.centerDiv).animate({ scrollTop: val }, 400);
+                }
+            }
             sysTop = document.body.scrollTop;
             return sysTop;
         },
@@ -5004,13 +5044,12 @@ var TT = (function(){
                 win = wwin;
                 if(TT.lib.canvasMap && !TT.ui.mapSelector.canvasMap){
                     var canvasMap = new TT.lib.canvasMap({
-                        baseWidth: 1660, 
-                        baseHeight: 1300, 
-                        offsetX: 620
+                        baseWidth: 1650, 
+                        baseHeight: 1750
                     });
                     canvasMap.initAll();
-                    divNet.style.width = '1660px';
-                    divNet.style.height = '1300px';
+                    divNet.style.width = '1650px';
+                    divNet.style.height = '1750px';
                     divNet.appendChild(canvasMap.div);
                     TT.ui.mapSelector.canvasMap = canvasMap;
                 }
@@ -5487,11 +5526,26 @@ var TT = (function(){
                 '<div class="sub count">' + '轉乘次數: ' + '<span class="val">' + (routeP.routeMap.length-1) + '</span>' + '</div>' + 
                 '<div class="sub totalTime">' + '花費時間: ' + '<span class="val">' + TT.ui.formatMinute2HM(routeP.travelMinute) + '</span>' + '</div>' +
                 '<div class="sub startTime">' + '開始時間: ' + '<span class="val">' + routeP.travelStartTime + '</span>' + '</div>' +
-                '<div class="sub endTime">' + '到達時間: ' + '<span class="val">' + routeP.travelEndTime + '</span>' + '</div>';
+                '<div class="sub endTime">' + '到達時間: ' + '<span class="val">' + routeP.travelEndTime + '</span>' + '</div>' +
+                '<div class="sub printCanvas" printid="' + id + '">' + '截圖' + '</div>';
             
-            //hDiv.addEventListener('click', function(e){
-                //var dom = e.target;
-            //}, false);
+            hDiv.addEventListener('click', function(e){
+                var dom = e.target;
+                if(dom.className.indexOf('printCanvas') != -1){
+                    var pid = e.target.attributes.getNamedItem('printid').value;
+                    var targetBox = $('#' + pid);
+                    if(targetBox[0].offsetTop) TT.ui.centerScroll(targetBox[0].offsetTop-38, true);
+                    TT.html2canvas(targetBox, {
+                        onrendered: function(imgA) {
+                            if(imgA && imgA.toDataURL){
+                                window.open(imgA.toDataURL("image/png"));
+                            }else{
+                                TT.msg.show('截圖失敗，可能是瀏覽器長寬不足截下整張圖片');
+                            }
+                        }
+                    });
+                }
+            }, false);
             var tDiv = document.createElement('div');
             tDiv.className = 'timeRouteDiv';
             var tTD = (function(){
@@ -5859,6 +5913,7 @@ var TT = (function(){
 
 </script>
 <script type="text/javascript" src="canvasTaiwanRailwayMap.js"></script>
+<script type="text/javascript" src="html2canvas.js"></script>
 <!-- -->
 <!-- -->
 </head>

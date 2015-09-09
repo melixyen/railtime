@@ -56,8 +56,8 @@
     function canvasMap(cfg){
         cfg = cfg || {};
         defaultCfg = {
-            baseWidth: 1800,//canvas 畫布寬
-            baseHeight: 1300,//canvas 畫布高
+            baseWidth: 1650,//canvas 畫布寬
+            baseHeight: 1750,//canvas 畫布高
             canTouch: ("ontouchend" in document),
             canvasBgcolor: 'rgba(255,255,255,0.9)',
             canvasID: null,//canvas 的 id，不需要則為 null
@@ -76,7 +76,7 @@
             makeClickDiv: true,// 車站是否可被點擊
             makeClickDivID: null,
             makeClickDivCSSName: 'canvasTWRMapClickDiv',
-            offsetX: 750,
+            offsetX: 610,
             offsetY: 400,
             renderDiv: true,
             renderID: 'body',// body 時直接 render 在 document.body 上，或者傳入要 render 的 div id，也可以是 DOM Element
@@ -96,8 +96,8 @@
         var pos = {
             badu: {x: 750, y: -240},
             hualian: {x: 920, y: 770},
-            tauoyuan: {x: -570, y: 290},
-            hsinchu: {x: -570, y: 730}
+            tauoyuan: {x: -440, y: 630},
+            hsinchu: {x: -440, y: 1170}
         }
         if(cfg.linePOS) pos = cfg.linePOS;
         
@@ -146,18 +146,19 @@
                         "tra_1007": {x: 460, y: -20, name: '松山', stationClass: 1, company: true },
                         "tra_1008": {x: 0, y: 0, name: '臺北', stationClass: 0, company: true },
                         "tra_1009": {x: -130, y: 90, name: '萬華', stationClass: 4},
-                        "tra_1011": {x: -320, y: 130, name: '板橋', stationClass: 1, company: true },
-                        "tra_1032": {x: -390, y: 130, name: '浮洲', stationClass: 4},
-                        "tra_1012": {x: -460, y: 160, name: '樹林', stationClass: 2},
-                        "tra_4102": {x: -460, y: 195, name: '南樹林', stationClass: 4, noClick: true},
-                        "tra_1013": {x: -460, y: 220, name: '山佳', stationClass: 4},
-                        "tra_1014": {x: -510, y: 220, name: '鶯歌', stationClass: 4},
+                        "tra_1011": {x: -300, y: 90, name: '板橋', stationClass: 1, company: true },
+                        "tra_1032": {x: -370, y: 100, name: '浮洲', stationClass: 4},
+                        "tra_1012": {x: -440, y: 200, name: '樹林', stationClass: 2},
+                        "tra_4102": {x: -440, y: 275, name: '南樹林', stationClass: 4, noClick: true},
+                        "tra_1013": {x: -440, y: 300, name: '山佳', stationClass: 4},
+                        "tra_1014": {x: -440, y: 390, name: '鶯歌', stationClass: 4},
+                        "tra_fengming": {x: -440, y: 420, name: '鳳鳴', stationClass: 4, noClick: true},
                         "tra_1015": {x: pos.tauoyuan.x, y: pos.tauoyuan.y, name: '桃園', stationClass: 1, company: true},
-                        "tra_1016": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+100, name: '內壢', stationClass: 4},
-                        "tra_1017": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 2, company: true},
-                        "tra_1018": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+230, name: '埔心', stationClass: 4},
-                        "tra_1019": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+255, name: '楊梅', stationClass: 4},
-                        "tra_1020": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+285, name: '富岡', stationClass: 4},
+                        "tra_1016": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+200, name: '內壢', stationClass: 4},
+                        "tra_1017": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+300, name: '中壢', stationClass: 2, company: true},
+                        "tra_1018": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+330, name: '埔心', stationClass: 4},
+                        "tra_1019": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+355, name: '楊梅', stationClass: 4},
+                        "tra_1020": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+385, name: '富岡', stationClass: 4},
                         "tra_1033": {x: pos.hsinchu.x, y: pos.hsinchu.y-130, name: '北湖', stationClass: 4},
                         "tra_1021": {x: pos.hsinchu.x, y: pos.hsinchu.y-105, name: '湖口', stationClass: 4},
                         "tra_1022": {x: pos.hsinchu.x, y: pos.hsinchu.y-80, name: '新豐', stationClass: 4},
@@ -311,8 +312,8 @@
                     color: "#ef5210",
                     nameTag: {
                         fontColor: '#FFF',
-                        id:'thsr_01', 
-                        ox: 38, 
+                        id:'thsr_03', 
+                        ox: -235, 
                         oy: 0
                     },
                     dir: "1",
@@ -324,17 +325,18 @@
                         {type: 'turn', id: 'thsr_02', ox: -40, oy: 0},
                         {type: 'turn', id: 'thsr_02', ox: -130, oy: 90},
                         {type: 'station', id: 'thsr_03'},
-                        {type: 'turn', id: 'thsr_04', ox: 150, oy: 0},
+                        {type: 'turn', id: 'thsr_04', ox: 40, oy: -667},{type: 'turn', id: 'thsr_04', ox: 40, oy: 0},
+                        //{type: 'turn', id: 'thsr_04', ox: -10, oy: -670},{type: 'turn', id: 'thsr_04', ox: -10, oy: 0},
                         {type: 'station', id: 'thsr_04'},
-                        {type: 'turn', id: 'thsr_04', ox: 0, oy: 390},
+                        {type: 'turn', id: 'thsr_04', ox: 0, oy: 160},
                         {type: 'station', id: 'thsr_05'},
                         {type: 'station', id: 'thsr_13'}
                     ],
                     station: {
                         "thsr_01": {x: 590, y: 5, name: '南港', stationClass: 3, company: true, noClick: true },
                         "thsr_02": {x: 0, y: 28, name: '臺北', stationClass: 0, company: true, noClick: true},
-                        "thsr_03": {x: -320, y: 158, name: '板橋', stationClass: 1, company: true, noClick: true},
-                        "thsr_04": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y-175, name: '桃園', stationClass: 3, company: true, noClick: true},
+                        "thsr_03": {x: -300, y: 118, name: '板橋', stationClass: 1, company: true, noClick: true},
+                        "thsr_04": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y+155, name: '桃園', stationClass: 3, company: true, noClick: true},
                         "thsr_05": {x: pos.hsinchu.x+228, y: pos.hsinchu.y-60, name: '新竹', stationClass: 3, company: true, noClick: true},
                         "thsr_07": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+0, name: '苗栗', stationClass: 4, company: true, noClick: true},
                         "thsr_08": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+25, name: '台中', stationClass: 4, company: true, noClick: true},
@@ -388,16 +390,16 @@
                         "trtc_088": {x: 90, y: 60, name: '善導寺', stationClass: 4 },
                         "trtc_051": {x: 10, y: 60, name: '台北車站', stationClass: 0, company: true },
                         "trtc_086": {x: -80, y: 100, name: '西門', stationClass: 3 },
-                        "trtc_085": {x: -120, y: 150, name: '龍山寺', stationClass: 4 },
-                        "trtc_084": {x: -180, y: 150, name: '江子翠', stationClass: 4 },
-                        "trtc_083": {x: -230, y: 180, name: '新埔', stationClass: 4 },
-                        "trtc_082": {x: -320, y: 190, name: '板橋', stationClass: 1, company: true },
-                        "trtc_081": {x: -320, y: 250, name: '府中', stationClass: 4 },
-                        "trtc_080": {x: -320, y: 280, name: '亞東醫院', stationClass: 4 },
-                        "trtc_079": {x: -320, y: 310, name: '海山', stationClass: 4 },
-                        "trtc_078": {x: -320, y: 340, name: '土城', stationClass: 4 },
-                        "trtc_077": {x: -320, y: 380, name: '永寧', stationClass: 4 },
-                        "trtc_076": {x: -320, y: 420, name: '頂埔', stationClass: 4 }
+                        "trtc_085": {x: -120, y: 140, name: '龍山寺', stationClass: 4 },
+                        "trtc_084": {x: -175, y: 145, name: '江子翠', stationClass: 4 },
+                        "trtc_083": {x: -220, y: 145, name: '新埔', stationClass: 4 },
+                        "trtc_082": {x: -300, y: 145, name: '板橋', stationClass: 1, company: true },
+                        "trtc_081": {x: -300, y: 200, name: '府中', stationClass: 4 },
+                        "trtc_080": {x: -300, y: 225, name: '亞東醫院', stationClass: 4 },
+                        "trtc_079": {x: -300, y: 250, name: '海山', stationClass: 4 },
+                        "trtc_078": {x: -300, y: 275, name: '土城', stationClass: 4 },
+                        "trtc_077": {x: -300, y: 300, name: '永寧', stationClass: 4 },
+                        "trtc_076": {x: -300, y: 330, name: '頂埔', stationClass: 4 }
                     }
                 }, {
                     id: "trtc_2",
@@ -621,7 +623,7 @@
                     color: "#8e47ad",
                     nameTag: {
                         fontColor: '#FFF',
-                        id:'tyrtc_a08', 
+                        id:'tyrtc_a07', 
                         ox: -20, 
                         oy: -20
                     },
@@ -651,24 +653,24 @@
                         "tyrtc_a05": {x: -380, y: -110, name: '泰山', stationClass: 4, noClick: true},
                         "tyrtc_a05a": {x: -410, y: -80, name: '輔大醫院', stationClass: 4, noClick: true},
                         "tyrtc_a06": {x: -440, y: -50, name: '泰山貴和', stationClass: 4, noClick: true},
-                        "tyrtc_a07": {x: -500, y: -160, name: '體育大學', stationClass: 4, noClick: true},
-                        "tyrtc_a08": {x: -530, y: -190, name: '長庚醫院', stationClass: 3, noClick: true},
-                        "tyrtc_a09": {x: -600, y: -190, name: '林口', stationClass: 4, noClick: true},
-                        "tyrtc_a10": {x: -600, y: -160, name: '山鼻', stationClass: 4, noClick: true},
-                        "tyrtc_a11": {x: pos.tauoyuan.x-30, y: pos.tauoyuan.y-420, name: '坑口', stationClass: 3, noClick: true},
-                        "tyrtc_a12": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-420, name: '機場第一航廈', stationClass: 3, noClick: true},
-                        "tyrtc_a13": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-390, name: '機場第二航廈', stationClass: 3, noClick: true},
-                        "tyrtc_a14": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-360, name: '機場第三航廈', stationClass: 3, noClick: true},
-                        "tyrtc_a14a": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-330, name: '機場旅館', stationClass: 4, noClick: true},
-                        "tyrtc_a15": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-280, name: '大園', stationClass: 4, noClick: true},
-                        "tyrtc_a16": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-250, name: '橫山', stationClass: 4, noClick: true},
-                        "tyrtc_a17": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-220, name: '領航', stationClass: 4, noClick: true},
-                        "tyrtc_a18": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-150, name: '高鐵桃園站', stationClass: 2, noClick: true, company: true},
-                        "tyrtc_a19": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-50, name: '桃園體育園區', stationClass: 3, noClick: true},
-                        "tyrtc_a20": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+50, name: '興南', stationClass: 4, noClick: true},
-                        "tyrtc_a21": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+90, name: '環北', stationClass: 4, noClick: true},
-                        "tyrtc_a22": {x: pos.tauoyuan.x-85, y: pos.tauoyuan.y+170, name: '老街溪', stationClass: 4, noClick: true},
-                        "tyrtc_a23": {x: pos.tauoyuan.x-85, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 3, company: true}
+                        "tyrtc_a07": {x: -550, y: -160, name: '體育大學', stationClass: 4, noClick: true},
+                        "tyrtc_a08": {x: -550, y: -110, name: '長庚醫院', stationClass: 3, noClick: true},
+                        "tyrtc_a09": {x: -550, y: -60, name: '林口', stationClass: 4, noClick: true},
+                        "tyrtc_a10": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-110, name: '山鼻', stationClass: 4, noClick: true},
+                        "tyrtc_a11": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-80, name: '坑口', stationClass: 3, noClick: true},
+                        "tyrtc_a12": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-50, name: '機場第一航廈', stationClass: 3, noClick: true},
+                        "tyrtc_a13": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-20, name: '機場第二航廈', stationClass: 3, noClick: true},
+                        "tyrtc_a14": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+10, name: '機場第三航廈', stationClass: 3, noClick: true},
+                        "tyrtc_a14a": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+40, name: '機場旅館', stationClass: 4, noClick: true},
+                        "tyrtc_a15": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+70, name: '大園', stationClass: 4, noClick: true},
+                        "tyrtc_a16": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+100, name: '橫山', stationClass: 4, noClick: true},
+                        "tyrtc_a17": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+130, name: '領航', stationClass: 4, noClick: true},
+                        "tyrtc_a18": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+180, name: '高鐵桃園站', stationClass: 2, noClick: true, company: true},
+                        "tyrtc_a19": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+1820, name: '桃園體育園區', stationClass: 3, noClick: true},
+                        "tyrtc_a20": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+210, name: '興南', stationClass: 4, noClick: true},
+                        "tyrtc_a21": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+240, name: '環北', stationClass: 4, noClick: true},
+                        "tyrtc_a22": {x: pos.tauoyuan.x-85, y: pos.tauoyuan.y+270, name: '老街溪', stationClass: 4, noClick: true},
+                        "tyrtc_a23": {x: pos.tauoyuan.x-85, y: pos.tauoyuan.y+300, name: '中壢', stationClass: 3, company: true}
                     }
                 }
             ]
