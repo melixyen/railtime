@@ -56,7 +56,7 @@
     function canvasMap(cfg){
         cfg = cfg || {};
         defaultCfg = {
-            baseWidth: 1650,//canvas 畫布寬
+            baseWidth: 1550,//canvas 畫布寬
             baseHeight: 1750,//canvas 畫布高
             canTouch: ("ontouchend" in document),
             canvasBgcolor: 'rgba(255,255,255,0.9)',
@@ -65,6 +65,9 @@
             divID: null,//外層包 div 時的 id，不需要則為 null
             divWidth: null,
             divHeight: null,
+            drawPlanLine: true,
+            drawPlanLineOriginalColor: false,
+            drawPlanColor: '#EEE',
             divOverflowStyle: null,//'auto' or 'hidden'
             maxWidthByBrowser: false,//設為 true 時會將圖片寬度縮到小於瀏覽器當下寬度
             lineData: null,//傳入自己的 lineData 取代預設的路網
@@ -76,7 +79,7 @@
             makeClickDiv: true,// 車站是否可被點擊
             makeClickDivID: null,
             makeClickDivCSSName: 'canvasTWRMapClickDiv',
-            offsetX: 610,
+            offsetX: 600,
             offsetY: 400,
             renderDiv: true,
             renderID: 'body',// body 時直接 render 在 document.body 上，或者傳入要 render 的 div id，也可以是 DOM Element
@@ -93,16 +96,20 @@
             }
         }
         
+        var onlyDoPlanLine = false;
         var pos = {
-            badu: {x: 750, y: -240},
-            hualian: {x: 920, y: 770},
-            taidong: {x: 920, y: 1320},
-            tauoyuan: {x: -440, y: 630},
-            hsinchu: {x: -440, y: 1170}
+            badu: {x: 650, y: -240},
+            hualian: {x: 820, y: 770},
+            taidong: {x: 820, y: 1320},
+            tauoyuan: {x: -240, y: 530},
+            hsinchu: {x: -240, y: 970}
         }
         if(cfg.linePOS) pos = cfg.linePOS;
         
         var lineData = {
+            planLine: [
+                
+            ],
             tra: [
                 {
             		id: "tra_xibu",
@@ -131,6 +138,7 @@
                         {type: 'station', id: 'tra_1012'},
                         {type: 'station', id: 'tra_1013'},
                         {type: 'station', id: 'tra_1014'},
+                        {type: 'station', id: 'tra_fengming'},
                         {type: 'station', id: 'tra_1015'},
                         {type: 'station', id: 'tra_1028'}
                     ],
@@ -142,24 +150,24 @@
                         "tra_1030": {x: pos.badu.x, y: -160, name: '百福', stationClass: 4 },
                         "tra_1004": {x: pos.badu.x, y: -120, name: '五堵', stationClass: 4 },
                         "tra_1005": {x: pos.badu.x, y: -80, name: '汐止', stationClass: 2 },
-                        "tra_1031": {x: pos.badu.x, y: -40, name: '汐科', stationClass: 4 },
-                        "tra_1006": {x: 590, y: -20, name: '南港', stationClass: 3, company: true, noDraw: false },
-                        "tra_1007": {x: 460, y: -20, name: '松山', stationClass: 1, company: true },
+                        "tra_1031": {x: pos.badu.x, y: -20, name: '汐科', stationClass: 4, company: true},
+                        "tra_1006": {x: 550, y: -20, name: '南港', stationClass: 3, company: true, noDraw: false },
+                        "tra_1007": {x: 450, y: -20, name: '松山', stationClass: 2, company: true },
                         "tra_1008": {x: 0, y: 0, name: '臺北', stationClass: 0, company: true },
                         "tra_1009": {x: -130, y: 90, name: '萬華', stationClass: 4},
                         "tra_1011": {x: -300, y: 90, name: '板橋', stationClass: 1, company: true },
                         "tra_1032": {x: -370, y: 100, name: '浮洲', stationClass: 4},
-                        "tra_1012": {x: -440, y: 200, name: '樹林', stationClass: 2},
-                        "tra_4102": {x: -440, y: 275, name: '南樹林', stationClass: 4, noClick: true},
-                        "tra_1013": {x: -440, y: 300, name: '山佳', stationClass: 4},
-                        "tra_1014": {x: -440, y: 390, name: '鶯歌', stationClass: 4},
-                        "tra_fengming": {x: -440, y: 420, name: '鳳鳴', stationClass: 4, noClick: true},
+                        "tra_1012": {x: -440, y: 170, name: '樹林', stationClass: 2},
+                        "tra_4102": {x: -440, y: 255, name: '南樹林', stationClass: 4, noClick: true},
+                        "tra_1013": {x: -440, y: 285, name: '山佳', stationClass: 4},
+                        "tra_1014": {x: -440, y: 310, name: '鶯歌', stationClass: 3, company: true},
+                        "tra_fengming": {x: -440, y: 460, name: '鳳鳴', stationClass: 4, noClick: true},
                         "tra_1015": {x: pos.tauoyuan.x, y: pos.tauoyuan.y, name: '桃園', stationClass: 1, company: true},
-                        "tra_1016": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+200, name: '內壢', stationClass: 4},
-                        "tra_1017": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+300, name: '中壢', stationClass: 2, company: true},
-                        "tra_1018": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+330, name: '埔心', stationClass: 4},
-                        "tra_1019": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+355, name: '楊梅', stationClass: 4},
-                        "tra_1020": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+385, name: '富岡', stationClass: 4},
+                        "tra_1016": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+130, name: '內壢', stationClass: 4},
+                        "tra_1017": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 2, company: true},
+                        "tra_1018": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+230, name: '埔心', stationClass: 4},
+                        "tra_1019": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+255, name: '楊梅', stationClass: 4},
+                        "tra_1020": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+285, name: '富岡', stationClass: 4},
                         "tra_1033": {x: pos.hsinchu.x, y: pos.hsinchu.y-130, name: '北湖', stationClass: 4},
                         "tra_1021": {x: pos.hsinchu.x, y: pos.hsinchu.y-105, name: '湖口', stationClass: 4},
                         "tra_1022": {x: pos.hsinchu.x, y: pos.hsinchu.y-80, name: '新豐', stationClass: 4},
@@ -175,6 +183,12 @@
                     id: "tra_yilan",
                     name: "[台鐵]宜蘭線",
                     color: "#500000",
+                    nameTag: {
+                        fontColor: '#FFF',
+                        id:'tra_1818', 
+                        ox: -118, 
+                        oy: 0
+                    },
                     dir: "0",
                     line: [
                         {type: 'station', id: 'tra_1002'},
@@ -217,6 +231,12 @@
                     id: "tra_beihui",
                     name: "[台鐵]北迴線",
                     color: "#004060",
+                    nameTag: {
+                        fontColor: '#FFF',
+                        id:'tra_1709', 
+                        ox: -118, 
+                        oy: 0
+                    },
                     dir: "0",
                     line: [
                         {type: 'station', id: 'tra_1826'},
@@ -241,6 +261,12 @@
                     id: "tra_huadongi",
                     name: "[台鐵]台東線",
                     color: "#605040",
+                    nameTag: {
+                        fontColor: '#FFF',
+                        id:'tra_1616', 
+                        ox: -118, 
+                        oy: 0
+                    },
                     dir: "0",
                     line: [
                         {type: 'station', id: 'tra_1715'},
@@ -332,18 +358,18 @@
                     station: {
                         "tra_1025": {x: pos.hsinchu.x, y: pos.hsinchu.y, name: '新竹', stationClass: 1, noDraw: true},
                         "tra_1024": {x: pos.hsinchu.x, y: pos.hsinchu.y-30, name: '北新竹', stationClass: 4, noDraw: true},
-                        "tra_2212": {x: pos.hsinchu.x+50, y: pos.hsinchu.y-30, name: '千甲', stationClass: 4 },
-                        "tra_2213": {x: pos.hsinchu.x+100, y: pos.hsinchu.y-30, name: '新莊', stationClass: 4 },
-                        "tra_2203": {x: pos.hsinchu.x+150, y: pos.hsinchu.y-30, name: '竹中', stationClass: 3 },
-                        "tra_2214": {x: pos.hsinchu.x+150, y: pos.hsinchu.y-60, name: '六家', stationClass: 3, company: true},
-                        "tra_2204": {x: pos.hsinchu.x+270, y: pos.hsinchu.y-30, name: '上員', stationClass: 4 },
-                        "tra_2211": {x: pos.hsinchu.x+310, y: pos.hsinchu.y-30, name: '榮華', stationClass: 4 },
-                        "tra_2205": {x: pos.hsinchu.x+350, y: pos.hsinchu.y-30, name: '竹東', stationClass: 4 },
-                        "tra_2206": {x: pos.hsinchu.x+390, y: pos.hsinchu.y-30, name: '橫山', stationClass: 4 },
-                        "tra_2207": {x: pos.hsinchu.x+430, y: pos.hsinchu.y-30, name: '九讚頭', stationClass: 4 },
-                        "tra_2208": {x: pos.hsinchu.x+470, y: pos.hsinchu.y-30, name: '合興', stationClass: 4 },
-                        "tra_2209": {x: pos.hsinchu.x+510, y: pos.hsinchu.y-30, name: '富貴', stationClass: 4 },
-                        "tra_2210": {x: pos.hsinchu.x+550, y: pos.hsinchu.y-30, name: '內灣', stationClass: 3}
+                        "tra_2212": {x: pos.hsinchu.x+47, y: pos.hsinchu.y-30, name: '千甲', stationClass: 4 },
+                        "tra_2213": {x: pos.hsinchu.x+90, y: pos.hsinchu.y-30, name: '新莊', stationClass: 4 },
+                        "tra_2203": {x: pos.hsinchu.x+140, y: pos.hsinchu.y-30, name: '竹中', stationClass: 3 },
+                        "tra_2214": {x: pos.hsinchu.x+140, y: pos.hsinchu.y-60, name: '六家', stationClass: 3, company: true},
+                        "tra_2204": {x: pos.hsinchu.x+260, y: pos.hsinchu.y-30, name: '上員', stationClass: 4 },
+                        "tra_2211": {x: pos.hsinchu.x+300, y: pos.hsinchu.y-30, name: '榮華', stationClass: 4 },
+                        "tra_2205": {x: pos.hsinchu.x+340, y: pos.hsinchu.y-30, name: '竹東', stationClass: 4 },
+                        "tra_2206": {x: pos.hsinchu.x+380, y: pos.hsinchu.y-30, name: '橫山', stationClass: 4 },
+                        "tra_2207": {x: pos.hsinchu.x+420, y: pos.hsinchu.y-30, name: '九讚頭', stationClass: 4 },
+                        "tra_2208": {x: pos.hsinchu.x+460, y: pos.hsinchu.y-30, name: '合興', stationClass: 4 },
+                        "tra_2209": {x: pos.hsinchu.x+500, y: pos.hsinchu.y-30, name: '富貴', stationClass: 4 },
+                        "tra_2210": {x: pos.hsinchu.x+540, y: pos.hsinchu.y-30, name: '內灣', stationClass: 3}
                     }
                 }
             ],
@@ -367,26 +393,26 @@
                         {type: 'turn', id: 'thsr_02', ox: -40, oy: 0},
                         {type: 'turn', id: 'thsr_02', ox: -130, oy: 90},
                         {type: 'station', id: 'thsr_03'},
-                        {type: 'turn', id: 'thsr_04', ox: 40, oy: -667},{type: 'turn', id: 'thsr_04', ox: 40, oy: 0},
-                        //{type: 'turn', id: 'thsr_04', ox: -10, oy: -670},{type: 'turn', id: 'thsr_04', ox: -10, oy: 0},
+                        {type: 'turn', id: 'thsr_04', ox: 0, oy: -587},//{type: 'turn', id: 'thsr_04', ox: 40, oy: 0},
                         {type: 'station', id: 'thsr_04'},
-                        {type: 'turn', id: 'thsr_04', ox: 0, oy: 160},
+                        {type: 'turn', id: 'thsr_04', ox: 0, oy: 30},
+                        {type: 'turn', id: 'thsr_05', ox: 0, oy: -60},
                         {type: 'station', id: 'thsr_05'},
                         {type: 'station', id: 'thsr_13'}
                     ],
                     station: {
-                        "thsr_01": {x: 590, y: 5, name: '南港', stationClass: 3, company: true, noClick: true },
+                        "thsr_01": {x: 550, y: 5, name: '南港', stationClass: 3, company: true, noClick: true },
                         "thsr_02": {x: 0, y: 28, name: '臺北', stationClass: 0, company: true, noClick: true},
                         "thsr_03": {x: -300, y: 118, name: '板橋', stationClass: 1, company: true, noClick: true},
-                        "thsr_04": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y+155, name: '桃園', stationClass: 3, company: true, noClick: true},
-                        "thsr_05": {x: pos.hsinchu.x+228, y: pos.hsinchu.y-60, name: '新竹', stationClass: 3, company: true, noClick: true},
-                        "thsr_07": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+0, name: '苗栗', stationClass: 4, company: true, noClick: true},
-                        "thsr_08": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+25, name: '台中', stationClass: 4, company: true, noClick: true},
-                        "thsr_09": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+50, name: '彰化', stationClass: 4, company: true, noClick: true},
-                        "thsr_10": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+75, name: '雲林', stationClass: 4, company: true, noClick: true},
-                        "thsr_11": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+100, name: '嘉義', stationClass: 4, company: true, noClick: true},
-                        "thsr_12": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+125, name: '台南', stationClass: 4, company: true, noClick: true},
-                        "thsr_13": {x: pos.hsinchu.x+228, y: pos.hsinchu.y+150, name: '左營', stationClass: 4, company: true, noClick: true}
+                        "thsr_04": {x: pos.tauoyuan.x-290, y: pos.tauoyuan.y+175, name: '桃園', stationClass: 3, company: true, noClick: true},
+                        "thsr_05": {x: pos.hsinchu.x+218, y: pos.hsinchu.y-60, name: '新竹', stationClass: 3, company: true, noClick: true},
+                        "thsr_07": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+0, name: '苗栗', stationClass: 4, company: true, noClick: true},
+                        "thsr_08": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+25, name: '台中', stationClass: 4, company: true, noClick: true},
+                        "thsr_09": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+50, name: '彰化', stationClass: 4, company: true, noClick: true},
+                        "thsr_10": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+75, name: '雲林', stationClass: 4, company: true, noClick: true},
+                        "thsr_11": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+100, name: '嘉義', stationClass: 4, company: true, noClick: true},
+                        "thsr_12": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+125, name: '台南', stationClass: 4, company: true, noClick: true},
+                        "thsr_13": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+150, name: '左營', stationClass: 4, company: true, noClick: true}
                     }
                 }
             ],
@@ -419,14 +445,14 @@
                         {type: 'station', id: 'trtc_076'}
                     ],
                     station: {
-                        "trtc_031": {x: 620, y: -60, name: '南港展覽館', stationClass: 3 },
-                        "trtc_097": {x: 590, y: 30, name: '南港', stationClass: 3, company: true },
-                        "trtc_096": {x: 520, y: 30, name: '昆陽', stationClass: 4 },
-                        "trtc_095": {x: 475, y: 30, name: '後山埤', stationClass: 4 },
-                        "trtc_094": {x: 460, y: 60, name: '永春', stationClass: 4 },
-                        "trtc_093": {x: 413, y: 60, name: '市政府', stationClass: 3 },
-                        "trtc_092": {x: 349, y: 60, name: '國父紀念館', stationClass: 4 },
-                        "trtc_091": {x: 284, y: 60, name: '忠孝敦化', stationClass: 4 },
+                        "trtc_031": {x: 550, y: -60, name: '南港展覽館', stationClass: 3 },
+                        "trtc_097": {x: 550, y: 30, name: '南港', stationClass: 3, company: true },
+                        "trtc_096": {x: 492, y: 30, name: '昆陽', stationClass: 4 },
+                        "trtc_095": {x: 450, y: 30, name: '後山埤', stationClass: 4 },
+                        "trtc_094": {x: 450, y: 60, name: '永春', stationClass: 4 },
+                        "trtc_093": {x: 407, y: 60, name: '市政府', stationClass: 3 },
+                        "trtc_092": {x: 346, y: 60, name: '國父紀念館', stationClass: 4 },
+                        "trtc_091": {x: 282, y: 60, name: '忠孝敦化', stationClass: 4 },
                         "trtc_010": {x: 220, y: 60, name: '忠孝復興', stationClass: 3 },
                         "trtc_089": {x: 150, y: 60, name: '忠孝新生', stationClass: 3 },
                         "trtc_088": {x: 90, y: 60, name: '善導寺', stationClass: 4 },
@@ -473,15 +499,15 @@
                         "trtc_070": {x: -160, y: -360, name: '紅樹林', stationClass: 4 },
                         "trtc_069": {x: -160, y: -335, name: '竹圍', stationClass: 4 },
                         "trtc_068": {x: -160, y: -310, name: '關渡', stationClass: 4 },
-                        "trtc_067": {x: -110, y: -335, name: '忠義', stationClass: 4 },
-                        "trtc_066": {x: -50, y: -345, name: '復興崗', stationClass: 4 },
-                        "trtc_065": {x: 70, y: -340, name: '新北投', stationClass: 3, noClick: true},
-                        "trtc_064": {x: 10, y: -335, name: '北投', stationClass: 3 },
-                        "trtc_063": {x: 10, y: -310, name: '奇岩', stationClass: 4 },
+                        "trtc_067": {x: -110, y: -325, name: '忠義', stationClass: 4 },
+                        "trtc_066": {x: -50, y: -335, name: '復興崗', stationClass: 4 },
+                        "trtc_065": {x: 70, y: -335, name: '新北投', stationClass: 3, noClick: true},
+                        "trtc_064": {x: 10, y: -332, name: '北投', stationClass: 3 },
+                        "trtc_063": {x: 10, y: -309, name: '奇岩', stationClass: 4 },
                         "trtc_062": {x: 10, y: -285, name: '唭哩岸', stationClass: 4 },
-                        "trtc_061": {x: 10, y: -261, name: '石牌', stationClass: 4 },
-                        "trtc_060": {x: 10, y: -237, name: '明德', stationClass: 4 },
-                        "trtc_059": {x: 10, y: -213, name: '芝山', stationClass: 4 },
+                        "trtc_061": {x: 10, y: -263, name: '石牌', stationClass: 4 },
+                        "trtc_060": {x: 10, y: -239, name: '明德', stationClass: 4 },
+                        "trtc_059": {x: 10, y: -217, name: '芝山', stationClass: 4 },
                         "trtc_058": {x: 10, y: -189, name: '士林', stationClass: 4 },
                         "trtc_057": {x: 10, y: -165, name: '劍潭', stationClass: 4 },
                         "trtc_056": {x: 10, y: -133, name: '圓山', stationClass: 4 },
@@ -525,7 +551,7 @@
                         {type: 'station', id: 'trtc_032'}
                     ],
                     station: {
-                        "trtc_111": {x: 460, y: -47, name: '松山', stationClass: 1, company: true},
+                        "trtc_111": {x: 450, y: -47, name: '松山', stationClass: 2, company: true},
                         "trtc_110": {x: 370, y: -55, name: '南京三民', stationClass: 4},
                         "trtc_109": {x: 300, y: -55, name: '台北小巨蛋', stationClass: 4},
                         "trtc_009": {x: 220, y: -55, name: '南京復興', stationClass: 3},
@@ -563,6 +589,7 @@
                         {type: 'station', id: 'trtc_041'},
                         {type: 'station', id: 'trtc_134'},
                         {type: 'station', id: 'trtc_089'},
+                        {type: 'station', id: 'trtc_132'},
                         {type: 'station', id: 'trtc_131'},
                         {type: 'station', id: 'trtc_130'},
                         {type: 'station', id: 'trtc_128'},
@@ -573,6 +600,7 @@
                         {type: 'station', id: 'trtc_179'},
                         {type: 'move', id: 'trtc_128'},
                         {type: 'station', id: 'trtc_178'},
+                        {type: 'station', id: 'trtc_176'},
                         {type: 'station', id: 'trtc_174'}
                     ],
                     station: {
@@ -582,9 +610,9 @@
                         "trtc_045": {x: -20, y: 260, name: '頂溪', stationClass: 4},
                         "trtc_041": {x: 50, y: 220, name: '古亭', stationClass: 3, noDraw: true},
                         "trtc_134": {x: 90, y: 150, name: '東門', stationClass: 3, noDraw: true},
-                        "trtc_089": {x: 170, y: 60, name: '忠孝新生', stationClass: 3, noDraw: true},
+                        "trtc_089": {x: 150, y: 60, name: '忠孝新生', stationClass: 3, noDraw: true},
                         "trtc_132": {x: 150, y: -55, name: '松江南京', stationClass: 3, noDraw: true},
-                        "trtc_131": {x: 150, y: -80, name: '行天宮', stationClass: 4},
+                        "trtc_131": {x: 130, y: -80, name: '行天宮', stationClass: 4},
                         "trtc_130": {x: 90, y: -107, name: '中山國小', stationClass: 4},
                         "trtc_055": {x: 10, y: -107, name: '民權西路', stationClass: 3, noDraw: true},
                         "trtc_128": {x: -60, y: -107, name: '大橋頭', stationClass: 4},
@@ -598,10 +626,10 @@
                         "trtc_180": {x: -440, y: -20, name: '丹鳳', stationClass: 4},
                         "trtc_179": {x: -480, y: -20, name: '迴龍', stationClass: 3},
                         "trtc_178": {x: -140, y: -120, name: '三重國小', stationClass: 4},
-                        "trtc_177": {x: -170, y: -150, name: '三和國中', stationClass: 4},
-                        "trtc_176": {x: -200, y: -180, name: '徐匯中學', stationClass: 4},
-                        "trtc_175": {x: -230, y: -210, name: '三民高中', stationClass: 4},
-                        "trtc_174": {x: -260, y: -240, name: '蘆洲', stationClass: 3}
+                        "trtc_177": {x: -175, y: -150, name: '三和國中', stationClass: 4},
+                        "trtc_176": {x: -215, y: -180, name: '徐匯中學', stationClass: 4},
+                        "trtc_175": {x: -245, y: -210, name: '三民高中', stationClass: 4},
+                        "trtc_174": {x: -280, y: -240, name: '蘆洲', stationClass: 3}
                     }
                 }, {
                     id: "trtc_1",
@@ -646,15 +674,244 @@
                         "trtc_007": {x: 220, y: -130, name: '松山機場', stationClass: 4, noClick: true},
                         "trtc_021": {x: 220, y: -185, name: '大直', stationClass: 4, noClick: true},
                         "trtc_022": {x: 300, y: -235, name: '劍南路', stationClass: 4, noClick: true},
-                        "trtc_023": {x: 360, y: -235, name: '西湖', stationClass: 4, noClick: true},
-                        "trtc_024": {x: 420, y: -235, name: '港墘', stationClass: 4, noClick: true},
-                        "trtc_025": {x: 480, y: -235, name: '文德', stationClass: 4, noClick: true},
-                        "trtc_026": {x: 540, y: -235, name: '內湖', stationClass: 4, noClick: true},
-                        "trtc_027": {x: 580, y: -200, name: '大湖公園', stationClass: 4, noClick: true},
-                        "trtc_028": {x: 590, y: -175, name: '葫洲', stationClass: 4, noClick: true},
-                        "trtc_029": {x: 620, y: -150, name: '東湖', stationClass: 4, noClick: true},
-                        "trtc_030": {x: 620, y: -85, name: '南港軟體園區', stationClass: 4, noClick: true},
-                        "trtc_031": {x: 620, y: -60, name: '南港展覽館', stationClass: 3, noDraw: true}
+                        "trtc_023": {x: 350, y: -235, name: '西湖', stationClass: 4, noClick: true},
+                        "trtc_024": {x: 400, y: -235, name: '港墘', stationClass: 4, noClick: true},
+                        "trtc_025": {x: 450, y: -235, name: '文德', stationClass: 4, noClick: true},
+                        "trtc_026": {x: 500, y: -235, name: '內湖', stationClass: 4, noClick: true},
+                        "trtc_027": {x: 520, y: -205, name: '大湖公園', stationClass: 4, noClick: true},
+                        "trtc_028": {x: 540, y: -175, name: '葫洲', stationClass: 4, noClick: true},
+                        "trtc_029": {x: 550, y: -150, name: '東湖', stationClass: 4, noClick: true},
+                        "trtc_030": {x: 550, y: -85, name: '南港軟體園區', stationClass: 4, noClick: true},
+                        "trtc_031": {x: 550, y: -60, name: '南港展覽館', stationClass: 3, noDraw: true}
+                    }
+                }, {
+                    id: "trtc_6",
+                    name: "[北捷]環狀線(6)",
+                    color: "#fedb00",
+                    isPlanLine: true,
+                    nameTag: {
+                        fontColor: '#425',
+                        id:'trtc_y16', 
+                        ox: -80, 
+                        oy: -22
+                    },
+                    dir: "0",
+                    line: [
+                        {type: 'station', id: 'trtc_019'},
+                        {type: 'station', id: 'trtc_y2'},
+                        {type: 'station', id: 'trtc_y3'},
+                        {type: 'station', id: 'trtc_y4'},
+                        {type: 'station', id: 'trtc_y7'},
+                        {type: 'station', id: 'trtc_047'},
+                        {type: 'station', id: 'trtc_y11'},
+                        {type: 'station', id: 'trtc_y12'},
+                        {type: 'station', id: 'trtc_y14'},
+                        {type: 'station', id: 'trtc_y15'},
+                        {type: 'station', id: 'trtc_y16'},
+                        {type: 'station', id: 'trtc_123'},
+                        {type: 'station', id: 'trtc_y18'},
+                        {type: 'station', id: 'trtc_y19'},
+                        {type: 'station', id: 'trtc_y20'},
+                        {type: 'station', id: 'trtc_y22'},
+                        {type: 'station', id: 'trtc_y23'},
+                        {type: 'station', id: 'trtc_y24'},
+                        {type: 'station', id: 'trtc_y25'},
+                        {type: 'station', id: 'trtc_y27'},
+                        {type: 'station', id: 'trtc_y28'},
+                        {type: 'station', id: 'trtc_022'},
+                        {type: 'station', id: 'trtc_y31'},
+                        {type: 'station', id: 'trtc_y32'},
+                        {type: 'station', id: 'trtc_y34'},
+                        {type: 'station', id: 'trtc_y35'},
+                        {type: 'station', id: 'trtc_y36'},
+                        {type: 'station', id: 'trtc_y38'},
+                        {type: 'station', id: 'trtc_013'},
+                        {type: 'station', id: 'trtc_039'},
+                        {type: 'station', id: 'trtc_y42'},
+                        {type: 'station', id: 'trtc_y8'}
+                    ],
+                    station: {
+                        "trtc_019": {x: 400, y: 420, name: '動物園', stationClass: 3, noDraw: true},
+                        "trtc_y1a": {x: 355, y: 420, name: '政大', stationClass: 4, noClick: true},
+                        "trtc_y2": {x: 300, y: 420, name: '文山區公所', stationClass: 4, noClick: true},
+                        "trtc_y3": {x: 300, y: 395, name: '馬明潭', stationClass: 4, noClick: true},
+                        "trtc_y4": {x: 270, y: 370, name: '考試院', stationClass: 4, noClick: true},
+                        "trtc_y5": {x: 200, y: 370, name: '寶斗厝', stationClass: 4, noClick: true},
+                        "trtc_036": {x: 140, y: 370, name: '大坪林', stationClass: 4, noDraw: true},
+                        "trtc_y7": {x: 80, y: 370, name: '十四張', stationClass: 4, noClick: true},
+                        "trtc_y8": {x: 10, y: 360, name: '秀朗橋', stationClass: 4, noClick: true},
+                        "trtc_y9": {x: -40, y: 350, name: '景平', stationClass: 4, noClick: true},
+                        "trtc_047": {x: -90, y: 340, name: '景安', stationClass: 3, noDraw: true},
+                        "trtc_y11": {x: -130, y: 270, name: '中和', stationClass: 3, noClick: true},
+                        "trtc_y12": {x: -150, y: 240, name: '橋和', stationClass: 4, noClick: true},
+                        "trtc_y13": {x: -180, y: 210, name: '中原', stationClass: 4, noClick: true},
+                        "trtc_y14": {x: -210, y: 180, name: '板新', stationClass: 4, noClick: true},
+                        "trtc_y15": {x: -280, y: 172, name: '板橋 (環狀)', stationClass: 1, noClick: true},
+                        "trtc_y16": {x: -210, y: 70, name: '新埔民生', stationClass: 4, noClick: true},
+                        "trtc_123": {x: -290, y: -20, name: '頭前庄', stationClass: 3, noDraw: true},
+                        "trtc_y18": {x: -290, y: -50, name: '幸福', stationClass: 4, noClick: true},
+                        "trtc_y19": {x: -270, y: -106, name: '新北產業園區', stationClass: 1, company: true, noClick: true},
+                        "trtc_y19a": {x: -270, y: -132, name: '工商展覽中心', stationClass: 4, noClick: true},
+                        "trtc_y19b": {x: -270, y: -156, name: '更寮', stationClass: 4, noClick: true},
+                        "trtc_y20": {x: -270, y: -180, name: '中路', stationClass: 4, noClick: true},
+                        "trtc_176": {x: -215, y: -180, name: '徐匯中學', stationClass: 4, noDraw: true},
+                        "trtc_y22": {x: -160, y: -180, name: '分子尾', stationClass: 4, noClick: true},
+                        "trtc_y23": {x: -160, y: -210, name: '重陽橋', stationClass: 4, noClick: true},
+                        "trtc_y24": {x: -108, y: -210, name: '社子', stationClass: 4, noClick: true},
+                        "trtc_y25": {x: -42, y: -189, name: '士林區公所', stationClass: 4, noClick: true},
+                        "trtc_058": {x: 10, y: -189, name: '士林', stationClass: 4, noDraw: true},
+                        "trtc_y27": {x: 130, y: -189, name: '林子口', stationClass: 4, noClick: true},
+                        "trtc_y28": {x: 200, y: -235, name: '故宮', stationClass: 4, noClick: true},
+                        "trtc_022": {x: 300, y: -235, name: '劍南路', stationClass: 4, noDraw: true, noClick: true},
+                        "trtc_y30": {x: 330, y: -210, name: '下塔悠', stationClass: 4, noClick: true},
+                        "trtc_y31": {x: 360, y: -185, name: '內科', stationClass: 4, noClick: true},
+                        "trtc_y32": {x: 400, y: -185, name: '瑞光', stationClass: 4, noClick: true},
+                        "trtc_y33": {x: 400, y: -160, name: '下灣仔', stationClass: 4, noClick: true},
+                        "trtc_y34": {x: 400, y: -135, name: '舊宗', stationClass: 3, noClick: true},
+                        "trtc_y35": {x: 380, y: -77, name: '西松', stationClass: 4, noClick: true},
+                        "trtc_y36": {x: 350, y: 30, name: '中崙', stationClass: 4, noClick: true},
+                        "trtc_092": {x: 349, y: 60, name: '國父紀念館', stationClass: 4, noDraw: true},
+                        "trtc_y38": {x: 330, y: 128, name: '三張犁', stationClass: 4, noClick: true},
+                        "trtc_013": {x: 280, y: 230, name: '六張犁', stationClass: 4, noDraw: true, noClick: true},
+                        "trtc_y40": {x: 190, y: 255, name: '龍安', stationClass: 4, noClick: true},
+                        "trtc_039": {x: 100, y: 280, name: '公館', stationClass: 4, noDraw: true},
+                        "trtc_y42": {x: 50, y: 300, name: '福和', stationClass: 4, noClick: true},
+                        "trtc_y43": {x: 30, y: 330, name: '得和', stationClass: 4, noClick: true}
+                    }
+                }, {
+                //萬大線 a1d884 民汐線 25aae1 三鶯線 79bce8
+                    id: "trtc_7",
+                    name: "[北捷]萬大線(7)",
+                    color: "#a1d884",
+                    isPlanLine: true,
+                    nameTag: {
+                        fontColor: '#425',
+                        id:'trtc_lg19', 
+                        ox: 0, 
+                        oy: -22
+                    },
+                    dir: "0",
+                    line: [
+                        {type: 'station', id: 'trtc_042'},
+                        {type: 'station', id: 'trtc_lg02'},
+                        {type: 'station', id: 'trtc_lg03'},
+                        {type: 'station', id: 'trtc_lg05'},
+                        {type: 'station', id: 'trtc_y11'},
+                        {type: 'station', id: 'trtc_lg07'},
+                        {type: 'station', id: 'trtc_lg08'},
+                        {type: 'station', id: 'trtc_lg09'},
+                        {type: 'station', id: 'trtc_078'},
+                        {type: 'station', id: 'trtc_lg12'},
+                        {type: 'station', id: 'trtc_lg13'},
+                        {type: 'station', id: 'trtc_lg14'},
+                        {type: 'station', id: 'trtc_lg15'},
+                        {type: 'station', id: 'trtc_lg16'},
+                        {type: 'station', id: 'trtc_lg17'},
+                        {type: 'station', id: 'trtc_lg18'},
+                        {type: 'station', id: 'trtc_lg19'},
+                        {type: 'station', id: 'trtc_lg20'},
+                        {type: 'station', id: 'trtc_179'}
+                    ],
+                    station: {
+                        "trtc_042": {x: 10, y: 170, name: '中正紀念堂', stationClass: 3, noDraw: true},
+                        "trtc_lg02": {x: -20, y: 197, name: '植物園', stationClass: 4, noClick: true},
+                        "trtc_lg03": {x: -70, y: 197, name: '南機場', stationClass: 4, noClick: true},
+                        "trtc_lg04": {x: -70, y: 220, name: '東園', stationClass: 4, noClick: true},
+                        "trtc_lg05": {x: -75, y: 260, name: '永平國小', stationClass: 4, noClick: true},
+                        "trtc_y11": {x: -130, y: 270, name: '中和', stationClass: 3, noDraw: true, noClick: true},
+                        "trtc_lg07": {x: -150, y: 300, name: '錦和', stationClass: 4, noClick: true},
+                        "trtc_lg08": {x: -195, y: 300, name: '四十張', stationClass: 4, noClick: true},
+                        "trtc_lg09": {x: -195, y: 275, name: '廷寮', stationClass: 4, noClick: true},
+                        "trtc_lg10": {x: -250, y: 275, name: '中正國中', stationClass: 4, noClick: true},
+                        "trtc_078": {x: -300, y: 275, name: '土城', stationClass: 4, noDraw: true},
+                        "trtc_lg12": {x: -340, y: 275, name: '埤塘', stationClass: 4, noClick: true},
+                        "trtc_lg13": {x: -350, y: 250, name: '城林橋', stationClass: 4, noClick: true},
+                        "trtc_lg14": {x: -415, y: 200, name: '溪洲', stationClass: 4, noClick: true},
+                        "trtc_lg15": {x: -415, y: 230, name: '彭福', stationClass: 4, noClick: true},
+                        "trtc_lg16": {x: -480, y: 230, name: '備內', stationClass: 4, noClick: true},
+                        "trtc_lg17": {x: -480, y: 170, name: '樹林', stationClass: 4, noClick: true},
+                        "trtc_lg18": {x: -450, y: 140, name: '潭底', stationClass: 4, noClick: true},
+                        "trtc_lg19": {x: -450, y: 60, name: '台北監理所', stationClass: 4, noClick: true},
+                        "trtc_lg20": {x: -480, y: 20, name: '三多', stationClass: 4, noClick: true},
+                        "trtc_179": {x: -480, y: -20, name: '迴龍', stationClass: 3, noDraw: true}
+                    }
+                }, {
+                    id: "trtc_sanying",
+                    name: "[北捷]三鶯線(?)",
+                    color: "#79bce8",
+                    isPlanLine: true,
+                    nameTag: {
+                        fontColor: '#425',
+                        id:'trtc_lb04', 
+                        ox: -40, 
+                        oy: 22
+                    },
+                    dir: "0",
+                    line: [
+                        {type: 'station', id: 'trtc_076'},
+                        {type: 'station', id: 'trtc_lb02'},
+                        {type: 'station', id: 'trtc_lb04'},
+                        {type: 'station', id: 'trtc_lb05'},
+                        {type: 'station', id: 'trtc_lb07'},
+                        {type: 'station', id: 'trtc_lb08'},
+                        {type: 'station', id: 'trtc_lb09'},
+                        {type: 'station', id: 'trtc_lb12'}
+                    ],
+                    station: {
+                        "trtc_076": {x: -300, y: 330, name: '頂埔', stationClass: 4, noDraw: true},
+                        "trtc_lb02": {x: -300, y: 355, name: '媽祖田', stationClass: 4, noClick: true},
+                        "trtc_lb03": {x: -300, y: 380, name: '挖子', stationClass: 4, noClick: true},
+                        "trtc_lb04": {x: -300, y: 405, name: '橫溪', stationClass: 4, noClick: true},
+                        "trtc_lb05": {x: -360, y: 405, name: '麥仔園', stationClass: 4, noClick: true},
+                        "trtc_lb06": {x: -360, y: 380, name: '三峽', stationClass: 4, noClick: true},
+                        "trtc_lb07": {x: -360, y: 355, name: '臺北大學', stationClass: 4, noClick: true},
+                        "trtc_lb08": {x: -480, y: 335, name: '鶯歌', stationClass: 3, company: true, noClick: true},
+                        "trtc_lb09": {x: -480, y: 360, name: '陶瓷老街', stationClass: 4, noClick: true},
+                        "trtc_lb10": {x: -480, y: 385, name: '獅子頭', stationClass: 4, noClick: true},
+                        "trtc_lb11": {x: -480, y: 410, name: '德昌', stationClass: 4, noClick: true},
+                        "trtc_lb12": {x: -480, y: 435, name: '鳳鳴國中', stationClass: 4, noClick: true}
+                    }
+                }, {
+                    id: "trtc_minxi",
+                    name: "[北捷]民汐線(?)",
+                    color: "#25aae1",
+                    isPlanLine: true,
+                    nameTag: {
+                        fontColor: '#FFF',
+                        id:'trtc_sb15', 
+                        ox: -30, 
+                        oy: -22
+                    },
+                    dir: "0",
+                    line: [
+                        {type: 'station', id: 'trtc_sb01'},
+                        {type: 'station', id: 'trtc_sb05'},
+                        {type: 'station', id: 'trtc_y34'},
+                        {type: 'station', id: 'trtc_sb08'},
+                        {type: 'station', id: 'trtc_sb09'},
+                        {type: 'station', id: 'trtc_029'},
+                        {type: 'station', id: 'trtc_sb11'},
+                        {type: 'station', id: 'trtc_sb12'},
+                        {type: 'station', id: 'trtc_sb13'},
+                        {type: 'station', id: 'trtc_sb14'},
+                        {type: 'station', id: 'trtc_sb15'},
+                    ],
+                    station: {
+                        "trtc_sb01": {x: -40, y: -80, name: '大稻埕', stationClass: 4, noClick: true},
+                        "trtc_054": {x: 10, y: -80, name: '雙連', stationClass: 4, noDraw: true},
+                        "trtc_131": {x: 150, y: -80, name: '行天宮', stationClass: 4, noDraw: true},
+                        "trtc_sb04": {x: 200, y: -80, name: '北大台北校區', stationClass: 4, noClick: true},
+                        "trtc_sb05": {x: 280, y: -80, name: '東社', stationClass: 4, noClick: true},
+                        "trtc_sb06": {x: 330, y: -110, name: '民生社區', stationClass: 4, noClick: true},
+                        "trtc_y34": {x: 400, y: -135, name: '舊宗', stationClass: 3, noDraw: true, noClick: true},
+                        "trtc_sb08": {x: 465, y: -160, name: '國防醫學中心', stationClass: 4, noClick: true},
+                        "trtc_sb09": {x: 500, y: -135, name: '葫蘆洲', stationClass: 4, noClick: true},
+                        "trtc_029": {x: 550, y: -150, name: '東湖', stationClass: 4, noDraw: true, noClick: true},
+                        "trtc_sb11": {x: 590, y: -160, name: '草濫', stationClass: 4, noClick: true},
+                        "trtc_sb12": {x: 590, y: -135, name: '社后', stationClass: 4, noClick: true},
+                        "trtc_sb13": {x: 613, y: -45, name: '樟樹灣', stationClass: 4, noClick: true},
+                        "trtc_sb14": {x: 708, y: -45, name: '汐科', stationClass: 4, company: true, noClick: true},
+                        "trtc_sb15": {x: 708, y: -75, name: '汐止區公所', stationClass: 4, noClick: true}
                     }
                 }
             ],
@@ -663,6 +920,7 @@
                     id: "tyrtc_1",
                     name: "[桃捷]機場線",
                     color: "#8e47ad",
+                    isPlanLine: true,
                     nameTag: {
                         fontColor: '#FFF',
                         id:'tyrtc_a07', 
@@ -680,8 +938,9 @@
                         {type: 'station', id: 'tyrtc_a07'},
                         {type: 'station', id: 'tyrtc_a08'},
                         {type: 'station', id: 'tyrtc_a09'},
+                        {type: 'station', id: 'tyrtc_a10'},
                         {type: 'station', id: 'tyrtc_a11'},
-                        {type: 'station', id: 'tyrtc_a12'},
+                        {type: 'station', id: 'tyrtc_a19'},
                         {type: 'station', id: 'tyrtc_a21'},
                         {type: 'station', id: 'tyrtc_a22'},
                         {type: 'station', id: 'tyrtc_a23'}
@@ -690,29 +949,29 @@
                         "tyrtc_a01": {x: -10, y: -26, name: '臺北車站', stationClass: 1, company: true, noClick: true },
                         "tyrtc_a02": {x: -150, y: -6, name: '三重', stationClass: 3, company: true, noClick: true},
                         "tyrtc_a02a": {x: -220, y: -45, name: '二重', stationClass: 4, noClick: true},
-                        "tyrtc_a03": {x: -290, y: -80, name: '新北產業園區', stationClass: 3, noClick: true},
-                        "tyrtc_a04": {x: -320, y: -110, name: '新莊副都心', stationClass: 4, noClick: true},
+                        "tyrtc_a03": {x: -290, y: -80, name: '新北產業園區', stationClass: 1, company: true, noClick: true},
+                        "tyrtc_a04": {x: -350, y: -140, name: '新莊副都心', stationClass: 4, noClick: true},
                         "tyrtc_a05": {x: -380, y: -110, name: '泰山', stationClass: 4, noClick: true},
                         "tyrtc_a05a": {x: -410, y: -80, name: '輔大醫院', stationClass: 4, noClick: true},
                         "tyrtc_a06": {x: -440, y: -50, name: '泰山貴和', stationClass: 4, noClick: true},
                         "tyrtc_a07": {x: -550, y: -160, name: '體育大學', stationClass: 4, noClick: true},
                         "tyrtc_a08": {x: -550, y: -110, name: '長庚醫院', stationClass: 3, noClick: true},
                         "tyrtc_a09": {x: -550, y: -60, name: '林口', stationClass: 4, noClick: true},
-                        "tyrtc_a10": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-110, name: '山鼻', stationClass: 4, noClick: true},
-                        "tyrtc_a11": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-80, name: '坑口', stationClass: 3, noClick: true},
-                        "tyrtc_a12": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-50, name: '機場第一航廈', stationClass: 3, noClick: true},
-                        "tyrtc_a13": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y-20, name: '機場第二航廈', stationClass: 3, noClick: true},
-                        "tyrtc_a14": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+10, name: '機場第三航廈', stationClass: 3, noClick: true},
-                        "tyrtc_a14a": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+40, name: '機場旅館', stationClass: 4, noClick: true},
-                        "tyrtc_a15": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+70, name: '大園', stationClass: 4, noClick: true},
-                        "tyrtc_a16": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+100, name: '橫山', stationClass: 4, noClick: true},
-                        "tyrtc_a17": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+130, name: '領航', stationClass: 4, noClick: true},
-                        "tyrtc_a18": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+180, name: '高鐵桃園站', stationClass: 2, noClick: true, company: true},
-                        "tyrtc_a19": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+1820, name: '桃園體育園區', stationClass: 3, noClick: true},
-                        "tyrtc_a20": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+210, name: '興南', stationClass: 4, noClick: true},
-                        "tyrtc_a21": {x: pos.tauoyuan.x-110, y: pos.tauoyuan.y+240, name: '環北', stationClass: 4, noClick: true},
-                        "tyrtc_a22": {x: pos.tauoyuan.x-85, y: pos.tauoyuan.y+270, name: '老街溪', stationClass: 4, noClick: true},
-                        "tyrtc_a23": {x: pos.tauoyuan.x-85, y: pos.tauoyuan.y+300, name: '中壢', stationClass: 3, company: true}
+                        "tyrtc_a10": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-120, name: '山鼻', stationClass: 4, noClick: true},
+                        "tyrtc_a11": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-90, name: '坑口', stationClass: 3, noClick: true},
+                        "tyrtc_a12": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-60, name: '機場第一航廈', stationClass: 3, noClick: true},
+                        "tyrtc_a13": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-30, name: '機場第二航廈', stationClass: 3, noClick: true},
+                        "tyrtc_a14": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+0, name: '機場第三航廈', stationClass: 3, noClick: true},
+                        "tyrtc_a14a": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+30, name: '機場旅館', stationClass: 4, noClick: true},
+                        "tyrtc_a15": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+60, name: '大園', stationClass: 4, noClick: true},
+                        "tyrtc_a16": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+90, name: '橫山', stationClass: 4, noClick: true},
+                        "tyrtc_a17": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+120, name: '領航', stationClass: 4, noClick: true},
+                        "tyrtc_a18": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+150, name: '高鐵桃園站', stationClass: 2, noClick: true, company: true},
+                        "tyrtc_a19": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+200, name: '桃園體育園區', stationClass: 3, noClick: true},
+                        "tyrtc_a20": {x: pos.tauoyuan.x-230, y: pos.tauoyuan.y+200, name: '興南', stationClass: 4, noClick: true},
+                        "tyrtc_a21": {x: pos.tauoyuan.x-190, y: pos.tauoyuan.y+200, name: '環北', stationClass: 4, noClick: true},
+                        "tyrtc_a22": {x: pos.tauoyuan.x-150, y: pos.tauoyuan.y+200, name: '老街溪', stationClass: 4, noClick: true},
+                        "tyrtc_a23": {x: pos.tauoyuan.x-85, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 3, company: true}
                     }
                 }
             ]
@@ -725,6 +984,11 @@
             if(lineData[company]){
                     for(var i=0; i<lineData[company].length; i++){
                         if(lineData[company][i].station[st]) return lineData[company][i].station[st];
+                    }
+            }
+            if(lineData['planLine']){
+                    for(var i=0; i<lineData['planLine'].length; i++){
+                        if(lineData['planLine'][i].station[st]) return lineData['planLine'][i].station[st];
                     }
             }
         }
@@ -806,8 +1070,8 @@
         ca.writeStation = function(ust){
             ust = ust || {};
             var st = $.extend({
-                fontColor: cfg.stationNameColor,
-                borderColor: '#000',
+                fontColor: (ust.isPlanStation && !cfg.drawPlanLineOriginalColor) ? cfg.drawPlanColor : cfg.stationNameColor,
+                borderColor: (ust.isPlanStation && !cfg.drawPlanLineOriginalColor) ? cfg.drawPlanColor : '#000',
                 borderWidth: 1,
                 bgColor: '#FFF',
                 x: 0, y:0,
@@ -848,6 +1112,7 @@
             var dLine, aryLine, stData, tmpJ,x, y, sx, sy, ex, ey;
             
             function drawFn(tLine){
+                var isPlanLine = (tLine.isPlanLine) ? true : false;
                 dLine = tLine.line;
                 aryLine = new Array();
                 for(var i=0; i<dLine.length; i++){
@@ -866,7 +1131,7 @@
                     startX: stData.x,
                     startY: stData.y,
                     aryLine: aryLine,
-                    color: tLine.color
+                    color: (isPlanLine && !cfg.drawPlanLineOriginalColor) ? cfg.drawPlanColor : tLine.color
                 });
             }
             
@@ -876,24 +1141,33 @@
                 var x = ca.x(st.x + tLine.nameTag.ox);
                 var y = ca.y(st.y + tLine.nameTag.oy);
                 
+                var isPlanLine = tLine.isPlanLine;
+                var color = (isPlanLine && !cfg.drawPlanLineOriginalColor) ? cfg.drawPlanColor : tLine.color;
+                var fontColor = (isPlanLine && !cfg.drawPlanLineOriginalColor) ? '#FFF' : tLine.nameTag.fontColor;
+                
                 cc.font = '16px sans-serif';
                 var strDrawLength = cc.measureText(tLine.name).width;
                 
                 cc.beginPath();
-                cc.strokeStyle = tLine.color;
+                cc.strokeStyle = color;
                 cc.moveTo(x,y);
                 cc.lineTo(x + strDrawLength + 10,y);
                 cc.lineWidth = 22;
                 cc.stroke();
 
-                cc.fillStyle = tLine.nameTag.fontColor;
+                cc.fillStyle = fontColor;
                 cc.fillText(tLine.name, x+2, y+4, strDrawLength);
             }
             
+            var tLine;
             for(var k in lineData){
                 for(var ata=0; ata<lineData[k].length; ata++){
-                    drawFn(lineData[k][ata]);
-                    drawNameTagFn(lineData[k][ata]);
+                	tLine = lineData[k][ata]
+                    if(tLine.isPlanLine && !cfg.drawPlanLine) continue;
+                    if(onlyDoPlanLine && !tLine.isPlanLine && !cfg.drawPlanLineOriginalColor) continue;
+                    if(!onlyDoPlanLine && tLine.isPlanLine && !cfg.drawPlanLineOriginalColor) continue;
+                    drawFn(tLine);
+                    drawNameTagFn(tLine);
                 }
             }
         }
@@ -905,10 +1179,14 @@
             function pushAryFn(cpm){
                 for(var ata=0; ata<cpm.length; ata++){
                     tLine = cpm[ata];
+                    if(tLine.isPlanLine && !cfg.drawPlanLine) continue;
+                    if(onlyDoPlanLine && !tLine.isPlanLine && !cfg.drawPlanLineOriginalColor) continue;
+                    if(!onlyDoPlanLine && tLine.isPlanLine && !cfg.drawPlanLineOriginalColor) continue;
                     for(var k in tLine.station){
                         if(tLine.station[k].noDraw) continue;
                         tmpJ = $.extend({
                             id: k,
+                            isPlanStation: (tLine.isPlanLine) ? true : false,
                             lineID: tLine.id
                         },tLine.station[k]);
                         if(tmpJ.company){
@@ -926,6 +1204,15 @@
         }
         
         ca.drawMap = function(){
+        	if(cfg.drawPlanLine && !cfg.drawPlanLineOriginalColor){
+        		onlyDoPlanLine = true;
+        		ca.processStation();
+            	ca.drawLine();
+            	ca.writeAryStation.map(function(st,idx){
+                	st.cube = ca.writeStation(st);
+            	});
+            	onlyDoPlanLine = false;
+        	}
             ca.processStation();
             ca.drawLine();
             
@@ -958,7 +1245,7 @@
 
             var cube, btn;
             ca.writeAryStation.map(function(st){
-                if(st.noDraw || st.noClick) return false;
+                if(st.noDraw || st.noClick || st.isPlanStation) return false;
                 cube = st.cube;
                 btn = document.createElement('div');
                 btn.className = cfg.makeClickBaseCSSName + ' ' + cfg.maekClickCSSName + st.id;

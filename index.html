@@ -733,10 +733,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.4.0",
-            "產生日期": "2015/09/10"
+            "版本": "Beta 0.4.1",
+            "產生日期": "2015/09/14"
         },
         programUpdateInfo: [
+                    'Beta 0.4.1: 更新 canvas map 及新增松山站轉乘教學。',
                     'Beta 0.4: 新增台東線。',
                     'Beta 0.3.9: 調整 canvas map，增加截圖功能。',
                     'Beta 0.3.8: 新增內灣線，修正東線可直達六家線。',
@@ -1350,7 +1351,8 @@ var TT = (function(){
                     changeLine: ["tra_xibu", "trtc_3"],
                     changeStation: ['tra_1007','trtc_111'],
                     video: {
-                        "tra_1007": {width:420, height:315, src:'https://www.youtube.com/embed/CFX9EdLwT9A'}
+                        "tra_1007": {width:420, height:315, src:'https://www.youtube.com/embed/CFX9EdLwT9A'},
+                        "trtc_111": {width:420, height:315, src:'https://www.youtube.com/embed/64ADnwMTLyQ'}
                     },
                     walkMinute: 6
                 }, {
@@ -5188,11 +5190,13 @@ var TT = (function(){
                 win = wwin;
                 if(TT.lib.canvasMap && !TT.ui.mapSelector.canvasMap){
                     var canvasMap = new TT.lib.canvasMap({
-                        baseWidth: 1650, 
+                        drawPlanLine: true,
+                        drawPlanLineOriginalColor: false,
+                        baseWidth: 1550, 
                         baseHeight: 1750
                     });
                     canvasMap.initAll();
-                    divNet.style.width = '1650px';
+                    divNet.style.width = '1550px';
                     divNet.style.height = '1750px';
                     divNet.appendChild(canvasMap.div);
                     TT.ui.mapSelector.canvasMap = canvasMap;
