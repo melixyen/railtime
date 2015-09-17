@@ -81,10 +81,24 @@ body {
 .centerPage.show{
     display: block;
 }
+.centerPage .selectStationOut{background-color: #E2FAE4;}
+.centerPage .selectWeekOut, .centerPage .selectTimeOut{background-color: #FAFAE2;}
 .centerPage .selectStationOut .selectStationIn,  .centerPage .findButtonDiv,
 .centerPage .selectWeekOut .selectWeekIn,
 .centerPage .selectTimeOut .selectTimeIn{
     padding: 5px;
+}
+
+.centerPage .selectTimeOut .selectTimeIn .setNow{
+    display: inline-block;
+    font-size: 12px;
+    margin: 0 5px;
+    border-radius: 10px;
+    border: 2px solid #7CE;
+    background-color: #8EF;
+    color: #357;
+    padding: 0px 8px;
+    cursor: pointer;
 }
 
 .help_selectStationByLine,
@@ -103,6 +117,11 @@ body {
     border: 2px solid #7CE;
     background-color: #8EF;
     color: #357;
+}
+.centerPage .inputStation{
+    display: inline-block;
+    width: 120px;
+    margin: 0 10px;
 }
 #ttc_stationSelect_start, #ttc_stationSelect_end{
     background-color: #EEF;
@@ -151,6 +170,23 @@ body {
     border-bottom: 1px solid #2C2C2C;
     margin-bottom: 5px;
     padding-bottom: 5px;
+}
+
+.inputListStation{
+    position: absolute;
+    background-color: #FDFDFD;
+    border: 1px solid #CACACA;
+    top: 0px;
+    left: 0px;
+    cursor: pointer;
+}
+.inputListStation .name{
+    padding: 5px 10px;
+    font-size: 13px;
+    color: #2D4DFF;
+}
+.inputListStation .name:hover{
+    background-color: #DFD;
 }
 
 .define_rail_bgcolor_tra_xibu, .define_rail_bgcolor_tra_yilan, .define_rail_bgcolor_tra_beihui,
@@ -674,6 +710,8 @@ body {
     font-size: 120%;
 }
 
+/* All common CSS */
+.tt_display_none{display: none;}
 </style>
 <!--<link rel="stylesheet" type="text/css" href="x.css" />-->
 
@@ -721,10 +759,14 @@ var TT = (function(){
         defaultTRAWeekday: '2',
         defaultMaskText: 'Loading...',
         railBgcolor: 'define_rail_bgcolor_',
-        stringOfTRA: '台灣鐵路局',
-        stringOfTRASimple: '台鐵',
-        stringOfTRTC: '台北捷運',
-        stringOfTRTCSimple: '北捷',
+        stringOfCompany: {
+            "tra": '台灣鐵路局',
+            "trtc": '台北捷運'
+        },
+        stringSimpleOfCompany: {
+            "tra": '台鐵',
+            "trtc": '北捷'
+        },
         timeHour: ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'],
         timeMinSec: ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29',
                     '30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59'],
@@ -733,10 +775,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.4.1",
-            "產生日期": "2015/09/14"
+            "版本": "Beta 0.4.2",
+            "產生日期": "2015/09/17"
         },
         programUpdateInfo: [
+                    'Beta 0.4.2: 隱藏無班車的路由，新增輸入站名搜尋功能。',
                     'Beta 0.4.1: 更新 canvas map 及新增松山站轉乘教學。',
                     'Beta 0.4: 新增台東線。',
                     'Beta 0.3.9: 調整 canvas map，增加截圖功能。',
@@ -798,11 +841,11 @@ var TT = (function(){
                 {id:"tra_1003", name: "七堵", estring: "qidu", sect: "keelung", big: 'ew'},
                 {id:"tra_1030", name: "百福", estring: "baifu", sect: "keelung"},
                 {id:"tra_1004", name: "五堵", estring: "wudu", sect: "taipei"},
-                {id:"tra_1005", name: "汐止", estring: "xizhi", sect: "taipei"},
-                {id:"tra_1031", name: "汐科", estring: "xike", sect: "taipei"},
+                {id:"tra_1005", name: "汐止", estring: "xizhisijhih", sect: "taipei"},
+                {id:"tra_1031", name: "汐科", estring: "xikesike", sect: "taipei"},
                 {id:"tra_1006", name: "南港", estring: "nangang", sect: "taipei"},
                 {id:"tra_1007", name: "松山", estring: "songshan", sect: "taipei", big: 'ew', bigMaster: true},
-                {id:"tra_1008", name: "臺北", estring: "taipeitaibei", sect: "taipei", big: 'ew', bigMaster: true},
+                {id:"tra_1008", name: "台北", estring: "taipeitaibei", sect: "taipei", big: 'ew', bigMaster: true},
                 {id:"tra_1009", name: "萬華", estring: "wanhua", sect: "taipei"},
                 {id:"tra_1011", name: "板橋", estring: "banqiao", sect: "taipei", big: 'ew', bigMaster: true},
                 {id:"tra_1032", name: "浮洲", estring: "fuzhou", sect: "taipei"},
@@ -824,10 +867,13 @@ var TT = (function(){
                 {id:"tra_1026", name: "香山", estring: "xiangshan", sect: "hsinchu"},
                 {id:"tra_1027", name: "崎頂", estring: "jidingciding", sect: "hsinchu"},
                 {id:"tra_1028", name: "竹南", estring: "zhunan", sect: "hsinchu", big: 'w'},
-                {id:"tra_1305", name: "苗栗", estring: "miaoli", sect: "miaoli", big: 'w'},
-                {id:"tra_1120", name: "彰化", estring: "changhua", sect: "changhua", big: 'w'},
-                {id:"tra_1238", name: "高雄", estring: "kaohsiunggaoxung", sect: "kaohsiung", big: 'ws'},
-                {id:"tra_1406", name: "屏東", estring: "pingtungpingdong", sect: "pingdong", big: 'ws'},
+                {id:"tra_1305", name: "苗栗", estring: "miaoli", sect: "miaoli", big: 'w', noShow: true},
+                {id:"tra_1120", name: "彰化", estring: "changhua", sect: "changhua", big: 'w', noShow: true},
+                {id:"tra_1210", name: "斗六", estring: "douliou", sect: "yunlin", big: 'w', noShow: true},
+                {id:"tra_1215", name: "嘉義", estring: "jiayichiayi", sect: "chiayi", big: 'w', noShow: true},
+                {id:"tra_1238", name: "高雄", estring: "kaohsiunggaoxung", sect: "kaohsiung", big: 'ws', noShow: true},
+                {id:"tra_1406", name: "屏東", estring: "pingtungpingdong", sect: "pingdong", big: 'ws', noShow: true},
+                {id:"tra_1411", name: "潮州", estring: "chaozhouchaojhou", sect: "pingdong", big: 'ws', noShow: true},
                 {id:"tra_1802", name: "暖暖", estring: "nuannuan", sect: "northeast"},
                 {id:"tra_1803", name: "四腳亭", estring: "sijiaoting", sect: "northeast"},
                 {id:"tra_1804", name: "瑞芳", estring: "ruifang", sect: "northeast", big: 'e'},
@@ -1025,7 +1071,7 @@ var TT = (function(){
                 {id:"trtc_077", name: "永寧", estring: "yongning"},
                 {id:"trtc_076", name: "頂埔", estring: "dingpu"},
                 //TamsuiXinyi Line
-                {id:"trtc_071", name: "淡水", estring: "tamsui"},
+                {id:"trtc_071", name: "淡水", estring: "danshuitamsui"},
                 {id:"trtc_070", name: "紅樹林", estring: "hongshulin"},
                 {id:"trtc_069", name: "竹圍", estring: "zhuwei"},
                 {id:"trtc_068", name: "關渡", estring: "guandu"},
@@ -1505,8 +1551,8 @@ var TT = (function(){
                 id: 'traInnerTrans_tra_yilan,tra_pingxi',
                 fromToLine: ["tra_yilan","tra_pingxi"],
                 fromToLineReg: [
-                	/^tra_pingxi$/,
-                	/^tra_yilan$|^tra_beihui$|^tra_huadong$/
+                	"^tra_pingxi$",
+                	"^tra_yilan$|^tra_beihui$|^tra_huadong$"
                 ],
                 sect: ['northeast','yilan','beihui','hualian','taidong'],
                 route: [
@@ -1519,8 +1565,8 @@ var TT = (function(){
                 id: 'traInnerTrans_tra_xibu,tra_yilan',
                 fromToLine: ["tra_xibu","tra_yilan"],
                 fromToLineReg: [
-                	/^tra_xibu$/,
-                	/^tra_yilan$|^tra_beihui$|^tra_huadong$/
+                	"^tra_xibu$",
+                	"^tra_yilan$|^tra_beihui$|^tra_huadong$"
                 ],
                 sect: ['hsinchu','taoyuan','taipei','keelung','northeast','yilan','beihui','hualian','taidong'],
                 route: [
@@ -1975,21 +2021,21 @@ var TT = (function(){
                 id: 'trtc_trans_tra_east',
                 rType: 'cross',//direct , trans 
                 company: ['trtc','tra'],// cross company serial
-                regLine: /^trtc_1$|^trtc_2$|^trtc_3$|^trtc_4|^trtc_5$|^tra_yilan$|^tra_beihui$|^tra_huadong$|^tra_pingxi$|^tra_liujia$/,
+                regLine: "^trtc_1$|^trtc_2$|^trtc_3$|^trtc_4|^trtc_5$|^tra_yilan$|^tra_beihui$|^tra_huadong$|^tra_pingxi$|^tra_liujia$",
                 lineIsSame: {
-                    "tra_xibu": /^tra_yilan$|^tra_beihui$|^tra_huadong$|^tra_pingxi$|^tra_liujia$/
+                    "tra_xibu": "^tra_yilan$|^tra_beihui$|^tra_huadong$|^tra_pingxi$|^tra_liujia$"
                 },
                 link: [
                 	{
-                		regLine: /^trtc_5|^tra_/,
+                		regLine: "^trtc_5|^tra_",
                 		transStation: [
                 			['banqiao1','taipei1','nangang1']
                 		]
                 	}, {
-                		regLine: /^trtc_3$|^trtc_4|^tra_/,
+                		regLine: "^trtc_3$|^trtc_4|^tra_",
                 		transStation: [['taipei2','songshan1']]
                 	}, {
-                		regLine: /^trtc_2$|^tra_/,
+                		regLine: "^trtc_2$|^tra_",
                 		transStation: [['taipei2']]
                 	}
                 ],
@@ -2067,6 +2113,44 @@ var TT = (function(){
         dLog: function(st){
             if(!TT.defined.debugMode) return false;
             if(window.console) console.log(st);
+        },
+        findStationByString: function(str){
+            if(str.length<1) return false;
+            var isEng = (/^[\d|a-zA-Z]+$/.test(str));
+            if(isEng) str = str.toLowerCase();
+            if(!isEng) str = str.replace('臺','台');
+            var allStAry = TT.fn.getAllStationArrayOnData(), rtAry = [];
+            var name, idxof = -1;
+            allStAry.map(function(st){
+                name = (isEng) ? st.estring : st.name;
+                idxof = name.indexOf(str);
+                if(idxof!=-1){
+                    rtAry.push($.extend({indexOfNum: idxof},st));
+                }
+            });
+            rtAry.sort(function(a,b){
+                var intA = parseInt(a.indexOfNum,10);
+                var intB = parseInt(b.indexOfNum,10);
+                if(intA==intB) return 0;
+                if(intA < intB) return -1;
+                if(intA > intB) return 1;
+            });
+            return rtAry;
+        },
+        getAllStationArrayOnData: function(needRewrite){
+            if(TT.listOfStationAry && !needRewrite) return TT.listOfStationAry;
+            var haveStAry = new Array();
+            for(var k in TT.data){
+                if(TT.data[k].station_ary){
+                    haveStAry.push(TT.data[k].station_ary);
+                }
+            }
+            var allStAry = new Array();
+            haveStAry.map(function(stAry){
+                allStAry = allStAry.concat(stAry);
+            });
+            TT.listOfStationAry = allStAry;
+            return allStAry;
         },
         getDefaultDayLastTime: function(){
             return TT.fn.transSec2Time(TT.fn.transTime2Sec(TT.defined.defaultCrossDayTime)-1);
@@ -2147,17 +2231,18 @@ var TT = (function(){
         getCommon_lineName: function(line){
             var cp = TT.fn.getCompanyOfLine(line);
             var cpSimpleName = (function(){
-                switch(cp){
-                    case 'tra':
-                        return TT.defined.stringOfTRASimple;
-                    break;
-                    case 'trtc':
-                        return TT.defined.stringOfTRTCSimple;
-                    break;
-                    default:
-                        return '其他';
-                    break;
-                }
+                //switch(cp){
+                    //case 'tra':
+                        //return TT.defined.stringOfTRASimple;
+                    //break;
+                    //case 'trtc':
+                        //return TT.defined.stringOfTRTCSimple;
+                    //break;
+                    //default:
+                        //return '其他';
+                    //break;
+                //}
+                return (TT.defined.stringSimpleOfCompany[cp]) ? TT.defined.stringSimpleOfCompany[cp] : '其他';
             })();
             var cpLineName = (function(){
                 var lineObj = {},rt = '';
@@ -2758,9 +2843,13 @@ var TT = (function(){
         	var fsFlag = true;
         	//testObj = (routeMap[i].fromToLineReg) ? routeMap[i].fromToLineReg : routeMap[i].fromToLine;
         	if(routeM.fromToLineReg){
-        		if(routeM.fromToLineReg[0].test(a) && routeM.fromToLineReg[1].test(b)){
+                var fromToLineReg = new Array();
+                routeM.fromToLineReg.map(function(tm){
+                    fromToLineReg.push(new RegExp(tm));
+                });
+        		if(fromToLineReg[0].test(a) && fromToLineReg[1].test(b)){
         			fsFlag = true;
-        		}else if(routeM.fromToLineReg[0].test(b) && routeM.fromToLineReg[1].test(a)){
+        		}else if(fromToLineReg[0].test(b) && fromToLineReg[1].test(a)){
                 	fsFlag = false;
             	}else{
                 	return false;
@@ -2959,7 +3048,14 @@ var TT = (function(){
             var bObj = TT.fn.getCommon_stationDataOfID(bStation);
             var testObj;
             for(var i=0; i<routeMap.length; i++){
-            	testObj = (routeMap[i].fromToLineReg) ? routeMap[i].fromToLineReg : routeMap[i].fromToLine;
+                if(routeMap[i].fromToLineReg){
+                    testObj = new Array();
+                    routeMap[i].fromToLineReg.map(function(tm){
+                        testObj.push(new RegExp(tm));
+                    });
+                }else{
+                    testObj = routeMap[i].fromToLine;
+                }
             	if(TT.fn.checkEquaArrayStartEnd([a,b], testObj) && TT.fn.checkEquaSectStartEnd(aObj.sect,bObj.sect,routeMap[i].sect)){
                     var tmpA = TT.fn.getRoute_directionByFromToLine(a,b,routeMap[i]);
                     tmpA = TT.fn.giveRoute_mapTool(tmpA);
@@ -3001,12 +3097,14 @@ var TT = (function(){
             }else{
                 routeSystem.map(function(rs){
                     if(rs.rType=='cross'){
-                    	if(rs.regLine.test(aLine) && rs.regLine.test(bLine)){
+                        var rsRegLine = new RegExp(rs.regLine), objARegLine;
+                    	if(rsRegLine.test(aLine) && rsRegLine.test(bLine)){
                             var aObj, bObj, tmpRoute = {}, rtAry = new Array();
                             var aryCompany = $.extend([],rs.company), aryTS;
                             if(bComp==rs.company[0]) aryCompany = aryCompany.reverse();
                             rs.link.map(function(objA){
-                            	if(objA.regLine.test(aLine) && objA.regLine.test(bLine)){
+                                objARegLine = new RegExp(objA.regLine);
+                            	if(objARegLine.test(aLine) && objARegLine.test(bLine)){
                             		aryTS = $.extend([],objA.transStation);
                             		if(bComp==rs.company[0]) aryTS = aryTS.reverse();
                             	}
@@ -3090,8 +3188,8 @@ var TT = (function(){
                                         if(t2[t2.length-1].line != tsObj.changeLine[0] && t2[t2.length-1].line != tsObj.changeLine[1]){
                                             //console.log(t2[t2.length-1].line + ',' + tsObj.changeLine[0] + ',' + tsObj.changeLine[1]);
                                             if(rs.lineIsSame){
-                                                if(rs.lineIsSame[tsObj.changeLine[0]] && rs.lineIsSame[tsObj.changeLine[0]].test(t2[t2.length-1].line)) includeFlag = true;
-                                                if(rs.lineIsSame[tsObj.changeLine[1]] && rs.lineIsSame[tsObj.changeLine[1]].test(t2[t2.length-1].line)) includeFlag = true;
+                                                if(rs.lineIsSame[tsObj.changeLine[0]] && new RegExp(rs.lineIsSame[tsObj.changeLine[0]]).test(t2[t2.length-1].line)) includeFlag = true;
+                                                if(rs.lineIsSame[tsObj.changeLine[1]] && new RegExp(rs.lineIsSame[tsObj.changeLine[1]]).test(t2[t2.length-1].line)) includeFlag = true;
                                             }
                                         }else{
                                             includeFlag = true;
@@ -3113,8 +3211,8 @@ var TT = (function(){
                                                 if(i==0 && tmpCRTS && tmpCRTS.changeLine[0]!=t2[i].line && tmpCRTS.changeLine[1]!=t2[i].line){
                                                     includeFlag = false;
                                                     if(rs.lineIsSame){
-                                                        if(rs.lineIsSame[tmpCRTS.changeLine[0]] && rs.lineIsSame[tmpCRTS.changeLine[0]].test(t2[i].line)) includeFlag = true;
-                                                        if(rs.lineIsSame[tmpCRTS.changeLine[1]] && rs.lineIsSame[tmpCRTS.changeLine[1]].test(t2[i].line)) includeFlag = true;
+                                                        if(rs.lineIsSame[tmpCRTS.changeLine[0]] && new RegExp(rs.lineIsSame[tmpCRTS.changeLine[0]]).test(t2[i].line)) includeFlag = true;
+                                                        if(rs.lineIsSame[tmpCRTS.changeLine[1]] && new RegExp(rs.lineIsSame[tmpCRTS.changeLine[1]]).test(t2[i].line)) includeFlag = true;
                                                     }
                                                     if(!includeFlag) return false;
                                                 }
@@ -5256,12 +5354,14 @@ var TT = (function(){
                     '<span>' + cfg.fieldStartText + '</span>' +
                     '<span><select id="' + cfg.id + '_start">' + optSt + '</select></span>' +
                     '<div class="selectStationByLine sta_from">' + '選擇車站' + '</div>' +
+                    '<input type="text" class="inputStation" id="' + cfg.id + '_inputFrom" placeholder="' + '搜尋站名(拼音可)' + '" />' +
                     '<div class="selectStationExchange">' + '起訖點對調' + '</div>' +
                 '</div>' +
                 '<div class="selectStationIn" id="' + cfg.id + '_toin">' +
                     '<span>' + cfg.fieldEndText + '</span>' +
                     '<span><select id="' + cfg.id + '_end">' + optSt + '</select></span>' +
                     '<div class="selectStationByLine sta_to">' + '選擇車站' + '</div>' +
+                    '<input type="text" class="inputStation" id="' + cfg.id + '_inputTo" placeholder="' + '搜尋站名(拼音可)' + '" />' +
                 '</div>' +
             '</div>';
             
@@ -5284,6 +5384,8 @@ var TT = (function(){
                     var tmpV = div.fnGetStart();
                     div.fnSetStart(div.fnGetEnd());
                     div.fnSetEnd(tmpV);
+                }else if(t.className.indexOf('inputStation') != -1){
+                    renderInputEvent(t);
                 }
             }, false);
             
@@ -5298,6 +5400,76 @@ var TT = (function(){
             }
             div.fnSetEnd = function(val){
                 return document.getElementById(cfg.id + '_end').value = val;
+            }
+            
+            var renderInputEvent = function(t){
+                var dom, isFrom = false, isTo = false;
+                if(t.id== cfg.id + '_inputFrom'){ isFrom = true; }else if(t.id== cfg.id + '_inputTo'){ isTo = true; }
+                if(!isFrom && !isTo) return false;
+                if(t.tt_isRenderKeyEvent) return false;
+                t.tt_isRenderKeyEvent = (isFrom) ? 'from' : 'to';
+                
+                function clearInput(){
+                    t.value = '';
+                }
+                
+                function giveValue(val){
+                        var tarID = (isFrom) ? cfg.id + '_start' : cfg.id + '_end';
+                        document.getElementById(tarID).value = val;
+                        listDiv.style.display = 'none';
+                        clearInput();
+                }
+                
+                var listDiv = document.createElement('div');
+                listDiv.className = 'inputListStation';
+                listDiv.id = t.id + '_list';
+                listDiv.addEventListener('click', function(e){
+                    if(e.target.className=='name'){
+                        var stid = e.target.attributes.getNamedItem('stid').value;
+                        giveValue(stid);
+                    }
+                });
+                
+                document.body.appendChild(listDiv);
+                t.tt_listDiv = listDiv;
+                
+                t.addEventListener('keyup', function(e){
+                    var t = e.target;
+                    var val = t.value.replace(/\s/g,''), displayAry = new Array(), comp;
+                    var pos = $('#' + t.id).position();
+                    if(t.oldValue && t.oldValue==val && e.keyCode!=13) return false;
+                    t.oldValue = val;
+                    var allStAry = TT.fn.findStationByString(val);
+                    if(!allStAry) return false;
+                    allStAry.map(function(st){
+                        if(st.noShow) return false;
+                        comp = TT.defined.stringSimpleOfCompany[TT.fn.getCompanyOfStation(st.id)];
+                        comp = (comp) ? ' (' + comp + ')' : '';
+                        displayAry.push({
+                            value: st.id,
+                            text: st.name + comp
+                        });
+                    });
+                    
+                    if(e.keyCode==13 && displayAry[0]){
+                        giveValue(displayAry[0].value);
+                        return false;
+                    }
+                    t.tt_listDiv.style.left = pos.left + 'px';
+                    t.tt_listDiv.style.top = (pos.top+22) + 'px';
+                    t.tt_listDiv.style.display = '';
+                    var ht = '';
+                    for(var i=0; i<displayAry.length; i++){
+                        ht += '<div class="name" stid="' + displayAry[i].value + '">' + displayAry[i].text + '</div>';
+                        if(i>10) break;
+                    };
+                    t.tt_listDiv.innerHTML = ht;
+                });
+                
+                t.addEventListener('blur', function(e){
+                    var t = e.target;
+                    setTimeout(function(){if(t.tt_listDiv) t.tt_listDiv.style.display = 'none';},500);
+                });
             }
             
             return div;
@@ -5368,6 +5540,7 @@ var TT = (function(){
                     '<span><select id="' + cfg.id + '_startHour">' + hourOpt + '</select></span>' +
                     '<span>:</span>' + 
                     '<span><select id="' + cfg.id + '_startMin">' + minOpt + '</select></span>' +
+                    '<span><div class="setNow">' + '設成現在' + '</div></span>' +
                 '</div>' +
                 '<div class="selectTimeIn" id="' + cfg.id + '_endTimeDiv">' +
                     '<span>' + cfg.fieldEndText + '</span>' +
@@ -5401,6 +5574,28 @@ var TT = (function(){
                 document.getElementById(em).value = aryA[1];
                 return true;
             }
+            div.addEventListener('click', function(e){
+                var t = e.target;
+                if(t.className=='setNow'){
+                    var nowT = new Date();
+                    var h = nowT.getHours(), m = Math.ceil(nowT.getMinutes()/5)*5;
+                    if(m==60){
+                        h = (h==23) ? 0 : h+1;
+                        m = 0;
+                    }
+                    var h2 = (h + 2) % 24;
+                    var w = nowT.getDay();
+                    h = h.toString();
+                    h2 = h2.toString();
+                    m = m.toString();
+                    if(h.length==1) h = '0' + h;
+                    if(h2.length==1) h2 = '0' + h2;
+                    if(m.length==1) m = '0' + m;
+                    div.fnSetStartTime(h + ':' + m);
+                    div.fnSetEndTime(h2 + ':' + m);
+                    TT.ui.center.timeTable.controlDiv.weekSelectDiv.fnSetDay(w);
+                }
+            }, false);
             
             if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
             
@@ -5484,7 +5679,7 @@ var TT = (function(){
                 }
             }, false);
             //+++++++++++ End sort select box +++++++++++
-            var routeBy = '', routeP, tmpS = '', st = '', ht ='', fastestStr='', ckDom, hDiv = document.createElement('div'), sortTC = new Array();
+            var routeBy = '', routeP, tmpS = '', st = '', ht ='', fastestStr='', dmClass='', ckDom, hDiv = document.createElement('div'), sortTC = new Array();
             for(var tc=0; tc<aryRoute.length; tc++){
                 routeP = aryRoute[tc];
                 routeBy = ''; st = ''; tmpS='';
@@ -5494,10 +5689,14 @@ var TT = (function(){
                     }
                 }
                 fastestStr = '(' + '最快' + ' <span class="fmin">' + TT.ui.formatMinute2HM(routeP[0].total_fastestMinute) + '</span> ' + ')&nbsp;';
-                if(routeP[0].total_fastestMinute==9999) fastestStr = '(無班車)&nbsp;';
+                dmClass = '';
+                if(routeP[0].total_fastestMinute==9999){
+                    fastestStr = '(無班車)&nbsp;';
+                    dmClass = ' tt_display_none';
+                }
                 st = '經由' + ' ' + tmpS + fastestStr;
                 if(routeP.length==1 && !(routeP[0].transStation)) st = '<span class="stag ' + TT.defined.railBgcolor + routeP[0].line + '">' + TT.fn.getCommon_lineName(routeP[0].line) + '</span>' + '直達' + fastestStr;
-                routeBy = '<div class="tt_ck_route_sh">' +
+                routeBy = '<div class="tt_ck_route_sh' + dmClass + '">' +
                     '<input type="checkbox" id="tt_timeTable_ckRoute_' + tc + '" class="ckRoute" checked>' + st +
                 '</div>';
                 sortTC.push({id: 'tt_timeTable_ckRoute_' + tc, tc:tc, tt_sortTime: routeP[0].total_fastestMinute, routeBy:routeBy});
