@@ -775,10 +775,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.4.2",
-            "產生日期": "2015/09/17"
+            "版本": "Beta 0.4.3",
+            "產生日期": "2015/09/21"
         },
         programUpdateInfo: [
+                    'Beta 0.4.3: 過濾部分迂迴的路徑。',
                     'Beta 0.4.2: 隱藏無班車的路由，新增輸入站名搜尋功能。',
                     'Beta 0.4.1: 更新 canvas map 及新增松山站轉乘教學。',
                     'Beta 0.4: 新增台東線。',
@@ -1707,18 +1708,21 @@ var TT = (function(){
                 sect: ['taipei','keelung','taoyuan','hsinchu'],
                 route: [
                     {
+                        bypassStationReg: '^trtc_086$|^trtc_04[0-3]$|^trtc_03[2-9]$',
                         line: ["tra_xibu", "trtc_3"],
                         transStation: ["songshan1"]
                     },
                     {
-                        line: ["tra_xibu", "trtc_5", "trtc_3"],
-                        transStation: ["taipei1", "ximen1"]
+                        bypassStationReg: '^trtc_086$|^trtc_04[0-3]$|^trtc_03[2-9]$',
+                        line: ["tra_xibu", "trtc_2", "trtc_3"],
+                        transStation: ["taipei2", "zhongshan1"]
                     },
                     {
                         line: ["tra_xibu", "trtc_5", "trtc_3"],
                         transStation: ["banqiao1", "ximen1"]
                     },
                     {
+                        bypassStationReg: '^trtc_111$|^trtc_110$|^trtc_109$|^trtc_009$|^trtc_132$|^trtc_053$|^trtc_105$|^trtc_086$',
                         line: ["tra_xibu", "trtc_2", "trtc_3"],
                         transStation: ["taipei2", "cksmh1"]
                     }
@@ -1729,6 +1733,7 @@ var TT = (function(){
                 sect: ['taipei','keelung','taoyuan','hsinchu'],
                 route: [
                     {
+                        bypassStationReg: '^trtc_08[0-2]$|^trtc_07[6-9]$',
                         line: ["tra_xibu", "trtc_5"],
                         transStation: ["nangang1"]
                     },
@@ -1737,6 +1742,7 @@ var TT = (function(){
                         transStation: ["taipei1"]
                     },
                     {
+                        bypassStationReg: '^trtc_031$|^trtc_097$|^trtc_096$',
                         line: ["tra_xibu", "trtc_5"],
                         transStation: ["banqiao1"]
                     }
@@ -1757,18 +1763,22 @@ var TT = (function(){
                 sect: ['taipei','keelung','taoyuan','hsinchu'],
                 route: [
                     {
+                        bypassStationReg: '^trtc_089$|^trtc_13[0-2]$|^trtc_055$|^trtc_12[1-8]$|^trtc_180$|^trtc_17[4-9]$',
                         line: ["tra_xibu", "trtc_2", "trtc_4"],
                         transStation: ["taipei2", "dongmen1"]
                     },
                     {
+                        bypassStationReg: '^trtc_132$|^trtc_089$|^trtc_134$|^trtc_041$|^trtc_04[5-8]$',
                         line: ["tra_xibu", "trtc_2", "trtc_4"],
                         transStation: ["taipei2", "mqxl1"]
                     },
                     {
+                        bypassStationReg: '^trtc_089$|^trtc_13[0-2]$|^trtc_055$|^trtc_12[1-8]$|^trtc_180$|^trtc_17[4-9]$',
                         line: ["tra_xibu", "trtc_2", "trtc_3", "trtc_4"],
                         transStation: ["taipei2", "cksmh1", "guting1"]
                     },
                     {
+                        bypassStationReg: '^trtc_132$|^trtc_089$|^trtc_134$|^trtc_041$|^trtc_04[5-8]$',
                         line: ["tra_xibu", "trtc_3", "trtc_4"],
                         transStation: ["songshan1","sjnanjing1"]
                     }
@@ -1783,6 +1793,7 @@ var TT = (function(){
                         transStation: ["taipei3"]
                     },
                     {
+                        bypassBothStationReg: '^trtc_08[8-9]$|^trtc_010$|^trtc_09[1-7]$|^trtc_031$|^trtc_05[1-9]$|^trtc_06[0-9]$|^trtc_07[0-1]$',
                         line: ["trtc_5", "trtc_3", "trtc_2"],
                         transStation: ["ximen1", "cksmh1"]
                     }
@@ -1793,14 +1804,17 @@ var TT = (function(){
                 sect: ['taipei'],
                 route: [
                     {
+                        bypassBothStationReg: '^trtc_05[0-4]$|^trtc_089$|^trtc_13[0-2]$|^trtc_055$|^trtc_12[1-8]$|^trtc_180$|^trtc_17[4-9]$',
                         line: ["trtc_4", "trtc_2"],
                         transStation: ["dongmen1"]
                     },
                     {
+                        bypassBothStationReg: '^trtc_05[0-4]$|^trtc_132$|^trtc_089$|^trtc_134$|^trtc_041$|^trtc_04[5-8]$',
                         line: ["trtc_4", "trtc_2"],
                         transStation: ["mqxl1"]
                     },
                     {
+                        bypassBothStationReg: '^trtc_05[0-4]$|^trtc_089$|^trtc_13[0-2]$|^trtc_055$|^trtc_12[1-8]$|^trtc_180$|^trtc_17[4-9]$',
                         line: ["trtc_4", "trtc_3", "trtc_2"],
                         transStation: ["guting1", "cksmh1"]
                     }
@@ -1811,10 +1825,12 @@ var TT = (function(){
                 sect: ['taipei'],
                 route: [
                     {
+                        bypassBothStationReg: '^trtc_105$|^trtc_132$|^trtc_009$|^trtc_11[0-1]$|^trtc_109$|^trtc_05[0-9]$|^trtc_06[0-9]$|^trtc_07[0-1]$',
                         line: ["trtc_3", "trtc_2"],
                         transStation: ["cksmh1"]
                     },
                     {
+                        bypassStationReg: '^trtc_04[0-3]$|^trtc_03[2-9]$',
                         line: ["trtc_3", "trtc_2"],
                         transStation: ["zhongshan1"]
                     }
@@ -1829,6 +1845,7 @@ var TT = (function(){
                         transStation: ["ximen1"]
                     },
                     {
+                        bypassStationReg: '^trtc_07[6-9]$|^trtc_08[0-9]$|^trtc_09[1-5]$|^trtc_05[1-3]$|^trtc_010$|^trtc_03[2-9]$|^trtc_04[0-3]$|^trtc_132$',
                         line: ["trtc_3", "tra_xibu", "trtc_5"],
                         transStation: ["songshan1", "nangang1"]
                     }
@@ -1843,6 +1860,7 @@ var TT = (function(){
                         transStation: ["zhongxiaoxs1"]
                     },
                     {
+                        bypassBothStationReg: '^trtc_08[8-9]$|^trtc_010$|^trtc_09[1-7]$|^trtc_031$|^trtc_051$|^trtc_055$|^trtc_13[0-2]$|^trtc_12[1-8]$|^trtc_17[4-9]$|^trtc_180$',
                         line: ["trtc_4", "trtc_3", "trtc_5"],
                         transStation: ["guting1", "ximen1"]
                     }
@@ -1853,10 +1871,12 @@ var TT = (function(){
                 sect: ['taipei'],
                 route: [
                     {
+                        bypassBothStationReg: '^trtc_009$|^trtc_109$|^trtc_11[0-1]$|^trtc_105$|^trtc_053$|^trtc_055$|^trtc_13[0-2]$|^trtc_12[1-8]$|^trtc_17[4-9]$|^trtc_180$',
                         line: ["trtc_3", "trtc_4"],
                         transStation: ["guting1"]
                     },
                     {
+                        bypassBothStationReg: '^trtc_04[5-8]$|^trtc_105$|^trtc_086$|^trtc_04[0-3]$|^trtc_03[2-9]$|^trtc_134$|^trtc_089$',
                         line: ["trtc_3", "trtc_4"],
                         transStation: ["sjnanjing1"]
                     }
@@ -2770,6 +2790,7 @@ var TT = (function(){
                         }
                         tmpA = TT.fn.getRoute_specialTrans(tmpA, a, b);
                         tmpA = procRoute(tmpA, tkLen);
+                        tmpA = TT.fn.getRoute_removeTortuousRoute(a,b,tmpA,aLine[i],bLine[j]);
                         if(tmpA !== false){
                             rt.push(tmpA);
                         }
@@ -2874,6 +2895,35 @@ var TT = (function(){
 	                }
 	                return routeM;
         	}
+        },
+        getRoute_removeTortuousRoute: function(a,b,tmpA,aLine,bLine){
+            var aComp = TT.fn.getCompanyOfStation(a),
+                bComp = TT.fn.getCompanyOfStation(b),
+                aObj = TT.fn.getCommon_stationDataOfID(a),
+                bObj = TT.fn.getCommon_stationDataOfID(b);
+            var regA, removeFlag = false;
+            var route = tmpA.route.slice();
+            for(var i=0; i<route.length; i++){
+                removeFlag = false;
+                if(route[i].bypassStationReg){
+                    regA = new RegExp(route[i].bypassStationReg);
+                    if(regA.test(a) || regA.test(b)) removeFlag = true;
+                }
+                if(route[i].bypassBothStationReg){
+                    regA = new RegExp(route[i].bypassBothStationReg);
+                    if(regA.test(a) && regA.test(b)) removeFlag = true;
+                }
+                if(route[i].bypassSectReg){
+                    regA = new RegExp(route[i].bypassSectReg);
+                    if(regA.test(aObj.sect) || regA.test(bObj.sect)) removeFlag = true;
+                }
+                if(removeFlag){
+                    route.splice(i,1);
+                    i--;
+                }
+            }
+            tmpA.route = route;
+            return tmpA;
         },
         getRoute_specialTrans: function(tmpA, a ,b){
         	//routeT = [[{company:"",line:"",takeRange:["",""],transStation:{},transStationID:""}]];
@@ -3411,12 +3461,10 @@ var TT = (function(){
                 bObj = TT.fn.getCommon_stationDataOfID(b);
         	
             function getNearBig(st, stObj, nearAry){
-                    if(dir=='1') nearAry.reverse();
-        			var anst = (dir=='1') ? nearAry[0] : nearAry[1];
-        			//if(TT.fn.getCommon_stationDataOfID(anst).sect != stObj.sect && nearAry[1]){
-        				//if(TT.fn.getCommon_stationDataOfID(nearAry[0]).sect==stObj.sect) anst = nearAry[0];
-        				//if(TT.fn.getCommon_stationDataOfID(nearAry[1]).sect==stObj.sect) anst = nearAry[1];
-        			//}
+                    if(nearAry.length>1){
+                        if(dir==TT.fn.getTRA_LineDirByFromTo(nearAry[0],nearAry[1])) nearAry.reverse();
+                        var anst = (dir=='1') ? nearAry[0] : nearAry[1];
+                    }
                     
                     if(st=='tra_1032' || st=='tra_1013' || st=='tra_1014') anst = 'tra_1011';
         			if(!anst) anst = nearAry[0];
