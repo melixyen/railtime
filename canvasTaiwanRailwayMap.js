@@ -2,7 +2,7 @@
 *   License: LGPL
 *   作者: melixyen@gmail.com
 *   發行單位: 極光駭客
-*   version: Beta 0.1
+*   version: Beta 0.2
 *   
 *   lineData格式
 *   {
@@ -57,16 +57,16 @@
         cfg = cfg || {};
         defaultCfg = {
             baseWidth: 1550,//canvas 畫布寬
-            baseHeight: 1750,//canvas 畫布高
+            baseHeight: 2250,//canvas 畫布高
             canTouch: ("ontouchend" in document),
             canvasBgcolor: 'rgba(255,255,255,0.9)',
             canvasID: null,//canvas 的 id，不需要則為 null
-            companyNameObj: {tra: '台鐵', trtc: '北捷', thsr: '高鐵', tyrtc: '桃捷'},
+            companyNameObj: {tra: '台鐵', trtc: '北捷', thsr: '高鐵', tyrtc: '桃捷', crtc: '中捷'},
             divID: null,//外層包 div 時的 id，不需要則為 null
             divWidth: null,
             divHeight: null,
             drawPlanLine: true,
-            drawPlanLineOriginalColor: false,
+            drawPlanLineOriginalColor: true,
             drawPlanColor: '#EEE',
             divOverflowStyle: null,//'auto' or 'hidden'
             maxWidthByBrowser: false,//設為 true 時會將圖片寬度縮到小於瀏覽器當下寬度
@@ -99,10 +99,12 @@
         var onlyDoPlanLine = false;
         var pos = {
             badu: {x: 650, y: -240},
-            hualian: {x: 820, y: 770},
-            taidong: {x: 820, y: 1320},
+            hualian: {x: 820, y: 870},
+            taidong: {x: 820, y: 1720},
             tauoyuan: {x: -240, y: 530},
-            hsinchu: {x: -240, y: 970}
+            hsinchu: {x: -240, y: 970},
+            taichung: {x: 100, y: 1500},
+            changhua: {x: -240, y: 1750}
         }
         if(cfg.linePOS) pos = cfg.linePOS;
         
@@ -180,6 +182,53 @@
                         "tra_1028": {x: pos.hsinchu.x, y: pos.hsinchu.y+110, name: '竹南', stationClass: 3}
                     } 
                 }, {
+                    id: "tra_shan",
+                    name: "[台鐵]山線",
+                    color: "#104020",
+                    nameTag: {
+                        fontColor: '#FFF',
+                        id:'tra_1310', 
+                        ox: 20, 
+                        oy: 0
+                    },
+                    dir: "1",
+                    line: [
+                        {type: 'station', id: 'tra_1028'},
+                        {type: 'station', id: 'tra_1302'},
+                        {type: 'turn', id: 'tra_1304', ox: -40, oy: -30},
+                        {type: 'station', id: 'tra_1304'},
+                        {type: 'station', id: 'tra_1314'},
+                        {type: 'station', id: 'tra_1315'},
+                        {type: 'station', id: 'tra_1319'},
+                        {type: 'station', id: 'tra_1322'},
+                        {type: 'station', id: 'tra_1320'},
+                        {type: 'turn', id: 'tra_1320', ox: 0, oy: 55},
+                        {type: 'station', id: 'tra_1324'},
+                        {type: 'station', id: 'tra_1321'},
+                        {type: 'station', id: 'tra_1120'}
+                    ],
+                    station: {
+                        "tra_1028": {x: pos.hsinchu.x, y: pos.hsinchu.y+110, name: '竹南', stationClass: 3, noDraw: true},
+                        "tra_1302": {x: pos.hsinchu.x+80, y: pos.hsinchu.y+120, name: '造橋', stationClass: 4 },
+                        "tra_1304": {x: pos.hsinchu.x+170, y: pos.hsinchu.y+150, name: '豐富', stationClass: 3 },
+                        "tra_1305": {x: pos.hsinchu.x+210, y: pos.hsinchu.y+180, name: '苗栗', stationClass: 3, company: true},
+                        "tra_1307": {x: pos.hsinchu.x+250, y: pos.hsinchu.y+205, name: '南勢', stationClass: 4 },
+                        "tra_1308": {x: pos.hsinchu.x+280, y: pos.hsinchu.y+230, name: '銅鑼', stationClass: 4 },
+                        "tra_1310": {x: pos.hsinchu.x+310, y: pos.hsinchu.y+255, name: '三義', stationClass: 4 },
+                        "tra_1314": {x: pos.hsinchu.x+340, y: pos.hsinchu.y+280, name: '泰安', stationClass: 4 },
+                        "tra_1315": {x: pos.taichung.x, y: pos.taichung.y-220, name: '后里', stationClass: 4 },
+                        "tra_131": {x: pos.taichung.x, y: pos.taichung.y-190, name: '豐原', stationClass: 4 },
+                        "tra_1318": {x: pos.taichung.x, y: pos.taichung.y-130, name: '潭子', stationClass: 4 },
+                        "tra_songzhu": {x: pos.taichung.x, y: pos.taichung.y-85, name: '松竹', stationClass: 3, noClick: true, company: true},
+                        "tra_1323": {x: pos.taichung.x, y: pos.taichung.y-60, name: '太原', stationClass: 4 },
+                        "tra_1319": {x: pos.taichung.x, y: pos.taichung.y, name: '台中', stationClass: 1, company: true},
+                        "tra_1322": {x: pos.taichung.x, y: pos.taichung.y+70, name: '大慶', stationClass: 3, company: true},
+                        "tra_1320": {x: pos.taichung.x, y: pos.taichung.y+150, name: '烏日', stationClass: 3, company: true},
+                        "tra_1324": {x: pos.taichung.x-200, y: pos.taichung.y+205, name: '新烏日', stationClass: 2, company: true},
+                        "tra_1321": {x: pos.taichung.x-280, y: pos.taichung.y+220, name: '成功', stationClass: 4 },
+                        "tra_1120": {x: pos.changhua.x, y: pos.changhua.y, name: '彰化', stationClass: 1}
+                    }
+                }, {
                     id: "tra_yilan",
                     name: "[台鐵]宜蘭線",
                     color: "#500000",
@@ -244,17 +293,17 @@
                     ],
                     station: {
                         "tra_1826": {x: pos.badu.x+170, y: pos.badu.y+710, name: '蘇澳新', stationClass: 3, noDraw: true },
-                        "tra_1703": {x: pos.hualian.x, y: pos.hualian.y-275, name: '永樂', stationClass: 5},
-                        "tra_1704": {x: pos.hualian.x, y: pos.hualian.y-250, name: '東澳', stationClass: 4},
-                        "tra_1705": {x: pos.hualian.x, y: pos.hualian.y-225, name: '南澳', stationClass: 4},
-                        "tra_1706": {x: pos.hualian.x, y: pos.hualian.y-200, name: '武塔', stationClass: 4},
-                        "tra_1708": {x: pos.hualian.x, y: pos.hualian.y-175, name: '漢本', stationClass: 4},
-                        "tra_1709": {x: pos.hualian.x, y: pos.hualian.y-150, name: '和平', stationClass: 4},
-                        "tra_1710": {x: pos.hualian.x, y: pos.hualian.y-125, name: '和仁', stationClass: 4},
-                        "tra_1711": {x: pos.hualian.x, y: pos.hualian.y-100, name: '崇德', stationClass: 4},
-                        "tra_1712": {x: pos.hualian.x, y: pos.hualian.y-76, name: '新城', stationClass: 4},
-                        "tra_1713": {x: pos.hualian.x, y: pos.hualian.y-52, name: '景美', stationClass: 4},
-                        "tra_1714": {x: pos.hualian.x, y: pos.hualian.y-27, name: '北埔', stationClass: 4},
+                        "tra_1703": {x: pos.hualian.x, y: pos.hualian.y-330, name: '永樂', stationClass: 5},
+                        "tra_1704": {x: pos.hualian.x, y: pos.hualian.y-300, name: '東澳', stationClass: 4},
+                        "tra_1705": {x: pos.hualian.x, y: pos.hualian.y-270, name: '南澳', stationClass: 4},
+                        "tra_1706": {x: pos.hualian.x, y: pos.hualian.y-240, name: '武塔', stationClass: 4},
+                        "tra_1708": {x: pos.hualian.x, y: pos.hualian.y-210, name: '漢本', stationClass: 4},
+                        "tra_1709": {x: pos.hualian.x, y: pos.hualian.y-180, name: '和平', stationClass: 4},
+                        "tra_1710": {x: pos.hualian.x, y: pos.hualian.y-150, name: '和仁', stationClass: 4},
+                        "tra_1711": {x: pos.hualian.x, y: pos.hualian.y-120, name: '崇德', stationClass: 4},
+                        "tra_1712": {x: pos.hualian.x, y: pos.hualian.y-90, name: '新城', stationClass: 4},
+                        "tra_1713": {x: pos.hualian.x, y: pos.hualian.y-60, name: '景美', stationClass: 4},
+                        "tra_1714": {x: pos.hualian.x, y: pos.hualian.y-30, name: '北埔', stationClass: 4},
                         "tra_1715": {x: pos.hualian.x, y: pos.hualian.y, name: '花蓮', stationClass: 0 }
                     }
                 }, {
@@ -278,30 +327,30 @@
                     ],
                     station: {
                         "tra_1715": {x: pos.hualian.x, y: pos.hualian.y, name: '花蓮', stationClass: 0, noDraw: true},
-                        "tra_1602": {x: pos.hualian.x, y: pos.hualian.y+28, name: '吉安', stationClass: 4},
-                        "tra_1604": {x: pos.hualian.x, y: pos.hualian.y+52, name: '志學', stationClass: 4},
-                        "tra_1605": {x: pos.hualian.x, y: pos.hualian.y+76, name: '平和', stationClass: 4},
-                        "tra_1606": {x: pos.hualian.x, y: pos.hualian.y+100, name: '壽豐', stationClass: 4},
-                        "tra_1607": {x: pos.hualian.x, y: pos.hualian.y+125, name: '豐田', stationClass: 4},
-                        "tra_1609": {x: pos.hualian.x, y: pos.hualian.y+150, name: '南平', stationClass: 4},
-                        "tra_1610": {x: pos.hualian.x, y: pos.hualian.y+175, name: '鳳林', stationClass: 4},
-                        "tra_1611": {x: pos.hualian.x, y: pos.hualian.y+200, name: '萬榮', stationClass: 4},
-                        "tra_1612": {x: pos.hualian.x, y: pos.hualian.y+225, name: '光復', stationClass: 4},
-                        "tra_1613": {x: pos.hualian.x, y: pos.hualian.y+250, name: '大富', stationClass: 4},
-                        "tra_1614": {x: pos.hualian.x, y: pos.hualian.y+275, name: '富源', stationClass: 4},
-                        "tra_1616": {x: pos.hualian.x, y: pos.hualian.y+300, name: '瑞穗', stationClass: 4},
-                        "tra_1617": {x: pos.hualian.x, y: pos.hualian.y+325, name: '三民', stationClass: 4},
-                        "tra_1619": {x: pos.hualian.x, y: pos.hualian.y+350, name: '玉里', stationClass: 4},
-                        "tra_1621": {x: pos.hualian.x, y: pos.hualian.y+375, name: '東里', stationClass: 4},
-                        "tra_1622": {x: pos.hualian.x, y: pos.hualian.y+400, name: '東竹', stationClass: 4},
-                        "tra_1623": {x: pos.hualian.x, y: pos.hualian.y+425, name: '富里', stationClass: 4},
-                        "tra_1624": {x: pos.taidong.x, y: pos.taidong.y-100, name: '池上', stationClass: 4},
-                        "tra_1625": {x: pos.taidong.x-60, y: pos.taidong.y-100, name: '海端', stationClass: 4},
-                        "tra_1626": {x: pos.taidong.x-120, y: pos.taidong.y-100, name: '關山', stationClass: 4},
-                        "tra_1628": {x: pos.taidong.x-120, y: pos.taidong.y-50, name: '瑞和', stationClass: 4},
-                        "tra_1629": {x: pos.taidong.x-60, y: pos.taidong.y-50, name: '瑞源', stationClass: 4},
-                        "tra_1630": {x: pos.taidong.x, y: pos.taidong.y-50, name: '鹿野', stationClass: 4},
-                        "tra_1631": {x: pos.taidong.x, y: pos.taidong.y-25, name: '山里', stationClass: 4},
+                        "tra_1602": {x: pos.hualian.x, y: pos.hualian.y+40, name: '吉安', stationClass: 4},
+                        "tra_1604": {x: pos.hualian.x, y: pos.hualian.y+70, name: '志學', stationClass: 4},
+                        "tra_1605": {x: pos.hualian.x, y: pos.hualian.y+100, name: '平和', stationClass: 4},
+                        "tra_1606": {x: pos.hualian.x, y: pos.hualian.y+130, name: '壽豐', stationClass: 4},
+                        "tra_1607": {x: pos.hualian.x, y: pos.hualian.y+160, name: '豐田', stationClass: 4},
+                        "tra_1609": {x: pos.hualian.x, y: pos.hualian.y+190, name: '南平', stationClass: 4},
+                        "tra_1610": {x: pos.hualian.x, y: pos.hualian.y+220, name: '鳳林', stationClass: 4},
+                        "tra_1611": {x: pos.hualian.x, y: pos.hualian.y+250, name: '萬榮', stationClass: 4},
+                        "tra_1612": {x: pos.hualian.x, y: pos.hualian.y+280, name: '光復', stationClass: 4},
+                        "tra_1613": {x: pos.hualian.x, y: pos.hualian.y+310, name: '大富', stationClass: 4},
+                        "tra_1614": {x: pos.hualian.x, y: pos.hualian.y+340, name: '富源', stationClass: 4},
+                        "tra_1616": {x: pos.hualian.x, y: pos.hualian.y+370, name: '瑞穗', stationClass: 4},
+                        "tra_1617": {x: pos.hualian.x, y: pos.hualian.y+400, name: '三民', stationClass: 4},
+                        "tra_1619": {x: pos.hualian.x, y: pos.hualian.y+430, name: '玉里', stationClass: 4},
+                        "tra_1621": {x: pos.hualian.x, y: pos.hualian.y+460, name: '東里', stationClass: 4},
+                        "tra_1622": {x: pos.hualian.x, y: pos.hualian.y+490, name: '東竹', stationClass: 4},
+                        "tra_1623": {x: pos.hualian.x, y: pos.hualian.y+520, name: '富里', stationClass: 4},
+                        "tra_1624": {x: pos.taidong.x, y: pos.taidong.y-210, name: '池上', stationClass: 4},
+                        "tra_1625": {x: pos.taidong.x, y: pos.taidong.y-180, name: '海端', stationClass: 4},
+                        "tra_1626": {x: pos.taidong.x, y: pos.taidong.y-150, name: '關山', stationClass: 4},
+                        "tra_1628": {x: pos.taidong.x, y: pos.taidong.y-120, name: '瑞和', stationClass: 4},
+                        "tra_1629": {x: pos.taidong.x, y: pos.taidong.y-90, name: '瑞源', stationClass: 4},
+                        "tra_1630": {x: pos.taidong.x, y: pos.taidong.y-60, name: '鹿野', stationClass: 4},
+                        "tra_1631": {x: pos.taidong.x, y: pos.taidong.y-30, name: '山里', stationClass: 4},
                         "tra_1632": {x: pos.taidong.x, y: pos.taidong.y, name: '台東', stationClass: 2}
                     }
                 }, {
@@ -398,6 +447,10 @@
                         {type: 'turn', id: 'thsr_04', ox: 0, oy: 30},
                         {type: 'turn', id: 'thsr_05', ox: 0, oy: -60},
                         {type: 'station', id: 'thsr_05'},
+                        {type: 'station', id: 'thsr_07'},
+                        {type: 'turn', id: 'thsr_08', ox: -240, oy: -210},
+                        {type: 'turn', id: 'thsr_08', ox: -240, oy: -130},
+                        {type: 'station', id: 'thsr_08'},
                         {type: 'station', id: 'thsr_13'}
                     ],
                     station: {
@@ -406,13 +459,13 @@
                         "thsr_03": {x: -300, y: 118, name: '板橋', stationClass: 1, company: true, noClick: true},
                         "thsr_04": {x: pos.tauoyuan.x-290, y: pos.tauoyuan.y+175, name: '桃園', stationClass: 3, company: true, noClick: true},
                         "thsr_05": {x: pos.hsinchu.x+218, y: pos.hsinchu.y-60, name: '新竹', stationClass: 3, company: true, noClick: true},
-                        "thsr_07": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+0, name: '苗栗', stationClass: 4, company: true, noClick: true},
-                        "thsr_08": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+25, name: '台中', stationClass: 4, company: true, noClick: true},
-                        "thsr_09": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+50, name: '彰化', stationClass: 4, company: true, noClick: true},
-                        "thsr_10": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+75, name: '雲林', stationClass: 4, company: true, noClick: true},
-                        "thsr_11": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+100, name: '嘉義', stationClass: 4, company: true, noClick: true},
-                        "thsr_12": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+125, name: '台南', stationClass: 4, company: true, noClick: true},
-                        "thsr_13": {x: pos.hsinchu.x+218, y: pos.hsinchu.y+150, name: '左營', stationClass: 4, company: true, noClick: true}
+                        "thsr_07": {x: pos.hsinchu.x+115, y: pos.hsinchu.y+150, name: '苗栗', stationClass: 4, company: true, noClick: true},
+                        "thsr_08": {x: pos.taichung.x-128, y: pos.taichung.y+180, name: '台中', stationClass: 3, company: true, noClick: true},
+                        "thsr_09": {x: pos.taichung.x-128, y: pos.taichung.y+240, name: '彰化', stationClass: 4, company: true, noClick: true},
+                        "thsr_10": {x: pos.taichung.x-128, y: pos.taichung.y+265, name: '雲林', stationClass: 4, company: true, noClick: true},
+                        "thsr_11": {x: pos.taichung.x-128, y: pos.taichung.y+290, name: '嘉義', stationClass: 4, company: true, noClick: true},
+                        "thsr_12": {x: pos.taichung.x-128, y: pos.taichung.y+315, name: '台南', stationClass: 4, company: true, noClick: true},
+                        "thsr_13": {x: pos.taichung.x-128, y: pos.taichung.y+340, name: '左營', stationClass: 4, company: true, noClick: true}
                     }
                 }
             ],
@@ -971,7 +1024,56 @@
                         "tyrtc_a20": {x: pos.tauoyuan.x-230, y: pos.tauoyuan.y+200, name: '興南', stationClass: 4, noClick: true},
                         "tyrtc_a21": {x: pos.tauoyuan.x-190, y: pos.tauoyuan.y+200, name: '環北', stationClass: 4, noClick: true},
                         "tyrtc_a22": {x: pos.tauoyuan.x-150, y: pos.tauoyuan.y+200, name: '老街溪', stationClass: 4, noClick: true},
-                        "tyrtc_a23": {x: pos.tauoyuan.x-85, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 3, company: true}
+                        "tyrtc_a23": {x: pos.tauoyuan.x-85, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 3, noClick: true, company: true}
+                    }
+                }
+            ],
+            crtc: [
+                {
+                    id: "crtc_1",
+                    name: "[中捷]綠線",
+                    color: "#008739",
+                    isPlanLine: true,
+                    nameTag: {
+                        fontColor: '#FFF',
+                        id:'crtc_g17', 
+                        ox: -130, 
+                        oy: 0
+                    },
+                    dir: "1",
+                    line: [
+                        {type: 'station', id: 'crtc_g01'},
+                        {type: 'station', id: 'crtc_g03'},
+                        {type: 'station', id: 'crtc_g04'},
+                        {type: 'station', id: 'crtc_g05'},
+                        {type: 'station', id: 'crtc_g06'},
+                        {type: 'station', id: 'crtc_g08'},
+                        {type: 'station', id: 'crtc_g09'},
+                        {type: 'station', id: 'crtc_g10'},
+                        {type: 'station', id: 'crtc_g11'},
+                        {type: 'station', id: 'crtc_g13'},
+                        {type: 'station', id: 'crtc_g16'},
+                        {type: 'station', id: 'crtc_g17'}
+                    ],
+                    station: {
+                        "crtc_g01": {x: pos.taichung.x+150, y: pos.taichung.y-115, name: '北屯機廠', stationClass: 4, noClick: true },
+                        "crtc_g03": {x: pos.taichung.x+150, y: pos.taichung.y-85, name: '下舊社', stationClass: 4, noClick: true },
+                        "crtc_g04": {x: pos.taichung.x+80, y: pos.taichung.y-85, name: '松竹', stationClass: 3, noClick: true, company: true},
+                        "crtc_g05": {x: pos.taichung.x-64, y: pos.taichung.y-65, name: '二分埔', stationClass: 4, noClick: true },
+                        "crtc_g06": {x: pos.taichung.x-120, y: pos.taichung.y-65, name: '文心崇德', stationClass: 4, noClick: true },
+                        "crtc_g07": {x: pos.taichung.x-170, y: pos.taichung.y-65, name: '水湳', stationClass: 4, noClick: true },
+                        "crtc_g08": {x: pos.taichung.x-220, y: pos.taichung.y-65, name: '文華高中', stationClass: 4, noClick: true },
+                        "crtc_g08a": {x: pos.taichung.x-280, y: pos.taichung.y-35, name: '櫻花', stationClass: 4, noClick: true },
+                        "crtc_g09": {x: pos.taichung.x-330, y: pos.taichung.y-10, name: '市政府', stationClass: 4, noClick: true },
+                        "crtc_g10": {x: pos.taichung.x-330, y: pos.taichung.y+15, name: '溝仔墘', stationClass: 4, noClick: true },
+                        "crtc_g10a": {x: pos.taichung.x-260, y: pos.taichung.y+40, name: '文心公園', stationClass: 4, noClick: true },
+                        "crtc_g11": {x: pos.taichung.x-190, y: pos.taichung.y+70, name: '南屯', stationClass: 4, noClick: true },
+                        "crtc_g12": {x: pos.taichung.x-145, y: pos.taichung.y+70, name: '麻茲埔', stationClass: 4, noClick: true },
+                        "crtc_g13": {x: pos.taichung.x-81, y: pos.taichung.y+70, name: '大慶', stationClass: 3, noClick: true, company: true},
+                        "crtc_g14": {x: pos.taichung.x-81, y: pos.taichung.y+100, name: '九張犁', stationClass: 4, noClick: true },
+                        "crtc_g15": {x: pos.taichung.x-81, y: pos.taichung.y+125, name: '九德', stationClass: 4, noClick: true },
+                        "crtc_g16": {x: pos.taichung.x-81, y: pos.taichung.y+150, name: '烏日', stationClass: 3, noClick: true, company: true},
+                        "crtc_g17": {x: pos.taichung.x-212, y: pos.taichung.y+180, name: '新烏日', stationClass: 2, noClick: true, company: true}
                     }
                 }
             ]
