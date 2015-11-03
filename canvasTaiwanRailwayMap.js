@@ -2,7 +2,7 @@
 *   License: LGPL
 *   作者: melixyen@gmail.com
 *   發行單位: 極光駭客
-*   version: Beta 0.2
+*   version: Beta 0.3
 *   
 *   lineData格式
 *   {
@@ -57,7 +57,7 @@
         cfg = cfg || {};
         defaultCfg = {
             baseWidth: 1550,//canvas 畫布寬
-            baseHeight: 2600,//canvas 畫布高
+            baseHeight: 3300,//canvas 畫布高
             canTouch: ("ontouchend" in document),
             canvasBgcolor: 'rgba(255,255,255,0.9)',
             canvasID: null,//canvas 的 id，不需要則為 null
@@ -105,7 +105,9 @@
             hsinchu: {x: -240, y: 970},
             taichung: {x: 100, y: 1500},
             changhua: {x: -240, y: 1750},
-            chayi: {x: -170, y: 2150}
+            chayi: {x: -170, y: 2150},
+            tainan: {x: -400, y: 2450},
+            kaohsiung: {x: -300, y: 2850}
         }
         if(cfg.linePOS) pos = cfg.linePOS;
         
@@ -245,7 +247,7 @@
                         {type: 'station', id: 'tra_1203'},
                         {type: 'station', id: 'tra_1207'},
                         {type: 'station', id: 'tra_1208'},
-                        {type: 'station', id: 'tra_1215'},
+                        {type: 'station', id: 'tra_1215'}
                     ],
                     station: {
                         "tra_1120": {x: pos.changhua.x, y: pos.changhua.y, name: '彰化', stationClass: 1, company: true},
@@ -264,7 +266,58 @@
                         "tra_1213": {x: pos.chayi.x, y: pos.chayi.y-80, name: '大林', stationClass: 4 },
                         "tra_1214": {x: pos.chayi.x, y: pos.chayi.y-55, name: '民雄', stationClass: 4 },
                         "tra_1241": {x: pos.chayi.x, y: pos.chayi.y-30, name: '嘉北', stationClass: 4 },
-                        "tra_1215": {x: pos.chayi.x, y: pos.chayi.y, name: '嘉義', stationClass: 1, company: true},
+                        "tra_1215": {x: pos.chayi.x, y: pos.chayi.y, name: '嘉義', stationClass: 1, company: true}
+                    }
+                }, {
+                    id: "tra_jygx",
+                    name: "[台鐵]西部幹線(嘉義-高雄)",
+                    color: "#302040",
+                    nameTag: {
+                        fontColor: '#FFF',
+                        id:'tra_1218', 
+                        ox: 20, 
+                        oy: 0
+                    },
+                    dir: "1",
+                    line: [
+                        {type: 'station', id: 'tra_1215'},
+                        {type: 'station', id: 'tra_1218'},
+                        {type: 'station', id: 'tra_1219'},
+                        {type: 'station', id: 'tra_1223'},
+                        {type: 'station', id: 'tra_1225'},
+                        {type: 'station', id: 'tra_1244'},
+                        {type: 'station', id: 'tra_1239'},
+                        {type: 'station', id: 'tra_1228'},
+                        {type: 'station', id: 'tra_1236'},
+                        {type: 'station', id: 'tra_1238'}
+                    ],
+                    station: {
+                        "tra_1215": {x: pos.chayi.x, y: pos.chayi.y, name: '嘉義', stationClass: 1, company: true, noDraw: true},
+                        "tra_1217": {x: pos.chayi.x, y: pos.chayi.y+30, name: '水上', stationClass: 4 },
+                        "tra_1218": {x: pos.chayi.x, y: pos.chayi.y+53, name: '南靖', stationClass: 4 },
+                        "tra_1219": {x: pos.tainan.x+210, y: pos.tainan.y-225, name: '後壁', stationClass: 4 },
+                        "tra_1220": {x: pos.tainan.x+200, y: pos.tainan.y-200, name: '新營', stationClass: 3 },
+                        "tra_1221": {x: pos.tainan.x+190, y: pos.tainan.y-175, name: '柳營', stationClass: 4 },
+                        "tra_1222": {x: pos.tainan.x+180, y: pos.tainan.y-150, name: '林鳳營', stationClass: 4 },
+                        "tra_1223": {x: pos.tainan.x+170, y: pos.tainan.y-125, name: '隆田', stationClass: 4 },
+                        "tra_1224": {x: pos.tainan.x+120, y: pos.tainan.y-125, name: '拔林', stationClass: 4 },
+                        "tra_1225": {x: pos.tainan.x+70, y: pos.tainan.y-125, name: '善化', stationClass: 4 },
+                        "tra_1244": {x: pos.tainan.x+50, y: pos.tainan.y-102, name: '南科', stationClass: 4 },
+                        "tra_1226": {x: pos.tainan.x+40, y: pos.tainan.y-78, name: '新市', stationClass: 4 },
+                        "tra_1227": {x: pos.tainan.x+30, y: pos.tainan.y-54, name: '永康', stationClass: 4 },
+                        "tra_1239": {x: pos.tainan.x+20, y: pos.tainan.y-30, name: '大橋', stationClass: 4 },
+                        "tra_1228": {x: pos.tainan.x, y: pos.tainan.y, name: '台南', stationClass: 1, company: true},
+                        "tra_1229": {x: pos.tainan.x, y: pos.tainan.y+28, name: '保安', stationClass: 4 },
+                        "tra_1243": {x: pos.tainan.x, y: pos.tainan.y+52, name: '仁德', stationClass: 4 },
+                        "tra_1230": {x: pos.tainan.x, y: pos.tainan.y+76, name: '中州', stationClass: 2 },
+                        "tra_1231": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-300, name: '大湖', stationClass: 4 },
+                        "tra_1232": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-275, name: '路竹', stationClass: 4 },
+                        "tra_1233": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-250, name: '岡山', stationClass: 4 },
+                        "tra_1234": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-205, name: '橋頭', stationClass: 3, company: true},
+                        "tra_1235": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-150, name: '楠梓', stationClass: 4 },
+                        "tra_1242": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-100, name: '新左營', stationClass: 3 },
+                        "tra_1236": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-50, name: '左營', stationClass: 4 },
+                        "tra_1238": {x: pos.kaohsiung.x, y: pos.kaohsiung.y, name: '高雄', stationClass: 1, company: true}
                     }
                 }, {
                     id: "tra_yilan",
@@ -493,6 +546,7 @@
                         {type: 'station', id: 'thsr_09'},
                         {type: 'station', id: 'thsr_10'},
                         {type: 'station', id: 'thsr_11'},
+                        {type: 'turn', id: 'thsr_11', ox: 0, oy: 230},
                         {type: 'station', id: 'thsr_12'},
                         {type: 'station', id: 'thsr_13'}
                     ],
@@ -507,8 +561,8 @@
                         "thsr_09": {x: pos.changhua.x-128, y: pos.changhua.y+128, name: '彰化', stationClass: 4, company: true, noClick: true},
                         "thsr_10": {x: pos.chayi.x-200, y: pos.chayi.y-150, name: '雲林', stationClass: 4, company: true, noClick: true},
                         "thsr_11": {x: pos.chayi.x-200, y: pos.chayi.y, name: '嘉義', stationClass: 4, company: true, noClick: true},
-                        "thsr_12": {x: pos.chayi.x-200, y: pos.chayi.y+25, name: '台南', stationClass: 4, company: true, noClick: true},
-                        "thsr_13": {x: pos.chayi.x-300, y: pos.chayi.y+25, name: '左營', stationClass: 4, company: true, noClick: true}
+                        "thsr_12": {x: pos.tainan.x+240, y: pos.tainan.y+75, name: '台南', stationClass: 4, company: true, noClick: true},
+                        "thsr_13": {x: pos.kaohsiung.x+50, y: pos.kaohsiung.y-100, name: '左營', stationClass: 4, company: true, noClick: true}
                     }
                 }
             ],
