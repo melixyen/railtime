@@ -309,7 +309,7 @@
                         "tra_1228": {x: pos.tainan.x, y: pos.tainan.y, name: '台南', stationClass: 1, company: true},
                         "tra_1229": {x: pos.tainan.x, y: pos.tainan.y+28, name: '保安', stationClass: 4 },
                         "tra_1243": {x: pos.tainan.x, y: pos.tainan.y+52, name: '仁德', stationClass: 4 },
-                        "tra_1230": {x: pos.tainan.x, y: pos.tainan.y+76, name: '中州', stationClass: 2 },
+                        "tra_1230": {x: pos.tainan.x, y: pos.tainan.y+76, name: '中洲', stationClass: 2 },
                         "tra_1231": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-300, name: '大湖', stationClass: 4 },
                         "tra_1232": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-275, name: '路竹', stationClass: 4 },
                         "tra_1233": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-250, name: '岡山', stationClass: 4 },
@@ -510,6 +510,26 @@
                         "tra_2208": {x: pos.hsinchu.x+460, y: pos.hsinchu.y-30, name: '合興', stationClass: 4 },
                         "tra_2209": {x: pos.hsinchu.x+500, y: pos.hsinchu.y-30, name: '富貴', stationClass: 4 },
                         "tra_2210": {x: pos.hsinchu.x+540, y: pos.hsinchu.y-30, name: '內灣', stationClass: 3}
+                    }
+                }, {
+                    id: "tra_shalun",
+                    name: "[台鐵]沙崙線",
+                    color: "#124060",
+                    nameTag: {
+                        fontColor: '#FFF',
+                        id:'tra_5101', 
+                        ox: -53, 
+                        oy: 21
+                    },
+                    dir: "0",
+                    line: [
+                        {type: 'station', id: 'tra_1230'},
+                        {type: 'station', id: 'tra_5102'}
+                    ],
+                    station: {
+                        "tra_1230": {x: pos.tainan.x, y: pos.tainan.y+76, name: '中洲', stationClass: 3, noDraw: true},
+                        "tra_5101": {x: pos.tainan.x+110, y: pos.tainan.y+76, name: '長榮大學', stationClass: 4 },
+                        "tra_5102": {x: pos.tainan.x+188, y: pos.tainan.y+76, name: '沙崙', stationClass: 3 }
                     }
                 }
             ],
