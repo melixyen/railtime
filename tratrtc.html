@@ -787,10 +787,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.4.7",
-            "產生日期": "2015/11/24"
+            "版本": "Beta 0.4.8",
+            "產生日期": "2017/01/15"
         },
         programUpdateInfo: [
+                    'Beta 0.4.8: 台鐵時刻表改讀公開資訊 JSON 格式檔加速時候表載入。',
                     'Beta 0.4.7: 新增沙崙線。',
                     'Beta 0.4.6: 新增西部幹線嘉義至高雄。',
                     'Beta 0.4.5: 新增西部幹線彰化至嘉義。',
@@ -4500,16 +4501,18 @@ var TT = (function(){
             
             function cpTime(ttb){
                 var insEnd = endTime;
+                var time, dept, arrt;
                 if(flagAD){
                     var stationTime = TT.fn.getTRA_timeOfStationOnCar(a,ttb);
-                    var time;
                     if(stationTime){
-                        time = TT.fn.transTime2Sec(stationTime.DEPTime);
+                        dept = stationTime.DEPTime || stationTime.DepTime;
+                        time = TT.fn.transTime2Sec(dept);
                     }
                 }else{
                     var stationTime = TT.fn.getTRA_timeOfStationOnCar(b,ttb);
+                    arrt = stationTime.ARRTime || stationTime.ArrTime;
                     if(stationTime){
-                        time = TT.fn.transTime2Sec(stationTime.ARRTime);
+                        time = TT.fn.transTime2Sec(arrt);
                     }
                 }
                 
@@ -4703,6 +4706,61 @@ var TT = (function(){
             if(intA < intB) return -1;
             if(intA > intB) return 1;
         },
+        getTRA_JSON_by_TRA_JSON: function(json){
+            var rt = json.TrainInfos;
+            var timeInfo = false;
+            for(var i=0; i<rt.length; i++){
+                rt[i].TimeInfo = rt[i].TimeInfos;
+                rt[i].TimeInfo.sort(TT.fn.getTRA_sortByTimeInfoOrder);
+            }
+            return rt;
+        },
+        getTRA_JSON: function(url, successFn, errorFn){
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(xml) {
+                    if(typeof(successFn)=='function'){
+                        successFn(xml);
+                    }
+                },
+                error: function(){
+                    if(typeof(errorFn)=='function'){
+                        errorFn();
+                    }
+                }
+            });
+        },
+        getTRA_weekJSON: function(w, cbFn){
+            if(!w) w = TT.defined.defaultTRAWeekday;
+            var url = 'w' + w + '.json';
+            TT.ui.mask();
+            TT.ui.printStatus('讀取台鐵' + TT.ui.transWeekToString(w) + ' JSON 時刻表中...');
+            
+            function successFn(json){
+                    TT.ui.printStatus('讀取台鐵' + TT.ui.transWeekToString(w) + ' JSON 時刻表完成。');
+                    TT.ui.unmask();
+                    TT.a1 = json;
+                    if(TT.fn.checkIsFunction(cbFn)){
+                        cbFn(w, json);
+                    }
+                    TT.ui.updateCenter('home');
+            }
+            
+            function errorFn(){
+                    TT.msg.show('讀取台鐵' + TT.ui.transWeekToString(w) + ' JSON 時刻表失敗！');
+                    TT.ui.printStatus('讀取台鐵' + TT.ui.transWeekToString(w) + ' JSON 時刻表失敗！');
+                    TT.ui.unmask();
+                    TT.ui.updateCenter('home');
+                    if(TT.fn.checkIsFunction(cbFn)){
+                        cbFn('error');
+                    }
+            }
+            setTimeout(function(){
+                TT.fn.getTRA_JSON(url, successFn, errorFn);
+            },100);
+        },
         getTRA_JSON_by_TRA_XML: function(xml){
             var aryTRA_Cars = xml.getElementsByTagName('TrainInfo');
             var rt = new Array();
@@ -4775,7 +4833,8 @@ var TT = (function(){
                 if(TT.fn.checkIsError(w)){
                     return false;
                 }
-                var dayJo = TT.fn.getTRA_JSON_by_TRA_XML(xml);
+                //var dayJo = TT.fn.getTRA_JSON_by_TRA_XML(xml);
+                var dayJo = TT.fn.getTRA_JSON_by_TRA_JSON(xml);
                 TT.data.tra.timeTable[parseInt(w,10)] = dayJo;
                 nextDay();
             }
@@ -4793,7 +4852,8 @@ var TT = (function(){
                     nextDay();
                     return false;
                 }
-                TT.fn.getTRA_weekXML(w, writeFn);
+                //TT.fn.getTRA_weekXML(w, writeFn);
+                TT.fn.getTRA_weekJSON(w, writeFn);
             }
             nextDay();
         },
@@ -4823,9 +4883,12 @@ var TT = (function(){
                 b = TT.fn.getTRA_stationID(b);
                 var timeInfo = ttb.TimeInfo;
                 var rt = new Array();
+                var arrt = false, dept = false;
                 for(var i=0; i<timeInfo.length; i++){
-                    if(timeInfo[i].Station==a) rt[0] = timeInfo[i].DEPTime;
-                    if(timeInfo[i].Station==b) rt[1] = timeInfo[i].ARRTime;
+                    arrt = timeInfo[i].ARRTime || timeInfo[i].ArrTime;
+                    dept = timeInfo[i].DEPTime || timeInfo[i].DepTime;
+                    if(timeInfo[i].Station==a) rt[0] = dept;
+                    if(timeInfo[i].Station==b) rt[1] = arrt;
                 }
                 return rt;
         },                        
