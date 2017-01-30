@@ -787,10 +787,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.4.8",
-            "產生日期": "2017/01/15"
+            "版本": "Beta 0.4.9",
+            "產生日期": "2017/01/30"
         },
         programUpdateInfo: [
+                    'Beta 0.4.9: 新增台鐵三姓橋站及八斗子站。',
                     'Beta 0.4.8: 台鐵時刻表改讀公開資訊 JSON 格式檔加速時候表載入。',
                     'Beta 0.4.7: 新增沙崙線。',
                     'Beta 0.4.6: 新增西部幹線嘉義至高雄。',
@@ -882,6 +883,7 @@ var TT = (function(){
                 {id:"tra_1023", name: "竹北", estring: "zhubei", sect: "hsinchu"},
                 {id:"tra_1024", name: "北新竹", estring: "northhsinchubeixinzhu", sect: "hsinchu"},
                 {id:"tra_1025", name: "新竹", estring: "hsinchuxinzhu", sect: "hsinchu", big: 'w'},
+                {id:"tra_1035", name: "三姓橋", estring: "sanxingqiao", sect: "hsinchu"},
                 {id:"tra_1026", name: "香山", estring: "xiangshan", sect: "hsinchu"},
                 {id:"tra_1027", name: "崎頂", estring: "jidingciding", sect: "hsinchu"},
                 {id:"tra_1028", name: "竹南", estring: "zhunan", sect: "hsinchu", big: 'w'},
@@ -1008,6 +1010,7 @@ var TT = (function(){
                 {id:"tra_1630", name: "鹿野", estring: "luye", sect: "taidong"},
                 {id:"tra_1631", name: "山里", estring: "shanli", sect: "taidong"},
                 {id:"tra_1632", name: "台東", estring: "taitungtaidong", sect: "taidong", big: 'es'},
+                {id:"tra_2003", name:"八斗子", estring:"badouzi", sect:"northeast"},
                 {id:"tra_6103", name:"海科館", estring:"haikeguan", sect:"northeast"},
                 {id:"tra_1903", name:"大華", estring:"dahua", sect:"northeast"},
                 {id:"tra_1904", name:"十分", estring:"shifenshihfen", sect:"northeast"},
@@ -1044,7 +1047,7 @@ var TT = (function(){
                         "tra_liujia": {station: "tra_1025", dir: "0"}
                     },
             		station: ["tra_1001","tra_1029","tra_1002","tra_1003","tra_1030","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1009","tra_1011","tra_1032","tra_1012","tra_1013","tra_1014",//taipei
-                        "tra_1015","tra_1016","tra_1017","tra_1018","tra_1019","tra_1020","tra_1033","tra_1021","tra_1022","tra_1023","tra_1024","tra_1025","tra_1026","tra_1027","tra_1028"]
+                        "tra_1015","tra_1016","tra_1017","tra_1018","tra_1019","tra_1020","tra_1033","tra_1021","tra_1022","tra_1023","tra_1024","tra_1025","tra_1035","tra_1026","tra_1027","tra_1028"]
             	}, {
             		id: "tra_shan",
                     name: "山線(竹南-彰化)",
@@ -1133,7 +1136,7 @@ var TT = (function(){
                     link: {
                         "tra_yilan": {station: "tra_1806", dir: "1"}
                     },
-            		station: ["tra_6103","tra_1804","tra_1805","tra_1806","tra_1903","tra_1904","tra_1905","tra_1906","tra_1907","tra_1908"]
+            		station: ["tra_2003","tra_6103","tra_1804","tra_1805","tra_1806","tra_1903","tra_1904","tra_1905","tra_1906","tra_1907","tra_1908"]
                 }, {
             		id: "tra_liujia",
                     name: "內灣／六家線",

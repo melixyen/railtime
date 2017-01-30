@@ -179,7 +179,7 @@
                         "tra_1023": {x: pos.hsinchu.x, y: pos.hsinchu.y-55, name: '竹北', stationClass: 4},
                         "tra_1024": {x: pos.hsinchu.x, y: pos.hsinchu.y-30, name: '北新竹', stationClass: 4},
                         "tra_1025": {x: pos.hsinchu.x, y: pos.hsinchu.y, name: '新竹', stationClass: 1},
-                        "tra_xxfd": {x: pos.hsinchu.x, y: pos.hsinchu.y+30, name: '三姓橋', stationClass: 4, noClick: true},
+                        "tra_1035": {x: pos.hsinchu.x, y: pos.hsinchu.y+30, name: '三姓橋', stationClass: 4},
                         "tra_1026": {x: pos.hsinchu.x, y: pos.hsinchu.y+55, name: '香山', stationClass: 4},
                         "tra_1027": {x: pos.hsinchu.x, y: pos.hsinchu.y+80, name: '崎頂', stationClass: 4},
                         "tra_1028": {x: pos.hsinchu.x, y: pos.hsinchu.y+110, name: '竹南', stationClass: 3}
@@ -456,6 +456,7 @@
                     },
                     dir: "0",
                     line: [
+                        {type: 'station', id: 'tra_2003'},
                         {type: 'station', id: 'tra_6103'},
                         {type: 'station', id: 'tra_1804'},
                         {type: 'move', id: 'tra_1806'},
@@ -463,6 +464,7 @@
                         {type: 'station', id: 'tra_1908'}
                     ],
                     station: {
+                        "tra_2003": {x: pos.badu.x+230, y: pos.badu.y-80, name: '八斗子', stationClass: 4 },
                         "tra_6103": {x: pos.badu.x+180, y: pos.badu.y-80, name: '海科館', stationClass: 4 },
                         "tra_1804": {x: pos.badu.x+180, y: pos.badu.y, name: '瑞芳', stationClass: 3, noDraw: true},
                         "tra_1805": {x: pos.badu.x+240, y: pos.badu.y+30, name: '猴硐', stationClass: 4, noDraw: true },
