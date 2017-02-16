@@ -787,10 +787,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.4.9",
-            "產生日期": "2017/01/30"
+            "版本": "Beta 0.5.0",
+            "產生日期": "2017/02/16"
         },
         programUpdateInfo: [
+                    'Beta 0.5.0: 調整路線圖內桃園機場捷運為正式路線，工具新增機場捷運時刻表計算器。',
                     'Beta 0.4.9: 新增台鐵三姓橋站及八斗子站。',
                     'Beta 0.4.8: 台鐵時刻表改讀公開資訊 JSON 格式檔加速時候表載入。',
                     'Beta 0.4.7: 新增沙崙線。',
@@ -6094,6 +6095,7 @@ var TT = (function(){
         },
         createTool: function(){
             TT.ui.center.tool = TT.ui.createDiv('tt_tool', 'centerPage tool', TT.ui.centerDiv.id);
+            TT.ui.center.tool.innerHTML = '<div style="padding-left: 40px;"><a href="calc_tymetro.html">連結至桃園機場捷運時刻表產生器</a></div>';
             
             //DATA Frame
             TT.ui.center.tool.dataDiv = TT.ui.createDiv('tt_tool_data', 'frameA trtc', TT.ui.center.tool.id);
