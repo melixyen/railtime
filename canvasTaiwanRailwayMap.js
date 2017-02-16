@@ -1092,7 +1092,7 @@
                     id: "tyrtc_1",
                     name: "[桃捷]機場線",
                     color: "#8e47ad",
-                    isPlanLine: true,
+                    isPlanLine: false,
                     nameTag: {
                         fontColor: '#FFF',
                         id:'tyrtc_a07', 
