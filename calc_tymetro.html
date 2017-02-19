@@ -3,7 +3,6 @@
 <html lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width; initial-scale=1.0" />
 <meta name="description" content="接軌時刻 - 台灣鐵路火車捷運時刻表及路線轉乘查詢系統 Taiwan Railway MRT Timetable Web APP" />
 <meta name="keywords" content="捷運,台鐵,火車,鐵路,時刻表,轉乘,TRA,TRTC,MRT,Timetable,Taiwan Railway,接軌時刻" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -102,8 +101,6 @@ body {
 	text-align: center;
 }
 .renderTime .stnName{
-	writing-mode: vertical-lr;
-	padding-left: 33%;
 	text-align: center;
 }
 .renderTime .stnOut{
@@ -147,7 +144,7 @@ var TT = {
 		'請先點選往環北或往台北車站設定方向，之後可以起迄時間或線上任一車站來排序，亦可過濾是否要顯示直達車或普通車。',
 		'',
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2017/02/16</span>"
+			"更新日期: 2017/02/19</span>"
 	],
 	station: {
                         "tyrtc_a01": {a: true, b: true, name: '臺北車站', aDwon: 0, aUp: 37, bDown: 0, bUp: 50},
@@ -451,6 +448,7 @@ TT.createMenuBar = function(){
 		'<div class="menuItem toHuanBei">往環北站</div>' +
 		'<div class="menuItem toTaipei">往台北車站</div>' +
 		'<div class="menuItem menuItem2 json">檢視 JSON 時刻表</div>' +
+		'<div class="menuItem menuItem2 transGuide">轉乘導覽</div>' +
 		'<div class="menuItem menuItem2 back">回到接軌時刻</div>' +
 		
 	'</div>';
@@ -462,6 +460,8 @@ TT.createMenuBar = function(){
 			TT.cmd('renderTimeTable', {timeTableSearchDir: 0});
 		}else if(t.indexOf('json')>0){
 			TT.cmd('renderJSON');
+		}else if(t.indexOf('transGuide')>0){
+            TT.cmd('renderTransGuide');
 		}else if(t.indexOf('back')>0){
 			location.href = './';
 		}
@@ -514,6 +514,9 @@ TT.cmd = function(cmd, objA){
 		case 'renderJSON':
 			TT.renderJSON();
 		break;
+        case 'renderTransGuide':
+            TT.renderTransGuide();
+        break;
 		case 'uiChange':
 			var domA = document.querySelector('div.menuBar div.menuItem.toHuanBei');
 			domA.className = domA.className.replace(' selected','');
@@ -561,14 +564,22 @@ TT.makeRenderTable = function(dir, timeAry){
 	}
 	var table = document.createElement('table');
 	table.className = 'renderTime';
-	var stnObj = {};
+	var stnObj = {}, stnObjVertilName='';
 	var stnStr = (function(){
 		var rt = '<tr><td>X</td>';
 		var tmpS = '';
 		for(var i=0; i<tLineAry.length; i++){
 			stnObj = TT.station[tLineAry[i]];
 			tmpS = 'stationID_' + tLineAry[i];
-			rt += '<td class="stnTD ' + tmpS + '"><div class="stnOut ' + tmpS + '"><div class="stnID ' + tmpS + '">' + tLineAry[i].replace('tyrtc_','').toUpperCase() + '</div><div class="stnName ' + tmpS + '">' + stnObj.name + '</div></div></td>';
+            stnObjVertilName = (function(str){
+                var aryA = str.split('');
+                var tmpB = '';
+                aryA.map(function(c){
+                    tmpB += '<div class="' + tmpS + '">' + c + '</div>';
+                });
+                return tmpB;
+            })(stnObj.name);
+			rt += '<td class="stnTD ' + tmpS + '"><div class="stnOut ' + tmpS + '"><div class="stnID ' + tmpS + '">' + tLineAry[i].replace('tyrtc_','').toUpperCase() + '</div><div class="stnName ' + tmpS + '">' + stnObjVertilName + '</div></div></td>';
 		}
 		rt += '</tr>';
 		return rt;
@@ -689,6 +700,26 @@ TT.renderJSON = function(){
 	
 	var str = JSON.stringify(TT.timeTable, undefined, 4);
 	document.getElementById('showJSON').value = str;
+}
+TT.renderTransGuide = function(){
+	var div = document.getElementById('timeShowIns');
+	div.innerHTML = '';
+	var insDiv = document.createElement('div');
+    function makeLink(url, str, min){
+        return '<div><a style="color:blue;" href="' + url + '" target="_new">' + str + '</a>' + '&nbsp;' + min + '分鐘' + '</div>';
+    }
+	insDiv.innerHTML = '<div id="transGuide">' + 
+        '<h2>台北車站</h2>' +
+        makeLink('https://youtu.be/ulOu7N85QRo', '機場捷運至台鐵及高鐵閘門口' ,7) +
+        makeLink('https://youtu.be/dxfIJJ0b_3o', '台高鐵西出口轉機捷' ,5) +
+        makeLink('https://youtu.be/A6PPO4zqxJI', '機場捷運至台北捷運淡水線' ,10) +
+        makeLink('https://youtu.be/gq7FJbhUN7U', '台北捷運淡水線至機場捷運' ,10) +
+        makeLink('https://youtu.be/uaLbpXkDiX4', '機場捷運至台北捷運板南線' ,9) +
+        makeLink('https://youtu.be/n7FgZ1-sDyk', '台北捷運板南線至機場捷運' ,9) +
+        makeLink('https://youtu.be/g5nm5Sbn6bw', '機場捷運至台北捷運北門站' ,9) +
+        makeLink('https://youtu.be/X_sjsSHqsoU', '台北捷運北門站至機場捷運' ,9) +
+    '';
+	div.appendChild(insDiv);
 }
 TT.initFn = function(){
 	var body = document.body;
