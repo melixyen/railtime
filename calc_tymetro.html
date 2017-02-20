@@ -77,7 +77,6 @@ body {
 #timeShowArea{
 	width: 100%;
 	max-width: 100%;
-	overflow-x: auto;
 }
 #timeShowIns{
 	margin: 10px 8px;
@@ -94,9 +93,6 @@ body {
 .renderTime .stnTD{
 	cursor: pointer;
 }
-.renderTime .stnTD.selected{
-	background-color: #cec;
-}
 .renderTime .stnID{
 	text-align: center;
 }
@@ -107,6 +103,18 @@ body {
 	width: 48px;
 	font-size: 16px;
 	text-align: center;
+}
+.renderTime.fixOut .stnTD{
+	width: 48px;
+	height: 140px;
+}
+.renderTime.fixOut .stnOut{
+	position: relative;;
+	top: 0px;
+	background-color: #FFF;
+}
+.renderTime .stnTD.selected, .renderTime.fixOut .stnTD.selected .stnOut{
+	background-color: #cec;
 }
 .renderTime .normal{
 	color: #33F;
@@ -144,7 +152,7 @@ var TT = {
 		'請先點選往環北或往台北車站設定方向，之後可以起迄時間或線上任一車站來排序，亦可過濾是否要顯示直達車或普通車。',
 		'',
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2017/02/19</span>"
+			"更新日期: 2017/02/20</span>"
 	],
 	station: {
                         "tyrtc_a01": {a: true, b: true, name: '臺北車站', aDwon: 0, aUp: 37, bDown: 0, bUp: 50},
@@ -250,6 +258,8 @@ TT.makeTimeTable = function(){
 	var normalDayLine1 = [4,4,3,2,3,7,4,6,7,3,3,3,4,3,3,3,4,3,5,4,0];
 	var directlyDayLine0 = [0,-1,10,-1,-1,-1,-1,11,-1,-1,-1,15,2,-1,-1,-1,-1,-1,-1,-1,-1];
 	var directlyDayLine1 = [8,-1,14,-1,-1,-1,-1,13,-1,-1,-1,2,0,-1,-1,-1,-1,-1,-1,-1,-1];
+	var normalNoWaitDayLine0 = [0,5,5,3,1,3,6,4,3,10,2,4,3,3,3,3,3,4,3,5,4];
+	var normalNoWaitDayLine1 = [4,4,3,2,3,7,4,4,7,3,3,3,4,3,3,3,4,3,5,4,0];
 	
 	var normal0Cnt = 1, normal1Cnt = 2, directly0Cnt = 1, directly1Cnt = 2, tmpSec = 0, aryA = [], objA = {};
 	
@@ -272,6 +282,27 @@ TT.makeTimeTable = function(){
 	var directlyDay1StartSec = (6 * 60 + 12) * 60; // 06:12 開始二航發直達車
 	var directlyDay1EndSec = (22 * 60 + 42) * 60; // 22:42 結束二航發直達車
 	
+	var modeVal = document.getElementById('selectMode').value;
+	if(modeVal!="15"){
+		switch(modeVal){
+			case "12":
+				normalDay0StartSec = (6 * 60 + 5) * 60; // 06:05 開始台北發普通車
+				normalDay0Interval = 12 * 60;
+				directlyDay0Interval = 12 * 60;
+				normalDay1StartSec = (6 * 60 + 1) * 60; // 06:01 開始環北發普通車
+				normalDay1Interval = 12 * 60;
+				directlyDay1Interval = 12 * 60;
+			break;
+			case "10":
+				normalDay0StartSec = (6 * 60 + 3) * 60; // 06:03 開始台北發普通車
+				normalDay0Interval = 10 * 60;
+				directlyDay0Interval = 10 * 60;
+				normalDay1Interval = 10 * 60;
+				directlyDay1Interval = 10 * 60;
+			break;
+		}
+	}
+	
 	
 	function makeTimeTable(Var_tLineAry, trainType, Var_lineIntervalAry, dir){
 		var tmpMinCount = 0, ary = [];
@@ -287,6 +318,9 @@ TT.makeTimeTable = function(){
 				tmpMinCount += lineIntervalAry[i];
 				tmpD = tmpSec + (tmpMinCount * 60);
 				tmpA = tmpSec + (tmpMinCount * 60);
+				if(trainType=='normal' && tLineAry[i]=='tyrtc_a08' && (Var_lineIntervalAry==normalDayLine0 || Var_lineIntervalAry==normalDayLine1)){
+					tmpA = tmpSec + ((tmpMinCount-2) * 60);
+				}
 				ary.push({
 					stationID: tLineAry[i],
 					depTime: tmpD,
@@ -315,6 +349,23 @@ TT.makeTimeTable = function(){
 		objA.timeTable = aryT;
 		aryNormal0.push(objA);
 		normal0Cnt += 2;
+		if(modeVal=="15I1A2B"){
+			tmpSec = tmpSec + (9*60);
+			objA = {
+				trainID: 'BXM' + normal0Cnt,
+				startStn: normalDay0StartStation,
+				endStn: normalDay1StartStation,
+				type: 'normal',
+				dir: 1,
+				timeTable: []
+			};
+			
+			var aryT = makeTimeTable(TT.lineAry, 'normal', normalNoWaitDayLine0, 1);
+			objA.timeTable = aryT;
+			aryNormal0.push(objA);
+			normal0Cnt += 2;
+			tmpSec = tmpSec - (9*60);
+		}
 		tmpSec = tmpSec + normalDay0Interval;
 	}
 	//產生台北發直達車
@@ -351,6 +402,23 @@ TT.makeTimeTable = function(){
 		objA.timeTable = aryT;
 		aryNormal1.push(objA);
 		normal1Cnt += 2;
+		if(modeVal=="15I1A2B"){
+			tmpSec = tmpSec + (8*60);
+			objA = {
+				trainID: 'BXM' + normal1Cnt,
+				startStn: normalDay1StartStation,
+				endStn: normalDay0StartStation,
+				type: 'normal',
+				dir: 0,
+				timeTable: []
+			};
+			
+			var aryT = makeTimeTable(TT.lineAry, 'normal', normalNoWaitDayLine1, 0);
+			objA.timeTable = aryT;
+			aryNormal1.push(objA);
+			normal1Cnt += 2;
+			tmpSec = tmpSec - (8*60);
+		}
 		tmpSec = tmpSec + normalDay1Interval;
 	}
 	//產生二航發直達車
@@ -402,6 +470,8 @@ TT.makeTimeTable = function(){
 		objA.timeTable = aryT;
 		arySpecialTrain.push(objA);
 	}
+	
+	if(modeVal=="15"){//標準模式才產生標準的特殊班次時刻表
 	//特殊下行
 	tmpSec = 6 * 60 * 60;
 	speTrain('tyrtc_a18', 'tyrtc_a21', 1, TT.lineAry.slice(17), normalDayLine0.slice(17), 'normal');
@@ -438,6 +508,7 @@ TT.makeTimeTable = function(){
 	speTrain('tyrtc_a21', 'tyrtc_a01', 0, TT.lineAry, normalNightLine1, 'normal');
 	tmpSec = (23 * 60 + 7) * 60;
 	speTrain('tyrtc_a21', 'tyrtc_a01', 0, TT.lineAry, normalNightLine1, 'normal');
+	}
 	
 	TT.timeTable = TT.timeTable.concat(aryNormal0).concat(aryDirectly0).concat(aryNormal1).concat(aryDirectly1).concat(arySpecialTrain);
 	
@@ -476,6 +547,14 @@ TT.createSetArea = function(){
 		'<div class="setItem setItem2 displayTrainType_all">所有車種</div>' +
 		'<div class="setItem setItem2 displayTrainType_directly">直達車</div>' +
 		'<div class="setItem setItem2 displayTrainType_normal">普通車</div>' +
+		'<div class="setItem setItem3 selectModeOut">' +
+			'<select id="selectMode">' +
+				'<option value="15" selected="selected">' + '標準模式 (15分鐘)' + '</option>' +
+				'<option value="15I1A2B">' + '模擬 15 分鐘一直兩普' + '</option>' +
+				'<option value="12">' + '模擬 12 分鐘一直一普' + '</option>' +
+				'<option value="10">' + '模擬 10 分鐘一直一普' + '</option>' +
+			'</select>' + 
+		'</div>' +
 		
 		'<div class="description"></div>' +
 	'</div>';
@@ -510,6 +589,7 @@ TT.cmd = function(cmd, objA){
 				TT.renderUpTime();
 			}
 			TT.cmd('uiChange');
+			TT.cmd('tableFixedStnName');
 		break;
 		case 'renderJSON':
 			TT.renderJSON();
@@ -552,6 +632,30 @@ TT.cmd = function(cmd, objA){
 				tmpS.className = tmpS.className.replace(' selected','');
 				if(tmpS.className.indexOf(TT.timeTableSortTag)>=0){
 					tmpS.className = tmpS.className + ' selected';
+				}
+			}
+		break;
+		case 'tableFixedStnName':
+			var tt = document.querySelector('table.renderTime');
+			if(tt){
+				var ttop = tt.getBoundingClientRect().top;
+				if(ttop < 0 && !/fixOut/.test(tt.className)){
+					tt.className += ' fixOut';
+				}else if(ttop >=0 && /fixOut/.test(tt.className)){
+					tt.className = tt.className.replace(' fixOut','');
+				}
+				
+				var aryTD = document.querySelectorAll('table.renderTime .stnTD'),
+					tmpA,
+					aryOut = document.querySelectorAll('table.renderTime .stnOut');
+				if(ttop<0){
+					for(var i=0; i<aryTD.length; i++){
+						aryOut[i].style.top = (0 - aryTD[i].getBoundingClientRect().top) + 'px';
+					}
+				}else{
+					for(var i=0; i<aryOut.length; i++){
+						aryOut[i].style.top = '';
+					}
 				}
 			}
 		break;
@@ -728,12 +832,19 @@ TT.initFn = function(){
 	var setArea = TT.createSetArea();
 	body.appendChild(setArea);
 	document.querySelector('.setArea .description').innerHTML = TT.descriptionText.join('<br>');
+	document.getElementById('selectMode').addEventListener('change', function(e){
+		TT.makeTimeTable();
+		TT.cmd('renderTimeTable');
+	});
 	TT.makeTimeTable();//計算時刻表
 	
 	var timeShowArea = document.createElement('div');
 	timeShowArea.id = 'timeShowArea';
 	timeShowArea.innerHTML = '<div id="timeShowIns"></div>';
 	body.appendChild(timeShowArea);
+	document.addEventListener('scroll', function(e){
+		TT.cmd('tableFixedStnName');
+	});
 }
 </script>
 <!-- -->
