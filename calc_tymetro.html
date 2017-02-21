@@ -104,7 +104,7 @@ body {
 	font-size: 16px;
 	text-align: center;
 }
-.renderTime.fixOut .stnTD{
+.renderTime .stnTD, .renderTime.fixOut .stnTD{
 	width: 48px;
 	height: 140px;
 }
@@ -152,7 +152,7 @@ var TT = {
 		'請先點選往環北或往台北車站設定方向，之後可以起迄時間或線上任一車站來排序，亦可過濾是否要顯示直達車或普通車。',
 		'',
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2017/02/20</span>"
+			"更新日期: 2017/02/21</span>"
 	],
 	station: {
                         "tyrtc_a01": {a: true, b: true, name: '臺北車站', aDwon: 0, aUp: 37, bDown: 0, bUp: 50},
@@ -254,12 +254,14 @@ TT.getIndexOfStation = function(id){
 TT.makeTimeTable = function(){
 	TT.timeTable = [];
 	var lineAry = TT.lineAry;
-	var normalDayLine0 = [0,5,5,3,1,3,6,6,3,10,2,4,3,3,3,3,3,4,3,5,4];
-	var normalDayLine1 = [4,4,3,2,3,7,4,6,7,3,3,3,4,3,3,3,4,3,5,4,0];
-	var directlyDayLine0 = [0,-1,10,-1,-1,-1,-1,11,-1,-1,-1,15,2,-1,-1,-1,-1,-1,-1,-1,-1];
-	var directlyDayLine1 = [8,-1,14,-1,-1,-1,-1,13,-1,-1,-1,2,0,-1,-1,-1,-1,-1,-1,-1,-1];
-	var normalNoWaitDayLine0 = [0,5,5,3,1,3,6,4,3,10,2,4,3,3,3,3,3,4,3,5,4];
-	var normalNoWaitDayLine1 = [4,4,3,2,3,7,4,4,7,3,3,3,4,3,3,3,4,3,5,4,0];
+	var normalDayLine0 = [[0,0],[5,0],[5,0],[3,0],[1,0],[3,0],[6,0],[4,2],[3,0],[10,0],[2,0],[4,0],[3,0],[3,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0]];
+	var normalDayLine1 = [[4,0],[4,0],[3,0],[2,0],[3,0],[7,0],[4,0],[4,2],[7,0],[3,0],[3,0],[3,0],[4,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0],[0,0]];
+	var directlyDayLine0 = [[0,0],[-1,-1],[8,2],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[11,0],[-1,-1],[-1,-1],[-1,-1],[14,1],[2,0],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]];
+	var directlyDayLine1 = [[8,0],[-1,-1],[14,0],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[13,0],[-1,-1],[-1,-1],[-1,-1],[2,0],[0,0],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]];
+	var normalNoWaitDayLine0 = [[0,0],[5,0],[5,0],[3,0],[1,0],[3,0],[6,0],[4,0],[3,0],[10,0],[2,0],[4,0],[3,0],[3,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0]];
+	var normalNoWaitDayLine1 = [[4,0],[4,0],[3,0],[2,0],[3,0],[7,0],[4,0],[4,0],[7,0],[3,0],[3,0],[3,0],[4,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0],[0,0]];
+	var normalWaitA3DayLine0 = [[0,0],[5,0],[5,4],[3,0],[1,0],[3,0],[6,0],[4,0],[3,0],[10,0],[2,0],[4,0],[3,0],[3,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0]];
+	var normalWaitA3DayLine1 = [[4,0],[4,0],[2,2],[2,0],[3,0],[7,0],[4,0],[4,0],[7,0],[3,0],[3,0],[3,0],[4,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0],[0,0]];
 	
 	var normal0Cnt = 1, normal1Cnt = 2, directly0Cnt = 1, directly1Cnt = 2, tmpSec = 0, aryA = [], objA = {};
 	
@@ -286,6 +288,7 @@ TT.makeTimeTable = function(){
 	if(modeVal!="15"){
 		switch(modeVal){
 			case "12":
+			case "12I1A2B":
 				normalDay0StartSec = (6 * 60 + 5) * 60; // 06:05 開始台北發普通車
 				normalDay0Interval = 12 * 60;
 				directlyDay0Interval = 12 * 60;
@@ -314,13 +317,10 @@ TT.makeTimeTable = function(){
 			lineIntervalAry.reverse();
 		}
 		for(var i=0; i<tLineAry.length; i++){
-			if(lineIntervalAry[i]>=0 && ((trainType=='normal' && TT.station[tLineAry[i]].b==true) || (trainType=='directly' && TT.station[tLineAry[i]].a==true))){
-				tmpMinCount += lineIntervalAry[i];
-				tmpD = tmpSec + (tmpMinCount * 60);
+			if(lineIntervalAry[i][0]>=0 && ((trainType=='normal' && TT.station[tLineAry[i]].b==true) || (trainType=='directly' && TT.station[tLineAry[i]].a==true))){
+				tmpMinCount += lineIntervalAry[i][0];
+				tmpD = tmpSec + (tmpMinCount * 60) + (lineIntervalAry[i][1])*60;
 				tmpA = tmpSec + (tmpMinCount * 60);
-				if(trainType=='normal' && tLineAry[i]=='tyrtc_a08' && (Var_lineIntervalAry==normalDayLine0 || Var_lineIntervalAry==normalDayLine1)){
-					tmpA = tmpSec + ((tmpMinCount-2) * 60);
-				}
 				ary.push({
 					stationID: tLineAry[i],
 					depTime: tmpD,
@@ -328,6 +328,7 @@ TT.makeTimeTable = function(){
 					depTimeStr: TT.transTime2HM(tmpD),
 					arrTimeStr: TT.transTime2HM(tmpA),
 				});
+				tmpMinCount += lineIntervalAry[i][1];
 			}
 		}
 		return ary;
@@ -349,6 +350,23 @@ TT.makeTimeTable = function(){
 		objA.timeTable = aryT;
 		aryNormal0.push(objA);
 		normal0Cnt += 2;
+		if(modeVal=="12I1A2B"){
+			tmpSec = tmpSec + (4*60);
+			objA = {
+				trainID: 'BXP' + normal0Cnt,
+				startStn: normalDay0StartStation,
+				endStn: normalDay1StartStation,
+				type: 'normal',
+				dir: 1,
+				timeTable: []
+			};
+			
+			var aryT = makeTimeTable(TT.lineAry, 'normal', normalWaitA3DayLine0, 1);
+			objA.timeTable = aryT;
+			aryNormal0.push(objA);
+			normal0Cnt += 2;
+			tmpSec = tmpSec - (4*60);
+		}
 		if(modeVal=="15I1A2B"){
 			tmpSec = tmpSec + (9*60);
 			objA = {
@@ -365,6 +383,39 @@ TT.makeTimeTable = function(){
 			aryNormal0.push(objA);
 			normal0Cnt += 2;
 			tmpSec = tmpSec - (9*60);
+		}
+		if(modeVal=="15I1A3B"){
+			tmpSec = tmpSec + (4*60);
+			objA = {
+				trainID: 'BXP' + normal0Cnt,
+				startStn: normalDay0StartStation,
+				endStn: normalDay1StartStation,
+				type: 'normal',
+				dir: 1,
+				timeTable: []
+			};
+			
+			var aryT = makeTimeTable(TT.lineAry, 'normal', normalWaitA3DayLine0, 1);
+			objA.timeTable = aryT;
+			aryNormal0.push(objA);
+			normal0Cnt += 2;
+			tmpSec = tmpSec - (4*60);
+			
+			tmpSec = tmpSec + (11*60);
+			objA = {
+				trainID: 'BXL' + normal0Cnt,
+				startStn: normalDay0StartStation,
+				endStn: 'tyrtc_a09',
+				type: 'normal',
+				dir: 1,
+				timeTable: []
+			};
+			
+			var aryT = makeTimeTable(TT.lineAry.slice(0,9), 'normal', normalNoWaitDayLine0.slice(0,9), 1);
+			objA.timeTable = aryT;
+			aryNormal0.push(objA);
+			normal0Cnt += 2;
+			tmpSec = tmpSec - (11*60);
 		}
 		tmpSec = tmpSec + normalDay0Interval;
 	}
@@ -402,6 +453,23 @@ TT.makeTimeTable = function(){
 		objA.timeTable = aryT;
 		aryNormal1.push(objA);
 		normal1Cnt += 2;
+		if(modeVal=="12I1A2B"){
+			tmpSec = tmpSec + (8*60);
+			objA = {
+				trainID: 'BXP' + normal1Cnt,
+				startStn: normalDay1StartStation,
+				endStn: normalDay0StartStation,
+				type: 'normal',
+				dir: 0,
+				timeTable: []
+			};
+			
+			var aryT = makeTimeTable(TT.lineAry, 'normal', normalWaitA3DayLine1, 0);
+			objA.timeTable = aryT;
+			aryNormal1.push(objA);
+			normal1Cnt += 2;
+			tmpSec = tmpSec - (8*60);
+		}
 		if(modeVal=="15I1A2B"){
 			tmpSec = tmpSec + (8*60);
 			objA = {
@@ -418,6 +486,39 @@ TT.makeTimeTable = function(){
 			aryNormal1.push(objA);
 			normal1Cnt += 2;
 			tmpSec = tmpSec - (8*60);
+		}
+		if(modeVal=="15I1A3B"){
+			tmpSec = tmpSec + (-4*60);
+			objA = {
+				trainID: 'BXP' + normal1Cnt,
+				startStn: normalDay1StartStation,
+				endStn: normalDay0StartStation,
+				type: 'normal',
+				dir: 0,
+				timeTable: []
+			};
+			
+			var aryT = makeTimeTable(TT.lineAry, 'normal', normalWaitA3DayLine1, 0);
+			objA.timeTable = aryT;
+			aryNormal1.push(objA);
+			normal1Cnt += 2;
+			tmpSec = tmpSec - (-4*60);
+			
+			tmpSec = tmpSec + (-1*60);
+			objA = {
+				trainID: 'BXL' + normal1Cnt,
+				startStn: normalDay1StartStation,
+				endStn: normalDay0StartStation,
+				type: 'normal',
+				dir: 0,
+				timeTable: []
+			};
+			
+			var aryT = makeTimeTable(TT.lineAry.slice(0,9), 'normal', normalNoWaitDayLine1.slice(0,9), 0);
+			objA.timeTable = aryT;
+			aryNormal1.push(objA);
+			normal1Cnt += 2;
+			tmpSec = tmpSec - (-1*60);
 		}
 		tmpSec = tmpSec + normalDay1Interval;
 	}
@@ -443,18 +544,18 @@ TT.makeTimeTable = function(){
 	//產生特殊班次
 	var arySpecialTrain = [], sp0Cnt = 1, sp1Cnt = 2;
 	var speLineAry = [], speLineTimeAry = [];
-	var normalNightLine1 = [4,4,3,2,3,7,4,3,7,3,3,2,4,2,4,2,4,3,5,4,0];
+	var normalNightLine1 = [[4,0],[4,0],[3,0],[2,0],[3,0],[7,0],[4,0],[3,0],[7,0],[3,0],[3,0],[2,0],[4,0],[2,0],[4,0],[2,0],[4,0],[3,0],[5,0],[4,0],[0,0]];
 	function speTrain(startStn, endStn, dir, spLineAry, spLineTimeAry, trainType){
 		var objA = {};
 		trainType = trainType || 'normal';
 		var tmt = (trainType=='normal') ? 'B' : 'A';
 		var spCnt = 0;
 		if(dir==1){
-			spLineTimeAry[0] = 0;
+			spLineTimeAry[0] = [0,0];
 			spCnt = sp0Cnt;
 			sp0Cnt+=2;
 		}else{
-			spLineTimeAry[spLineTimeAry.length-1] = 0;
+			spLineTimeAry[spLineTimeAry.length-1] = [0,0];
 			spCnt = sp1Cnt;
 			sp1Cnt+=2;
 		}
@@ -486,9 +587,9 @@ TT.makeTimeTable = function(){
 	tmpSec = (22 * 60 + 58) * 60;
 	speTrain('tyrtc_a1', 'tyrtc_a21', 1, TT.lineAry, directlyDayLine0, 'directly');
 	tmpSec = (22 * 60 + 51) * 60;
-	speTrain('tyrtc_a1', 'tyrtc_a21', 1, TT.lineAry, [0,5,5,3,1,3,6,6,3,10,2,4,2,3,3,3,3,4,3,5,4], 'normal');
+	speTrain('tyrtc_a1', 'tyrtc_a21', 1, TT.lineAry, [[0,0],[5,0],[5,0],[3,0],[1,0],[3,0],[6,0],[4,2],[3,0],[10,0],[2,0],[4,0],[2,0],[3,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0]], 'normal');
 	tmpSec = (23 * 60 + 5) * 60;
-	speTrain('tyrtc_a1', 'tyrtc_a21', 1, TT.lineAry, [0,6,4,3,2,3,5,4,2,10,2,4,2,3,3,3,3,4,3,5,4], 'normal');
+	speTrain('tyrtc_a1', 'tyrtc_a21', 1, TT.lineAry, [[0,0],[6,0],[4,0],[3,0],[2,0],[3,0],[5,0],[4,0],[2,0],[10,0],[2,0],[4,0],[2,0],[3,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0]], 'normal');
 	//特殊上行
 	tmpSec = (6 * 60 + 2) * 60;
 	speTrain('tyrtc_a03', 'tyrtc_a01', 0, TT.lineAry.slice(0,3), normalDayLine1.slice(0,3), 'normal');
@@ -551,7 +652,9 @@ TT.createSetArea = function(){
 			'<select id="selectMode">' +
 				'<option value="15" selected="selected">' + '標準模式 (15分鐘)' + '</option>' +
 				'<option value="15I1A2B">' + '模擬 15 分鐘一直兩普' + '</option>' +
+				'<option value="15I1A3B">' + '模擬 15 分鐘一直三普' + '</option>' +
 				'<option value="12">' + '模擬 12 分鐘一直一普' + '</option>' +
+				'<option value="12I1A2B">' + '模擬 12 分鐘一直兩普' + '</option>' +
 				'<option value="10">' + '模擬 10 分鐘一直一普' + '</option>' +
 			'</select>' + 
 		'</div>' +
@@ -690,7 +793,7 @@ TT.makeRenderTable = function(dir, timeAry){
 	})();
 	
 	var trainStr = (function(){
-		var rt = '', trainType = '', tStr = '', tCSS = '', tObj = {}, ttb = {}, mstr;
+		var rt = '', trainType = '', tStr = '', tCSS = '', tObj = {}, ttb = {}, mstr, waitCrossCSS = '';
 		for(var i=0; i<timeAry.length; i++){
 			tObj = timeAry[i];
 			trainType = tObj.type;
@@ -702,13 +805,18 @@ TT.makeRenderTable = function(dir, timeAry){
 			ttb = tObj.timeTable;
 			for(var j=0; j<tLineAry.length; j++){
 				mstr = '';
+				waitCrossCSS = '';
 				for(var k=0; k<ttb.length; k++){
 					if(ttb[k].stationID==tLineAry[j]){
 						mstr = TT.transTime2HM(ttb[k].depTime);
+						if(trainType=='normal' && (ttb[k].depTime - ttb[k].arrTime)>=2){
+							waitCrossCSS = (trainType=='normal' && ((ttb[k].depTime - ttb[k].arrTime)/60)>=2) ? ' waitCross' : '';
+							mstr = TT.transTime2HM(ttb[k].arrTime) + ' ~ ' + TT.transTime2HM(ttb[k].depTime);
+						}
 						break;
 					}
 				}
-				rt += '<td><div class="' + trainType + ' trainTime">' + mstr + '</div></td>';
+				rt += '<td><div class="' + trainType + waitCrossCSS + ' trainTime">' + mstr + '</div></td>';
 			}
 			rt += '</tr>';
 		}
