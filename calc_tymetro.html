@@ -3,8 +3,8 @@
 <html lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="description" content="接軌時刻 - 台灣鐵路火車捷運時刻表及路線轉乘查詢系統 Taiwan Railway MRT Timetable Web APP" />
-<meta name="keywords" content="捷運,台鐵,火車,鐵路,時刻表,轉乘,TRA,TRTC,MRT,Timetable,Taiwan Railway,接軌時刻" />
+<meta name="description" content="接軌時刻 - 桃園機場捷運時刻表查詢系統 Taoyuan Metro Timetable Web APP" />
+<meta name="keywords" content="捷運,機捷,機場捷運,時刻表,機場快線,直達車,普通車,機場捷運時刻表,TYMETRO,MRT,Timetable,接軌時刻" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 <title>接軌時刻 - 桃園機場捷運時刻表計算器</title>
 <style type="text/css">
@@ -14,6 +14,14 @@ body {
     /*font-family:'細明體', "PMingLiU";*/
     font-size: 14px;
     margin: 0px;
+}
+
+#ttDebug{
+	position: fixed;
+	top: 60px;
+	background-color: #311;
+	color: #DDE;
+	display: inline-block;
 }
 
 .menuBar{
@@ -152,7 +160,7 @@ var TT = {
 		'請先點選往環北或往台北車站設定方向，之後可以起迄時間或線上任一車站來排序，亦可過濾是否要顯示直達車或普通車。',
 		'',
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2017/02/21</span>"
+			"更新日期: 2017/02/23</span>"
 	],
 	station: {
                         "tyrtc_a01": {a: true, b: true, name: '臺北車站', aDwon: 0, aUp: 37, bDown: 0, bUp: 50},
@@ -241,7 +249,8 @@ var TT = {
     timeTableDisplayType: 'all',//all , normal , directly
     timeTableSortTag: 'startTime',//startTime, endTime, stationID_tyrtc_a13
     timeTableSearchDir: 0,
-    zxcv: 1
+    isMobileMove: false,
+    debugMode: false
 };
 
 TT.getIndexOfStation = function(id){
@@ -742,6 +751,9 @@ TT.cmd = function(cmd, objA){
 			var tt = document.querySelector('table.renderTime');
 			if(tt){
 				var ttop = tt.getBoundingClientRect().top;
+				if(TT.isMobileMove){
+					ttop = 0 - (window.pageYOffset);
+				}
 				if(ttop < 0 && !/fixOut/.test(tt.className)){
 					tt.className += ' fixOut';
 				}else if(ttop >=0 && /fixOut/.test(tt.className)){
@@ -753,7 +765,15 @@ TT.cmd = function(cmd, objA){
 					aryOut = document.querySelectorAll('table.renderTime .stnOut');
 				if(ttop<0){
 					for(var i=0; i<aryTD.length; i++){
-						aryOut[i].style.top = (0 - aryTD[i].getBoundingClientRect().top) + 'px';
+						if(TT.isMobileMove){
+							var ofst = tt.offsetTop || 184;
+							if((0-ttop) > ofst){
+								aryOut[i].style.top = 0 - ttop - ofst + 'px';
+							}
+							TT.debug(ttop);
+						}else{
+							aryOut[i].style.top = (0 - aryTD[i].getBoundingClientRect().top) + 'px';
+						}
 					}
 				}else{
 					for(var i=0; i<aryOut.length; i++){
@@ -933,6 +953,20 @@ TT.renderTransGuide = function(){
     '';
 	div.appendChild(insDiv);
 }
+TT.debug = function(str){
+	if(TT.debugMode==true){
+		var dbg = document.getElementById('ttDebug');
+		if(!dbg){ 
+			dbg = document.createElement('div');
+			dbg.id = 'ttDebug';
+			document.body.appendChild(dbg);
+		}
+		if(TT.isMobileMove){
+			dbg.style.top = window.pageYOffset + 35 + 'px';
+		}
+		dbg.innerHTML = str;
+	}
+}
 TT.initFn = function(){
 	var body = document.body;
 	var menuBar = TT.createMenuBar();
@@ -951,6 +985,10 @@ TT.initFn = function(){
 	timeShowArea.innerHTML = '<div id="timeShowIns"></div>';
 	body.appendChild(timeShowArea);
 	document.addEventListener('scroll', function(e){
+		TT.cmd('tableFixedStnName');
+	});
+	document.addEventListener('touchmove', function(e){
+		TT.isMobileMove = true;
 		TT.cmd('tableFixedStnName');
 	});
 }
