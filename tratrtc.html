@@ -793,10 +793,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.5.1",
-            "產生日期": "2017/04/16"
+            "版本": "Beta 0.5.2",
+            "產生日期": "2017/04/17"
         },
         programUpdateInfo: [
+                    'Beta 0.5.2: 新增機場捷運與台鐵互相轉乘查詢。',
                     'Beta 0.5.1: 新增機場捷運時刻表，可在路網內查詢。',
                     'Beta 0.5.0: 調整路線圖內桃園機場捷運為正式路線，工具新增機場捷運時刻表計算器。',
                     'Beta 0.4.9: 新增台鐵三姓橋站及八斗子站。',
@@ -1666,6 +1667,15 @@ var TT = (function(){
                     changeStation: ['trtc_051','trtc_051'],
                     walkMinute: 3
                 }, {
+                    id: 'taipei4', name: "台北",//機捷台鐵
+                    changeLine: ["tra_xibu", "tymetro_1"],
+                    changeStation: ['tra_1008','tymetro_a01'],
+                    video: {
+                        "tra_1008": {width:420, height:315, src:'https://www.youtube.com/embed/dxfIJJ0b_3o'},
+                        "tymetro_a01": {width:420, height:315, src:'https://www.youtube.com/embed/ulOu7N85QRo'}
+                    },
+                    walkMinute: 8
+                }, {
                     id: 'cksmh1', name: "中正紀念堂",
                     changeLine: ["trtc_3", "trtc_2"],
                     changeStation: ['trtc_042','trtc_042'],
@@ -2408,7 +2418,18 @@ var TT = (function(){
                         transStation: ["songshan1","sjnanjing1"]
                     }
                 ]
+            }, {//TRA to TTYMETRO
+                id: 'tra_xibu,tymetro_1',
+                fromToLine: ["tra_xibu","tymetro_1"],
+                sect: ['taipei','keelung','taoyuan','hsinchu'],
+                route: [
+                    {
+                        line: ["tra_xibu", "tymetro_1"],
+                        transStation: ["taipei4"]
+                    }
+                ]
             }, {
+            //TRTC inner trans
                 id: 'trtc_5,trtc_2',
                 fromToLine: ["trtc_5","trtc_2"],
                 sect: ['taipei'],
@@ -3019,6 +3040,41 @@ var TT = (function(){
                 	}, {
                 		regLine: "^trtc_2$|^tra_",
                 		transStation: [['taipei2']]
+                	}
+                ],
+                sect: ['hsinchu','taoyuan','taipei','keeling','miaoli','taichung','changhua','yunlin','chiayi','tainan','kaohsiung']
+            }, {
+            //TRA and TYMETRO trans
+                id: 'tymetro_trans_tra_east',
+                rType: 'cross',//direct , trans 
+                company: ['tymetro','tra'],// cross company serial
+                regLine: "^tymetro_1$|^tra_yilan$|^tra_beihui$|^tra_huadong$|^tra_pingxi$|^tra_liujia$",
+                lineIsSame: {
+                    "tra_xibu": "^tra_yilan$|^tra_beihui$|^tra_huadong$|^tra_pingxi$|^tra_liujia$"
+                },
+                link: [
+                	{
+                		regLine: "^tymetro_1|^tra_",
+                		transStation: [
+                			['taipei4']
+                		]
+                	}
+                ],
+                sect: ['hsinchu','taoyuan','taipei','keeling','northeast','yilan','beihui','hualian','taidong']
+            }, {
+                id: 'tymetro_trans_tra_west',
+                rType: 'cross',//direct , trans 
+                company: ['tymetro','tra'],// cross company serial
+                regLine: "^tymetro_1$|^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_shalun$",
+                lineIsSame: {
+                    "tra_xibu": "^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_shalun$"
+                },
+                link: [
+                	{
+                		regLine: "^tymetro_1|^tra_",
+                		transStation: [
+                			['taipei4']
+                		]
                 	}
                 ],
                 sect: ['hsinchu','taoyuan','taipei','keeling','miaoli','taichung','changhua','yunlin','chiayi','tainan','kaohsiung']
@@ -3799,6 +3855,7 @@ var TT = (function(){
                         }
                         tmpA = TT.fn.getRoute_specialTrans(tmpA, a, b);
                         tmpA = procRoute(tmpA, tkLen);
+                        tmpA = TT.fn.getRoute_anySectTransMayFast(tmpA, a, b);
                         tmpA = TT.fn.getRoute_removeTortuousRoute(a,b,tmpA,aLine[i],bLine[j]);
                         if(tmpA !== false){
                             rt.push(tmpA);
@@ -3880,6 +3937,71 @@ var TT = (function(){
                     break;
                 }
             }
+        },
+        getRoute_anySectTransMayFast: function(objA, a, b){
+            var aComp = TT.fn.getCompanyOfStation(a),
+                bComp = TT.fn.getCompanyOfStation(b),
+                aLine = TT.fn.getCommon_stationOnWhatLine(a),
+                bLine = TT.fn.getCommon_stationOnWhatLine(b);
+            if(aComp==bComp){
+            	return objA;//同公司暫不進行轉快速處理
+            }
+            if(aComp!='tymetro' && bComp!='tymetro'){
+            	return objA;//不包含機捷時暫不進行轉快速處理
+            }
+        	
+            var routeA = objA.route, plusAry = [], tmpB, takeRange, xa, xb, xabLine = '', xabComp = '';
+            for(var i=0; i<routeA.length; i++){
+            	var routeB = routeA[i];
+            	takeRange = routeB.takeRange;
+            	takeRange.map(function(c,cidx){
+            		var newTakeRouteB = {};
+            		xa = c[0], xb = c[1];
+            		xabLine = routeB.line[cidx];
+            		xabComp = TT.fn.getCompanyOfStation(xa);
+            		switch(xabComp){
+            			case 'tymetro':
+            				var tmpA = TT.fn.getRoute_mapOfFromToLine(xabLine,xabLine,xa,xb);
+            				if(tmpA){
+            					var xTransInfo = tmpA.getRouteAt();
+            					for(var i=0; i<xTransInfo.length; i++){
+            						newTakeRouteB = TT.fn.getRoute_convertSect2TransRoute(routeB, cidx, xTransInfo[0]);
+            						routeA.push(newTakeRouteB);
+            					}
+            				}
+            			break;
+            		}
+            	});
+            }
+            
+            return objA;
+        },
+        getRoute_convertSect2TransRoute: function(routeB, idx, transInfo){
+        	//將 routeB 的 idx 段 line 轉繼為 transInfo 的兩段
+        	var ti, tLine='', line = [], takeRange = [], transStation = [];
+        	for(var i =0; i<routeB.line.length; i++){
+        		ti = i-1;
+        		tLine = routeB.line[i];
+        		if(i==idx){
+        			//是要處理的，用 transInfo 拆開來
+        			line.push(tLine);
+        			takeRange.push([routeB.takeRange[i][0], transInfo.changeStation[0]]);
+        			if(ti>=0) transStation.push(routeB.transStation[ti]);
+        			
+        			line.push(tLine);
+        			takeRange.push([transInfo.changeStation[1],routeB.takeRange[i][1]]);
+        			if(ti>=0) transStation.push(transInfo.id);
+        		}else{
+        			line.push(tLine);
+        			takeRange.push(routeB.takeRange[i]);
+        			if(ti>=0) transStation.push(routeB.transStation[ti]);
+        		}
+        	}
+        	return {
+        		line: line,
+        		takeRange: takeRange,
+        		transStation: transStation
+        	}
         },
         getRoute_directionByFromToLine: function(a,b, routeOM){
             var routeM = $.extend({},routeOM);
