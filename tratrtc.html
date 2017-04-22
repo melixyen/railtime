@@ -479,6 +479,9 @@ body {
 .timeTableTrainRouteBox .table .deep .line_color.trtc_5 .bd{
     border-style: solid;
 }
+.timeTableTrainRouteBox .table .deep .line_color.tymetro_1, .timeTableTrainRouteBox .table .deep .line_color.tymetro_1 .bd{
+    border-color: #8e47ad;
+}
 .timeTableTrainRouteBox .table td.transStation{
     color: #9D92AB;
     border-bottom: 1px solid #CCC;
@@ -793,10 +796,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.5.2",
-            "產生日期": "2017/04/17"
+            "版本": "Beta 0.5.3",
+            "產生日期": "2017/04/22"
         },
         programUpdateInfo: [
+                    'Beta 0.5.3: 新增機場捷運與台北捷運部分路線互相轉乘查詢。',
                     'Beta 0.5.2: 新增機場捷運與台鐵互相轉乘查詢。',
                     'Beta 0.5.1: 新增機場捷運時刻表，可在路網內查詢。',
                     'Beta 0.5.0: 調整路線圖內桃園機場捷運為正式路線，工具新增機場捷運時刻表計算器。',
@@ -1436,7 +1440,7 @@ var TT = (function(){
                 {id:"tymetro_a05", name: "泰山", estring: "taishan", sect: 'taipei'},
                 {id:"tymetro_a06", name: "泰山貴和", estring: "taishanguehe", sect: 'taipei'},
                 {id:"tymetro_a07", name: "體育大學", estring: "tiyvdaxue", sect: 'taipei'},
-                {id:"tymetro_a08", name: "長庚醫院", estring: "changgengyiyuan", sect: 'taipei,taoyuan', big: 'd'},
+                {id:"tymetro_a08", name: "長庚醫院", estring: "changgengyiyuan", sect: 'taoyuan', big: 'd'},
                 {id:"tymetro_a09", name: "林口", estring: "linkou", sect: 'taoyuan'},
                 {id:"tymetro_a10", name: "山鼻", estring: "shanbi", sect: 'taoyuan'},
                 {id:"tymetro_a11", name: "坑口", estring: "kengkou", sect: 'taoyuan'},
@@ -1675,6 +1679,38 @@ var TT = (function(){
                         "tymetro_a01": {width:420, height:315, src:'https://www.youtube.com/embed/ulOu7N85QRo'}
                     },
                     walkMinute: 8
+                }, {
+                    id: 'taipei5', name: "台北",//機捷淡水線
+                    changeLine: ["trtc_2", "tymetro_1"],
+                    changeStation: ['trtc_051','tymetro_a01'],
+                    video: {
+                        "trtc_2": {width:420, height:315, src:'https://www.youtube.com/embed/gq7FJbhUN7U'},
+                        "tymetro_a01": {width:420, height:315, src:'https://www.youtube.com/embed/A6PPO4zqxJI'}
+                    },
+                    walkMinute: 12
+                }, {
+                    id: 'taipei6', name: "台北",//機捷板南線
+                    changeLine: ["trtc_5", "tymetro_1"],
+                    changeStation: ['trtc_051','tymetro_a01'],
+                    video: {
+                        "trtc_5": {width:420, height:315, src:'https://www.youtube.com/embed/n7FgZ1-sDyk'},
+                        "tymetro_a01": {width:420, height:315, src:'https://www.youtube.com/embed/uaLbpXkDiX4'}
+                    },
+                    walkMinute: 11
+                }, {
+                    id: 'taipei7', name: "北門",//機捷松山線
+                    changeLine: ["trtc_3", "tymetro_1"],
+                    changeStation: ['trtc_105','tymetro_a01'],
+                    video: {
+                        "trtc_105": {width:420, height:315, src:'https://www.youtube.com/embed/X_sjsSHqsoU'},
+                        "tymetro_a01": {width:420, height:315, src:'https://www.youtube.com/embed/g5nm5Sbn6bw'}
+                    },
+                    walkMinute: 11
+                }, {
+                    id: 'sanchong1', name: "三重",//機捷新莊線
+                    changeLine: ["trtc_4", "tymetro_1"],
+                    changeStation: ['trtc_125','tymetro_a02'],
+                    walkMinute: 7
                 }, {
                     id: 'cksmh1', name: "中正紀念堂",
                     changeLine: ["trtc_3", "trtc_2"],
@@ -2535,6 +2571,67 @@ var TT = (function(){
                     {
                         line: ["trtc_4", "trtc_4"],
                         transStation: ["daqiaotou1"]
+                    }
+                ]
+            }, {//TYMETRO to TRTC
+                id: 'tymetro_1,trtc_3',
+                fromToLine: ["tymetro_1","trtc_3"],
+                sect: ['taipei','taoyuan'],
+                route: [
+                    {
+                        line: ["tymetro_1", "trtc_3"],
+                        transStation: ["taipei7"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_111$|^trtc_110$|^trtc_109$|^trtc_009$|^trtc_132$|^trtc_105$|^trtc_086$',
+                        line: ["tymetro_1", "trtc_2", "trtc_3"],
+                        transStation: ["taipei5", "cksmh1"]
+                    }
+                ]
+            }, {
+                id: 'tymetro_1,trtc_5',
+                fromToLine: ["tymetro_1","trtc_5"],
+                sect: ['taipei','taoyuan'],
+                route: [
+                    {
+                        line: ["tymetro_1", "trtc_5"],
+                        transStation: ["taipei6"]
+                    }
+                ]
+            }, {
+                id: 'tymetro_1,trtc_2',
+                fromToLine: ["tymetro_1","trtc_2"],
+                sect: ['taipei','taoyuan'],
+                route: [
+                    {
+                        line: ["tymetro_1", "trtc_2"],
+                        transStation: ["taipei5"]
+                    }
+                ]
+            }, {
+                id: 'tymetro_1,trtc_4',
+                fromToLine: ["tymetro_1","trtc_4"],
+                sect: ['taipei','taoyuan'],
+                route: [
+                    {
+                        bypassStationReg: '^trtc_17[4-8]$',
+                        line: ["tymetro_1", "trtc_4"],
+                        transStation: ["sanchong1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_089$|^trtc_13[0-2]$|^trtc_055$|^trtc_12[1-8]$|^trtc_180$|^trtc_17[4-9]$',
+                        line: ["tymetro_1", "trtc_2", "trtc_4"],
+                        transStation: ["taipei5", "dongmen1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_132$|^trtc_089$|^trtc_134$|^trtc_041$|^trtc_04[5-8]$',
+                        line: ["tymetro_1", "trtc_2", "trtc_4"],
+                        transStation: ["taipei5", "mqxl1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_089$|^trtc_13[0-2]$|^trtc_055$|^trtc_12[1-8]$|^trtc_180$|^trtc_17[4-9]$',
+                        line: ["tymetro_1", "trtc_2", "trtc_3", "trtc_4"],
+                        transStation: ["taipei5", "cksmh1", "guting1"]
                     }
                 ]
             }, {//TYMETRO Route
@@ -3414,29 +3511,47 @@ var TT = (function(){
                 return trainBest;
             }
             
+            function checkIsSameOfPrev(tb1, tb2){
+                var rt = false;
+                if(!!tb1 && !!tb2){
+                    //檢查機捷是否前後為同一列
+                    if(tb1.info && tb1.info.trainID && tb2.info && tb2.info.trainID && tb1.info.trainID==tb2.info.trainID){
+                        rt = true;
+                    }
+                }
+                return rt;
+            }
             function getLink(routeA, trainBest){
                 var aryT = new Array();
+                var aryB = [];//is old aryT[tb]
+                var isSameOfPrev = false;
                 if(flagAD==true){
                     for(var tb=0; tb<trainBest.length; tb++){
-                        aryT.push(new Array());
+                        aryB = [];
+                        isSameOfPrev = false;
                         for(var i=0; i<routeA.length; i++){
                             if(i==0){
-                                aryT[tb][i] = trainBest[tb];
+                                aryB[i] = trainBest[tb];
                             }else{
-                                aryT[tb][i] = (aryT[tb][i-1]) ? routeA[i].formatTimeTable[aryT[tb][i-1].nextPointer] : null;
+                                aryB[i] = (aryB[i-1]) ? routeA[i].formatTimeTable[aryB[i-1].nextPointer] : null;
+                                isSameOfPrev = checkIsSameOfPrev(aryB[i-1], aryB[i]);
                             }
                         }
+                        if(!isSameOfPrev) aryT.push(aryB);
                     }
                 }else{
                     for(var tb=0; tb<trainBest.length; tb++){
-                        aryT.push(new Array());
+                        aryB = [];
+                        isSameOfPrev = false;
                         for(var i=routeA.length-1; i>=0; i--){
                             if(i==routeA.length-1){
-                                aryT[tb][i] = trainBest[tb];
+                                aryB[i] = trainBest[tb];
                             }else{
-                                aryT[tb][i] = (aryT[tb][i+1]) ? routeA[i].formatTimeTable[aryT[tb][i+1].prevPointer] : null;
+                                aryB[i] = (aryB[i+1]) ? routeA[i].formatTimeTable[aryB[i+1].prevPointer] : null;
+                                isSameOfPrev = checkIsSameOfPrev(aryB[i+1], aryB[i]);
                             }
                         }
+                        if(!isSameOfPrev) aryT.push(aryB);
                     }
                 }
                 return aryT;
@@ -3855,8 +3970,8 @@ var TT = (function(){
                         }
                         tmpA = TT.fn.getRoute_specialTrans(tmpA, a, b);
                         tmpA = procRoute(tmpA, tkLen);
-                        tmpA = TT.fn.getRoute_anySectTransMayFast(tmpA, a, b);
                         tmpA = TT.fn.getRoute_removeTortuousRoute(a,b,tmpA,aLine[i],bLine[j]);
+                        tmpA = TT.fn.getRoute_anySectTransMayFast(tmpA, a, b);
                         if(tmpA !== false){
                             rt.push(tmpA);
                         }
@@ -3957,12 +4072,16 @@ var TT = (function(){
             	takeRange.map(function(c,cidx){
             		var newTakeRouteB = {};
             		xa = c[0], xb = c[1];
+                    if(xa==xb) return false;
             		xabLine = routeB.line[cidx];
             		xabComp = TT.fn.getCompanyOfStation(xa);
             		switch(xabComp){
             			case 'tymetro':
             				var tmpA = TT.fn.getRoute_mapOfFromToLine(xabLine,xabLine,xa,xb);
-            				if(tmpA){
+            				var getStationData = TT.fn.tymetro.get_stationDataOfID;//('tymetro_a03').sect
+            				var flgA = (getStationData(xa).sect != getStationData(xb).sect) ? true : false;
+                            var flgB = (xa=='tymetro_a08' || xb=='tymetro_a08') ? false : true;
+            				if(tmpA && flgA && flgB){
             					var xTransInfo = tmpA.getRouteAt();
             					for(var i=0; i<xTransInfo.length; i++){
             						newTakeRouteB = TT.fn.getRoute_convertSect2TransRoute(routeB, cidx, xTransInfo[0]);
@@ -3990,7 +4109,7 @@ var TT = (function(){
         			
         			line.push(tLine);
         			takeRange.push([transInfo.changeStation[1],routeB.takeRange[i][1]]);
-        			if(ti>=0) transStation.push(transInfo.id);
+        			transStation.push(transInfo.id);
         		}else{
         			line.push(tLine);
         			takeRange.push(routeB.takeRange[i]);
