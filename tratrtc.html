@@ -403,6 +403,15 @@ body {
     70%{color: #80FE86;}
     100%{color: #A0FE66;}
 }
+.timeTableTrainRouteBox .transStationAdjustWalkTime{
+    display: inline-block;
+    margin-left: 18px;
+    padding: 0px 5px;
+    color: #1deafc;
+    background-color: #7c3014;
+    border-radius: 8px;
+    cursor: pointer;
+}
 
 @media screen and (max-width: 579px) {
     .timeTableTrainRouteBox .table .info, .timeTableTrainRouteBox .table .line, .timeTableTrainRouteBox .table .other{
@@ -797,7 +806,7 @@ var TT = (function(){
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本": "Beta 0.5.3",
-            "產生日期": "2017/04/22"
+            "產生日期": "2017/04/23"
         },
         programUpdateInfo: [
                     'Beta 0.5.3: 新增機場捷運與台北捷運部分路線互相轉乘查詢。',
@@ -1678,7 +1687,7 @@ var TT = (function(){
                         "tra_1008": {width:420, height:315, src:'https://www.youtube.com/embed/dxfIJJ0b_3o'},
                         "tymetro_a01": {width:420, height:315, src:'https://www.youtube.com/embed/ulOu7N85QRo'}
                     },
-                    walkMinute: 8
+                    walkMinute: 7
                 }, {
                     id: 'taipei5', name: "台北",//機捷淡水線
                     changeLine: ["trtc_2", "tymetro_1"],
@@ -3536,6 +3545,7 @@ var TT = (function(){
                                 aryB[i] = (aryB[i-1]) ? routeA[i].formatTimeTable[aryB[i-1].nextPointer] : null;
                                 isSameOfPrev = checkIsSameOfPrev(aryB[i-1], aryB[i]);
                             }
+                            if(isSameOfPrev) break;
                         }
                         if(!isSameOfPrev) aryT.push(aryB);
                     }
@@ -3550,8 +3560,9 @@ var TT = (function(){
                                 aryB[i] = (aryB[i+1]) ? routeA[i].formatTimeTable[aryB[i+1].prevPointer] : null;
                                 isSameOfPrev = checkIsSameOfPrev(aryB[i+1], aryB[i]);
                             }
+                            if(!isSameOfPrev) break;
                         }
-                        if(!isSameOfPrev) aryT.push(aryB);
+                        if(isSameOfPrev) aryT.push(aryB);
                     }
                 }
                 return aryT;
@@ -6422,7 +6433,8 @@ var TT = (function(){
             me.el.style.left = left + 'px';
         }
         
-        me.show = function(){
+        me.show = function(objShow){
+            objShow = objShow || {};
             if(me.isShow) return false;
             me.isShow = true;
             me.init();
@@ -6431,6 +6443,7 @@ var TT = (function(){
             if(cfg.mask){
                 TT.ui.mask(' ');
             }
+            me.showCfg = objShow;
             cfg.onShow(me);
         }
         
@@ -6611,6 +6624,7 @@ var TT = (function(){
         centerTimeTableDisplayDivClear: function(){
             TT.ui.center.timeTable.displayDiv.trainDiv.innerHTML = '';
             TT.ui.center.timeTable.displayDiv.routeDiv.innerHTML = '';
+            TT.now = false;
         },
         createDiv: function(id, cls, appendT){
             var dom = document.createElement('div');
@@ -7617,7 +7631,8 @@ var TT = (function(){
                 if(ts.video && ts.video[st]){
                     vLink = '<div class="transStationVideoClick" tsid="' + ts.id + '" stid="' + st + '">轉乘教學</div>';
                 }
-                return '轉乘步行時間: ' + ts.walkMinute + '分鐘' + vLink;
+                var adjTime = ['<div class="transStationAdjustWalkTime">', '調整時間', '</div>'].join('');
+                return '轉乘步行時間: ' + ts.walkMinute + '分鐘' + vLink + adjTime;
             }
             
             var hDiv = document.createElement('div');
@@ -7695,6 +7710,8 @@ var TT = (function(){
                     if(tsObj.video && tsObj.video[stid]){
                         TT.ui.displayTransVideo(tsObj.video[stid]);
                     }
+                }else if(e.target.className.indexOf('transStationAdjustWalkTime')!=-1){
+                    TT.ui.transStationWalkTimeWindow.show({justShowInuse: true});
                 }
             }, false);
             div.appendChild(hDiv);
@@ -7705,15 +7722,46 @@ var TT = (function(){
             var id = 'tt_transStationWalkTimeWindow:';
             if(!TT.ui.transStationWalkTimeWindow){
                 
+                var nowUsedTransStation = [], showCfg;
+                
+                function inNowUsedTransStation(st){
+                    var flgA = false;
+                    for(var k=0; k<nowUsedTransStation.length; k++){
+                        if(nowUsedTransStation[k]==st){
+                            flgA = true;
+                            break;
+                        }
+                    }
+                    return flgA;
+                }
+                function getNowUsedTransStation(){
+                    nowUsedTransStation = [];
+                    if(TT.now && TT.now.totalRoute){
+                        var route = TT.now.totalRoute;
+                        for(var i=0; i<route.length; i++){
+                            if(route[i]){
+                            for(var j=0; j<route[i].length; j++){
+                                if(route[i][j] && route[i][j].transStationID && !inNowUsedTransStation(route[i][j].transStationID)){
+                                    nowUsedTransStation.push(route[i][j].transStationID);
+                                }
+                            }
+                            }
+                        }
+                    } 
+                }
+                
                 function updateCDiv(){
-                    var aryT = TT.data.transStation, ht='', mt='', st='', st1='', st2='', inputID='';
+                    var justShowInuse = (showCfg && showCfg.justShowInuse) ? true : false;
+                    var aryT = TT.data.transStation, ht='', mt='', st='', st1='', st2='', optStyle = '', inputID='', flgInUsed = false;
                     for(var i=0; i<aryT.length; i++){
                         mt = '在<span class="stationName">{st}</span>往返{st1}與{st2}間的步行時間';
                         st = aryT[i].name;
+                        flgInUsed = inNowUsedTransStation(aryT[i].id);
                         st1 = TT.fn.getCommon_lineName(aryT[i]["changeLine"][0]);
                         st2 = TT.fn.getCommon_lineName(aryT[i]["changeLine"][1]);
                         mt = mt.replace('{st}',st).replace('{st1}',st1).replace('{st2}',st2);
-                        ht += '<div><input class="minute" type="text" id="' + id + aryT[i].id + '" value="' + aryT[i].walkMinute + '"><span>' + '分鐘' + ' , ' + mt + '</span></div>';
+                        optStyle = (justShowInuse && !flgInUsed) ? ' style="display:none;"' : '';
+                        ht += '<div' + optStyle + '><input class="minute" type="text" id="' + id + aryT[i].id + '" value="' + aryT[i].walkMinute + '"><span>' + '分鐘' + ' , ' + mt + '</span></div>';
                     }
                     cDiv.innerHTML = ht;
                 }
@@ -7749,6 +7797,8 @@ var TT = (function(){
                     mask: true,
                     cls: 'transStationWalkTimeWindow',
                     onShow: function(thisA){
+                        showCfg = thisA.showCfg;
+                        getNowUsedTransStation();
                         TT.ui.centerTimeTableDisplayDivClear();
                         updateCDiv();
                         thisA.resetPosition();
