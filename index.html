@@ -805,10 +805,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.5.3",
-            "產生日期": "2017/04/23"
+            "版本": "Beta 0.5.4",
+            "產生日期": "2017/04/25"
         },
         programUpdateInfo: [
+                    'Beta 0.5.4: 新增機場捷運與台北捷運蘆洲線透過三重與大橋頭轉乘。',
                     'Beta 0.5.3: 新增機場捷運與台北捷運部分路線互相轉乘查詢。',
                     'Beta 0.5.2: 新增機場捷運與台鐵互相轉乘查詢。',
                     'Beta 0.5.1: 新增機場捷運時刻表，可在路網內查詢。',
@@ -861,9 +862,13 @@ var TT = (function(){
         			{"id": "1100", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1101", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1102", "name": "太魯閣號", "ename": "Tze-Chiang Limited Express(Tarko)", "color": "#FD8A10"},
+        			{"id": "1103", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1107", "name": "普悠瑪號", "ename": "Tze-Chiang Limited Express(Puyuma)", "color": "#ff0030"},
         			{"id": "1108", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1110", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
+        			{"id": "1111", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
+        			{"id": "1114", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
+        			{"id": "1115", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
         			{"id": "1120", "name": "復興", "ename": "Fu-Hsing Semi Express", "color": "#32CFBC"},
         			{"id": "1130", "name": "電車", "ename": "Electric Multiple Unit"},
         			{"id": "1131", "name": "區間車", "ename": "Local Train"},
@@ -2628,6 +2633,11 @@ var TT = (function(){
                         transStation: ["sanchong1"]
                     },
                     {
+                        bypassStationReg: '^trtc_089$|^trtc_055$|^trtc_041$|^trtc_04[5-8]$|^trtc_12[1-8]$|^trtc_180$|^trtc_179$|^trtc_13[0-1]$',
+                        line: ["tymetro_1", "trtc_4", "trtc_4"],
+                        transStation: ["sanchong1", "daqiaotou1"]
+                    },
+                    {
                         bypassStationReg: '^trtc_089$|^trtc_13[0-2]$|^trtc_055$|^trtc_12[1-8]$|^trtc_180$|^trtc_17[4-9]$',
                         line: ["tymetro_1", "trtc_2", "trtc_4"],
                         transStation: ["taipei5", "dongmen1"]
@@ -3560,9 +3570,9 @@ var TT = (function(){
                                 aryB[i] = (aryB[i+1]) ? routeA[i].formatTimeTable[aryB[i+1].prevPointer] : null;
                                 isSameOfPrev = checkIsSameOfPrev(aryB[i+1], aryB[i]);
                             }
-                            if(!isSameOfPrev) break;
+                            if(isSameOfPrev) break;
                         }
-                        if(isSameOfPrev) aryT.push(aryB);
+                        if(!isSameOfPrev) aryT.push(aryB);
                     }
                 }
                 return aryT;
@@ -3670,7 +3680,7 @@ var TT = (function(){
                                 time: TT.fn.tymetro.get_fromToTimeArray(routeB.timeTable[i]),
                                 info: routeB.timeTable[i]
                             }
-                            objA.tt_sortTime = TT.fn.transTime2Sec(objA.time[1]);
+                            objA.tt_sortTime = (flagAD) ? TT.fn.transTime2Sec(objA.time[1]) : TT.fn.transTime2Sec(objA.time[0]);
                             ary.push(objA);
                         }
                         ary.sort(TT.fn.getTRA_sortByTTSortTime);
@@ -7597,7 +7607,7 @@ var TT = (function(){
                         '<div>' + '車種: ' + TT.fn.getTRA_carClassName(info['CarClass'], {color: true}) + '</div>' +
                     '</div>';
                 }else if(TT.fn.getCompanyOfLine(line)=='trtc'){
-                    var trtcSpe = '捷運到站時間是以官方站間行駛時間做相對計算。';
+                    var trtcSpe = '台北捷運到站時間是以官方站間行駛時間做相對計算模擬。';
                     var outArea=TT.fn.getTRTC_stationOnOutArea(tbd.takeRange[0], tbd.takeRange[1], line);
                     if(outArea){
                         trtcSpe = '請留意是否需在<span class="defineFontStyle1">' + TT.fn.getTRTC_stationDataOfID(outArea.transAt).name + '</span>改搭下一班車，因目的地並非每班車都有到。';
