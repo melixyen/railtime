@@ -1,0 +1,666 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="接軌時刻 - 台灣鐵路局旅次查詢系統 Web APP" />
+<meta name="keywords" content="台鐵,台灣鐵路局,旅次,客運量,TRA,接軌時刻" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title>接軌時刻 - 台灣鐵路局 2016 年旅次查詢系統</title>
+<style type="text/css">
+@charset "utf-8";
+
+body {
+    /*font-family:'細明體', "PMingLiU";*/
+    font-size: 14px;
+    margin: 0px;
+}
+
+#ttDebug{
+	position: fixed;
+	top: 60px;
+	background-color: #311;
+	color: #DDE;
+	display: inline-block;
+}
+
+.menuBar{
+	width: calc(100% - 20px);
+	margin: 5px 10px;
+	border: 1px solid #EEE;
+	border-radius: 5px;
+	display: inline-block;
+}
+
+.menuItem{
+	margin: 5px 10px;
+	padding: 3px 10px;
+	border: 2px solid #ECC;
+	border-radius: 5px;
+	float: left;
+	cursor: pointer;
+	font-size: 16px;
+}
+.menuItem.selected{
+	background-color: #FDD;
+}
+.menuItem2{
+	border: 2px solid #994;
+}
+
+.setArea{
+	width: calc(100% - 20px);
+	margin: 5px 10px;
+	/*border: 1px solid #6CC;
+	border-radius: 5px;*/
+	display: inline-block;
+}
+
+.setItem{
+	margin: 5px 5px;
+	padding: 3px 10px;
+	border: 2px solid #3BD;
+	border-radius: 5px;
+	float: left;
+	cursor: pointer;
+	font-size: 16px;
+}
+.setItem.selected{
+	background-color: #DED;
+}
+.setItem2{
+	border: 2px solid #B2E;
+}
+.setItem2.selected{
+	background-color: #ECF;
+}
+.setArea .description{
+	font-size: 10px;
+	color: #331;
+	width: 100%;
+	display: inline-block;
+	padding-left: 10px;
+}
+
+#timeShowArea{
+	width: 100%;
+	max-width: 100%;
+}
+#timeShowIns{
+	margin: 10px 8px;
+	padding: 10px;
+	/*border: 1px solid #7CA;
+	border-radius: 15px;*/
+}
+.renderTime{
+	border-collapse: collapse;
+}
+.renderTime th, .renderTime td{
+	border: 1px solid #aca;
+	padding: 4px 10px;
+}
+.renderTime th{
+	background-color: #ACE;
+	cursor: pointer;
+}
+.renderTime td.num{
+	text-align: right;
+}
+.renderTime td.cRed{
+	color: #FE4064;
+}
+.renderTime td.cGreen{
+	color: #207E04;
+}
+
+
+#copyJSON{
+	margin: 5px 5px;
+	padding: 3px 10px;
+	border: 2px solid #7D2;
+	border-radius: 5px;
+	display: inline-block;
+	cursor: pointer;
+	font-size: 16px;
+}
+.showJSON{
+	width: 100%;
+	height: 600px;
+}
+
+</style>
+
+<script type="text/javascript">
+var rowData = [
+["編號","站名","英文站名","上車人次","下車人次","總人次","日均人次","2015年人次"],[
+"A01","基隆","Keelung",2880698,2809282,5689980,15546.39,6007387],[
+"A014","三坑","Sankeng",481137,498055,979192,2675.39,908400],[
+"A02","八堵","Badu",1056428,976827,2033255,5555.34,1921757],[
+"A03","七堵","Qidu",2118246,2144100,4262346,11645.75,4344773],[
+"A034","百福","Baifu",895948,894337,1790285,4891.49,1782438],[
+"A05","五堵","Wudu",647808,579201,1227009,3352.48,1158893],[
+"A06","汐止","Xizhi",3438884,3529449,6968333,19039.16,6855684],[
+"A064","汐科","Xike",2811671,2938058,5749729,15709.64,5155240],[
+"A07","南港","Nangang",3031740,3211576,6243316,17058.24,5407069],[
+"A08","松山","Songshan",6010322,5882596,11892918,32494.31,11601935],[
+"A10","臺北","Taipei",23382397,23122418,46504815,127062.34,47279140],[
+"A11","萬華","Wanhua",1493173,1503962,2997135,8188.89,3019122],[
+"A13","板橋","Banqiao",7830333,7917153,15747486,43025.92,15564328],[
+"A144","浮洲","Fuzhou",987573,927556,1915129,5232.59,1851679],[
+"A15","樹林","Shulin",5706868,5720693,11427561,31222.84,11783116],[
+"A154","南樹林","South Shulin",289607,267786,557393,1522.93,8494],[
+"A16","山佳","Shanjia",615338,613053,1228391,3356.26,1324810],[
+"A17","鶯歌","Yingge",3187470,3147699,6335169,17309.2,6471868],[
+"A18","桃園","Taoyuan",10515037,10753753,21268790,58111.45,22139269],[
+"A19","內壢","Neili",3098212,3014393,6112605,16701.11,6028302],[
+"A20","中壢","Zhongli",10163815,10254645,20418460,55788.14,20892594],[
+"A21","埔心","Puxin",2035115,1893991,3929106,10735.26,3879617],[
+"A22","楊梅","Yangmei",1924617,1808279,3732896,10199.17,3765793],[
+"A24","富岡","Fugang",611474,613628,1225102,3347.27,1211020],[
+"A244","北湖","Beihu",381475,375408,756883,2067.99,778621],[
+"A25","湖口","Hukou",1424657,1428630,2853287,7795.87,2922547],[
+"A26","新豐","Xinfeng",1804727,1765234,3569961,9753.99,3587766],[
+"A27","竹北","Zhubei",1735312,1733306,3468618,9477.1,3471915],[
+"A274","北新竹","North Hsinchu",677215,707650,1384865,3783.78,1286810],[
+"A29","新竹","Hsinchu",7384586,7507671,14892257,40689.23,15624164],[
+"A294","三姓橋","Sanxingqiao",140461,120541,261002,713.12,0],[
+"A30","香山","Xiangshan",192640,195829,388469,1061.39,392649],[
+"A31","崎頂","Qiding",69669,85927,155596,425.13,134116],[
+"A32","竹南","Zhunan",2892934,2844540,5737474,15676.16,6011629],[
+"A33","談文","Tanwen",12550,15192,27742,75.8,23045],[
+"A34","大山","Dashan",47877,47112,94989,259.53,99768],[
+"A35","後龍","Houlong",461596,443630,905226,2473.3,950541],[
+"A36","龍港","Longgang",8877,9661,18538,50.65,22925],[
+"A37","白沙屯","Baishatun",89323,91322,180645,493.57,166432],[
+"A38","新埔","Xinpu",27192,26482,53674,146.65,49332],[
+"A39","通霄","Tongxiao",331300,345996,677296,1850.54,665193],[
+"A40","苑裡","Yuanli",544785,548587,1093372,2987.36,1062851],[
+"A41","日南","Rinan",106046,101602,207648,567.34,210681],[
+"A42","大甲","Dajia",960428,942372,1902800,5198.91,1836908],[
+"A43","臺中港","Taichung Port",27671,30724,58395,159.55,56777],[
+"A44","清水","Qingshui",423914,429310,853224,2331.21,851547],[
+"A45","沙鹿","Shalu",885766,858554,1744320,4765.9,1719563],[
+"A46","龍井","Longjing",151610,148683,300293,820.47,314101],[
+"A47","大肚","Dadu",258207,253601,511808,1398.38,533755],[
+"A48","追分","Zhuifen",221119,88857,309976,846.93,338815],[
+"A49","彰化","Changhua",5424077,5516517,10940594,29892.33,10953317],[
+"A50","花壇","Huatan",362646,386102,748748,2045.76,734030],[
+"A504","大村","Dacun",319442,316973,636415,1738.84,614918],[
+"A51","員林","Yuanlin",3007733,3005376,6013109,16429.26,5999434],[
+"A52","永靖","Yongjing",150262,179672,329934,901.46,303255],[
+"A53","社頭","Shetou",428210,453931,882141,2410.22,905535],[
+"A54","田中","Tianzhong",1133501,1102197,2235698,6108.46,2381699],[
+"A55","二水","Ershui",480670,489672,970342,2651.21,1034522],[
+"A56","林內","Linnei",271973,273426,545399,1490.16,542004],[
+"A57","石榴","Shiliu",48918,64620,113538,310.21,108982],[
+"A58","斗六","Douliu",2402528,2409557,4812085,13147.77,5132477],[
+"A59","斗南","Dounan",846468,834363,1680831,4592.43,1848541],[
+"A60","石龜","Shigui",46945,56782,103727,283.41,94483],[
+"A61","大林","Dalin",620503,620480,1240983,3390.66,1236170],[
+"A62","民雄","Minxiong",766720,711390,1478110,4038.55,1468767],[
+"A624","嘉北","Jiabei",293196,297313,590509,1613.41,576335],[
+"A63","嘉義","Chiayi",3867951,3885483,7753434,21184.25,7805008],[
+"A66","水上","Shuishang",236860,241567,478427,1307.18,481404],[
+"A67","南靖","Nanjing",72565,77290,149855,409.44,150228],[
+"A68","後壁","Houbi",228112,224803,452915,1237.47,467660],[
+"A69","新營","Xinying",1998946,1984562,3983508,10883.9,4100208],[
+"A70","柳營","Liuying",347963,339929,687892,1879.49,731629],[
+"A71","林鳳營","Linfengying",213985,221732,435717,1190.48,437859],[
+"A72","隆田","Longtian",586517,591970,1178487,3219.91,1246525],[
+"A73","拔林","Balin",54459,57855,112314,306.87,112850],[
+"A74","善化","Shanhua",1278221,1276058,2554279,6978.9,2654314],[
+"A744","南科","Nanke",455182,437078,892260,2437.87,895091],[
+"A75","新市","Xinshi",1022724,1011295,2034019,5557.43,2050614],[
+"A76","永康","Yongkang",1216545,1200293,2416838,6603.38,2434677],[
+"A764","大橋","Daqiao",1296636,1231175,2527811,6906.59,2513194],[
+"A77","臺南","Tainan",9556572,9786231,19342803,52849.19,19363776],[
+"A80","保安","Bao'an",633568,654296,1287864,3518.75,1333329],[
+"A804","仁德","Rende",305743,297064,602807,1647.01,542078],[
+"A81","中洲","Zhongzhou",186375,176005,362380,990.11,375086],[
+"A82","大湖","Dahu",737671,676725,1414396,3864.47,1479148],[
+"A83","路竹","Luzhu",676154,685891,1362045,3721.43,1385467],[
+"A85","岡山","Gangshan",1086122,1078376,2164498,5913.93,2199402],[
+"A86","橋頭","Qiaotou",508148,563164,1071312,2927.08,1078946],[
+"A87","楠梓","Nanzi",953699,921938,1875637,5124.69,1931779],[
+"A874","新左營","Xinzuoying",2941851,2923996,5865847,16026.9,5463141],[
+"A88","左營","Zuoying",400617,400796,801413,2189.65,768948],[
+"A92","高雄","Kaohsiung",7229976,7284279,14514255,39656.43,15124529],[
+"V00","千甲","Qianjia",104045,106814,210859,576.12,225710],[
+"V004","新莊","Xinzhuang",569667,577763,1147430,3135.05,1112616],[
+"V01","竹中","Zhuzhong",242633,249034,491667,1343.35,569043],[
+"V02","上員","Shangyuan",22761,25871,48632,132.87,52832],[
+"V021","榮華","Ronghua",55062,50257,105319,287.76,111144],[
+"V03","竹東","Zhudong",219697,200141,419838,1147.1,440423],[
+"V04","橫山","Hengshan",43454,44895,88349,241.39,92112],[
+"V05","九讚頭","Jiuzantou",17780,18128,35908,98.11,38636],[
+"V06","合興","Hexing",44741,52730,97471,266.31,105524],[
+"V07","富貴","Fugui",4044,6188,10232,27.96,11260],[
+"V08","內灣","Neiwan",257723,259361,517084,1412.8,576503],[
+"V012","六家","Liujia",814935,740859,1555794,4250.8,1607595],[
+"T01","造橋","Zaoqiao",101983,118489,220472,602.38,216573],[
+"T02","豐富","Fengfu",149721,162021,311742,851.75,245033],[
+"T03","苗栗","Miaoli",2234627,2167439,4402066,12027.5,4798247],[
+"T04","南勢","Nanshi",34884,37239,72123,197.06,63495],[
+"T05","銅鑼","Tongluo",275120,273326,548446,1498.49,547317],[
+"T06","三義","Sanyi",301216,299309,600525,1640.78,601453],[
+"T08","泰安","Tai'an",144368,166424,310792,849.16,278978],[
+"T09","后里","Houli",740289,745148,1485437,4058.57,1470394],[
+"T10","豐原","Fengyuan",2832877,2965298,5798175,15842.01,5677275],[
+"T11","潭子","Tanzi",1001555,994037,1995592,5452.44,1861911],[
+"T114","太原","Taiyuan",1121598,1104145,2225743,6081.27,2056430],[
+"T12","臺中","Taichung",9993507,9930478,19923985,54437.12,19612996],[
+"T121","大慶","Daqing",846963,830200,1677163,4582.41,1607488],[
+"T13","烏日","Wuri",263816,296360,560176,1530.54,611649],[
+"T134","新烏日","Xinwuri",2180467,1978889,4159356,11364.36,4450664],[
+"T14","成功","Chenggong",204244,344105,548349,1498.22,558629],[
+"C01","源泉","Yuanquan",9124,9891,19015,51.95,18589],[
+"C02","濁水","Zhuoshui",59330,54906,114236,312.12,123310],[
+"C03","龍泉","Longquan",7454,9200,16654,45.5,23384],[
+"C04","集集","Jiji",284390,185283,469673,1283.26,494086],[
+"C05","水里","Shuili",71292,72182,143474,392.01,147866],[
+"C06","車埕","Checheng",193330,297442,490772,1340.91,529453],[
+"B01","長榮大學","CJCU",372407,364436,736843,2013.23,733707],[
+"B02","沙崙","Shalun",799960,724021,1523981,4163.88,1409406],[
+"P01","鳳山","Fengshan",1706389,1627522,3333911,9109.05,3220875],[
+"P02","後庄","Houzhuang",238384,239659,478043,1306.13,468850],[
+"P03","九曲堂","Jiuqutang",414443,426014,840457,2296.33,880542],[
+"P04","六塊厝","Liukuaicuo",31326,37736,69062,188.69,65964],[
+"P05","屏東","Pingtung",3607546,3638798,7246344,19798.75,7611657],[
+"P06","歸來","Guilai",38244,42748,80992,221.29,46756],[
+"P07","麟洛","Linluo",29695,34297,63992,174.84,33788],[
+"P08","西勢","Xishi",138599,132951,271550,741.94,171845],[
+"P09","竹田","Zhutian",82188,82882,165070,451.01,122880],[
+"P10","潮州","Chaozhou",1198458,1199501,2397959,6551.8,1781373],[
+"P11","崁頂","Kanding",67002,79608,146610,400.57,139742],[
+"P12","南州","Nanzhou",195130,175821,370951,1013.53,484094],[
+"P13","鎮安","Zhen'an",7805,7560,15365,41.98,15511],[
+"P14","林邊","Linbian",145187,134420,279607,763.95,314311],[
+"P15","佳冬","Jiadong",67844,65701,133545,364.88,102409],[
+"P16","東海","Donghai",18883,20160,39043,106.67,41003],[
+"P18","枋寮","Fangliao",338788,339583,678371,1853.47,708018],[
+"J01","加祿","Jialu",5530,676,6206,16.96,7701],[
+"J02","內獅","Neishi",79,131,210,0.57,362],[
+"J03","枋山","Fangshan",338,621,959,2.62,1197],[
+"J07","古莊","Guzhuang",112,253,365,1,751],[
+"J08","大武","Dawu",75563,74808,150371,410.85,144442],[
+"J10","瀧溪","Longxi",10904,10577,21481,58.69,22022],[
+"J12","金崙","Jinlun",113606,112164,225770,616.86,213070],[
+"J14","太麻里","Taimali",58627,59974,118601,324.05,115499],[
+"J16","知本","Zhiben",225070,226244,451314,1233.1,433985],[
+"J17","康樂","Kangle",5712,7262,12974,35.45,13122],[
+"M06","吉安","Ji'an",133572,127778,261350,714.07,259825],[
+"M08","志學","Zhixue",114243,105385,219628,600.08,212333],[
+"M09","平和","Pinghe",6654,6798,13452,36.75,13478],[
+"M10","壽豐","Shoufeng",100567,100537,201104,549.46,188702],[
+"M11","豐田","Fengtian",36073,34265,70338,192.18,72840],[
+"M14","南平","Nanping",8299,7728,16027,43.79,12830],[
+"M15","鳳林","Fenglin",121601,118889,240490,657.08,247999],[
+"M16","萬榮","Wanrong",21232,20619,41851,114.35,39586],[
+"M17","光復","Guangfu",154607,160362,314969,860.57,322213],[
+"M19","大富","Dafu",3984,3251,7235,19.77,6568],[
+"M20","富源","Fuyuan",20308,15630,35938,98.19,35936],[
+"M22","瑞穗","Ruisui",210396,212044,422440,1154.21,407423],[
+"M24","三民","Sanmin",2193,2303,4496,12.28,5289],[
+"M26","玉里","Yuli",476828,475990,952818,2603.33,943572],[
+"M29","東里","Dongli",7447,7034,14481,39.57,16032],[
+"M31","東竹","Dongzhu",6296,6291,12587,34.39,13641],[
+"M33","富里","Fuli",70762,72194,142956,390.59,141308],[
+"M36","池上","Chishang",175174,174317,349491,954.89,360799],[
+"M37","海端","Haiduan",2475,2816,5291,14.46,6784],[
+"M39","關山","Guanshan",218892,214132,433024,1183.13,439607],[
+"M41","瑞和","Ruihe",4725,4101,8826,24.11,7807],[
+"M42","瑞源","Ruiyuan",15913,15309,31222,85.31,32422],[
+"M43","鹿野","Luye",79711,75873,155584,425.09,167593],[
+"M45","山里","Shanli",2537,3176,5713,15.61,5686],[
+"M47","臺東","Taitung",1922554,1943727,3866281,10563.61,3867475],[
+"I02","永樂","Yongle",9747,9734,19481,53.23,17266],[
+"I03","東澳","Dong'ao",117034,118379,235413,643.2,243221],[
+"I04","南澳","Nan'ao",404403,408178,812581,2220.17,832564],[
+"I05","武塔","Wuta",6705,8864,15569,42.54,12883],[
+"I07","漢本","Hanben",9237,8849,18086,49.42,16576],[
+"I08","和平","Heping",240983,258046,499029,1363.47,461044],[
+"I09","和仁","Heren",19408,22319,41727,114.01,36129],[
+"I10","崇德","Chongde",16200,21255,37455,102.34,31863],[
+"I11","新城","Xincheng",1254651,688671,1943322,5309.62,2324808],[
+"I12","景美","Jingmei",5374,6184,11558,31.58,12778],[
+"I13","北埔","Beipu",89189,53291,142480,389.29,188869],[
+"I14","花蓮","Hualien",5501708,5099926,10601634,28966.21,10867324],[
+"E01","暖暖","Nuannuan",123484,130006,253490,692.6,212582],[
+"E02","四腳亭","Sijiaoting",198725,195061,393786,1075.92,367876],[
+"E03","瑞芳","Ruifang",2225284,2473574,4698858,12838.41,4712122],[
+"E04","猴硐","Houtong",292935,281768,574703,1570.23,579157],[
+"E05","三貂嶺","Sandiaoling",29712,39826,69538,189.99,70712],[
+"E06","牡丹","Mudan",46829,53051,99880,272.9,97447],[
+"E07","雙溪","Shuangxi",322510,330146,652656,1783.21,665947],[
+"E08","貢寮","Gongliao",71188,86696,157884,431.38,158114],[
+"E09","福隆","Fulong",411265,448744,860009,2349.75,901910],[
+"E10","石城","Shicheng",10955,11723,22678,61.96,24783],[
+"E11","大里","Dali",101562,59169,160731,439.16,152682],[
+"E12","大溪","Daxi",79311,84407,163718,447.32,158408],[
+"E13","龜山","Guishan",35186,36667,71853,196.32,75323],[
+"E14","外澳","Wai'ao",41946,47301,89247,243.84,83057],[
+"E15","頭城","Toucheng",559241,555764,1115005,3046.46,1193603],[
+"E16","頂埔","Dingpu",44043,51688,95731,261.56,103856],[
+"E17","礁溪","Jiaoxi",672131,649161,1321292,3610.09,1366581],[
+"E18","四城","Sicheng",46355,49673,96028,262.37,100428],[
+"E19","宜蘭","Yilan",1885768,1869414,3755182,10260.06,3760283],[
+"E20","二結","Erjie",52090,52435,104525,285.59,98046],[
+"E21","中里","Zhongli",11680,13056,24736,67.58,23303],[
+"E22","羅東","Luodong",2268130,2261488,4529618,12376.01,4598487],[
+"E23","冬山","Dongshan",237331,241203,478534,1307.47,442380],[
+"E24","新馬","Xinma",6536,9268,15804,43.18,17410],[
+"E25","蘇澳新","Su'aoxin",606175,1575890,2182065,5961.93,2724371],[
+"E26","蘇澳","Su'ao",255341,266140,521481,1424.81,532883],[
+"N01","大華","Dahua",5432,3479,8911,24.35,11581],[
+"N02","十分","Shifen",487286,493890,981176,2680.81,956136],[
+"N021","望古","Wanggu",5100,7484,12584,34.38,12415],[
+"N03","嶺腳","Lingjiao",13784,11935,25719,70.27,25296],[
+"N04","平溪","Pingxi",154818,167809,322627,881.49,327592],[
+"N05","菁桐","Jingtong",481432,456497,937929,2562.65,1217335],[
+"R01","海科館","Haikeguan",372372,375853,748225,2044.33,1008383],[
+"R014","八斗子","Badouzi",2033,3346,5379,1344.75,0]
+];
+
+var prevObj = {};
+
+var TT = {
+	descriptionText: [
+		'本程式為接軌時刻 Web App 內之輔助工據，用於顯示台鐵歷年各站旅運量。',
+		
+		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
+			"更新日期: 2017/05/03</span>"
+	],
+	timeHour: ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'],
+	timeMinSec: ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29',
+                    '30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59'],
+    timeTableSortTag: 'Day',
+    timeTableSortDir: 'desc',
+    flagShowPrev: true,
+	transTime2HM: function(val){
+            if(typeof(val)=='number') val = TT.transSec2Time(val);
+            var ary = val.split(':');
+            return ary[0] + ':' + ary[1];
+    },
+    transTime2Sec: function(str,offsetTomorrow){
+            if (str == null || str == '') {
+                str = '0';
+            }
+            var aryA = str.split(':'), rt;
+            if (aryA.length <= 1) {
+                rt = parseInt(str,10);
+            } else if (aryA.length == 2) {
+                rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60;
+            } else if (aryA.length == 3) {
+                rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60 + parseInt(aryA[2],10);
+            }
+            
+            if(offsetTomorrow){
+                rt = rt + 86400;
+            }
+            return rt;
+    },
+    transSec2Time: function(sec){
+            var tid = 0,
+                tih = 0,
+                tim = 0,
+                tis = 0;
+
+            if((sec === '')){
+                return '';
+            }else if(parseInt(sec,10) < 0){
+                sec = 86400 + sec;
+            }
+            
+            sec = parseInt(sec,10);
+            tis = sec % 60;
+            sec = sec - tis;
+            sec = sec / 60;
+            tim = sec % 60;
+            sec = sec - tim;
+            sec = sec / 60
+            tih = sec;
+            
+
+            tih = (tih < 10) ? '0' + tih : tih;
+            tim = (tim < 10) ? '0' + tim : tim;
+            tis = (tis < 10) ? '0' + tis : tis;
+
+            if (tih == 0) {
+                return tih + ':' + tim + ':' + tis;
+            } else {
+                return tih + ':' + tim + ':' + tis;
+            }
+    },
+    isMobileMove: false,
+    debugMode: false
+};
+
+TT.createMenuBar = function(){
+	var rt = document.createElement('div');
+	rt.innerHTML = '<div class="menuBar">' +
+		'<div class="menuItem hiasd">台鐵 2016 年旅次報表</div>' +
+		'<div class="menuItem menuItem2 back">回到接軌時刻</div>' +
+		
+	'</div>';
+	rt.addEventListener('click', function(e){
+		var t = e.target.className;
+		if(t.indexOf('toHuanBei')>0){
+			
+		}else if(t.indexOf('back')>0){
+			location.href = './';
+		}
+	}), false;
+	return rt;
+}
+TT.createSetArea = function(){
+	var rt = document.createElement('div');
+	rt.innerHTML = '<div class="setArea">' +
+		'<div class="setItem sortDirDesc">高往低排序</div>' +
+		'<div class="setItem sortDirAsc">低往高排序</div>' +
+		
+		'<div class="description"></div>' +
+	'</div>';
+	rt.addEventListener('click', function(e){
+		var t = e.target.className;
+		if(t.indexOf('sortDirDesc')>=0){
+			TT.cmd('renderTable', {timeTableSortDir: 'desc'});
+		}else if(t.indexOf('sortDirAsc')>=0){
+			TT.cmd('renderTable', {timeTableSortDir: 'asc'});
+		}
+	}, false);
+	return rt;
+}
+TT.cmd = function(cmd, objA){
+	objA = objA || {};
+	if(objA.timeTableSortTag) TT.timeTableSortTag = objA.timeTableSortTag;
+	if(objA.timeTableSortDir) TT.timeTableSortDir = objA.timeTableSortDir;
+	if(objA.flagShowPrev) TT.flagShowPrev = objA.flagShowPrev;
+	switch(cmd){
+		case 'renderTable':
+			TT.renderTable();
+		break;
+	}
+}
+
+TT.commonSortFn = function(a, b){
+		var timeTableSortTag = TT.timeTableSortTag;
+		var dir = TT.timeTableSortDir;
+		var intA = 0, intB = 0;
+		if(timeTableSortTag=='Name'){
+			return 0;
+		}						
+		switch(timeTableSortTag){
+			case 'Up':
+				intA = a[3];
+				intB = b[3];
+			break;
+			case 'Down':
+				intA = a[4];
+				intB = b[4];
+			break;
+			case 'All':
+				intA = a[5];
+				intB = b[5];
+			break;
+			case 'Day':
+				intA = a[6];
+				intB = b[6];
+			break;
+			case 'LastYear':
+				intA = a[7];
+				intB = b[7];
+			break;
+			case 'Add':
+				intA = a[8];
+				intB = b[8];
+			break;
+			case 'Rate':
+				intA = a[9];
+				intB = b[9];
+			break;
+		}
+		
+		if(dir=='desc'){
+        	if(intA==intB) return 0;
+        	if(intA < intB) return 1;
+        	if(intA > intB) return -1;
+		}
+        if(intA==intB) return 0;
+        if(intA < intB) return -1;
+        if(intA > intB) return 1;
+}
+
+TT.countAllData = function(ary){
+	for(var i=0; i<ary.length; i++){
+		ary[i][5] = ary[i][3] + ary[i][4];
+		ary[i][6] = Math.ceil(ary[i][5]/366);
+		ary[i][8] = ary[i][5] - ary[i][7];//8 for 去年運量差距
+		ary[i][9] = (Math.ceil((ary[i][8] / ary[i][7])*10000))/100;//9 for 年增率
+		if(ary[i][0]=='R014' || ary[i][0]=='A294'){
+			if(ary[i][0]=='R014'){
+				ary[i][6] = Math.ceil(ary[i][5]/4);
+				ary[i][9] = -9999;
+			}else if(ary[i][0]=='A294'){
+				ary[i][6] = Math.ceil(ary[i][5]/186);
+				ary[i][9] = -9999;
+			}
+		}
+	}
+	return ary;
+}
+TT.formatCount = function(a){
+	var b = a.toString().length;
+	if(b==1){
+		return '00' + a;
+	}else if(b==2){
+		return '0' + a;
+	}else{
+		return a;
+	}
+}
+TT.renderTable = function(){
+	var ary = rowData.slice(1);//去除第一行 header
+	var thStrObj = {
+		'Name': '站名',
+		'Up': '上車人次',
+		'Down': '下車人次',
+		'All': '總人次',
+		'Day': '日均人次',
+		'LastYear': '2015年人次',
+		'Add': '增減人次',
+		'Rate': '年增率',
+		'asc': '低往高',
+		'desc': '高往低'
+	}
+	ary = TT.countAllData(ary);
+	if(TT.timeTableSortTag!='') ary.sort(TT.commonSortFn);
+	var div = document.getElementById('timeShowIns');
+	div.innerHTML = '';
+	var str = '', rowStr = '', tmpPrevObj = {};
+	var hasPrev = (prevObj.timeTableSortTag && prevObj.timeTableSortDir && TT.flagShowPrev) ? true : false;
+	str += '<th>排名</th><th class="sortByName">站名</th><th class="sortByUp">上車人次</th><th class="sortByDown">下車人次</th><th class="sortByAll">總人次</th>' +
+			'<th class="sortByDay">日均人次</th><th class="sortByLastYear">2015年人次</th><th class="sortByAdd">增減人次</th><th class="sortByRate">年增率</th>';
+	if(hasPrev){
+		str += '<th class="hasPrev">前次 (' + thStrObj[prevObj.timeTableSortTag] + thStrObj[prevObj.timeTableSortDir] + ') 排名</th>';
+	}
+	for(var i=0; i<ary.length; i++){
+		var colorStr = (ary[i][8] >= 0) ? ' cGreen' : ' cRed';
+		var c = i+1;
+		rowStr = '<tr>';
+		rowStr += '<td class="count num">' + TT.formatCount(c) + '</td>';
+		rowStr += '<td class="station">' + ary[i][1] + '</td>';
+		rowStr += '<td class="Up num">' + ary[i][3] + '</td>';
+		rowStr += '<td class="Down num">' + ary[i][4] + '</td>';
+		rowStr += '<td class="All num">' + ary[i][5] + '</td>';
+		rowStr += '<td class="Day num">' + ary[i][6] + '</td>';
+		rowStr += '<td class="LastYear num">' + ary[i][7] + '</td>';
+		rowStr += '<td class="Add num' + colorStr + '">' + ary[i][8] + '</td>';
+		rowStr += '<td class="Rate num' + colorStr + '">' + ary[i][9] + '%</td>';
+		if(hasPrev){
+			var colorPrevStr = (prevObj[ary[i][0]] > c) ? ' cGreen' : (prevObj[ary[i][0]] < c) ? ' cRed' : '';
+			var rr = Math.abs(prevObj[ary[i][0]] - c);
+			var dPrevStr = (prevObj[ary[i][0]] > c) ? ' (↑'+rr+')' : (prevObj[ary[i][0]] < c) ? ' (↓'+rr+')' : '';
+			rowStr += '<td class="prev' + colorPrevStr + '">' + prevObj[ary[i][0]] + dPrevStr + '</td>';
+		}
+		rowStr += '</tr>';
+		str += rowStr;
+		tmpPrevObj[ary[i][0]] = c;
+	}
+	str = '<table class="renderTime">' + str + '</table>';
+	div.innerHTML = str;
+	tmpPrevObj.timeTableSortTag = TT.timeTableSortTag;
+	tmpPrevObj.timeTableSortDir = TT.timeTableSortDir;
+	prevObj = tmpPrevObj;
+	
+	var ddth = document.querySelector('table th.sortBy' + TT.timeTableSortTag);
+	if(ddth){
+		ddth.style.backgroundColor = '#AD0';
+	}
+	if(!div.alreadyGiveEvent){
+	div.addEventListener('click', function(e){
+		var t = e.target.className;
+		if(t.indexOf('sortByUp')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Up'});
+		}else if(t.indexOf('sortByDown')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Down'});
+		}else if(t.indexOf('sortByAll')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'All'});
+		}else if(t.indexOf('sortByDay')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Day'});
+		}else if(t.indexOf('sortByLastYear')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'LastYear'});
+		}else if(t.indexOf('sortByAdd')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Add'});
+		}else if(t.indexOf('sortByRate')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Rate'});
+		}else if(t.indexOf('sortByName')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Name'});
+		}
+	}, false);
+	div.alreadyGiveEvent = true;
+	}
+}
+TT.initFn = function(){
+	var body = document.body;
+	var menuBar = TT.createMenuBar();
+	body.appendChild(menuBar);
+	var setArea = TT.createSetArea();
+	body.appendChild(setArea);
+	document.querySelector('.setArea .description').innerHTML = TT.descriptionText.join('<br>');
+	
+	var timeShowArea = document.createElement('div');
+	timeShowArea.id = 'timeShowArea';
+	timeShowArea.innerHTML = '<div id="timeShowIns"></div>';
+	body.appendChild(timeShowArea);
+	document.addEventListener('touchmove', function(e){
+		TT.isMobileMove = true;
+	});
+	TT.cmd('renderTable');
+}
+</script>
+<!-- -->
+<!-- -->
+</head>
+<body onload="TT.initFn()">
+</body>
+</html>
