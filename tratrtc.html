@@ -805,10 +805,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.5.4",
-            "產生日期": "2017/05/03"
+            "版本": "Beta 0.5.5",
+            "產生日期": "2017/09/10"
         },
         programUpdateInfo: [
+                    'Beta 0.5.5: 新增台鐵新富站。',
                     'Beta 0.5.4: 新增機場捷運與台北捷運蘆洲線透過三重與大橋頭轉乘。',
                     'Beta 0.5.3: 新增機場捷運與台北捷運部分路線互相轉乘查詢。',
                     'Beta 0.5.2: 新增機場捷運與台鐵互相轉乘查詢。',
@@ -905,6 +906,7 @@ var TT = (function(){
                 {id:"tra_1018", name: "埔心", estring: "puxin", sect: "taoyuan"},
                 {id:"tra_1019", name: "楊梅", estring: "yangmei", sect: "taoyuan"},
                 {id:"tra_1020", name: "富岡", estring: "fugan", sect: "taoyuan"},
+                {id:"tra_1036", name: "新富", estring: "xinfu", sect: "taoyuan"},
                 {id:"tra_1033", name: "北湖", estring: "beihu", sect: "hsinchu"},
                 {id:"tra_1021", name: "湖口", estring: "hukou", sect: "hsinchu"},
                 {id:"tra_1022", name: "新豐", estring: "xinfeng", sect: "hsinchu"},
@@ -1075,7 +1077,7 @@ var TT = (function(){
                         "tra_liujia": {station: "tra_1025", dir: "0"}
                     },
             		station: ["tra_1001","tra_1029","tra_1002","tra_1003","tra_1030","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1009","tra_1011","tra_1032","tra_1012","tra_1013","tra_1014",//taipei
-                        "tra_1015","tra_1016","tra_1017","tra_1018","tra_1019","tra_1020","tra_1033","tra_1021","tra_1022","tra_1023","tra_1024","tra_1025","tra_1035","tra_1026","tra_1027","tra_1028"]
+                        "tra_1015","tra_1016","tra_1017","tra_1018","tra_1019","tra_1020","tra_1036","tra_1033","tra_1021","tra_1022","tra_1023","tra_1024","tra_1025","tra_1035","tra_1026","tra_1027","tra_1028"]
             	}, {
             		id: "tra_shan",
                     name: "山線(竹南-彰化)",
@@ -2773,12 +2775,12 @@ var TT = (function(){
                         transStation: 'zhonglitra1'
                     }, {
                         line: ['tra_shan'],
-                        station: ["tra_1019","tra_1020"],
+                        station: ["tra_1019","tra_1020","tra_1036"],
                         sect: ['hsinchu'],
                         transStation: 'hsinchutra1'
                     }, {
                         line: ['tra_xibu','tra_liujia'],
-                        station: ["tra_1019","tra_1020"],
+                        station: ["tra_1019","tra_1020","tra_1036"],
                         sect: ['miaoli'],
                         transStation: 'miaolitra1'
                     }, {
@@ -2824,7 +2826,7 @@ var TT = (function(){
                         transStation: 'zhonglitra1'
                     }, {
                         line: ['tra_zhjy'],
-                        station: ["tra_1019","tra_1020"],
+                        station: ["tra_1019","tra_1020","tra_1036"],
                         sect: ['hsinchu'],
                         transStation: 'hsinchutra1'
                     }, {
@@ -2879,7 +2881,7 @@ var TT = (function(){
                         transStation: 'zhonglitra1'
                     }, {
                         line: ['tra_jygx','tra_shalun'],
-                        station: ["tra_1019","tra_1020"],
+                        station: ["tra_1019","tra_1020","tra_1036"],
                         sect: ['hsinchu'],
                         transStation: 'hsinchutra1'
                     }, {

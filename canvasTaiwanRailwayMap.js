@@ -57,7 +57,7 @@
         cfg = cfg || {};
         defaultCfg = {
             baseWidth: 1550,//canvas 畫布寬
-            baseHeight: 3300,//canvas 畫布高
+            baseHeight: 3330,//canvas 畫布高
             canTouch: ("ontouchend" in document),
             canvasBgcolor: 'rgba(255,255,255,0.9)',
             canvasID: null,//canvas 的 id，不需要則為 null
@@ -102,12 +102,12 @@
             hualian: {x: 820, y: 870},
             taidong: {x: 820, y: 1720},
             tauoyuan: {x: -240, y: 530},
-            hsinchu: {x: -240, y: 970},
-            taichung: {x: 100, y: 1500},
-            changhua: {x: -240, y: 1750},
-            chayi: {x: -170, y: 2150},
-            tainan: {x: -400, y: 2450},
-            kaohsiung: {x: -300, y: 2850}
+            hsinchu: {x: -240, y: 1000},
+            taichung: {x: 100, y: 1530},
+            changhua: {x: -240, y: 1780},
+            chayi: {x: -170, y: 2180},
+            tainan: {x: -400, y: 2480},
+            kaohsiung: {x: -300, y: 2880}
         }
         if(cfg.linePOS) pos = cfg.linePOS;
         
@@ -172,7 +172,8 @@
                         "tra_1017": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 2, company: true},
                         "tra_1018": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+230, name: '埔心', stationClass: 4},
                         "tra_1019": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+255, name: '楊梅', stationClass: 4},
-                        "tra_1020": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+285, name: '富岡', stationClass: 4},
+                        "tra_1020": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+290, name: '富岡', stationClass: 4},
+                        "tra_1036": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+315, name: '新富', stationClass: 4},
                         "tra_1033": {x: pos.hsinchu.x, y: pos.hsinchu.y-130, name: '北湖', stationClass: 4},
                         "tra_1021": {x: pos.hsinchu.x, y: pos.hsinchu.y-105, name: '湖口', stationClass: 4},
                         "tra_1022": {x: pos.hsinchu.x, y: pos.hsinchu.y-80, name: '新豐', stationClass: 4},
@@ -558,7 +559,7 @@
                         {type: 'turn', id: 'thsr_04', ox: 0, oy: -587},//{type: 'turn', id: 'thsr_04', ox: 40, oy: 0},
                         {type: 'station', id: 'thsr_04'},
                         {type: 'turn', id: 'thsr_04', ox: 0, oy: 30},
-                        {type: 'turn', id: 'thsr_05', ox: 0, oy: -60},
+                        {type: 'turn', id: 'thsr_05', ox: 0, oy: -90},
                         {type: 'station', id: 'thsr_05'},
                         {type: 'station', id: 'thsr_07'},
                         {type: 'turn', id: 'thsr_08', ox: -240, oy: -210},
