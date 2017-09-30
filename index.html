@@ -805,10 +805,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.5.5",
-            "產生日期": "2017/09/10"
+            "版本": "Beta 0.5.6",
+            "產生日期": "2017/09/30"
         },
         programUpdateInfo: [
+                    'Beta 0.5.6: 修正台鐵沙崙線轉平溪線無法查詢錯誤。',
                     'Beta 0.5.5: 新增台鐵新富站。',
                     'Beta 0.5.4: 新增機場捷運與台北捷運蘆洲線透過三重與大橋頭轉乘。',
                     'Beta 0.5.3: 新增機場捷運與台北捷運部分路線互相轉乘查詢。',
@@ -2740,6 +2741,10 @@ var TT = (function(){
                         line: ['tra_yilan','tra_beihui','tra_huadong','tra_pingxi'],
                         station: ["tra_1030","tra_1003","tra_1029","tra_1001"],
                         transStation: 'badutra1'
+                    }, {
+                    	line: ['tra_shalun','tra_pingxi'],
+                        station: ["tra_1228"],
+                        transStation: 'tainantra1'
                     }
                     
                 ]
@@ -6774,7 +6779,7 @@ var TT = (function(){
                 '<p>接軌時刻的運作現況' +
                     '<ul>' +
                         '<li><span style="color:#FE2010;">搜尋時間間隔超過三小時可能造成計算過久。</span></li>' +
-                        '<li>台鐵部分目前只開放基隆至中壢站。</li>' +
+                        '<li>台鐵部分目前只開放基隆至高雄站、八堵至台東站。</li>' +
                         '<li>台北捷運的部分目前僅建立部分車站資料台北捷運說明框內敘述。</li>' +
                         '<li>台北捷運無台鐵般詳細的每列車到站與離站資訊，時間上均採用相對計算方式於台北捷運說明框內敘述。</li>' +
                         '<li>因為將資料載入到前端做計算，好處是連續查詢都在前端完成不用跑伺服器速度快，壞處是在運算效能低落的裝置上計算較慢。</li>' +
