@@ -158,10 +158,10 @@ var TT = {
 	descriptionText: [
 		'本程式為接軌時刻 Web App 內之輔助工據，用於模擬及分析 2017/02/16 起試乘之桃園機場捷運，可產生 JSON 格式時刻表做應用。',
 		'請先點選往環北或往台北車站設定方向，之後可以起迄時間或線上任一車站來排序，亦可過濾是否要顯示直達車或普通車。',
-		'2017年11月因網友發現機場捷運頭班車時間更改故調整計算方式。',
+		'2017年11月因網友發現機場捷運頭班車時間更改故調整計算方式，2018年3月因機捷改點修改。',
 		'',
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2017/11/21</span>"
+			"更新日期: 2018/03/01</span>"
 	],
 	station: {
                         "tymetro_a01": {a: true, b: true, name: '臺北車站', aDwon: 0, aUp: 37, bDown: 0, bUp: 50},
@@ -264,35 +264,36 @@ TT.getIndexOfStation = function(id){
 TT.makeTimeTable = function(){
 	TT.timeTable = [];
 	var lineAry = TT.lineAry;
-	var normalDayLine0 = [[0,0],[6,0],[4,0],[3,0],[2,0],[3,0],[5,0],[5,2],[3,0],[9,0],[3,0],[4,0],[4,0],[3,0],[3,0],[3,0],[3,0],[3,0],[3,0],[5,0],[4,0]];
-	var normalDayLine1 = [[4,0],[4,0],[3,0],[2,0],[3,0],[7,0],[4,0],[4,2],[7,0],[3,0],[3,0],[3,0],[4,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0],[0,0]];
-	var directlyDayLine0 = [[0,0],[-1,-1],[8,1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[12,0],[-1,-1],[-1,-1],[-1,-1],[14,1],[2,0],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]];
-	var directlyDayLine1 = [[8,0],[-1,-1],[14,0],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[13,0],[-1,-1],[-1,-1],[-1,-1],[2,0],[0,0],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]];
+	var normalDayLine0 = [[0,0],[6,0],[4,0],[3,0],[2,0],[3,0],[5,0],[5,3],[3,0],[9,0],[3,0],[4,0],[3,0],[3,0],[3,0],[3,0],[5,0],[3,0],[3,0],[5,0],[4,0]];
+	var normalDayLine1 = [[4,0],[5,0],[3,0],[2,0],[3,0],[7,0],[4,0],[4,3],[8,0],[2,0],[4,0],[3,0],[4,0],[3,0],[3,0],[3,0],[4,0],[4,0],[5,0],[3,0],[0,0]];
+	var directlyDayLine0 = [[0,0],[-1,-1],[8,1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[12,0],[-1,-1],[-1,-1],[-1,-1],[15,1],[2,2],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]];
+	var directlyDayLine1 = [[8,0],[-1,-1],[14,1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[13,0],[-1,-1],[-1,-1],[-1,-1],[2,1],[0,0],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]];
 	var normalNoWaitDayLine0 = [[0,0],[5,0],[5,0],[3,0],[1,0],[3,0],[6,0],[4,0],[3,0],[10,0],[2,0],[4,0],[3,0],[3,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0]];
 	var normalNoWaitDayLine1 = [[4,0],[4,0],[3,0],[2,0],[3,0],[7,0],[4,0],[4,0],[7,0],[3,0],[3,0],[3,0],[4,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0],[0,0]];
 	var normalWaitA3DayLine0 = [[0,0],[5,0],[5,4],[3,0],[1,0],[3,0],[6,0],[4,0],[3,0],[10,0],[2,0],[4,0],[3,0],[3,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0]];
 	var normalWaitA3DayLine1 = [[4,0],[4,0],[2,2],[2,0],[3,0],[7,0],[4,0],[4,0],[7,0],[3,0],[3,0],[3,0],[4,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0],[0,0]];
 	
 	var normal0Cnt = 1, normal1Cnt = 2, directly0Cnt = 1, directly1Cnt = 2, tmpSec = 0, aryA = [], objA = {};
+	var normalNightLine1 = [[4,0],[5,0],[3,0],[2,0],[3,0],[7,0],[4,0],[3,0],[8,0],[2,0],[4,0],[3,0],[4,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[3,0],[0,0]];
 	
 	var aryNormal0 = [], aryNormal1 = [], aryDirectly0 = [], aryDirectly1 = [];
 	var normalDay0StartStation = "tymetro_a01";
 	var normalDay0Interval = 15 * 60;//15分鐘間隔
 	var normalDay0StartSec = (6 * 60 + 7) * 60; // 06:07 開始台北發普通車
-	var normalDay0EndSec = (22 * 60 + 37) * 60; // 22:37 結束台北發普通車
+	var normalDay0EndSec = (22 * 60 + 52) * 60; // 22:52 結束台北發普通車
 	var directlyDay0StartStation = "tymetro_a01";
 	var directlyDay0Interval = 15 * 60;//15分鐘間隔
 	var directlyDay0StartSec = 6 * 60 * 60; // 06:00 開始台北發直達車
-	var directlyDay0EndSec = (22 * 60 + 45) * 60; // 22:45 結束台北發直達車
+	var directlyDay0EndSec = (23 * 60 + 0) * 60; // 23:00 結束台北發直達車
 	
 	var normalDay1StartStation = "tymetro_a21";
 	var normalDay1Interval = 15 * 60;//15分鐘間隔
-	var normalDay1StartSec = (6 * 60 + 7) * 60; // 06:07 開始環北發普通車
-	var normalDay1EndSec = (22 * 60 + 7) * 60; // 22:07 結束環北發普通車
+	var normalDay1StartSec = (6 * 60 + 5) * 60; // 06:05 開始環北發普通車
+	var normalDay1EndSec = (22 * 60 + 20) * 60; // 22:20 結束環北發普通車
 	var directlyDay1StartStation = "tymetro_a13";
 	var directlyDay1Interval = 15 * 60;//15分鐘間隔
-	var directlyDay1StartSec = (6 * 60 + 12) * 60; // 06:12 開始二航發直達車
-	var directlyDay1EndSec = (22 * 60 + 42) * 60; // 22:42 結束二航發直達車
+	var directlyDay1StartSec = (6 * 60 + 10) * 60; // 06:10 開始二航發直達車
+	var directlyDay1EndSec = (22 * 60 + 55) * 60; // 22:55 結束二航發直達車
 	
 	var modeVal = document.getElementById('selectMode').value;
 	if(modeVal!="15"){
@@ -554,7 +555,6 @@ TT.makeTimeTable = function(){
 	//產生特殊班次
 	var arySpecialTrain = [], sp0Cnt = 1, sp1Cnt = 2;
 	var speLineAry = [], speLineTimeAry = [];
-	var normalNightLine1 = [[4,0],[4,0],[3,0],[2,0],[3,0],[7,0],[4,0],[3,0],[7,0],[3,0],[3,0],[2,0],[4,0],[2,0],[4,0],[2,0],[4,0],[3,0],[5,0],[4,0],[0,0]];
 	function speTrain(startStn, endStn, dir, spLineAry, spLineTimeAry, trainType){
 		var objA = {};
 		trainType = trainType || 'normal';
@@ -584,48 +584,48 @@ TT.makeTimeTable = function(){
 	
 	if(modeVal=="15"){//標準模式才產生標準的特殊班次時刻表
 	//特殊下行
-	tmpSec = 6 * 60 * 60;
+	tmpSec = (6 * 60 + 2) * 60;
 	speTrain('tymetro_a18', 'tymetro_a21', 1, TT.lineAry.slice(17), normalDayLine0.slice(17), 'normal');
-	tmpSec = (6 * 60 + 0) * 60;
-	speTrain('tymetro_a13', 'tymetro_a21', 1, TT.lineAry.slice(13), normalDayLine0.slice(13), 'normal');
-	tmpSec = (6 * 60 + 4) * 60;
+	tmpSec = (5 * 60 + 57) * 60;
+	speTrain('tymetro_a12', 'tymetro_a21', 1, TT.lineAry.slice(11), normalDayLine0.slice(11), 'normal');
+	tmpSec = (6 * 60 + 5) * 60;
 	speTrain('tymetro_a10', 'tymetro_a21', 1, TT.lineAry.slice(9), normalDayLine0.slice(9), 'normal');
 	tmpSec = (6 * 60 + 0) * 60;
 	speTrain('tymetro_a07', 'tymetro_a21', 1, TT.lineAry.slice(6), normalDayLine0.slice(6), 'normal');
-	tmpSec = (6 * 60 + 2) * 60;
-	speTrain('tymetro_a03', 'tymetro_a21', 1, TT.lineAry.slice(2), normalDayLine0.slice(2), 'normal');
+	tmpSec = (5 * 60 + 58) * 60;
+	speTrain('tymetro_a02', 'tymetro_a21', 1, TT.lineAry.slice(1), normalDayLine0.slice(1), 'normal');
 	tmpSec = (6 * 60 + 6) * 60;
 	speTrain('tymetro_a12', 'tymetro_a21', 1, TT.lineAry.slice(11), directlyDayLine0.slice(11), 'directly');
 	tmpSec = (6 * 60 + 6) * 60;
 	speTrain('tymetro_a08', 'tymetro_a21', 1, TT.lineAry.slice(7), directlyDayLine0.slice(7), 'directly');
-	tmpSec = (23 * 60) * 60;
-	speTrain('tymetro_a01', 'tymetro_a21', 1, TT.lineAry, [[0,0],[-1,-1],[10,1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[12,0],[-1,-1],[-1,-1],[-1,-1],[14,1],[2,0],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]], 'directly');
-	tmpSec = (22 * 60 + 51) * 60;
-	speTrain('tymetro_a01', 'tymetro_a21', 1, TT.lineAry, [[0,0],[9,0],[5,0],[3,0],[1,0],[3,0],[6,0],[4,2],[3,0],[10,0],[2,0],[4,0],[2,0],[3,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0]], 'normal');
-	tmpSec = (23 * 60 + 8) * 60;
-	speTrain('tymetro_a01', 'tymetro_a21', 1, TT.lineAry, [[0,0],[9,0],[4,0],[3,0],[1,0],[3,0],[6,0],[3,0],[3,0],[9,0],[3,0],[4,0],[2,0],[3,0],[3,0],[3,0],[3,0],[4,0],[2,0],[5,0],[4,0]], 'normal');
-	//特殊上行
-	tmpSec = (6 * 60 + 2) * 60;
-	speTrain('tymetro_a03', 'tymetro_a01', 0, TT.lineAry.slice(0,3), normalDayLine1.slice(0,3), 'normal');
-	tmpSec = (6 * 60 + 2) * 60;
-	speTrain('tymetro_a07', 'tymetro_a01', 0, TT.lineAry.slice(0,7), normalDayLine1.slice(0,7), 'normal');
-	tmpSec = (6 * 60 + 0) * 60;
-	speTrain('tymetro_a10', 'tymetro_a01', 0, TT.lineAry.slice(0,10), normalDayLine1.slice(0,10), 'normal');
-	tmpSec = (6 * 60 + 2) * 60;
-	speTrain('tymetro_a14', 'tymetro_a01', 0, TT.lineAry.slice(0,14), normalDayLine1.slice(0,14), 'normal');
-	tmpSec = (6 * 60 + 4) * 60;
-	speTrain('tymetro_a18', 'tymetro_a01', 0, TT.lineAry.slice(0,18), normalDayLine1.slice(0,18), 'normal');
-	tmpSec = (6 * 60 + 11) * 60;
-	speTrain('tymetro_a03', 'tymetro_a01', 0, TT.lineAry.slice(0,3), directlyDayLine1.slice(0,3), 'directly');
-	tmpSec = (6 * 60 + 12) * 60;
-	speTrain('tymetro_a08', 'tymetro_a01', 0, TT.lineAry.slice(0,8), directlyDayLine1.slice(0,8), 'directly');
-	tmpSec = (22 * 60 + 22) * 60;
-	speTrain('tymetro_a21', 'tymetro_a01', 0, TT.lineAry, normalNightLine1, 'normal');
-	tmpSec = (22 * 60 + 37) * 60;
-	speTrain('tymetro_a21', 'tymetro_a01', 0, TT.lineAry, normalNightLine1, 'normal');
-	tmpSec = (22 * 60 + 52) * 60;
-	speTrain('tymetro_a21', 'tymetro_a01', 0, TT.lineAry, normalNightLine1, 'normal');
+	//tmpSec = (23 * 60) * 60;
+	//speTrain('tymetro_a01', 'tymetro_a21', 1, TT.lineAry, [[0,0],[-1,-1],[10,1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[12,0],[-1,-1],[-1,-1],[-1,-1],[14,1],[2,0],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]], 'directly');
+	//tmpSec = (22 * 60 + 51) * 60;
+	//speTrain('tymetro_a01', 'tymetro_a21', 1, TT.lineAry, [[0,0],[9,0],[5,0],[3,0],[1,0],[3,0],[6,0],[4,2],[3,0],[10,0],[2,0],[4,0],[2,0],[3,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0]], 'normal');
 	tmpSec = (23 * 60 + 7) * 60;
+	speTrain('tymetro_a01', 'tymetro_a21', 1, TT.lineAry, [[0,0],[8,0],[4,0],[3,0],[2,0],[3,0],[5,0],[4,0],[3,0],[9,0],[3,0],[4,0],[2,0],[3,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0]], 'normal');
+	//特殊上行
+	tmpSec = (5 * 60 + 58) * 60;
+	speTrain('tymetro_a05', 'tymetro_a01', 0, TT.lineAry.slice(0,5), normalDayLine1.slice(0,5), 'normal');
+	tmpSec = (5 * 60 + 59) * 60;
+	speTrain('tymetro_a08', 'tymetro_a01', 0, TT.lineAry.slice(0,8), normalDayLine1.slice(0,8), 'normal');
+	tmpSec = (5 * 60 + 59) * 60;
+	speTrain('tymetro_a10', 'tymetro_a01', 0, TT.lineAry.slice(0,10), normalDayLine1.slice(0,10), 'normal');
+	tmpSec = (6 * 60 + 0) * 60;
+	speTrain('tymetro_a14', 'tymetro_a01', 0, TT.lineAry.slice(0,14), normalDayLine1.slice(0,14), 'normal');
+	tmpSec = (6 * 60 + 2) * 60;
+	speTrain('tymetro_a18', 'tymetro_a01', 0, TT.lineAry.slice(0,18), normalDayLine1.slice(0,18), 'normal');
+	tmpSec = (5 * 60 + 56) * 60;
+	speTrain('tymetro_a08', 'tymetro_a01', 0, TT.lineAry.slice(0,8), directlyDayLine1.slice(0,8), 'directly');
+	tmpSec = (5 * 60 + 57) * 60;
+	speTrain('tymetro_a13', 'tymetro_a01', 0, TT.lineAry.slice(0,13), directlyDayLine1.slice(0,13), 'directly');
+	//tmpSec = (22 * 60 + 22) * 60;
+	//speTrain('tymetro_a21', 'tymetro_a01', 0, TT.lineAry, normalNightLine1, 'normal');
+	tmpSec = (22 * 60 + 35) * 60;
+	speTrain('tymetro_a21', 'tymetro_a01', 0, TT.lineAry, normalNightLine1, 'normal');
+	tmpSec = (22 * 60 + 50) * 60;
+	speTrain('tymetro_a21', 'tymetro_a01', 0, TT.lineAry, normalNightLine1, 'normal');
+	tmpSec = (23 * 60 + 5) * 60;
 	speTrain('tymetro_a21', 'tymetro_a01', 0, TT.lineAry, normalNightLine1, 'normal');
 	}
 	
