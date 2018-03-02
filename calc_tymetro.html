@@ -145,6 +145,17 @@ body {
 	display: inline-block;
 	cursor: pointer;
 	font-size: 16px;
+	float: left;
+}
+#JSON1Line{
+	margin: 5px 5px;
+	padding: 3px 10px;
+	border: 2px solid #7D2;
+	border-radius: 5px;
+	display: inline-block;
+	cursor: pointer;
+	font-size: 16px;
+	float: left;
 }
 .showJSON{
 	width: 100%;
@@ -265,8 +276,8 @@ TT.makeTimeTable = function(){
 	TT.timeTable = [];
 	var lineAry = TT.lineAry;
 	var normalDayLine0 = [[0,0],[6,0],[4,0],[3,0],[2,0],[3,0],[5,0],[5,3],[3,0],[9,0],[3,0],[4,0],[3,0],[3,0],[3,0],[3,0],[5,0],[3,0],[3,0],[5,0],[4,0]];
-	var normalDayLine1 = [[4,0],[5,0],[3,0],[2,0],[3,0],[7,0],[4,0],[4,3],[8,0],[2,0],[4,0],[3,0],[4,0],[3,0],[3,0],[3,0],[4,0],[4,0],[5,0],[3,0],[0,0]];
-	var directlyDayLine0 = [[0,0],[-1,-1],[8,1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[12,0],[-1,-1],[-1,-1],[-1,-1],[15,1],[2,2],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]];
+	var normalDayLine1 = [[5,0],[5,0],[3,0],[2,0],[3,0],[7,0],[4,0],[4,3],[8,0],[2,0],[4,0],[3,0],[4,0],[3,0],[3,0],[3,0],[4,0],[4,0],[5,0],[3,0],[0,0]];
+	var directlyDayLine0 = [[0,0],[-1,-1],[8,1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[12,0],[-1,-1],[-1,-1],[-1,-1],[15,1],[2,2],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[14,0],[-1,-1],[-1,-1],[-1,-1]];
 	var directlyDayLine1 = [[8,0],[-1,-1],[14,1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[13,0],[-1,-1],[-1,-1],[-1,-1],[2,1],[0,0],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1],[-1,-1]];
 	var normalNoWaitDayLine0 = [[0,0],[5,0],[5,0],[3,0],[1,0],[3,0],[6,0],[4,0],[3,0],[10,0],[2,0],[4,0],[3,0],[3,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0]];
 	var normalNoWaitDayLine1 = [[4,0],[4,0],[3,0],[2,0],[3,0],[7,0],[4,0],[4,0],[7,0],[3,0],[3,0],[3,0],[4,0],[3,0],[3,0],[3,0],[4,0],[3,0],[5,0],[4,0],[0,0]];
@@ -317,6 +328,71 @@ TT.makeTimeTable = function(){
 		}
 	}
 	
+	function specialCaseCheckFn(ary, trainType, dir){
+		if(trainType=='directly'){
+			var a13_18 = 60 * 14,
+				a18_21 = 60 * 9,
+				a21_18 = 60 * 11;
+			var a13_21 = a13_18 + a18_21;
+			var a21_13 = a13_18 + a21_18;
+			if(dir==1){
+				var lastSt = ary[ary.length-1];
+				if(lastSt.stationID=='tymetro_a13' && (lastSt.depTimeStr=='06:26' || lastSt.depTimeStr=='07:41' || lastSt.depTimeStr=='08:41' || lastSt.depTimeStr=='16:41' || lastSt.depTimeStr=='17:41' || lastSt.depTimeStr=='18:41')){
+					ary.push({
+						stationID: 'tymetro_a18',
+						depTime: lastSt.depTime + (a13_18),
+						arrTime: lastSt.depTime + (a13_18),
+						depTimeStr: TT.transTime2HM(lastSt.depTime + (a13_18)),
+						arrTimeStr: TT.transTime2HM(lastSt.depTime + (a13_18))
+					});
+					ary.push({
+						stationID: 'tymetro_a21',
+						depTime: lastSt.depTime + (a13_21),
+						arrTime: lastSt.depTime + (a13_21),
+						depTimeStr: TT.transTime2HM(lastSt.depTime + (a13_21)),
+						arrTimeStr: TT.transTime2HM(lastSt.depTime + (a13_21))
+					});
+				}
+			}else if(dir==0){
+				var fSt = ary[0];
+				if(fSt.stationID=='tymetro_a13' && (fSt.depTimeStr=='07:55' || fSt.depTimeStr=='08:40' || fSt.depTimeStr=='09:40' || fSt.depTimeStr=='17:40' || fSt.depTimeStr=='18:40' || fSt.depTimeStr=='19:40')){
+					ary.unshift({
+						stationID: 'tymetro_a18',
+						depTime: fSt.depTime - (a13_18),
+						arrTime: fSt.depTime - (a13_18),
+						depTimeStr: TT.transTime2HM(fSt.depTime - (a13_18)),
+						arrTimeStr: TT.transTime2HM(fSt.depTime - (a13_18))
+					});
+					ary.unshift({
+						stationID: 'tymetro_a21',
+						depTime: fSt.depTime - (a21_13),
+						arrTime: fSt.depTime - (a21_13),
+						depTimeStr: TT.transTime2HM(fSt.depTime - (a21_13)),
+						arrTimeStr: TT.transTime2HM(fSt.depTime - (a21_13))
+					});
+				}
+				if(fSt.stationID=='tymetro_a08' && fSt.depTimeStr=='05:58'){
+					for(var i=1; i<ary.length; i++){
+						ary[i].depTime = ary[i].depTime - (2 * 60);
+						ary[i].arrTime = ary[i].arrTime - (2 * 60);
+						ary[i].depTimeStr = TT.transTime2HM(ary[i].depTime);
+						ary[i].arrTimeStr = TT.transTime2HM(ary[i].arrTime);
+					}
+				}
+				if(fSt.stationID=='tymetro_a13' && fSt.depTimeStr=='05:57'){
+					var gtg = 60;
+					for(var i=1; i<ary.length; i++){
+						if(i==3) gtg = 2*60;
+						ary[i].depTime = ary[i].depTime - (gtg);
+						ary[i].arrTime = ary[i].arrTime - (gtg);
+						ary[i].depTimeStr = TT.transTime2HM(ary[i].depTime);
+						ary[i].arrTimeStr = TT.transTime2HM(ary[i].arrTime);
+					}
+				}
+			}
+		}
+		return ary;
+	}
 	
 	function makeTimeTable(Var_tLineAry, trainType, Var_lineIntervalAry, dir){
 		var tmpMinCount = 0, ary = [];
@@ -337,11 +413,12 @@ TT.makeTimeTable = function(){
 					depTime: tmpD,
 					arrTime: tmpA,
 					depTimeStr: TT.transTime2HM(tmpD),
-					arrTimeStr: TT.transTime2HM(tmpA),
+					arrTimeStr: TT.transTime2HM(tmpA)
 				});
 				tmpMinCount += lineIntervalAry[i][1];
 			}
 		}
+		ary = specialCaseCheckFn(ary, trainType, dir);
 		return ary;
 	}
 	
@@ -577,7 +654,7 @@ TT.makeTimeTable = function(){
 			dir: dir,
 			timeTable: []
 		};
-		var aryT = makeTimeTable(spLineAry, 'normal', spLineTimeAry, dir);
+		var aryT = makeTimeTable(spLineAry, trainType, spLineTimeAry, dir);
 		objA.timeTable = aryT;
 		arySpecialTrain.push(objA);
 	}
@@ -594,8 +671,8 @@ TT.makeTimeTable = function(){
 	speTrain('tymetro_a07', 'tymetro_a21', 1, TT.lineAry.slice(6), normalDayLine0.slice(6), 'normal');
 	tmpSec = (5 * 60 + 58) * 60;
 	speTrain('tymetro_a02', 'tymetro_a21', 1, TT.lineAry.slice(1), normalDayLine0.slice(1), 'normal');
-	tmpSec = (6 * 60 + 6) * 60;
-	speTrain('tymetro_a12', 'tymetro_a21', 1, TT.lineAry.slice(11), directlyDayLine0.slice(11), 'directly');
+	tmpSec = (6 * 60 + 7) * 60;
+	speTrain('tymetro_a12', 'tymetro_a13', 1, TT.lineAry.slice(11), directlyDayLine0.slice(11), 'directly');
 	tmpSec = (6 * 60 + 6) * 60;
 	speTrain('tymetro_a08', 'tymetro_a21', 1, TT.lineAry.slice(7), directlyDayLine0.slice(7), 'directly');
 	//tmpSec = (23 * 60) * 60;
@@ -615,7 +692,7 @@ TT.makeTimeTable = function(){
 	speTrain('tymetro_a14', 'tymetro_a01', 0, TT.lineAry.slice(0,14), normalDayLine1.slice(0,14), 'normal');
 	tmpSec = (6 * 60 + 2) * 60;
 	speTrain('tymetro_a18', 'tymetro_a01', 0, TT.lineAry.slice(0,18), normalDayLine1.slice(0,18), 'normal');
-	tmpSec = (5 * 60 + 56) * 60;
+	tmpSec = (5 * 60 + 58) * 60;
 	speTrain('tymetro_a08', 'tymetro_a01', 0, TT.lineAry.slice(0,8), directlyDayLine1.slice(0,8), 'directly');
 	tmpSec = (5 * 60 + 57) * 60;
 	speTrain('tymetro_a13', 'tymetro_a01', 0, TT.lineAry.slice(0,13), directlyDayLine1.slice(0,13), 'directly');
@@ -714,6 +791,9 @@ TT.cmd = function(cmd, objA){
 		break;
 		case 'renderJSON':
 			TT.renderJSON();
+		break;
+		case 'renderJSON1Line':
+			TT.renderJSON(true);
 		break;
         case 'renderTransGuide':
             TT.renderTransGuide();
@@ -924,22 +1004,25 @@ TT.renderUpTime = function(){
 	div.appendChild(table);
 }
 
-TT.renderJSON = function(){
+TT.renderJSON = function(render1line){
 	var div = document.getElementById('timeShowIns');
 	div.innerHTML = '';
 	var insDiv = document.createElement('div');
-	insDiv.innerHTML = '<div id="copyJSON" class="copyJSON">複製</div><div><textarea id="showJSON" class="showJSON"></textarea></div>';
+	insDiv.innerHTML = '<div id="copyJSON" class="copyJSON">複製</div><div id="JSON1Line" class="JSON1Line">一行壓縮</div><div><textarea id="showJSON" class="showJSON"></textarea></div>';
 	insDiv.addEventListener('click', function(e){
 		var t = e.target.className;
 		if(t.indexOf('copyJSON')>=0){
 			var dom = document.getElementById('showJSON');
 			dom.select();
 			if(document.execCommand) document.execCommand('copy');
+		}else if(t.indexOf('JSON1Line')>=0){
+			TT.cmd('renderJSON1Line');
 		}
 	});
 	div.appendChild(insDiv);
 	
 	var str = JSON.stringify(TT.timeTable, undefined, 4);
+	if(render1line) str = JSON.stringify(TT.timeTable);
 	document.getElementById('showJSON').value = str;
 }
 TT.renderTransGuide = function(){
