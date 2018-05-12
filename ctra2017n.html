@@ -11,9 +11,9 @@
 @charset "utf-8";
 
 body {
-	/*font-family:'細明體', "PMingLiU";*/
-	font-size: 14px;
-	margin: 0px;
+    /*font-family:'細明體', "PMingLiU";*/
+    font-size: 14px;
+    margin: 0px;
 }
 
 #ttDebug{
@@ -22,9 +22,6 @@ body {
 	background-color: #311;
 	color: #DDE;
 	display: inline-block;
-}
-.ttHide{
-	display: none;
 }
 
 .menuBar{
@@ -84,10 +81,9 @@ body {
 	display: inline-block;
 	padding-left: 10px;
 }
-.showHideDownUp{
-	cursor: pointer;
-	color: #23F;
-	display: inline-block;
+.jsShowHideDownUp{
+    cursor: pointer;
+    color: #23F;
 }
 
 #timeShowArea{
@@ -138,7 +134,6 @@ body {
 
 </style>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script type="text/javascript">
 var rowData = [
 ["編號","站名","英文站名","上車人次","下車人次","總人次","日均人次","2016年人次","2015年人次"],[
@@ -375,121 +370,111 @@ var prevObj = {};
 
 var TT = {
 	descriptionText: [
-		'本程式為接軌時刻 Web App 內之輔助工據，用於顯示台鐵歷年各站旅運量，本頁使用 Vue.js。',
+		'本程式為接軌時刻 Web App 內之輔助工據，用於顯示台鐵歷年各站旅運量。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2018/05/12</span>"
+			"更新日期: 2018/05/09</span>"
 	],
 	timeHour: ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'],
 	timeMinSec: ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29',
-					'30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59'],
-	timeTableSortTag: 'Day',
-	timeTableSortDir: 'desc',
-	flagShowPrev: true,
-	hideDU: false,
-	peopleTable: {},
+                    '30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59'],
+    timeTableSortTag: 'Day',
+    timeTableSortDir: 'desc',
+    flagShowPrev: true,
+    hideDU: false,
 	transTime2HM: function(val){
-			if(typeof(val)=='number') val = TT.transSec2Time(val);
-			var ary = val.split(':');
-			return ary[0] + ':' + ary[1];
-	},
-	transTime2Sec: function(str,offsetTomorrow){
-			if (str == null || str == '') {
-				str = '0';
-			}
-			var aryA = str.split(':'), rt;
-			if (aryA.length <= 1) {
-				rt = parseInt(str,10);
-			} else if (aryA.length == 2) {
-				rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60;
-			} else if (aryA.length == 3) {
-				rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60 + parseInt(aryA[2],10);
-			}
-			
-			if(offsetTomorrow){
-				rt = rt + 86400;
-			}
-			return rt;
-	},
-	transSec2Time: function(sec){
-			var tid = 0,
-				tih = 0,
-				tim = 0,
-				tis = 0;
+            if(typeof(val)=='number') val = TT.transSec2Time(val);
+            var ary = val.split(':');
+            return ary[0] + ':' + ary[1];
+    },
+    transTime2Sec: function(str,offsetTomorrow){
+            if (str == null || str == '') {
+                str = '0';
+            }
+            var aryA = str.split(':'), rt;
+            if (aryA.length <= 1) {
+                rt = parseInt(str,10);
+            } else if (aryA.length == 2) {
+                rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60;
+            } else if (aryA.length == 3) {
+                rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60 + parseInt(aryA[2],10);
+            }
+            
+            if(offsetTomorrow){
+                rt = rt + 86400;
+            }
+            return rt;
+    },
+    transSec2Time: function(sec){
+            var tid = 0,
+                tih = 0,
+                tim = 0,
+                tis = 0;
 
-			if((sec === '')){
-				return '';
-			}else if(parseInt(sec,10) < 0){
-				sec = 86400 + sec;
-			}
-			
-			sec = parseInt(sec,10);
-			tis = sec % 60;
-			sec = sec - tis;
-			sec = sec / 60;
-			tim = sec % 60;
-			sec = sec - tim;
-			sec = sec / 60
-			tih = sec;
-			
+            if((sec === '')){
+                return '';
+            }else if(parseInt(sec,10) < 0){
+                sec = 86400 + sec;
+            }
+            
+            sec = parseInt(sec,10);
+            tis = sec % 60;
+            sec = sec - tis;
+            sec = sec / 60;
+            tim = sec % 60;
+            sec = sec - tim;
+            sec = sec / 60
+            tih = sec;
+            
 
-			tih = (tih < 10) ? '0' + tih : tih;
-			tim = (tim < 10) ? '0' + tim : tim;
-			tis = (tis < 10) ? '0' + tis : tis;
+            tih = (tih < 10) ? '0' + tih : tih;
+            tim = (tim < 10) ? '0' + tim : tim;
+            tis = (tis < 10) ? '0' + tis : tis;
 
-			if (tih == 0) {
-				return tih + ':' + tim + ':' + tis;
-			} else {
-				return tih + ':' + tim + ':' + tis;
-			}
-	},
-	isMobileMove: false,
-	debugMode: false
+            if (tih == 0) {
+                return tih + ':' + tim + ':' + tis;
+            } else {
+                return tih + ':' + tim + ':' + tis;
+            }
+    },
+    isMobileMove: false,
+    debugMode: false
 };
 
 TT.createMenuBar = function(){
-	
-	var tpl = Vue.compile('<div id="menuBarRenderDiv">' +
-		'<div class="menuBar">' +
-			'<div class="menuItem hiasd">台鐵 2017 年旅次報表</div>' +
-			'<div v-on:click="back()" class="menuItem menuItem2 back">回到接軌時刻</div>' +
-		'</div>' +
-	'</div>');
-
-	var vm = new Vue({
-		el: '#menuBarRenderDiv',
-		render: tpl.render,
-		methods: {
-			back: function(){
-				location.href = './';
-			}
+	var rt = document.createElement('div');
+	rt.innerHTML = '<div class="menuBar">' +
+		'<div class="menuItem hiasd">台鐵 2017 年旅次報表</div>' +
+		'<div class="menuItem menuItem2 back">回到接軌時刻</div>' +
+		
+	'</div>';
+	rt.addEventListener('click', function(e){
+		var t = e.target.className;
+		if(t.indexOf('toHuanBei')>0){
+			
+		}else if(t.indexOf('back')>0){
+			location.href = './';
 		}
-	});
-	return vm;
+	}), false;
+	return rt;
 }
 TT.createSetArea = function(){
-	var tpl = Vue.compile('<div><div class="setArea">' +
-		'<div v-on:click="sortDirDesc()" class="setItem sortDirDesc">高往低排序</div>' +
-		'<div v-on:click="sortDirAsc()" class="setItem sortDirAsc">低往高排序</div>' +
+	var rt = document.createElement('div');
+	rt.innerHTML = '<div class="setArea">' +
+		'<div class="setItem sortDirDesc">高往低排序</div>' +
+		'<div class="setItem sortDirAsc">低往高排序</div>' +
 		
-		'<div class="description" v-html="descciptionText"></div>' +
-	'</div></div>');
-	var vm = new Vue({
-		el: '#setBarRenderDiv',
-		render: tpl.render,
-		data: {
-			descciptionText: TT.descriptionText.join('<br>')
-		},
-		methods: {
-			sortDirDesc: function(){
-				TT.cmd('renderTable', {timeTableSortDir: 'desc'});
-			},
-			sortDirAsc: function(){
-				TT.cmd('renderTable', {timeTableSortDir: 'asc'});
-			}
+		'<div class="description"></div>' +
+	'</div>';
+	rt.addEventListener('click', function(e){
+		var t = e.target.className;
+		if(t.indexOf('sortDirDesc')>=0){
+			TT.cmd('renderTable', {timeTableSortDir: 'desc'});
+		}else if(t.indexOf('sortDirAsc')>=0){
+			TT.cmd('renderTable', {timeTableSortDir: 'asc'});
 		}
-	});
-	return vm;
+	}, false);
+	return rt;
 }
 TT.cmd = function(cmd, objA){
 	objA = objA || {};
@@ -500,12 +485,25 @@ TT.cmd = function(cmd, objA){
 		case 'renderTable':
 			TT.renderTable();
 		break;
-		case 'showHideDU':
-			if(!objA.followNow){
-				TT.hideDU = !TT.hideDU;
-			}
-			TT.peopleTable.hideDU = TT.hideDU;
-		break;
+        case 'showHideDU':
+            var mt = document.querySelector('th.sortByUp');
+            if(objA.followNow){
+                TT.hideDU = !TT.hideDU;
+            }
+            var d = (TT.hideDU==true) ? '' : 'none';
+            
+            mt.style.display = d;
+            document.querySelector('th.sortByDown').style.display = d;
+            var tda = document.querySelectorAll('td.Up.num');
+            for(var i=0; i<tda.length; i++){
+                tda[i].style.display = d;
+            }
+            tda = document.querySelectorAll('td.Down.num');
+            for(var i=0; i<tda.length; i++){
+                tda[i].style.display = d;
+            }
+            TT.hideDU = !TT.hideDU;
+        break;
 	}
 }
 
@@ -560,13 +558,13 @@ TT.commonSortFn = function(a, b){
 		}
 		
 		if(dir=='desc'){
-			if(intA==intB) return 0;
-			if(intA < intB) return 1;
-			if(intA > intB) return -1;
+        	if(intA==intB) return 0;
+        	if(intA < intB) return 1;
+        	if(intA > intB) return -1;
 		}
-		if(intA==intB) return 0;
-		if(intA < intB) return -1;
-		if(intA > intB) return 1;
+        if(intA==intB) return 0;
+        if(intA < intB) return -1;
+        if(intA > intB) return 1;
 }
 
 TT.countAllData = function(ary){
@@ -587,7 +585,6 @@ TT.countAllData = function(ary){
 			}
 		}
 	}
-	TT.a1ary = ary;
 	return ary;
 }
 TT.formatCount = function(a){
@@ -602,7 +599,6 @@ TT.formatCount = function(a){
 }
 TT.renderTable = function(){
 	var ary = rowData.slice(1);//去除第一行 header
-	var thAry = rowData[0];
 	var thStrObj = {
 		'Name': '站名',
 		'Up': '上車人次',
@@ -618,177 +614,102 @@ TT.renderTable = function(){
 		'asc': '低往高',
 		'desc': '高往低'
 	}
-	var thObjAry = [
-		{id: 'Sect', name: '排名', cls: 'count num', thCls: ''},
-		{id: 'Name', name: '站名', cls: 'station', thCls: 'sortByName'},
-		{id: 'Up', name: '上車人次', cls: 'Up num', thCls: 'sortByUp'},
-		{id: 'Down', name: '下車人次', cls: 'Down num', thCls: 'sortByDown'},
-		{id: 'All', name: '總人次', cls: 'All num', thCls: 'sortByAll'},
-		{id: 'Day', name: '日均人次', cls: 'Day num', thCls: 'sortByDay'},
-		{id: 'Year2016', name: '2016年人次', cls: 'Year2016 num', thCls: 'sortByYear2016'},
-		{id: 'Year2015', name: '2015年人次', cls: 'Year2015 num', thCls: 'sortByYear2015'},
-		{id: 'Add', name: '增減人次', cls: 'Add num', thCls: 'sortByAdd'},
-		{id: 'Rate', name: '年增率', cls: 'Rate num', thCls: 'sortByRate'},
-		{id: 'Y2Add', name: '2年增減人', cls: 'Y2Add num', thCls: 'sortByY2Add'},
-		{id: 'Y2Rate', name: '兩年增率', cls: 'Y2Rate num', thCls: 'sortByY2Rate'}
-	]
-	var getTHObj = function(id){
-		for(var i=0; i<thObjAry.length; i++){
-			if(id==thObjAry[i].id){
-				return thObjAry[i];
-			}
-		}
-		return false;
-	}
 	ary = TT.countAllData(ary);
-	var aryMapping = ['Code','Name','EngName','Up','Down','All','Day','Year2016','Year2015','Add','Rate','Y2Add','Y2Rate'];
 	if(TT.timeTableSortTag!='') ary.sort(TT.commonSortFn);
+	var div = document.getElementById('timeShowIns');
+	div.innerHTML = '';
 	var str = '', rowStr = '', tmpPrevObj = {};
 	var hasPrev = (prevObj.timeTableSortTag && prevObj.timeTableSortDir && TT.flagShowPrev) ? true : false;
-	var displayDataCols = [1,3,4,5,6,7,8,9,10,11,12];
-	
-	if(TT.peopleTable){
-		var tpl = Vue.compile('<table class="renderTime" id="timeShowInsTable">' +
-			'<thead>' +
-				'<th v-for="(col,idx) in thObjAry" v-on:click="headClick(col.id)" v-bind:style="getHeadSortStyle(col.id)" v-bind:class="( getHeadClass(col) )">{{ col.name }}</th>' +
-				'<th v-if="hasPrev">{{getPrevHead()}}</th>' +
-			'</thead>' +
-			'<tbody>' +
-				'<tr v-for="(row, idx) in rows">' +
-					'<td class="' + thObjAry[0].cls + '">{{saveLastIndex(idx+1, row)}}</id>' +
-					'<td v-for="(col, ridx) in rows[idx]" v-if="displayDataCols.indexOf(ridx)>=0" v-bind:class="( getItemClass(aryMapping[ridx], row[ridx]) )">{{getPrintValue(aryMapping[ridx], row[ridx])}}</td>' +
-					'<td v-if="hasPrev" v-bind:class="(getPrevCSS(row, idx+1))">{{getPrevData(row, idx+1)}}</td>' +
-				'</tr>' +
-			'</tbody>' +
-		'</table>');
-		TT.peopleTable = new Vue({
-			el: '#timeShowInsTable',
-			render: tpl.render,
-			data: {
-				rows: ary,
-				thObjAry: thObjAry,
-				displayDataCols: displayDataCols,
-				aryMapping: aryMapping,
-				hasPrev: hasPrev,
-				hideDU: TT.hideDU
-			},
-			methods: {
-				sortDirDesc: function(){
-					TT.cmd('renderTable', {timeTableSortDir: 'desc'});
-				},
-				sortDirAsc: function(){
-					TT.cmd('renderTable', {timeTableSortDir: 'asc'});
-				},
-				getHeadClass: function(objA) {
-					var cls = objA.thCls;
-					if(/^Up|^Down/.test(objA.id)){
-						if(this.hideDU) {
-							cls += ' ttHide';
-						}
-					}
-					return cls;
-				},
-				getItemClass: function(id, value){
-					var objA = getTHObj(id);
-					var cls = objA.cls;
-					if(/^Add|^Rate|^Y2Add|^Y2Rate/.test(id)){
-						cls += (value>=0) ? ' cGreen' : ' cRed';
-					}else if(/^Up|^Down/.test(id)){
-						if(this.hideDU) {
-							cls += ' ttHide';
-						}
-					}
-					return cls;
-				},
-				headClick: function(id){
-					TT.cmd('renderTable', {timeTableSortTag: id});
-				},
-				saveLastIndex: function(idx, row){
-					tmpPrevObj[row[aryMapping.indexOf('Code')]] = idx;
-					return TT.formatCount(idx);
-				},
-				getHeadSortStyle: function(id){
-					if(id==TT.timeTableSortTag){
-						return 'background-color:#AD0';
-					}
-					return '';
-				},
-				getPrevCSS: function(row, c){
-					var colorPrevStr = (prevObj[row[aryMapping.indexOf('Code')]] > c) ? ' cGreen' : (prevObj[row[aryMapping.indexOf('Code')]] < c) ? ' cRed' : '';
-					return 'prev ' + colorPrevStr;
-				},
-				getPrevData: function(row, c){
-					var rr = Math.abs(prevObj[row[aryMapping.indexOf('Code')]] - c);
-					var dPrevStr = (prevObj[row[aryMapping.indexOf('Code')]] > c) ? ' (↑'+rr+')' : (prevObj[row[aryMapping.indexOf('Code')]] < c) ? ' (↓'+rr+')' : '';
-					return prevObj[row[aryMapping.indexOf('Code')]] + dPrevStr;
-				},
-				getPrevHead: function(){
-					return '前次 (' + thStrObj[prevObj.timeTableSortTag] + thStrObj[prevObj.timeTableSortDir] + ') 排名';
-				},
-				getPrintValue: function(id, value){
-					if(id=='Rate' || id=='Y2Rate'){
-						return value + '%';
-					}
-					return value;
-				},
-				getTHObj: getTHObj
-			}
-		});
-	}else{
-		TT.peopleTable.rows = ary;
+	str += '<th>排名</th><th class="sortByName">站名</th><th class="sortByUp">上車人次</th><th class="sortByDown">下車人次</th><th class="sortByAll">總人次</th>' +
+			'<th class="sortByDay">日均人次</th><th class="sortByYear2016">2016年人次</th><th class="sortByYear2015">2015年人次</th>' +
+			'<th class="sortByAdd">增減人次</th><th class="sortByRate">年增率</th><th class="sortByY2Add">2年增減人</th><th class="sortByY2Rate">兩年增率</th>';
+	if(hasPrev){
+		str += '<th class="hasPrev">前次 (' + thStrObj[prevObj.timeTableSortTag] + thStrObj[prevObj.timeTableSortDir] + ') 排名</th>';
 	}
-	
+	for(var i=0; i<ary.length; i++){
+		var colorStr = (ary[i][9] >= 0) ? ' cGreen' : ' cRed';
+		var colorY2Str = (ary[i][11] >= 0) ? ' cGreen' : ' cRed';
+		var c = i+1;
+		rowStr = '<tr>';
+		rowStr += '<td class="count num">' + TT.formatCount(c) + '</td>';
+		rowStr += '<td class="station">' + ary[i][1] + '</td>';
+		rowStr += '<td class="Up num">' + ary[i][3] + '</td>';
+		rowStr += '<td class="Down num">' + ary[i][4] + '</td>';
+		rowStr += '<td class="All num">' + ary[i][5] + '</td>';
+		rowStr += '<td class="Day num">' + ary[i][6] + '</td>';
+		rowStr += '<td class="Year2016 num">' + ary[i][7] + '</td>';
+		rowStr += '<td class="Year2015 num">' + ary[i][8] + '</td>';
+		rowStr += '<td class="Add num' + colorStr + '">' + ary[i][9] + '</td>';
+		rowStr += '<td class="Rate num' + colorStr + '">' + ary[i][10] + '%</td>';
+		rowStr += '<td class="Y2Add num' + colorY2Str + '">' + ary[i][11] + '</td>';
+		rowStr += '<td class="Y2Rate num' + colorY2Str + '">' + ary[i][12] + '%</td>';
+		if(hasPrev){
+			var colorPrevStr = (prevObj[ary[i][0]] > c) ? ' cGreen' : (prevObj[ary[i][0]] < c) ? ' cRed' : '';
+			var rr = Math.abs(prevObj[ary[i][0]] - c);
+			var dPrevStr = (prevObj[ary[i][0]] > c) ? ' (↑'+rr+')' : (prevObj[ary[i][0]] < c) ? ' (↓'+rr+')' : '';
+			rowStr += '<td class="prev' + colorPrevStr + '">' + prevObj[ary[i][0]] + dPrevStr + '</td>';
+		}
+		rowStr += '</tr>';
+		str += rowStr;
+		tmpPrevObj[ary[i][0]] = c;
+	}
+	str = '<div class="jsShowHideDownUp">顯示 / 隱藏上下車人次</div>' + 
+        '<table class="renderTime">' + str + '</table>';
+	div.innerHTML = str;
 	tmpPrevObj.timeTableSortTag = TT.timeTableSortTag;
 	tmpPrevObj.timeTableSortDir = TT.timeTableSortDir;
 	prevObj = tmpPrevObj;
-
+	
+	var ddth = document.querySelector('table th.sortBy' + TT.timeTableSortTag);
+	if(ddth){
+		ddth.style.backgroundColor = '#AD0';
+	}
+    TT.cmd('showHideDU', {followNow: true});
+	if(!div.alreadyGiveEvent){
+	div.addEventListener('click', function(e){
+		var t = e.target.className;
+		if(t.indexOf('sortByUp')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Up'});
+		}else if(t.indexOf('sortByDown')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Down'});
+		}else if(t.indexOf('sortByAll')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'All'});
+		}else if(t.indexOf('sortByDay')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Day'});
+		}else if(t.indexOf('sortByYear2016')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Year2016'});
+		}else if(t.indexOf('sortByYear2015')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Year2015'});
+		}else if(t.indexOf('sortByAdd')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Add'});
+		}else if(t.indexOf('sortByRate')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Rate'});
+		}else if(t.indexOf('sortByName')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Name'});
+		}else if(t.indexOf('sortByY2Rate')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Y2Rate'});
+		}else if(t.indexOf('sortByY2Add')>=0){
+			TT.cmd('renderTable', {timeTableSortTag: 'Y2Add'});
+		}else if(t.indexOf('jsShowHideDownUp')>=0){
+            TT.cmd('showHideDU');
+        }
+	}, false);
+	div.alreadyGiveEvent = true;
+    
+	}
 }
 TT.initFn = function(){
 	var body = document.body;
 	var menuBar = TT.createMenuBar();
+	body.appendChild(menuBar);
 	var setArea = TT.createSetArea();
-
-	Vue.component('vcmp_timeshowins', {
-		render: function (createElement) {
-			return createElement(
-				'div', {
-					attrs: {
-						id: 'timeShowIns',
-					}
-					
-				},
-				[
-					createElement('div', {
-						attrs: {
-							"class": 'showHideDownUp'
-						},
-						domProps: {
-							innerHTML: '顯示 / 隱藏上下車人次'
-						},
-						on: {
-							click: function(){
-								TT.cmd('showHideDU');
-							}
-						}
-					}),
-					createElement('div', {
-						attrs: {
-							id: 'timeShowInsTable'
-						}
-					})
-				]
-			)
-		}
-	});
-	var vm = new Vue({
-		el: '#timeShowArea',
-		methods: {
-			switchDU: function(){
-				alert(3);
-			}
-		}
-	})
+	body.appendChild(setArea);
+	document.querySelector('.setArea .description').innerHTML = TT.descriptionText.join('<br>');
 	
+	var timeShowArea = document.createElement('div');
+	timeShowArea.id = 'timeShowArea';
+	timeShowArea.innerHTML = '<div id="timeShowIns"></div>';
+	body.appendChild(timeShowArea);
 	document.addEventListener('touchmove', function(e){
 		TT.isMobileMove = true;
 	});
@@ -799,8 +720,5 @@ TT.initFn = function(){
 <!-- -->
 </head>
 <body onload="TT.initFn()">
-	<div id="menuBarRenderDiv"></div>
-	<div id="setBarRenderDiv"></div>
-	<div id="timeShowArea"><vcmp_timeshowins></vcmp_timeshowins></div>
 </body>
 </html>
