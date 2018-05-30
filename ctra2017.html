@@ -655,7 +655,7 @@ TT.renderTable = function(){
 			'</thead>' +
 			'<tbody>' +
 				'<tr v-for="(row, idx) in rows">' +
-					'<td class="' + thObjAry[0].cls + '">{{saveLastIndex(idx+1, row)}}</id>' +
+					'<td class="' + thObjAry[0].cls + '">{{saveLastIndex(idx+1, row)}}</td>' +
 					'<td v-for="(col, ridx) in rows[idx]" v-if="displayDataCols.indexOf(ridx)>=0" v-bind:class="( getItemClass(aryMapping[ridx], row[ridx]) )">{{getPrintValue(aryMapping[ridx], row[ridx])}}</td>' +
 					'<td v-if="hasPrev" v-bind:class="(getPrevCSS(row, idx+1))">{{getPrevData(row, idx+1)}}</td>' +
 				'</tr>' +

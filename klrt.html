@@ -1,0 +1,1831 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+<meta name="description" content="接軌時刻 - 基隆輕軌分析器" />
+<meta name="keywords" content="CANVAS,台鐵,捷運,基隆輕軌,輕軌,接軌時刻" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title>接軌時刻 - 基隆輕軌分析器</title>
+<style type="text/css">
+@charset "utf-8";
+
+body {
+	/*font-family:'細明體', "PMingLiU";*/
+	font-size: 14px;
+	margin: 0px;
+}
+
+#ttDebug{
+	position: fixed;
+	top: 60px;
+	background-color: #311;
+	color: #DDE;
+	display: inline-block;
+}
+.ttHide{
+	display: none;
+}
+
+.menuBar{
+	width: calc(100% - 30px);
+	margin: 5px 10px;
+	border: 1px solid #EEE;
+	border-radius: 5px;
+	display: inline-block;
+}
+
+.menuItem{
+	margin: 5px 10px;
+	padding: 3px 10px;
+	border: 2px solid #ECC;
+	border-radius: 5px;
+	float: left;
+	cursor: pointer;
+	font-size: 16px;
+}
+.menuItem.selected{
+	background-color: #FDD;
+}
+.menuItem2{
+	border: 2px solid #994;
+}
+
+
+.setItem{
+	margin: 5px 5px;
+	padding: 3px 10px;
+	border: 2px solid #3BD;
+	border-radius: 5px;
+	float: left;
+	cursor: pointer;
+	font-size: 16px;
+}
+.setItem.selected{
+	background-color: #DED;
+}
+.setItem2{
+	border: 2px solid #B2E;
+}
+.setItem2.selected{
+	background-color: #ECF;
+}
+
+.helpArea{
+	width: calc(100% - 50px);
+	margin: 5px 2px 5px 20px;
+	display: inline-block;
+}
+.helpArea .description{
+	font-size: 12px;
+	color: #331;
+	width: calc(100% - 24px);
+	display: inline-block;
+	padding: 2px 10px;
+}
+.showHideDownUp{
+	cursor: pointer;
+	color: #23F;
+	display: inline-block;
+}
+.timeShowArea{
+	width: 90%;
+	height: 50px;
+	margin: 0 0 10px 50px;
+}
+.timeShowArea > div{
+	float: left;
+}
+.timeShowArea .time{
+	font-size: 30px;
+	line-height: 30px;
+	color: #2F9CED;
+	width: 260px;
+	margin: 5px 0;
+}
+.timeShowArea .status{
+	font-size: 10px;
+	line-height: 12px;
+	width: 100px;
+	margin: 5px 10px;
+}
+.timeShowArea .status .hold{color: #FE0101;}
+.timeShowArea .status .running{color: #10BF10;}
+.timeShowArea .status .off{color: #BAC93401;}
+
+#copyJSON{
+	margin: 5px 5px;
+	padding: 3px 10px;
+	border: 2px solid #7D2;
+	border-radius: 5px;
+	display: inline-block;
+	cursor: pointer;
+	font-size: 16px;
+}
+.showJSON{
+	width: 100%;
+	height: 600px;
+}
+/* Map Class */
+.mapOut{
+	position: relative;
+	width: 1240px;
+	height: 326px;
+	margin-left: 20px;
+}
+#canvasRoute{
+	width: 1240px;
+	height: 326px;
+}
+.routeLayer{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+}
+.trainLayer{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 42;
+}
+
+.stationLayer{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 5;
+}
+.stationOut{
+	position: absolute;
+	text-align: center;
+}
+.stationName{
+	color: #208;
+	height: 18px;
+	overflow: hidden;
+}
+
+.platformOut{
+	width: 40px;
+	height: 100%;
+	position: absolute;
+	z-index: 21;
+	top: 0px;
+	left: 20px;
+}
+.platformTRA, .platformKLRT{
+	position: absolute;
+}
+.platformDiv{
+	position: absolute;
+	width: 40px;
+	height: 14px;
+	text-align: center;
+	border: 1px solid #222;
+	box-sizing: border-box;
+	line-height: 14px;
+}
+
+/* Car Class */
+.carOut{
+	position: absolute;
+}
+.carAlign{
+	position: absolute;
+	box-sizing: border-box;
+	border: 2px solid #9C2D14;
+	border-radius: 5px;
+	background-color: rgba(240,239,181,0.9);
+	padding: 6px;
+}
+.carClass{
+	position: absolute;
+	font-size: 14px;
+	width: 40px;
+	height: 20px;
+    text-align: center;
+    line-height: 16px;
+    color: #FFF;
+    opacity: 0.95;
+    cursor: pointer;
+	box-sizing: border-box;
+}
+.speedRate20x{
+	 transition: all 0.95s linear;
+}
+.speedRate40x{
+	 transition: all 0.47s linear;
+}
+.speedRate60x{
+	 transition: all 0.32s linear;
+}
+.speedRate80x{
+	 transition: all 0.235s linear;
+}
+.carOnWait{
+	background-color: #FFE0E0;
+}
+.carOnGo, .carOnStop{
+	background-color: #F0F0A0;
+}
+.carK{
+	background-color: #2EA42B;
+	border: 1px solid #2EA42B;
+	z-index: 104;
+}
+.carW{
+	background-color: #fd7a10;
+	border: 1px solid #fd7a10;
+	z-index: 108;
+}
+.carE{
+	background-color: #fd7a10;
+	border: 1px solid #fd7a10;
+	z-index: 109;
+}
+.carR{
+	background-color: #CEB763;
+	border: 1px solid #CEB763;
+	z-index: 110;
+}
+.carT{
+	background-color: #ff0030;
+	border: 1px solid #ff0030;
+	z-index: 111;
+}
+.carP{
+	background-color: #0D46A2;
+	border: 1px solid #0D46A2;
+	z-index: 105;
+}
+.carX{
+	background-color: #33D2DD;
+	border: 1px solid #33D2DD;
+	z-index: 107;
+}
+.carOnStation{
+	opacity: 1;
+	border-left: 5px solid #FEFE30;
+	border-right: 5px solid #FEFE30;
+}
+
+.timeTableOut{
+	display: inline-block;
+	background-color: #FAFAFA;
+	margin-left: 20px;
+	position: relative;
+	max-width: calc(100% - 60px);
+	overflow-x: auto;
+}
+.timeTableOut.tra{
+	border: 2px solid #26c;
+}
+.timeTableOut.klrt{
+	border: 2px solid #C26;
+}
+.timeTableOut .btnSwitchArea{
+	position: absolute;
+	left: 0px;
+}
+.timeTableOut .btnSwitchTable{
+	font-size: 16px;
+	padding: 5px 20px;
+	line-height: 18px;
+	color: #EEE;
+	float: left;
+	cursor: pointer;
+}
+.timeTableOut .btnSwitchTable:hover{
+	opacity: 0.8;
+}
+.timeTableIn{
+	top: 30px;
+	margin: 30px 10px;
+	left: 0px;
+}
+.timeTableIn table th{
+	text-align: left;
+	padding-left: 4px;
+	min-width: 70px;
+}
+.timeTableIn table td{
+	padding: 1px 4px;
+	text-align: left;
+}
+.timeTableIn table tr.row2{
+	background-color: #EEE;
+}
+
+.bgTRA{
+	background-color: #26C;
+}
+.bgKLRT{
+	background-color: #C26;
+}
+.fontColorTRA{
+	color: #26C;
+}
+.fontColorKLRT{
+	color: #C26;
+}
+
+
+</style>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+var TT = {
+	descriptionText: [
+		'本程式為接軌時刻 Web App 內之輔助工據，用於模擬基隆輕軌及台鐵四軌化、定型化時刻表後的運轉模式。',
+		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
+		
+		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
+			"更新日期: 2018/05/31</span>"
+	],
+	car: [
+		{"id": "carK", "name": "輕軌", "ename": "Keelung LRT", "color": "#2EA42B", trainType: "k", zIndex: 104},
+		{"id": "carW", "name": "西自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10", trainType: "w", zIndex: 108},
+        			{"id": "carE", "name": "東自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10", trainType: "e", zIndex: 109},
+        			{"id": "carR", "name": "太魯閣", "ename": "Tze-Chiang Limited Express(Tarko)", "color": "#CEB763", trainType: "r", zIndex: 110},
+        			{"id": "carT", "name": "普悠瑪", "ename": "Tze-Chiang Limited Express(Puyuma)", "color": "#ff0030", trainType: "t", zIndex: 111},
+        			{"id": "carP", "name": "區間車", "ename": "Local Train", "color": "#0D46A2", trainType: "p", zIndex: 105},
+        			{"id": "carX", "name": "區間快", "ename": "Fast Local Train", "color": "#33D2DD", trainType: "x", zIndex: 107}
+	],
+	//big: t停東線太魯閣普悠瑪，r停西線太魯閣普悠瑪，e停東線自強，w停西線自強，x停區間快車，p停區間車，k停基隆輕軌
+	//line: k停基隆輕軌，w停西線，e停東線
+	//platform: 由山側往海側堆月台，1a1b,2c2d，數字為月台編號，ac為南下逆行方左邊 bd為右邊，ab是台鐵cd是基隆輕軌
+	//dir: 1是西部南下逆行，0是西部北上順行
+	//platMain 若為兩組數字代表南下逆跟北上順的主要月台，若為四組數字則前兩組為台鐵後兩組代表基隆輕軌的南下跟北上
+	station: [
+        {id:"tra_1001", name: "基隆", trainType: 'pkrewx', line: "kw", platform: ["1a1b","2a"], platMain: ["1b","2a"], pos: [14,0]},
+        {id:"tra_1029", name: "三坑", trainType: "pk", line: "kw", platform: ["1a1b"], platMain: ["1a","1b"], pos: [13,0]},
+        {id:"tra_1002", name: "八堵", trainType: "pkex", line: "kwe", platform: ["1b","2a","3a3b"], platMain: ["3a","3b"], pos: [12,0]},
+        {id:"tra_1003", name: "七堵", trainType: "pkewxr", line: "kwe", platform: ["1a1b","2a2b","3a3b","4a4b","5c5d"], platMain: ["1b","2a", "5c", "5d"], pos: [11,0]},
+        {id:"tra_1030", name: "百福", trainType: "p", line: "we", platform: ["1a1b","2a"], platMain: ["1a","1b"], pos: [9,0]},
+        {id:"tra_1004", name: "五堵", trainType: "pk", line: "kwe", platform: ["1a1b","2c2d"], platMain: ["1a","1b","2c","2d"], pos: [7,0]},
+        {id:"tra_1005", name: "汐止", trainType: "pkwx", line: "kwe", platform: ["1a1b","2a2b","3c3d"], platMain: ["1b","2a","3c","3d"], pos: [6,0]},
+        {id:"tra_1031", name: "汐科", trainType: "pkx", line: "kwe", platform: ["1a1b","2c2d"], platMain: ["1a","1b","2c","2d"], pos: [5,0]},
+        {id:"tra_1006", name: "南港", trainType: "pkewxtr", line: "kwe", platform: ["4b","3a3b","2a2b","1a1b","5c5d"], platMain: ["2b","1a","5c","5d"], pos: [2,0]},
+        {id:"tra_1007", name: "松山", trainType: "pewxtr", line: "we", platform: ["1a1b","2a2b"], platMain: ["1b","2a"], pos: [1,0]},
+        {id:"tra_1008", name: "台北", trainType: "pewxtr", line: "we", platform: ["3a3b","4a4b"], platMain: ["3b","4a"], pos: [0,0]},
+        //{id:"tra_1802", name: "暖暖", trainType: "p", line: "e", platform: ["1b","2a"], platMain: ["1b","2a"], pos: [12,1], rotate: true},
+        //{id:"tra_1803", name: "四腳亭", trainType: "p", line: "e", platform: ["1a1b"], platMain: ["1a","1b"], pos: [12,2], rotate: true},
+        //{id:"tra_1804", name: "瑞芳", trainType: "pex", line: "e", platform: ["1a1b","2a2b"], platMain: ["1b","2a"], pos: [12,3], rotate: true},
+        {id:"tra_8102", name: "六堵", trainType: "k", line: "k", platform: ["1c1d"], platMain: ["1c","1d"], pos: [10,0]},
+        {id:"tra_8104", name: "北五堵", trainType: "k", line: "k", platform: ["1c1d"], platMain: ["1c","1d"], pos: [8,0]},
+        {id:"tra_8106", name: "樟樹灣", trainType: "k", line: "k", platform: ["1c1d"], platMain: ["1c","1d"], pos: [4,0]},
+        {id:"tra_8108", name: "南港展覽館", trainType: "k", line: "k", platform: ["1c1d"], platMain: ["1c","1d"], pos: [3,0]}
+	],
+	stBlockWidth: 80,
+	stBlockHeight: 300,
+	stRotateBlockWidth: 200,
+	stRotateBlockHeight: 50,
+	caWidth: 1240,
+	caHeight: 326,
+	rail: {
+		baseHeight: 200,//西線南下主線股道高度
+		baseKLRTHeight: 60,//基隆輕軌南下主線高度
+		colorTRA: "#26C",
+		colorKLRT: "#C26",
+		lineWidth: 2,
+		lineMainWidth: 3,
+		lineOutMargin: 3,//軌道往外靜空
+		platformRailMargin: 5,//月台和軌道間淨空
+		platformSideOutMargin: 5+3+3,//基本上是 platformRailMargin + lineWidth or lineMainWidth + lineOutMargin 組成，指月台一側向外延伸淨空區
+		platformHeight: 16,
+		platformBorderWidth: 1,
+		platformWidth: 40
+	},
+	line: [
+		{
+			id: "e",
+			dir: 0,
+			color: "#005000",
+			linkStation: [
+				{linkTo: "w", linkDir: 0, stationID: "tra_1002"},
+				{linkTo: "k", linkDir: 0, stationID: "tra_1002"}
+			],
+			stationAry: ["tra_1002","tra_1802","tra_1803","tra_1804"]
+		},
+		{
+			id: "w",
+			dir: 0,
+			color: "#000050",
+			linkStation: [
+				{linkTo: "e", linkDir: 0, stationID: "tra_1002"},
+				{linkTo: "k", linkDir: 0, stationID: "tra_1002"}
+			],
+			stationAry: ["tra_1008","tra_1007","tra_1006","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003","tra_1002","tra_1029","tra_1001"]
+		},
+		{
+			id: "k",
+			dir: 0,
+			color: "#500000",
+			linkStation: [
+				{linkTo: "w", linkDir: 0, stationID: "tra_1002"},
+				{linkTo: "e", linkDir: 0, stationID: "tra_1002"}
+			],
+			stationAry: ["tra_1006","tra_8108","tra_8106","tra_1031","tra_1005","tra_1004","tra_8104","tra_8102","tra_1003","tra_1002","tra_1029","tra_1001"]
+		}
+	],
+	startHour: 6,//早上六點開始計算出發
+	runHour: 1,//模擬運轉1小時
+	nowTime: 0,//儲存目前的模擬時間
+	baseRate: 20,//基礎值為每次跑 20 秒
+	rate: 40,//預設 40 倍速模擬
+	genID: 0,//計數編成車次當物件id
+	readyGoIndexAry: [],
+	timerID: false,//setInterval 變數儲存
+	timerInterval: 1000,
+	timeTable: [],//儲存動態產生時刻表
+	timeGo: [],//儲存上線列車物件
+	trainGoTime: [
+		//一小時內要發的所有列車，格時為 [mod , startTime minute]
+		["y_1",3], ["w_1",20], ["p_1",6], ["t_1",32], ["y_3",23], ["x_1",31], ["p_3",27], ["r_1",51], ["y_5",43], ["w_1",60], ["p_5",46], ["e_1",7],
+		["r_2",0], ["p_2",5], ["w_2",10], ["y_2",15], ["e_2",20], ["p_4",25], ["x_2",30], ["y_4",35], ["t_2",40], ["p_6",45], ["w_2",50], ["y_6",55],
+		["k_1",0], ["k_3",20], ["k_1",10], ["k_1",15], ["k_1",20], ["k_3",40], ["k_3",45], ["k_1",35], ["k_1",40], ["k_3",60], ["k_1",50], ["k_1",55],
+		["k_4",2], ["k_2",7], ["k_2",12], ["k_2",17], ["k_4",22], ["k_2",27],  ["k_2",32], ["k_4",37], ["k_4",42], ["k_2",47], ["k_2",52], ["k_2",57]
+	],
+	trainModuleTime: [//列車基礎時刻，一切以定型化班表運作，每種列車停靠站與時間固定，以 trainType 加組合數字設定固定模式與待避車站
+		//數字直接換算，停靠較久用 ~ 連接，待避用 w 連接，過站不停的時間用 p 寫前綴
+		//++++東線普悠瑪號
+		{
+			mod: "t_1",
+			trainType: "t", line: "e", dir: 1,
+			from: "tra_1002", to: "tra_1008",
+			tag: "台東-樹林",
+			time: ["p32","p34","p36","p39","p40","p41",45,50,"57~60"]
+		}, {
+			mod: "t_2",
+			trainType: "t", line: "e", dir: 0,
+			from: "tra_1008", to: "tra_1002",
+			tag: "樹林-台東",
+			time: [40,47,52,"p57","p58","p59","p62","p64","p65"]
+		},
+		//++++東線太魯閣號
+		{
+			mod: "r_1",
+			trainType: "r", line: "e", dir: 1,
+			from: "tra_1002", to: "tra_1008",
+			tag: "花蓮-樹林",
+			time: [51,"p54","p56","p59","p60","p61",65,70,"77~80"]
+		}, {
+			mod: "r_2",
+			trainType: "r", line: "e", dir: 0,
+			from: "tra_1008", to: "tra_1002",
+			tag: "樹林-花蓮",
+			time: [0,7,12,"p17","p18","p19","p21","p24",26]
+		},
+		//++++東線自強號
+		{
+			mod: "e_1",
+			trainType: "e", line: "e", dir: 1,
+			from: "tra_1002", to: "tra_1008",
+			tag: "花蓮-樹林",
+			time: ["p7",9,"p13","p17","p18","p20",25,30,"37~40"]
+		}, {
+			mod: "e_2",
+			trainType: "e", line: "e", dir: 0,
+			from: "tra_1008", to: "tra_1002",
+			tag: "樹林-花蓮",
+			time: [20,27,32,"p36","p38","p40","p44",48,"p51"]
+		},
+		//++++西線自強號，會用到兩次
+		{
+			mod: "w_1",
+			trainType: "w", line: "e", dir: 1,
+			from: "tra_1003", to: "tra_1008",
+			tag: "七堵-潮州",
+			time: [0,"p4","p8",10,"p12","p16",20,"27~30"]
+		}, {
+			mod: "w_2",
+			trainType: "w", line: "w", dir: 0,
+			from: "tra_1008", to: "tra_1003",
+			tag: "潮州-七堵",
+			time: [10,17,"p21","p25",27,"p29","p32",35]
+		},
+		//++++西線區間快車
+		{
+			mod: "x_1",
+			trainType: "x", line: "w", dir: 1,
+			from: "tra_1001", to: "tra_1008",
+			tag: "基隆-彰化",
+			time: [31,"p33","p37",40,"p43","p47",49,"p51",56,60,"67~70"]
+		}, {
+			mod: "x_2",
+			trainType: "x", line: "w", dir: 0,
+			from: "tra_1008", to: "tra_1001",
+			tag: "彰化-基隆",
+			time: [30,37,42,"p47",49,"p51","p54",58,"p62","p65",67]
+		},
+		//++++宜蘭線區間車
+		{
+			mod: "y_1",
+			trainType: "p", line: "e", dir: 1,
+			from: "tra_1002", to: "tra_1008",
+			tag: "蘇澳-樹林",
+			time: [3,"7w11",15,19,22,24,30,35,"42~45"]
+		}, {
+			mod: "y_3",
+			trainType: "p", line: "e", dir: 1,
+			from: "tra_1002", to: "tra_1008",
+			tag: "蘇澳-樹林",
+			time: [23,27,32,36,"38w42",44,50,55,"62~65"]
+		}, {
+			mod: "y_5",
+			trainType: "p", line: "e", dir: 1,
+			from: "tra_1002", to: "tra_1008",
+			tag: "瑞芳-中壢",
+			time: [43,47,52,56,"58w61",64,70,75,"82~85"]
+		}, {
+			mod: "y_2",
+			trainType: "p", line: "e", dir: 0,
+			from: "tra_1008", to: "tra_1002",
+			tag: "樹林-蘇澳",
+			time: [15,22,27,33,"36w39",42,46,51,55]
+		}, {
+			mod: "y_4",
+			trainType: "p", line: "e", dir: 0,
+			from: "tra_1008", to: "tra_1002",
+			tag: "樹林-蘇澳",
+			time: [35,42,47,53,"56w59",61,65,"70~71",75]
+		}, {
+			mod: "y_6",
+			trainType: "p", line: "e", dir: 0,
+			from: "tra_1008", to: "tra_1002",
+			tag: "中壢-瑞芳",
+			time: [55,62,67,73,"75w79",81,85,"90~91",95]
+		},
+		//++++西線區間車
+		{
+			mod: "p_1",
+			trainType: "p", line: "w", dir: 1,
+			from: "tra_1001", to: "tra_1008",
+			tag: "基隆-新竹",
+			time: [6,9,13,17,22,26,"28w32",34,40,45,"52~55"]
+		}, {
+			mod: "p_3",
+			trainType: "p", line: "w", dir: 1,
+			from: "tra_1001", to: "tra_1008",
+			tag: "基隆-新竹",
+			time: [27,30,34,"38w42",47,51,53,55,61,66,"73~75"]
+		}, {
+			mod: "p_5",
+			trainType: "p", line: "w", dir: 1,
+			from: "tra_1001", to: "tra_1008",
+			tag: "基隆-新竹",
+			time: [46,49,53,57,62,66,"68w72",74,80,85,"92~95"]
+		}, {
+			mod: "p_2",
+			trainType: "p", line: "w", dir: 0,
+			from: "tra_1008", to: "tra_1001",
+			tag: "新竹-基隆",
+			time: [5,12,17,23,"25w29",31,35,"40~41",45,49,52]
+		}, {
+			mod: "p_4",
+			trainType: "p", line: "w", dir: 0,
+			from: "tra_1008", to: "tra_1001",
+			tag: "新竹-基隆",
+			time: [25,32,37,43,45,47,51,"56w60",64,68,71]
+		}, {
+			mod: "p_6",
+			trainType: "p", line: "w", dir: 0,
+			from: "tra_1008", to: "tra_1001",
+			tag: "新竹-基隆",
+			time: [45,52,57,63,"65w69",71,75,"80~81",85,89,92]
+		},
+		//++++基隆輕軌
+		{
+			mod: "k_1",
+			trainType: "k", line: "k", dir: 1,
+			from: "tra_1001", to: "tra_1006",
+			tag: "基隆-南港",
+			time: [0,3,7,10,13,15,18,20,22,23,27,29]
+		}, {
+			mod: "k_2",
+			trainType: "k", line: "k", dir: 0,
+			from: "tra_1006", to: "tra_1001",
+			tag: "南港-基隆",
+			time: [0,2,6,7,9,11,14,16,19,22,26,29]
+		}, {
+			mod: "k_3",
+			trainType: "k", line: "k", dir: 1,
+			from: "tra_8104", to: "tra_1006",
+			tag: "北五堵-南港",
+			time: [0,3,5,7,8,12,14]
+		}, {
+			mod: "k_4",
+			trainType: "k", line: "k", dir: 0,
+			from: "tra_1006", to: "tra_8104",
+			tag: "南港-北五堵",
+			time: [0,2,6,7,9,11,14]
+		}
+	],
+	shell: [
+		{
+			title: '原始方案',
+			text: '單線雙向輕軌無新增交會站僅靠七堵及汐止交會，二十分鐘一班，終點南港展覽館',
+			score: 0,
+			klrtFreq: 20,//班次間隔分鐘數
+			klrtRail: 1,//軌道數
+			traFreq: 20,
+			traRail: 2,
+			station: ['k01','k02','k03','k04','k05','k07','k08','k09','k11']
+		}
+	]
+};
+
+TT.fn = {
+        transTime2HM: function(val){
+            if(typeof(val)=='number') val = TT.fn.transSec2Time(val);
+            var ary = val.split(':');
+            return ary[0] + ':' + ary[1];
+        },
+        transNum2StrA: function(intA){
+            intA = parseInt(intA,10);
+            if(intA <= 9){
+                return '0' + intA;
+            }else{
+                return intA.toString();
+            }
+        },
+        transTime2Sec: function(str,offsetTomorrow){
+            if (str == null || str == '') {
+                str = '0';
+            }
+            var aryA = str.split(':'), rt;
+            if (aryA.length <= 1) {
+                rt = parseInt(str,10);
+            } else if (aryA.length == 2) {
+                rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60;
+            } else if (aryA.length == 3) {
+                rt = parseInt(aryA[0],10) * 3600 + parseInt(aryA[1],10) * 60 + parseInt(aryA[2],10);
+            }
+            
+            if(offsetTomorrow && rt < TT.fn.transTime2Sec(TT.fn.getDefaultDayLastTime())){
+                rt = rt + 86400;
+            }
+            return rt;
+        },
+        transString2Sec: function(str){
+        	//本function會將 01:30 轉為 90 而不是 5400
+        	var aryA = str.split(':');
+        	if (aryA.length == 2) {
+        		str = '00:' + str;
+        	}
+        	return TT.fn.transTime2Sec(str);
+        },
+        transSec2Time: function(sec){
+            var tid = 0,
+                tih = 0,
+                tim = 0,
+                tis = 0;
+
+            if((sec === '')){
+                return '';
+            }else if(parseInt(sec,10) < 0){
+                sec = 86400 + sec;
+            }
+            
+            sec = parseInt(sec,10);
+            tis = sec % 60;
+            sec = sec - tis;
+            sec = sec / 60;
+            tim = sec % 60;
+            sec = sec - tim;
+            sec = sec / 60
+            tih = sec;
+            
+
+            tih = (tih < 10) ? '0' + tih : tih;
+            tim = (tim < 10) ? '0' + tim : tim;
+            tis = (tis < 10) ? '0' + tis : tis;
+
+            if (tih == 0) {
+                return tih + ':' + tim + ':' + tis;
+            } else {
+                return tih + ':' + tim + ':' + tis;
+            }
+        },
+        getCarByTrainType: function(t){
+        	for(var i=0; i<TT.car.length; i++){
+        		if(TT.car[i].trainType==t) return TT.car[i];
+        	}
+        },
+        getPlatformElTop: function(top){
+        	var r = TT.rail;
+        	return {
+				top: top,
+				rightRail: top - r.platformRailMargin - r.lineWidth,
+				leftRail: top + r.platformHeight + r.platformRailMargin,
+				rightOut: top - r.platformSideOutMargin,
+				leftOut: top + r.platformHeight + r.platformSideOutMargin
+			}
+        },
+        getStationByID: function(id, ary){
+        	ary = ary || TT.station;
+        	for(var i=0; i<ary.length; i++){
+        		if(ary[i].id==id) return ary[i];
+        	}
+        	return false;
+        }
+}
+
+TT.getLine = function(r){
+	for(var i=0; i<TT.line.length; i++){
+		if(TT.line[i].id==r) return TT.line[i];
+	}
+}
+TT.getRailAry = function(line, from, to, dir, flagReturnObj){
+	var stAry = [], rail = false, fAry = [];
+	if(/w|e/.test(line)){
+		rail = TT.getLine('w');
+	}else{
+		rail = TT.getLine(line);
+	}
+	fAry = rail.stationAry.concat();
+	if(dir != rail.dir){
+		fAry = fAry.reverse();
+	}
+	var step = 0, tmpF = false;;
+	for(var i=0; i<fAry.length; i++){
+		if(fAry[i]==from){
+			step = 1;
+		}else if(fAry[i]==to){
+			step = 2;
+		}
+		tmpF = (flagReturnObj) ? TT.fn.getStationByID(fAry[i]) : fAry[i];
+		if(step==1){
+			stAry.push(tmpF);
+		}else if(step==2){
+			stAry.push(tmpF);
+			break;
+		}
+	}
+	return stAry;
+}
+TT.getTrainModuleTimeByMOD = function(mod){
+	var ary = TT.trainModuleTime;
+	for(var i=0; i<ary.length; i++){
+		if(ary[i].mod==mod) return ary[i];
+	}
+}
+TT.makeRouteTimeTable = function(startHour){
+	//依據 trainGoTime 抓 trainModuleTime 內容算出
+	var tObj = false;
+	var tmpT = false, mod, startMin, tmpA, tmpB, stidAry, stTimeAry, arr, dep;
+	var tid = 't_' + TT.genID++;
+	var ary = [];
+	var timeTableStartSec = startHour ? startHour*60*60 : TT.startHour *60 * 60;
+	var firstMin = 0, offsetMin = 0, sortMin = 0;
+	TT.trainGoTime.map(function(c, idx){
+		mod = c[0]; startMin = c[1], sortMin = 0;
+		stTimeAry = [];
+		tid = 't_' + TT.genID++;
+		tmpT = TT.getTrainModuleTimeByMOD(mod);
+		tmpA = tmpT.time[0];
+		if(typeof(tmpA)=='string'){//若第一個數字是字串，先取出數字
+			if(/^p/.test(tmpA)){
+				tmpA = parseInt(tmpA.replace('p',''));
+			}else if(/\~/.test(tmpA)){
+				tmpA = parseInt(tmpA.split('~')[0]);
+			}else if(/w/.test(tmpA)){
+				tmpA = parseInt(tmpA.split('w')[0]);
+			}
+		}
+		firstMin = tmpA; offsetMin = 0;
+		if(firstMin != startMin){//start為10但時刻表為 30 開頭時 10-30 = -20 之後所有數值都要 +offset
+			offsetMin = startMin - firstMin;
+		}
+		
+		//1.將運行時間算成各站陣列
+		stidAry = TT.getRailAry(tmpT.line, tmpT.from, tmpT.to, tmpT.dir);
+		tmpT.time.map(function(tm, idx){
+			var flagPASS = false, flagWait = false, stid = stidAry[idx];
+			var stObj = TT.fn.getStationByID(stid);
+			if(typeof(tm)=='string'){//若第一個數字是字串，先取出數字
+				if(/^p/.test(tm)){
+					flagPASS = true;
+					tmpA = parseInt(tm.replace('p',''));
+					arr = (tmpA + offsetMin) * 60 + timeTableStartSec;
+					dep = arr;
+				}else if(/\~/.test(tm)){
+					tmpA = tm.split('~');
+					arr = (parseInt(tmpA[0]) + offsetMin) * 60 + timeTableStartSec;
+					dep = (parseInt(tmpA[1]) + offsetMin) * 60 + timeTableStartSec;
+				}else if(/w/.test(tm)){
+					flagWait = true;
+					tmpA = tm.split('w');
+					arr = (parseInt(tmpA[0]) + offsetMin) * 60 + timeTableStartSec;
+					dep = (parseInt(tmpA[1]) + offsetMin) * 60 + timeTableStartSec;
+				}
+			}else{
+				arr = (tm + offsetMin) * 60 + timeTableStartSec - 20;
+				dep = arr + 40;
+			}
+			
+			if(tmpT.dir==0 && stid=='tra_1008'){
+				dep -= 20;
+				arr -=100;
+			}
+			
+			if((tmpT.line=='k' && stid=='tra_1006') || (/w|e/.test(tmpT.line) && stid=='tra_1008')){
+				sortMin = dep;
+			}
+			
+			var platform = '';
+			if(tmpT.line=='k' && (!/^tra_810|^tra_1001|^tra_1029|^tra_1002/.test(stid))){
+				platform = (tmpT.dir==1) ? stObj.platMain[2] : stObj.platMain[3];
+			}else{
+				platform = (tmpT.dir==1) ? stObj.platMain[0] : stObj.platMain[1];
+			}
+			if(flagWait){
+				if(stid=='tra_1005' || stid=='tra_1003'){
+					platform = (tmpT.dir==1) ? '1a' : '2b';
+				}
+			}
+			if(stid=='tra_1008' && tmpT.trainType=='p'){
+				platform = (tmpT.dir==1) ? '3a' : '4b';
+			}else if(stid=='tra_1002' && tmpT.line=='e'){
+				platform = (tmpT.dir==1) ? '1b' : '2a';
+			}else if(stid=='tra_1003' && tmpT.trainType=='w'){
+				platform = (tmpT.dir==1) ? '3b' : '4a';
+			}
+			
+			tmpB = {
+				arr: arr,
+				dep: dep,
+				pass: flagPASS,
+				wait: flagWait,
+				platform: platform,
+				stid: stid
+			};
+			stTimeAry.push(tmpB);
+		});
+		
+		tObj = {trainID:tid};
+		for(var k in tmpT){
+			if(k!="time") tObj[k] = tmpT[k];
+		}
+		tObj.startMin = startMin;
+		tObj.timeAry = stTimeAry;
+		tObj.sortMin = sortMin;
+		tObj.isRegistered = false;//註冊上線運轉後調成 true
+		tObj.bye = false;//抵達終點消失後調成 true
+		tObj.registerTime = stTimeAry[0].arr;
+		tObj.offlineTime = stTimeAry[stTimeAry.length-1].dep;
+		ary.push(tObj);
+	});
+	return ary;
+}
+TT.makeAllRouteTimeTable = function(startHour, runHour){
+	runHour = runHour || 1;
+	var tmpTime = [], tmpAnHour = [];
+	for(var i=0; i<runHour; i++){
+			tmpAnHour = TT.makeRouteTimeTable(startHour + i);
+			tmpTime = tmpTime.concat(tmpAnHour);
+	}
+	tmpTime.sort(function(a,b){
+			return !!(a.sortMin > b.sortMin);
+	});
+	return tmpTime;
+}
+
+TT.classTrain = function(data){
+	//製作每一列車的物件
+	var baseRate = TT.baseRate;
+	var me = this,
+		timeAry = data.timeAry,
+		fpm = 60 / baseRate,//用 60 除以此數，代表一分鐘要切成幾塊，預設 20 秒更新一次所以一分鐘會切成 3 塊
+		carOutWidth = 120, carOutHeight = 100, carInWidth = 56, carInHeight = 24, alignWidth = 120, alignHeight = 60,
+		carOnTimeTable = false;;
+	me.data = data;
+	me.divOutID = 'train_out_' + data.trainID;//虛擬外框用，要移動的物件
+	me.divInID = 'train_in_' + data.trainID;//車廂用
+	me.divAlignID = 'train_align_' + data.trainID;//說明用
+	me.flagShowAlign = false;//判斷是否開啟提示
+	me.isRendered = false;
+	me.stationPosAry = [];
+	me.stepAry = [];
+	me.lastStepIndex = 0;
+	//取列車行駛至該站的股道高度可用 TT.map.getStationRailTop 取得
+	var createStep = function(){
+		var objA = {},
+			stObj = false,
+			platMain = '',
+			stPosAry = [],
+			stStepAry = [],
+			centerOfPlatform = Math.ceil(TT.stBlockWidth/2),
+			x = 0, y = 0, bx = 0, by = 0, ax = 0, ay = 0,
+			pObj = false;
+		var intoStationMargin = 6;//Math.ceil(TT.rail.platformWidth/2) + 5;//月台兩側5px當入站點 Math.ceil((TT.stBlockWidth - TT.rail.platformWidth)/2);//月台兩側至站體邊界的中心點當進入站點
+		timeAry.map(function(c){
+			pObj = TT.map.getStationRailTop(c.stid);
+			stObj = TT.fn.getStationByID(c.stid, TT.map.stationAry);
+			y = pObj['p' + c.platform];
+			
+			x = stObj.pos[0] * TT.stBlockWidth + centerOfPlatform;
+			//找 platform 主線位置
+			platMain = (data.dir==1) ? stObj.platMain[0] : stObj.platMain[1];
+			if(data.line=='k' && stObj.platMain.length==4){
+				platMain = (data.dir==1) ? stObj.platMain[2] : stObj.platMain[3];
+			}
+			bx = x - intoStationMargin;
+			by = pObj['p' + platMain];
+			ax = x + intoStationMargin;
+			ay = pObj['p' + platMain];
+			if(data.line=='e' && c.stid=='tra_1002'){
+				platMain = (data.dir==1) ? '1b' : '2a';
+				if(data.dir==1){
+					by = pObj['p' + platMain];
+				}else{
+					ay = pObj['p' + platMain];
+					by = pObj['p' + platMain];
+				}
+			}else if(data.trainType=='w' && c.stid=='tra_1003'){
+				platMain = (data.dir==1) ? '3b' : '4a';
+				ay = pObj['p' + platMain]; by = pObj['p' + platMain];
+			}else if(c.stid=='tra_1008'){
+				ay = y; by =y;
+			}
+			stPosAry.push({
+				stid: c.stid,
+				arr: c.arr,
+				dep: c.dep,
+				pos: [x,y],
+				pass: c.pass,
+				wait: c.wait,
+				beforePos: (data.dir==1) ? [ax, ay] : [bx, by],
+				afterPos: (data.dir==1) ? [bx, by] : [ax, ay]
+			});
+		});
+		me.stationPosAry = stPosAry;
+		//依據站間時間計算移動腳本
+		var tim = data.registerTime,
+			idx = 0,
+			st1 = false, st2 = false,
+			st1X = 0, st2X = 0, movX = 0, movToID = '', specY = 0,
+			trainStep = (stPosAry[0].pass) ? 'running' : 'stop',//wait=>停靠站內時 , go=>dep ,  running=>兩站之間 , stop=>arr
+			tmpX = stPosAry[0].pos[0], tmpY = stPosAry[0].pos[1],
+			regQiduBadu = /^tra_1002|^tra_1003/,
+			regBaifuQidu = /^tra_1030|^tra_1003/,
+			regTS = /^tra_1007|^tra_1008/,
+			offsetDim = 0,
+			fnTransTime = TT.fn.transSec2Time,
+			md = {};
+		while(tim <= data.offlineTime){
+			st1 = stPosAry[idx];
+			st2 = stPosAry[idx+1];
+			md = {action:trainStep, time:tim, x:Math.floor(tmpX), y:tmpY};
+			//md.a = TT.fn.transSec2Time(tim);  md.ax = md.x; md.ay = md.y; //debug
+			if(st2){//還有下一站
+					md.st1 = st1.stid; md.st2=st2.stid;
+				switch(trainStep){
+					case 'stop':
+						trainStep = 'wait';
+						tmpX = st1.pos[0];
+						tmpY = st1.pos[1];
+					break;
+					case 'wait':
+						if(tim + baseRate >= st1.dep){
+							trainStep = 'go';
+							tmpX = st1.pos[0];
+							tmpY = st1.pos[1];
+						}
+					break;
+					case 'go':
+						trainStep = 'running';
+							tmpX = st1.afterPos[0];
+							tmpY = st1.afterPos[1];
+						if(st2.arr-baseRate <= tim){
+							if(!st2.pass){
+								trainStep = 'stop';
+								tmpX = st2.pos[0];
+								tmpY = st2.pos[1];
+							}
+						}
+					break;
+					case 'running':
+						if(movToID==st2.stid){
+							tmpX = tmpX + movX;
+						}else{
+							st1X = (st1.pass) ? st1.pos[0] : st1.afterPos[0]; 
+							if(st2.pass){//下站不停，直接通過
+								st2X = st2.pos[0];
+								movX = ((st2X - st1X) / ((st2.arr - st1.dep) / baseRate));
+							}else{
+								st2X = st2.beforePos[0];
+								offsetDim = (st1.pass) ? 1 : 2;
+								movX = ((st2X - st1X) / (((st2.arr - st1.dep) / baseRate) - offsetDim));
+							}
+							tmpX = tmpX + movX;
+							movToID = st2.stid;
+						}
+						
+						if(/k|e/.test(data.line) && tmpY!=specY && regQiduBadu.test(st1.stid) && regQiduBadu.test(st2.stid) && (tim-st1.dep > st2.arr-tim-baseRate*2)){
+							specY = st2.beforePos[1]; tmpY = specY;
+						}else if(data.trainType=='w' && tmpY!=specY && regBaifuQidu.test(st1.stid) && regBaifuQidu.test(st2.stid) ){
+							if((data.dir==0 && (tim-st1.dep > st2.arr-tim)) || data.dir==1  && (3*(tim-st1.dep) > st2.arr-tim)){
+								specY = st2.beforePos[1]; tmpY = specY;
+							}
+						}else if(regTS.test(st1.stid) && regTS.test(st2.stid) ){
+							if((data.dir==1&& (tim-st1.dep > st2.arr-tim-baseRate*2)) || (data.dir==0 && (3*(tim-st1.dep) > st2.arr-tim-baseRate)) ){
+								specY = st2.beforePos[1]; tmpY = specY;
+							}
+						}
+						//if(regBaifuQidu.test(st1.stid) && regBaifuQidu.test(st2.stid) && data.trainType=='w') console.log(tim + ',' + tmpY);
+						if(st2.arr-baseRate-baseRate <= tim){
+							if(!st2.pass){
+								tmpX = st2.beforePos[0];
+								tmpY = st2.beforePos[1];
+							}else{
+								tmpY = st2.beforePos[1];
+							}
+						}
+						if(st2.arr-baseRate <= tim){
+							if(!st2.pass){
+								trainStep = 'stop';
+							}
+							tmpX = st2.pos[0];
+							tmpY = st2.pos[1];
+						}
+					break;
+				}
+				if(st2.arr-baseRate <= tim){//時間已走到下一站
+					idx++;
+				}
+			}else{//端點站
+				switch(trainStep){
+					case 'stop':
+						trainStep = 'wait';
+						tmpX = st1.pos[0];
+						tmpY = st1.pos[1];
+					break;
+					case 'running':
+						tmpX = st1.pos[0];
+						tmpY = st1.pos[1];
+					break;
+				}
+			}
+			stStepAry.push(md);
+			tim += baseRate;
+		}
+		return stStepAry;
+	}
+	var createTrain = function(){
+		if(me.train) return me.train;
+		var rt = '',
+			alignTop = carOutHeight - alignHeight,
+			carData = '',
+			carLeft = Math.ceil((carOutWidth - carInWidth) /2),
+			carCls = 'car' + data.trainType.toUpperCase(),
+			dom = document.createElement('div');
+		
+		var giveTopLeftWidthHeight = function(top, left, width, height){
+			var stl = (top || top===0) ? 'top:' + top + 'px;' : '';
+			stl += (left || left===0) ? 'left:' + left + 'px;' : '';
+			stl += (width || width===0) ? 'width:' + width + 'px;' : '';
+			stl += (height || height===0) ? 'height:' + height + 'px;' : '';
+			return stl;
+		}
+		carData = '<div>' + data.tag + '</div>';
+		rt = '<div class="carClass ' + carCls + '" id="' +me.divInID+ '" style="' + giveTopLeftWidthHeight(0, carLeft, carInWidth, carInHeight) + '">' + TT.fn.getCarByTrainType(data.trainType).name + '</div>'+
+			'<div class="carAlign ttHide" style="' + giveTopLeftWidthHeight(alignTop, 0, alignWidth, alignHeight) + '" id="' + me.divAlignID + '">' + carData + '</div>';
+		dom.id = me.divOutID;
+		dom.className = 'carOut speedRate' + TT.rate + 'x';
+		dom.style.width = carOutWidth + 'px';
+		dom.style.height = carOutHeight + 'px';
+		dom.trainOffsetLeft = 0 - (carOutWidth/2);
+		dom.trainOffsetTop = 0 - (carInHeight/2);
+		dom.addEventListener('click', function(e){
+			var css = e.target.className,
+				ad = dom.querySelector('div.carAlign');
+			if(/carClass/.test(css)){
+				var flg = !(/ttHide/.test(ad.className));
+				if(flg){
+					ad.className = ad.className + ' ttHide';
+				}else{
+					ad.className = ad.className.replace(' ttHide','');
+				}
+			}
+		});
+		dom.innerHTML = rt;
+		
+		return dom;
+	}
+	//me.getStepAry = function(){return me.stepAry;}
+	me.readyGo = function(){
+		data.isRegistered = true;
+		me.stepAry = createStep();
+		me.train = createTrain();
+		document.getElementById('stationLayer').appendChild(me.train);
+		me.isRendered = true;
+		me.setPosition(0);
+	}
+	var trainRunningClass = {"running": '', "wait": ' carOnStation', "go": ' carOnStation', "stop": ''},
+		divTrain = false;
+		
+	me.setPosition = function(idx){
+		var pos = me.stepAry[idx];
+		var t = me.train;
+		divTrain = divTrain || document.getElementById(me.divInID);
+		t.style.left = pos.x + t.trainOffsetLeft + 'px'; 
+		t.style.top = pos.y + t.trainOffsetTop + 'px';
+		me.lastStepIndex = idx;
+		divTrain.className = divTrain.className.replace(' carOnStation','') + trainRunningClass[pos.action];
+		
+	}
+	me.moveTrain = function(time){
+		time = time || TT.nowTime;
+		for(var i = me.lastStepIndex; i<me.stepAry.length; i++){
+			if(me.stepAry[i].time >= time){
+				me.setPosition(i);
+				break;
+			}
+		}
+	}
+	me.removeTrain = function(){
+		document.getElementById('stationLayer').removeChild(me.train);
+	}
+	me.offline = function(){
+		data.bye = true;
+		me.removeTrain();
+	}
+	
+}
+TT.registerTrain = function(cfg){
+	cfg = cfg || {};
+	var tmpRemoveIndexAry = [],
+		tmpA = false, tmpB = false;
+	//先將到達終點站的列車下線，並移動其他車輛
+	for(var i=TT.timeGo.length-1; i>=0; i--){
+		if(TT.timeGo[i].data.offlineTime <= TT.nowTime){
+			TT.timeGo[i].offline();
+			TT.timeGo.splice(i,1);
+		}else{
+			TT.timeGo[i].moveTrain();
+		}
+	}
+	//1.根據 TT.readyGoIndexAry 找 TT.timeTable 中所有未上線列車註冊到 TT.timeGo 
+	TT.readyGoIndexAry.map(function(c,idx){
+		tmpA = TT.timeTable[c];
+		if(!tmpA.isRegistered && tmpA.registerTime <= TT.nowTime){
+			tmpRemoveIndexAry.push(idx);
+			tmpB = new TT.classTrain(tmpA);
+			TT.timeGo.push(tmpB);
+			TT.simTrain.push(tmpB);
+			tmpB.readyGo();
+		}
+	});
+	//2.從 TT.readyGoIndexAry 移除 index
+	for(var j=tmpRemoveIndexAry.length-1; j>=0; j--){
+		TT.readyGoIndexAry.splice(tmpRemoveIndexAry[j],1);
+	}
+	
+}
+TT.sim = function(){
+	
+	var arg = this;
+	var endTime = (TT.startHour + TT.runHour) *60*60;
+	var jump = TT.baseRate;
+	var controlTimer = function(){
+		TT.nowTime = TT.nowTime + jump;
+		if(TT.nowTime <= endTime || TT.timeGo.length>0){//跑到所有列車結束運轉
+			arg.time = TT.nowTime;
+		}else{
+			stopTimer();
+		}
+		
+		TT.registerTrain();//執行看是否需要註冊列車
+	}
+	var stopTimer = function(){
+		clearInterval(TT.timerID);
+		TT.timerID = false;
+		arg.flagGo = false;
+	}
+	var initTimer = function(){
+		arg.flagGo = true;
+		TT.timerID = setInterval(controlTimer, TT.timerInterval);
+	}
+	
+	if(TT.timerID && TT.timerID!==0){
+		stopTimer();
+		return false;
+	}
+	//先產生要使用的時刻表
+	TT.timeTable = TT.makeAllRouteTimeTable(TT.startHour, TT.runHour);
+	//產生一組和 TT.timeTable 相對的 index 陣列，每次上線發車後用 splice 移除，當陣列長度將為 0 時代表所有車都上線發車
+	var readyGoIndexAry = new Array(TT.timeTable.length);
+	for(var i=0; i<readyGoIndexAry.length; i++){readyGoIndexAry[i]=i;}
+	TT.readyGoIndexAry = readyGoIndexAry;
+	TT.timeGo.map(function(t){
+		t.offline();
+	});
+	TT.timeGo = [];//重置上線列車清為零
+	TT.simTrain = [];
+	
+	//基準為每 1000ms 執行 20 秒鐘模擬，若 rate 調為 40 則用 1000x20/40 = 500
+	TT.timerInterval = 1000 * jump / TT.rate;
+	TT.nowTime = TT.startHour*60*60 - 60;//倒退一分鐘準備發車
+	
+	initTimer();
+	return TT.timerID;
+}
+
+
+TT.createMenuBar = function(){
+	
+	var tpl = Vue.compile('<div id="menuBarRenderDiv">' +
+		'<div class="menuBar">' +
+			'<div class="menuItem hiasd">基隆輕軌既台鐵基隆南港四軌化模擬器</div>' +
+			'<div v-on:click="back()" class="menuItem menuItem2 back">回到接軌時刻</div>' +
+		'</div>' +
+	'</div>');
+
+	var vm = new Vue({
+		el: '#menuBarRenderDiv',
+		render: tpl.render,
+		methods: {
+			back: function(){
+				location.href = './';
+			}
+		}
+	});
+	return vm;
+}
+TT.createTimeArea = function(){
+	var tpl = Vue.compile('<div class="timeShowArea">' +
+		'<div class="time" >模擬時刻 {{displayTime()}}</div>' +
+		'<div class="status" v-html="getGoStatus()"></div>' +
+		'<div v-on:click="sim4Rail()" class="setItem sim4Rail">{{ flagGo ? \'停止模擬四軌化基隆輕軌\' : \'啟動模擬四軌化基隆輕軌\' }}</div>' +
+		'<div style="margin:5px 0px 5px 20px;">' +
+			'<span>從</span><input type="text" v-model="startHour" style="width:30px;"><span>點鐘開始以</span>' +
+			'<select v-model="rateNum"><option value="20">20</option><option value="40">40</option><option value="60">60</option><option value="80">80</option></select>' +
+			'<span>倍速模擬發車</span><input type="text" v-model="runHour" style="width:30px;"><span>個小時</span>' +
+			'<input type="checkbox" v-model="syncTimeShow" id="synctb"><label for="synctb" style="color:#AEAD2D;">同步更新下方時刻表 (較耗資源)</label>' +
+		'</div>' +
+	'</div>');
+	var vm = new Vue({
+		el: '#timeShowArea',
+		render: tpl.render,
+		staticRenderFns: tpl.staticRenderFns,
+		data: {
+			flagGo: false,
+			syncTimeShow: true,
+			startHour: TT.startHour,
+			runHour: TT.runHour,
+			rateNum: TT.rate,
+			time: TT.startHour*60*60
+		},
+		methods: {
+			displayTime: function(){
+				return TT.fn.transSec2Time(this.time);
+			},
+			getGoStatus: function(){
+				var st = '';
+				st += '<div class="hold">等待發車:' + TT.readyGoIndexAry.length + ' 列</div>';
+				st += '<div class="running">線上運轉:' + TT.timeGo.length + ' 列</div>';
+				return (this.flagGo) ? st : '';
+			},
+			sim4Rail: function(){
+				var sthr = parseInt(this.startHour),
+					rtn = parseInt(this.rateNum),
+					rhr = parseInt(this.runHour);
+					
+				if(sthr < 1 || sthr > 23 || rhr < 1 || rhr > 20){
+					alert("輸入值錯誤，啟動時間應介於 1 點至 23 點間，運轉時間最少 1 小時，最多 20 小時");
+					return false;
+				}
+				TT.startHour = sthr; TT.runHour = rhr; TT.rate = rtn;
+				TT.sim.call(this);
+				
+				if(this.syncTimeShow && this.flagGo){
+					TT.timeTableArea.updateTimeTableRawData(TT.timeTable);
+				}
+			}
+		}
+	});
+	return vm;
+}
+
+TT.genStationOnMap = function(){
+	var aryA = [],
+		pos = [],
+		flgIsRotate = false,
+		st = false;
+	
+	var makePlatform = function(st){
+		var flagIsCommonStation = !!(/^tra_1001|^tra_1029|^tra_1002/.test(st.id));
+		var aryP = [],
+			flagPlatformHasTRA = /w|e/.test(st.line),
+			flagPlatformHasKLRT = /k/.test(st.line) && !flagIsCommonStation,
+			r = TT.rail,
+			line = st.line,
+			str = '',
+			pa = {num:0, build: "a", comp: "TRA", main: false, ary: [false,{main: true, dir: 1}]},
+			//陣列零為左股道，主幹通過此月台時 main 為 true, build :a左股側，b右股側，c島式，comp 為營運者 TRA 或 KLRT 無則填 false 代表側式月台
+			platform = st.platform,
+			platMain = st.platMain;
+		var dir1MainTRA = platMain[0];
+		var dir0MainTRA = platMain[1];
+		var dir1MainKLRT = (st.line=="k") ? platMain[0] : platMain[2];
+		var dir0MainKLRT = (st.line=="k") ? platMain[1] : platMain[3];
+		
+		if(!flgIsRotate){
+			//先分析車站型態，再從platMain 的第一個月台定位
+			var firstMainPlatformIndex = 0,
+				firstMainPlatformSide = '',
+				firstMainPatformTop = -1;
+			
+			for(var i=0; i<platform.length; i++){
+				str = platform[i];
+				if(line=="k" || (/k/.test(line) && /c|d/.test(str)&& !flagIsCommonStation)){//基隆輕軌月台
+					pa = {
+						num: str.substr(0,1),
+						index: i,
+						top: r.baseKLRTHeight - r.platformRailMargin - r.platformHeight,
+						comp: 'KLRT'
+					}
+					pa.platformElTop = TT.fn.getPlatformElTop(pa.top);
+					if(str.length==4){
+						pa.build = 'c';
+						pa.ary = [{main: false},{main: false}]
+					}else{
+						pa.build = /c/.test(str) ? 'a' : 'b';
+						if(pa.build=='a'){
+							pa.ary = [{main: false},false];
+						}else{
+							pa.ary = [false, {main: false}];
+						}
+					}
+					if(str.indexOf(dir1MainKLRT)>=0 || str.indexOf(dir0MainKLRT)>=0){
+						pa.main = true;
+						if(str.indexOf(dir1MainKLRT)>=0){
+							pa.ary[0] = {main:true, dir: 1};
+						}
+						if(str.indexOf(dir0MainKLRT)>=0){
+							pa.ary[1] = {main:true, dir: 0};
+						}
+					}
+				}else{//台鐵月台
+					pa = {
+						num: str.substr(0,1),
+						index: i,
+						top: -1,
+						comp: 'TRA'
+					}
+					if(str.length==4){
+						pa.build = 'c';
+						pa.ary = [{main: false},{main: false}]
+					}else{
+						pa.build = /a/.test(str) ? 'a' : 'b';
+						if(pa.build=='a'){
+							pa.ary = [{main: false},false];
+						}else{
+							pa.ary = [false, {main: false}];
+						}
+					}
+					if(str.indexOf(dir1MainTRA)>=0 || str.indexOf(dir0MainTRA)>=0){
+						pa.main = true;
+						if(str.indexOf(dir1MainTRA)>=0){
+							pa.ary[1] = {main:true, dir: 1};
+							firstMainPlatformIndex = i;
+							firstMainPlatformSide = /a/.test(dir1MainTRA) ? 'a' : 'b';
+							pa.top = (firstMainPlatformSide=='a') ? r.baseHeight - r.platformRailMargin - r.platformHeight : r.baseHeight + r.lineMainWidth + r.platformRailMargin;
+							firstMainPatformTop = pa.top;
+						}
+						if(str.indexOf(dir0MainTRA)>=0){
+							pa.ary[0] = {main:true, dir: 0};
+						}
+					}
+					
+				}
+				
+				aryP.push(pa);
+			}
+		}
+		
+		var tmpA = 0, tmpB = 0;
+		for(var i=0; i<aryP.length; i++){
+			if(aryP[i].comp != 'TRA') continue;
+			if(aryP[i].index < firstMainPlatformIndex){
+				tmpB = (firstMainPlatformSide=='b') ? r.platformHeight : 0;
+				tmpA = ((r.platformSideOutMargin*2 + r.platformHeight) * (firstMainPlatformIndex - aryP[i].index)) + firstMainPatformTop;
+			}else if(aryP[i].index > firstMainPlatformIndex){
+				tmpB = (firstMainPlatformSide=='b') ? r.platformHeight + r.platformRailMargin : 0;
+				tmpA = firstMainPatformTop - ((r.platformSideOutMargin*2 + r.platformHeight) * (aryP[i].index - firstMainPlatformIndex) + tmpB);
+			}else{
+				tmpA = firstMainPatformTop;
+			}
+			aryP[i].top = tmpA;
+			aryP[i].platformElTop = TT.fn.getPlatformElTop(tmpA);
+		}
+		return aryP;
+	}
+	
+	function getRailTop(platformAry){
+		var num = '', rt = {}, p = false;
+		for(var i=0; i<platformAry.length; i++){
+			p = platformAry[i];
+			num = 'p' + p.num;
+			var leftString = (p.comp=='TRA') ? 'a' : 'c',
+				rightString = (p.comp=='TRA') ? 'b' : 'd';
+			switch(p.build){
+				case 'c':
+					rt[num+leftString] = p.platformElTop.leftRail;
+					rt[num+rightString] = p.platformElTop.rightRail;
+				break;
+				case 'a':
+					rt[num+leftString] = p.platformElTop.leftRail;
+				break;
+				case 'b':
+					rt[num+rightString] = p.platformElTop.rightRail;
+				break;
+			}
+		}
+		return rt;
+	}
+	TT.station.map(function(c){
+		st = JSON.parse(JSON.stringify(c));
+		flgIsRotate = !!st.rotate;
+		pos = st.pos;
+		
+		if(!flgIsRotate){
+			st.x = pos[0] * TT.stBlockWidth;
+			st.y = pos[1] * TT.stBlockHeight;
+			st.boxWidth = TT.stBlockWidth;
+			st.boxHeight = TT.stBlockHeight;
+			
+			st.platformAry = makePlatform(st);
+			st.railTop = getRailTop(st.platformAry);
+		}else{
+			st.x = pos[0] * TT.stBlockWidth ;
+			st.y = pos[1] * TT.stRotateBlockHeight + TT.stBlockHeight - TT.stRotateBlockHeight;
+			st.boxWidth = TT.stRotateBlockWidth;
+			st.boxHeight = TT.stRotateBlockHeight;
+			
+			st.platformAry = makePlatform(st);
+			st.railTop = getRailTop(st.platformAry);
+		}
+		aryA.push(st);
+	});
+	return aryA;
+}
+
+TT.genRouteOnMap = function(canvasID, stAry){
+	var canvas = document.getElementById(canvasID),
+		cc = canvas.getContext('2d'),
+		horCount = 0,
+		klrtCount = 0,
+		platfomDrawLineAry = [],
+		platformAry = false,
+		transRailOffset = 12,
+		platformSlaveLineWidth = TT.rail.platformWidth + 8,
+		flgDir1 = false,
+		stQidu = false, stBadu = false, stKeelung = false,
+		tmpC = 0,
+		r = TT.rail;
+	var lineLeftRightMargin = ((TT.stBlockWidth - platformSlaveLineWidth) / 2);
+	
+	stAry.map(function(c){
+		if(c.pos[1]==0){
+			horCount++;
+			if(!/^tra_1001|^tra_1029|^tra_1002/.test(c.id)){
+				klrtCount++;
+			}
+		}
+		if(/^tra_1002|^tra_1003/.test(c.id)){
+			if(c.id=='tra_1002') stBadu = c;
+			if(c.id=='tra_1003') stQidu = c;
+		}
+		c.platformAry.map(function(p){
+			var offsetA = 0;
+			if(p.comp=='TRA' && c.id!='tra_1002'){
+				if(p.ary[0] && !p.ary[0].main){
+					platfomDrawLineAry.push([c.pos[0]*TT.stBlockWidth + lineLeftRightMargin, p.platformElTop.leftRail]);
+				}
+				if(p.ary[1] && !p.ary[1].main){
+					platfomDrawLineAry.push([c.pos[0]*TT.stBlockWidth + lineLeftRightMargin, p.platformElTop.rightRail]);
+				}
+			}
+		});
+	});
+	canvas.width = TT.caWidth;
+	canvas.height = TT.caHeight;
+	var dir0TraMainHeight = r.baseHeight - (r.platformRailMargin*2 + r.platformHeight + r.lineMainWidth);
+	var klrtEndOffset = lineLeftRightMargin;
+	//1. Draw main line
+	
+	cc.beginPath();
+	cc.moveTo(0, 0.5+r.baseHeight);
+	cc.fillStyle = r.colorTRA;
+	cc.strokeStyle = r.colorTRA;
+	cc.lineTo(TT.stBlockWidth*horCount, 0.5+r.baseHeight);
+	cc.lineWidth = r.lineMainWidth;
+	cc.moveTo(0, 0.5+dir0TraMainHeight);
+	cc.lineTo(TT.stBlockWidth*horCount, 0.5+dir0TraMainHeight);
+	cc.stroke();
+	
+	cc.beginPath();
+	cc.moveTo(TT.stBlockWidth*2, 0.5+r.baseKLRTHeight);
+	cc.fillStyle = r.colorKLRT;
+	cc.strokeStyle = r.colorKLRT;
+	cc.lineTo(TT.stBlockWidth*klrtCount - klrtEndOffset, 0.5+r.baseKLRTHeight);
+	cc.lineWidth = r.lineMainWidth;
+	cc.moveTo(TT.stBlockWidth*2, 0.5+(r.baseKLRTHeight - (r.platformRailMargin*2 + r.platformHeight + r.lineMainWidth)));
+	cc.lineTo(TT.stBlockWidth*klrtCount - klrtEndOffset, 0.5+(r.baseKLRTHeight - (r.platformRailMargin*2 + r.platformHeight + r.lineMainWidth)));
+	cc.stroke();
+	
+	//2.畫所有月台副線
+	cc.beginPath();
+	cc.fillStyle = r.colorTRA;
+	cc.strokeStyle = r.colorTRA;
+	cc.lineWidth = r.lineWidth;
+	for(var i=0; i<platfomDrawLineAry.length; i++){
+		flgDir1 = !!(platfomDrawLineAry[i][1] > r.baseHeight);
+		if(flgDir1){
+			cc.moveTo(platfomDrawLineAry[i][0] - transRailOffset, r.baseHeight);
+			cc.lineTo(platfomDrawLineAry[i][0], platfomDrawLineAry[i][1]);
+		}else{
+			cc.moveTo(platfomDrawLineAry[i][0] - transRailOffset, dir0TraMainHeight);
+			cc.lineTo(platfomDrawLineAry[i][0], platfomDrawLineAry[i][1]);
+		}
+		//cc.moveTo(platfomDrawLineAry[i][0], platfomDrawLineAry[i][1]);
+		cc.lineTo(platfomDrawLineAry[i][0] + platformSlaveLineWidth, platfomDrawLineAry[i][1]);
+		if(flgDir1){
+			cc.lineTo(platfomDrawLineAry[i][0] + platformSlaveLineWidth + transRailOffset, r.baseHeight);
+		}else{
+			cc.lineTo(platfomDrawLineAry[i][0] + platformSlaveLineWidth + transRailOffset, dir0TraMainHeight);
+		}
+	}
+	cc.stroke();
+	
+	//3.畫七堵到八堵間台鐵宜蘭線連接線
+	cc.beginPath();
+	cc.fillStyle = r.colorTRA;
+	cc.strokeStyle = r.colorTRA;
+	cc.lineWidth = r.lineMainWidth;
+	var y1X = stBadu.pos[0] * TT.stBlockWidth,
+		y1Y = stBadu.platformAry[1].platformElTop.leftRail,
+		y2Y = stBadu.platformAry[0].platformElTop.rightRail;
+	
+	cc.moveTo(y1X, dir0TraMainHeight);
+	cc.lineTo(y1X + transRailOffset + 5, y1Y);
+	cc.lineTo(y1X + 100, y1Y);
+	cc.moveTo(y1X, r.baseHeight);
+	cc.lineTo(y1X + transRailOffset, y2Y);
+	cc.lineTo(y1X + 100, y2Y);
+	cc.stroke();
+	
+	//4.畫七堵到八堵間基隆輕軌連接線
+	cc.beginPath();
+	cc.fillStyle = r.colorKLRT;
+	cc.strokeStyle = r.colorKLRT;
+	cc.lineWidth = r.lineWidth;
+	var line1X = stQidu.pos[0] * TT.stBlockWidth + lineLeftRightMargin + platformSlaveLineWidth,
+		line1Y = stQidu.platformAry[4].platformElTop.rightRail,
+		line2Y = stQidu.platformAry[4].platformElTop.leftRail;
+	
+	var line1XEnd = stBadu.pos[0] * TT.stBlockWidth + lineLeftRightMargin,
+		line1YEnd = stBadu.platformAry[2].platformElTop.rightRail - r.lineWidth,
+		line2YEnd = stBadu.platformAry[2].platformElTop.leftRail + r.lineWidth;
+	
+	cc.moveTo(line1X, line1Y);
+	cc.lineTo(line1XEnd, line1YEnd);
+	cc.lineTo(horCount*TT.stBlockWidth, line1YEnd);
+	
+	cc.moveTo(line1X, line2Y);
+	cc.lineTo(line1XEnd, line2YEnd);
+	cc.lineTo(horCount*TT.stBlockWidth, line2YEnd);
+	cc.stroke();
+	
+	
+}
+
+TT.createMap = function(){
+	var rail = TT.rail;
+	var tpl = Vue.compile('<div class="mapOut" id="mapOut">' +
+		'<div class="routeLayer" v-html="printCanvas()"></div>' +
+		'<div class="trainLayer" style="display:none;"></div>' +
+		'<div class="stationLayer" id="stationLayer">' +
+			'<div v-for="(st,idx) in stationAry" v-bind:style="getStationStyle(st.id)" class="stationOut">' +
+				'<div class="stationName" v-bind:class="(st.id)" v-bind:data-stid="(st.id)" v-bind:style="getStationNameStyle(st)">{{ st.name }}</div>' +
+				'<div class="platformOut" v-html="printPlatform(st)"></div>' +
+			'</div>' +
+		'</div>' +
+	'</div>');
+	var vm = new Vue({
+		el: '#mapShowArea',
+		render: tpl.render,
+		data: {
+			neverDrawMap: true,
+			stationAry: TT.genStationOnMap()
+		},
+		methods: {
+			drawMap: function(){
+				if(!this.neverDrawMap){
+					return false;
+				}
+				this.neverDrawMap = false;
+				TT.genRouteOnMap('canvasRoute', this.stationAry);
+			},
+			getStationStyle: function(id){
+				var st = TT.fn.getStationByID(id, this.stationAry);
+				var rt = 'left:' + st.x + 'px; top:' + st.y + 'px; width:' + st.boxWidth + 'px; height:' + st.boxHeight + 'px';
+				return rt;
+			},
+			getStationRailTop: function(id){
+				var st = TT.fn.getStationByID(id, this.stationAry);
+				return st.railTop;
+			},
+			getStationNameStyle: function(st){
+				var rt = '';
+				if(st.rotate){
+					rt = 'width:60px;position:absolute;left:0px;text-align:left;'
+				}
+				return rt;
+			},
+			printCanvas: function(){
+				return '<canvas id="canvasRoute" width="' + TT.caWidth + '" height="' + TT.caHeight + '"></canvas>';
+			},
+			printPlatform: function(st){
+				var rt = '';
+				var pAry = st.platformAry;
+				pAry.map(function(c){
+					rt += '<div class="platformDiv" style="top:' + c.top + 'px;">' + c.num + '</div>';
+				});
+				return rt;
+			}
+		},
+		mounted: function(){
+			this.drawMap();
+		}
+	})
+	return vm;
+}
+
+TT.createTimeTableArea = function(){
+	var calcTimeTable = function(tmpTime){
+		var h4Table = [[],[],[],[]],
+			stAry = [[],[],[],[]];
+		tmpTime.map(function(c){
+			if(c.line=='k'){
+				if(c.dir==1){
+					h4Table[2].push(c);
+					stAry[2] = TT.getRailAry('k', 'tra_1001', 'tra_1006', 1, true);
+				}else{
+					h4Table[3].push(c);
+					stAry[3] = TT.getRailAry('k', 'tra_1006', 'tra_1001', 0, true);
+				}
+			}else{
+				if(c.dir==1){
+					h4Table[0].push(c);
+					stAry[0] = TT.getRailAry('w', 'tra_1001', 'tra_1008', 1, true);
+				}else{
+					h4Table[1].push(c);
+					stAry[1] = TT.getRailAry('w', 'tra_1008', 'tra_1001', 0, true);
+				}
+			}
+		});
+		return {
+			h4Table: h4Table,
+			stAry: stAry
+		}
+	}
+	var tkm = calcTimeTable(TT.makeAllRouteTimeTable(7));
+	var h4Table = tkm.h4Table,
+		stAry = tkm.stAry;
+	
+	var tpl = Vue.compile('<div class="timeTableOut" v-bind:class="(getCompOutClass())">' +
+		'<div class="btnSwitchArea">' +
+			'<div class="btnSwitchTable bgTRA" v-on:click="(switchTable(\'t1\'))">台鐵火車 (基隆往台北)</div>' +
+			'<div class="btnSwitchTable bgTRA" v-on:click="(switchTable(\'t0\'))">台鐵火車 (台北往基隆)</div>' +
+			'<div class="btnSwitchTable bgKLRT" v-on:click="(switchTable(\'k1\'))">基隆輕軌 (基隆往南港)</div>' +
+			'<div class="btnSwitchTable bgKLRT" v-on:click="(switchTable(\'k0\'))">基隆輕軌 (南港往基隆)</div>' +
+		'</div>' +
+		'<div class="timeTableIn">' +
+			'<table cellpadding="0" cellspacing="0">' +
+				'<tr>' +
+					'<th></th>' +
+					'<th v-for="(ta,aidx) in timeAry" v-bind:style="getCarColorStyle(ta.trainType)">{{getCarName(ta.trainType)}}</th>' +
+				'</tr>' +
+				'<tr>' +
+					'<td>行駛區間</td>' +
+					'<td v-for="(tb,bidx) in timeAry">{{tb.tag}}</td>' +
+				'</tr>' +
+				'<tr v-for="(st,idx) in railAry" v-bind:class="idx%2==1 ? \'row2\' : \'\'">' +
+					'<td>{{st.name}}</td>' +
+					'<td v-for="(tc,cidx) in timeAry" v-bind:style="getCarColorStyle(tc.trainType)" v-html="getStationTIme(st,tc,cidx)"></td>' +
+				'</tr>' +
+			'</table>' +
+		'</div>' +
+	'</div>');
+	var vm = new Vue({
+		el: '#timeTableArea',
+		render: tpl.render,
+		staticRenderFns: tpl.staticRenderFns,
+		data: {
+			comp: 'tra',
+			callIndex: 0,
+			railAry: stAry[0],
+			timeAry: h4Table[0]
+		},
+		methods: {
+			switchTable: function(s){
+				this.comp = (/k/.test(s)) ? 'klrt' : 'tra';
+				switch(s){
+					case 't1':
+						this.callIndex = 0;
+					break;
+					case 't0':
+						this.railAry = stAry[1];
+						this.callIndex = 1;
+					break;
+					case 'k1':
+						this.callIndex = 2;
+					break;
+					case 'k0':
+						this.callIndex = 3;
+					break;
+				}
+				this.railAry = stAry[this.callIndex];
+				this.timeAry = h4Table[this.callIndex];
+			},
+			updateTimeTableRawData: function(ary){
+				ary = ary || TT.makeAllRouteTimeTable(TT.startHour, TT.runHour);
+				var tkm = calcTimeTable(ary);
+				h4Table = tkm.h4Table;
+				stAry = tkm.stAry;
+				
+				this.switchTable('t1');
+			},
+			getCarColorStyle: function(t){
+				var color = TT.fn.getCarByTrainType(t).color;
+				return 'color:' + color + ';';
+			},
+			getCarName: function(t){
+				return TT.fn.getCarByTrainType(t).name;
+			},
+			getCompOutClass: function(){
+				return (this.comp=='tra') ? 'tra' : 'klrt';
+			},
+			getStationTIme: function(st, tc, idx){
+				var stid = st.id;
+				var tmpTime = false, rt = '';
+				for(var i=0; i<tc.timeAry.length; i++){
+					if(tc.timeAry[i].stid==stid){
+						tmpTime = tc.timeAry[i];
+						break;
+					}
+				}
+				if(tmpTime){
+					rt = TT.fn.transTime2HM(tmpTime.dep);
+					if(tmpTime.pass){
+						rt = '--';
+					}else if(tmpTime.wait){
+						rt = '<div>' + TT.fn.transTime2HM(tmpTime.arr)+ '到</div>' + '<div>' + TT.fn.transTime2HM(tmpTime.dep) + '開</div>';
+					}else if(stid=='tra_1008'){
+						if(tc.dir==1){
+							rt = '<div>' + TT.fn.transTime2HM(tmpTime.arr)+ '到</div>' + '<div>' + TT.fn.transTime2HM(tmpTime.dep) + '開</div>';
+						}
+					}
+				}
+				return rt;
+			}
+		}
+	});
+	return vm;
+}
+
+TT.initFn = function(){
+	var body = document.body;
+	var menuBar = TT.createMenuBar();
+	TT.timeArea = TT.createTimeArea();
+	TT.map = TT.createMap();
+	TT.timeTableArea = TT.createTimeTableArea();
+	document.getElementById('helpArea').innerHTML = TT.descriptionText.join('<br>');
+	
+	document.addEventListener('touchmove', function(e){
+		TT.isMobileMove = true;
+	});
+}
+</script>
+<!-- -->
+<!-- -->
+</head>
+<body onload="TT.initFn()">
+	<div id="menuBarRenderDiv"></div>
+	<div id="timeShowArea"></div>
+	<div id="mapShowArea"></div>
+	<div id="timeTableArea"></div>
+	<div id="helpArea" class="helpArea"></div>
+</body>
+</html>
