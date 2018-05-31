@@ -341,13 +341,57 @@ body {
 }
 
 
+/* Set Page Class */
+.setPage{
+	margin-left: 20px;
+	min-width: 1200px;
+	min-height: 600px;
+}
+.setPage .jsonText{
+	margin: 10px 5px;
+	width: 90%;
+	height: 500px;
+}
+.setPage .createBtnArea{
+	margin: 5px;
+	padding: 3px;
+	min-height: 24px;
+}
+.setPage .sucMsg{
+	float: left;
+	margin: 4px;
+	padding: 2px 10px;
+	background-color: #DDC933;
+	color: #B92E09;
+	font-size: 14px;
+	ransition: all 2s linear;
+}
+.setPage .sucMsg.bye{
+	transition-property: opacity;
+	transition-duration: 2s;
+	opacity: 0.01;
+}
+.setPage .textURL{
+	margin: 10px 5px;
+	width: 90%;
+	height: 100px;
+}
+.setPage .helpText{
+	margin: 5px;
+	padding: 3px;
+	max-height: 300px;
+	overflow-y: scroll;
+	width: 80%;
+	max-width: 1260px;
+}
+
 </style>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script type="text/javascript">
 var TT = {
 	descriptionText: [
-		'本程式為接軌時刻 Web App 內之輔助工據，用於模擬基隆輕軌及台鐵四軌化、定型化時刻表後的運轉模式。',
+		'本程式為接軌時刻 Web App 內之輔助工具，用於模擬基隆輕軌及台鐵四軌化、定型化時刻表後的運轉模式。',
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
@@ -450,6 +494,7 @@ var TT = {
 	timerInterval: 1000,
 	timeTable: [],//儲存動態產生時刻表
 	timeGo: [],//儲存上線列車物件
+	//轉換網址列作法t=y_1-3&t=w_1-20 , 因 "," 會被轉 %2C 增長網址故捨棄
 	trainGoTime: [
 		//一小時內要發的所有列車，格時為 [mod , startTime minute]
 		["y_1",3], ["w_1",20], ["p_1",6], ["t_1",32], ["y_3",23], ["x_1",31], ["p_3",27], ["r_1",51], ["y_5",43], ["w_1",60], ["p_5",46], ["e_1",7],
@@ -459,6 +504,7 @@ var TT = {
 	],
 	trainModuleTime: [//列車基礎時刻，一切以定型化班表運作，每種列車停靠站與時間固定，以 trainType 加組合數字設定固定模式與待避車站
 		//數字直接換算，停靠較久用 ~ 連接，待避用 w 連接，過站不停的時間用 p 寫前綴
+		//轉換網址列作法 a=t_1&b=t&c=e&d=1&e=1002&f=1008&g=%E5%8F%B0%E6%9D%B1-%E6%A8%B9%E6%9E%97&h=p32-p34-p36-p39-p40-p41-45-50-57~60&q=   <<< q 為斷符代表一個 module 的結束
 		//++++東線普悠瑪號
 		{
 			mod: "t_1",
@@ -722,6 +768,28 @@ TT.fn = {
         	for(var i=0; i<TT.car.length; i++){
         		if(TT.car[i].trainType==t) return TT.car[i];
         	}
+        },
+        getData2JSON: function(){
+        	var obj = {
+				trainGoTime: TT.trainGoTime,
+				trainModuleTime: TT.trainModuleTime
+			};
+			var a = JSON.stringify(obj, undefined, '\t');
+			a = a.replace(/\n\t\t\t\t/gi,'').replace(/\n\t\t\t\]/gi,']');
+			var ary = a.split('trainModuleTime');
+			ary[0] = ary[0].replace(/\n\t\t\t/gi,'').replace(/\n\t\t\]/gi,']');
+			
+			return ary[0] + 'trainModuleTime' + ary[1];
+        },
+        setData2trainRawData: function(str){
+        	try {
+        		var objA = JSON.parse(str);
+        	}catch(e){
+        		return false;
+        	}
+        	if(objA.trainGoTime) TT.trainGoTime = objA.trainGoTime;
+        	if(objA.trainModuleTime) TT.trainModuleTime = objA.trainModuleTime;
+        	return true;
         },
         getPlatformElTop: function(top){
         	var r = TT.rail;
@@ -1248,7 +1316,8 @@ TT.createMenuBar = function(){
 	
 	var tpl = Vue.compile('<div id="menuBarRenderDiv">' +
 		'<div class="menuBar">' +
-			'<div class="menuItem hiasd">基隆輕軌既台鐵基隆南港四軌化模擬器</div>' +
+			'<div v-on:click="vSimulate()" class="setItem setItem2 hiasd" v-bind:class="ren(\'sim\')">基隆輕軌暨台鐵基隆南港四軌化模擬器</div>' +
+			'<div v-on:click="vParam()" class="setItem setItem2" v-bind:class="ren(\'param\')">設定參數</div>' +
 			'<div v-on:click="back()" class="menuItem menuItem2 back">回到接軌時刻</div>' +
 		'</div>' +
 	'</div>');
@@ -1256,16 +1325,32 @@ TT.createMenuBar = function(){
 	var vm = new Vue({
 		el: '#menuBarRenderDiv',
 		render: tpl.render,
+		data: {
+			page: 'sim'
+		},
 		methods: {
 			back: function(){
 				location.href = './';
+			},
+			ren: function(id){
+				return (id==this.page) ? 'selected' : '';
+			},
+			vSimulate: function(){
+				this.page='sim';
+				TT.timeArea.seen = true;TT.map.seen = true;TT.timeTableArea.seen = true;
+				TT.setPage.seen = false;
+			},
+			vParam: function(){
+				this.page='param';
+				TT.timeArea.seen = false;TT.map.seen = false;TT.timeTableArea.seen = false;
+				TT.setPage.seen = true;
 			}
 		}
 	});
 	return vm;
 }
 TT.createTimeArea = function(){
-	var tpl = Vue.compile('<div class="timeShowArea">' +
+	var tpl = Vue.compile('<div class="timeShowArea" id="timeShowArea"  v-show="seen">' +
 		'<div class="time" >模擬時刻 {{displayTime()}}</div>' +
 		'<div class="status" v-html="getGoStatus()"></div>' +
 		'<div v-on:click="sim4Rail()" class="setItem sim4Rail">{{ flagGo ? \'停止模擬四軌化基隆輕軌\' : \'啟動模擬四軌化基隆輕軌\' }}</div>' +
@@ -1282,6 +1367,7 @@ TT.createTimeArea = function(){
 		staticRenderFns: tpl.staticRenderFns,
 		data: {
 			flagGo: false,
+			seen: true,
 			syncTimeShow: true,
 			startHour: TT.startHour,
 			runHour: TT.runHour,
@@ -1615,7 +1701,7 @@ TT.genRouteOnMap = function(canvasID, stAry){
 
 TT.createMap = function(){
 	var rail = TT.rail;
-	var tpl = Vue.compile('<div class="mapOut" id="mapOut">' +
+	var tpl = Vue.compile('<div class="mapOut" id="mapOut" v-show="seen">' +
 		'<div class="routeLayer" v-html="printCanvas()"></div>' +
 		'<div class="trainLayer" style="display:none;"></div>' +
 		'<div class="stationLayer" id="stationLayer">' +
@@ -1629,6 +1715,7 @@ TT.createMap = function(){
 		el: '#mapShowArea',
 		render: tpl.render,
 		data: {
+			seen: true,
 			neverDrawMap: true,
 			stationAry: TT.genStationOnMap()
 		},
@@ -1707,7 +1794,7 @@ TT.createTimeTableArea = function(){
 	var h4Table = tkm.h4Table,
 		stAry = tkm.stAry;
 	
-	var tpl = Vue.compile('<div class="timeTableOut" v-bind:class="(getCompOutClass())">' +
+	var tpl = Vue.compile('<div class="timeTableOut" id="timeTableArea" v-bind:class="(getCompOutClass())" v-show="seen">' +
 		'<div class="btnSwitchArea">' +
 			'<div class="btnSwitchTable bgTRA" v-on:click="(switchTable(\'t1\'))">台鐵火車 (基隆往台北)</div>' +
 			'<div class="btnSwitchTable bgTRA" v-on:click="(switchTable(\'t0\'))">台鐵火車 (台北往基隆)</div>' +
@@ -1736,6 +1823,7 @@ TT.createTimeTableArea = function(){
 		render: tpl.render,
 		staticRenderFns: tpl.staticRenderFns,
 		data: {
+			seen: true,
 			comp: 'tra',
 			callIndex: 0,
 			railAry: stAry[0],
@@ -1808,6 +1896,107 @@ TT.createTimeTableArea = function(){
 	return vm;
 }
 
+
+TT.createSetPage = function(){
+	var myID = 'setPage';
+	var ti1 = 0, ti2 = 0;
+	var tpl = Vue.compile('<div class="setPage" id="' + myID + '" v-show="seen">' +
+		'<div><textarea class="jsonText" v-model="jsonText"></textarea></div>' +
+		'<div class="createBtnArea">' +
+			'<div class="setItem" v-on:click="setToTrainModule()">產生新的定型化時刻表運行列車</div>' +
+			'<div class="sucMsg" v-show="flagShowMsg" v-bind:class="getSucMsgCls()">{{ msgText }}</div>' +
+		'</div>' +
+		'<div><textarea class="textURL" v-model="textURL"></textarea></div>' +
+		'<div class="helpText" v-html="getHelp()"></div>' +
+	'</div>');
+	var vm = new Vue({
+		el: '#setPage',
+		render: tpl.render,
+		staticRenderFns: tpl.staticRenderFns,
+		data: {
+			seen: false,
+			jsonText: '',
+			textURL: '',
+			msgText: '',
+			flagShowMsg: false,
+			flagLinerByeMsg: false,
+			flagCreateURL: false
+		},
+		methods: {
+			updateText: function(){
+				this.clearText();
+				this.jsonText = TT.fn.getData2JSON();
+			},
+			clearText: function(){
+				this.jsonText = '';
+				this.textURL = '';
+			},
+			getSucMsgCls: function(){
+				return (this.flagLinerByeMsg) ? 'bye' : '';
+			},
+			getHelp: function(){
+				var ks = '', ts = '';
+				TT.car.map(function(c){
+					ks += '<li><span style="color:#4E8C9D;">' + c.trainType + ':</span> ' + c.name + '</li>';
+				});
+				TT.station.map(function(c){
+					ts += '<li><span style="color:#4E8C9D;">' + c.id + ':</span> ' + c.name + '</li>';
+				});
+				return '<div style="max-width:1200px;">' + 
+				'<h3><span style="color:red">編輯格式簡易說明</span></h3>' +
+				'<p>目前可編輯的項目分成兩塊，第一塊為 trainGoTime，第二塊為 trainModuleTime </p>' +
+				'<h4><span style="color:green"> trainGoTime 格式簡易說明</span></h4>' +
+				'<p>它的格式相對簡單，只有一組兩個元素的陣列，分別是 [車種 , 發車時刻]。車種的部分由第二部分的 trainModuleTime 定義，請在陣列 0 填入該車種的 mod 值；發車時刻的部分請填入每小時的第幾分鐘由第一站發車，第一站是固定而相對於 trainModuleTime 中的 from 值。' +
+				'要注意的是發車時間會與 time 值的第一個元素做比對，假設一個 time 陣列是 time:[20,24,26....] 的型式，填入 20 那列車時刻會使用 20,24,26... 運行；若填入 50 則列車時刻會用 50,54,56... 運行。</p>' +
+				'<h4><span style="color:green"> trainModuleTime 格式簡易說明</span></h4>' +
+				'<p>trainModuleTime 為陣列，用於定義行駛在所有軌道上的列車型態以及定型化班表的運轉時間，可設定內容如下</p>' +
+				'<ul>' +
+					'<li>mod: 模組名稱，不能重複，習慣命名法為 trainType_number</li>' +
+					'<li>trainType: 車種，目前有以下幾種可用' +
+						'<ul>' + ks + '<br>' + '</ul>' +
+					'</li>' +
+					'<li style="color:#6CAF45;">line: 西部幹線列車請填 w，東部幹線列車請填 e，基隆輕軌請填 k，此值會影響月台的停靠位置。</li>' +
+					'<li>dir: 行車方向，由台北或南港往基隆方向順行北上為 0，由基隆往南港台北方向逆行南下為 1</li>' +
+					'<li>from: 起站，請填入車站代號。</li>' +
+					'<li style="">to: 終點站，請填入車站代號。' + '<ul>' + ts + '<br>' + '</ul>' + '</li>' +
+					'<li style="color:#BC8F45;">tag: 顯示於按下列車的說明視窗中顯示的文字</li>' +
+					'<li>time: 陣列，為起站至終站間經過的每一站停靠時間。台鐵或基隆輕軌未停靠的車站不用輸入，只需輸入軌道上經過的每一站，有以下幾種輸入法' +
+						'<ul>' +
+							'<li>純數字，例如 34，代表 34 分到達此站載客後開車。</li>' +
+							'<li>文字，不停靠直接通過請輸入 p 及通過時間，例如 p25 代表 25 分時通過該站</li>' +
+							'<li>文字，要在車站待避請輸入 w 連接進站及出站時間，例如 23w27 代表 23 分進車站直到 27 分才出站。可待避車站目前只有規劃汐止及七堵兩站會進入待避月台</li>' +
+							'<li>文字，若有車站停靠時間要比較久則輸入 ~ 連接進站及出站時間，例如 9~11 會從 9 分進站停到 11 分才開車，所有車站皆可用</li>' +
+						'</ul>' +
+				'</ul>' +
+				'<div>';
+			},
+			setToTrainModule: function(){
+				var me = this;
+				var gi = TT.fn.setData2trainRawData(this.jsonText);
+				clearTimeout(ti1);clearTimeout(ti2);
+				this.msgText = (gi) ? '已更新完成' : '更新失敗，請檢查輸入格式是否有錯，例如字串未用雙引號包住或陣列內最後多了 , 而視為未完成';
+				this.flagLinerByeMsg = false;
+				this.flagShowMsg = true;
+				ti1 = setTimeout(function(){
+					me.flagLinerByeMsg = true;
+					ti2 = setTimeout(function(){
+						me.flagShowMsg = false;
+						me.flagLinerByeMsg = false;
+					},2000);
+				},(gi)?2000:6000);
+			}
+		},
+		watch: {
+			seen: function(){
+				if(this.seen==true){
+					this.updateText();
+				}
+			}
+		}
+	})
+	return vm;
+}
+
 TT.initFn = function(){
 	var body = document.body;
 	var menuBar = TT.createMenuBar();
@@ -1815,6 +2004,8 @@ TT.initFn = function(){
 	TT.map = TT.createMap();
 	TT.timeTableArea = TT.createTimeTableArea();
 	document.getElementById('helpArea').innerHTML = TT.descriptionText.join('<br>');
+	
+	TT.setPage = TT.createSetPage();
 	
 	document.addEventListener('touchmove', function(e){
 		TT.isMobileMove = true;
@@ -1829,6 +2020,7 @@ TT.initFn = function(){
 	<div id="timeShowArea"></div>
 	<div id="mapShowArea"></div>
 	<div id="timeTableArea"></div>
+	<div id="setPage"></div>
 	<div id="helpArea" class="helpArea"></div>
 </body>
 </html>
