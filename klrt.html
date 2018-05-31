@@ -791,6 +791,18 @@ TT.fn = {
         	if(objA.trainModuleTime) TT.trainModuleTime = objA.trainModuleTime;
         	return true;
         },
+        getSearch: function(takeAry){
+			var pairs = window.location.search.substring(1).split("&"),ary = [], obj={},pair,k;
+
+			for(k in pairs){
+				if ( pairs[k] === "" ) continue;
+				pair = pairs[k].split("=");
+				obj[ decodeURIComponent( pair[0] ) ] = decodeURIComponent( pair[1] );
+				ary.push([decodeURIComponent( pair[0] ), decodeURIComponent( pair[1] )])
+			}
+			
+			return (takeAry) ? ary : obj;
+        },
         getPlatformElTop: function(top){
         	var r = TT.rail;
         	return {
@@ -1310,6 +1322,120 @@ TT.sim = function(){
 	initTimer();
 	return TT.timerID;
 }
+
+
+TT.parseModule = (function(){
+	//trainGoTime 轉換網址列作法t=y_1-3&t=w_1-20 , 因 "," 會被轉 %2C 增長網址故捨棄
+		//數字直接換算，停靠較久用 ~ 連接，待避用 w 連接，過站不停的時間用 p 寫前綴
+		//轉換網址列作法 a=t_1&b=t&c=e&d=1&e=1002&f=1008&g=%E5%8F%B0%E6%9D%B1-%E6%A8%B9%E6%9E%97&h=p32-p34-p36-p39-p40-p41-45-50-57~60&q=   <<< q 為斷符代表一個 module 的結束
+	var pek = {a:"mod",b:"trainType",c:"line",d:"dir",e:"from",f:"to",g:"tag",h:"time"}, mk;
+	var getPek = function(ta){for(mk in pek){if(ta==pek[mk]){return mk;}};}
+	var tmpA, tmpB, tmpC, tmpD, sk, drt;
+	
+	var trainGoTimeStr = '', trainModuleTimeStr = '';
+	var se = TT.fn.getSearch();
+	function time2str(){
+		tmpA = [];
+		TT.trainGoTime.map(function(c){
+			tmpA.push(c[0] + '-' + c[1]);
+		});
+		return tmpA.join('*');
+	}
+	function str2time(str){
+		tmpA = str.split('*'), tmpC = [];
+		tmpA.map(function(c){
+			tmpB = c.split('-');
+			tmpC.push([tmpB[0], parseInt(tmpB[1])]);
+		});
+		return tmpC;
+	}
+	function module2str(){
+		tmpA = [], tmpB = [], tmpC = [];
+		TT.trainModuleTime.map(function(c){
+			tmpB = [];
+			for(sk in c){
+			//console.log(sk);
+				tmpC = c[sk];
+				switch(sk){
+					case "from":
+					case "to":
+						tmpC = c[sk].replace('tra_','');
+					break;
+					case "time":
+						tmpC = c[sk].join('-');
+					break;
+				}
+				tmpB.push(getPek(sk) + '*' + tmpC);
+			}
+			tmpA.push(tmpB.join('!'));
+		});
+		return tmpA.join('()');
+	}
+	function str2module(str){
+		tmpA = str.split('()'), tmpB = [], tmpC = [], tmpD = '';
+		var objB = {}, aryA = [];
+		tmpA.map(function(c){
+			tmpB = c.split('!');
+			objB = {};
+			tmpB.map(function(ca){
+				tmpC = ca.split('*');
+				sk = pek[tmpC[0]];
+				drt = tmpC[1];
+				switch(sk){
+					case "from":
+					case "to":
+						drt = 'tra_' + tmpC[1];
+					break;
+					case "time":
+						drt = tmpC[1].split('-');
+						
+						for(var i=0; i<drt.length; i++){
+							if(/^[0-9]*$/.test(drt[i])){
+								drt[i] = parseInt(drt[i]);
+							}
+						}
+					break;
+				}
+				objB[sk] = drt;
+			});
+			aryA.push(objB);
+		});
+		return aryA;
+	}
+	
+	function getURL(){
+		var w = location.href.toString().replace(location.search,'');
+		return w + '?pr=1&t=' + encodeURIComponent(time2str()) + '&m=' + encodeURIComponent(module2str());
+	}
+	function parseURL(){
+		var objA = TT.parseModule.search;
+		if(objA.pr==1){
+			return {
+				trainGoTime: str2time(objA.t),
+				trainModuleTime: str2module(objA.m)
+			}
+		}
+		return false;
+	}
+	function updateCarData(objA){
+		objA = objA || parseURL();
+			
+        if(objA.trainGoTime) TT.trainGoTime = objA.trainGoTime;
+        if(objA.trainModuleTime) TT.trainModuleTime = objA.trainModuleTime;
+		
+	}
+	
+	return {
+		search: se,
+		getURL: getURL,
+		parseURL: parseURL,
+		updateCarData: updateCarData,
+		module2str: module2str,
+		time2str: time2str,
+		str2module: str2module,
+		str2time: str2time
+	}
+})();
 
 
 TT.createMenuBar = function(){
@@ -1972,6 +2098,7 @@ TT.createSetPage = function(){
 			},
 			setToTrainModule: function(){
 				var me = this;
+				this.textURL = '';
 				var gi = TT.fn.setData2trainRawData(this.jsonText);
 				clearTimeout(ti1);clearTimeout(ti2);
 				this.msgText = (gi) ? '已更新完成' : '更新失敗，請檢查輸入格式是否有錯，例如字串未用雙引號包住或陣列內最後多了 , 而視為未完成';
@@ -1984,6 +2111,9 @@ TT.createSetPage = function(){
 						me.flagLinerByeMsg = false;
 					},2000);
 				},(gi)?2000:6000);
+				//Make url
+				var val = TT.parseModule.getURL();
+				this.textURL = val;
 			}
 		},
 		watch: {
@@ -1998,6 +2128,7 @@ TT.createSetPage = function(){
 }
 
 TT.initFn = function(){
+	TT.parseModule.updateCarData();
 	var body = document.body;
 	var menuBar = TT.createMenuBar();
 	TT.timeArea = TT.createTimeArea();
