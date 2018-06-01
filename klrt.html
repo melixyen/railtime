@@ -4,10 +4,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width; initial-scale=1.0" />
-<meta name="description" content="接軌時刻 - 基隆輕軌模擬器" />
+<meta name="description" content="接軌時刻 - 基北線模擬器" />
 <meta name="keywords" content="CANVAS,台鐵,捷運,基隆輕軌,輕軌,接軌時刻" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<title>接軌時刻 - 基隆輕軌模擬器</title>
+<title>接軌時刻 - 基北線模擬器</title>
 <style type="text/css">
 @charset "utf-8";
 
@@ -246,22 +246,22 @@ body {
 .carW{
 	background-color: #fd7a10;
 	border: 1px solid #fd7a10;
-	z-index: 108;
+	z-index: 118;
 }
 .carE{
 	background-color: #fd7a10;
 	border: 1px solid #fd7a10;
-	z-index: 109;
+	z-index: 119;
 }
 .carR{
 	background-color: #CEB763;
 	border: 1px solid #CEB763;
-	z-index: 110;
+	z-index: 120;
 }
 .carT{
 	background-color: #ff0030;
 	border: 1px solid #ff0030;
-	z-index: 111;
+	z-index: 121;
 }
 .carP{
 	background-color: #0D46A2;
@@ -272,6 +272,16 @@ body {
 	background-color: #33D2DD;
 	border: 1px solid #33D2DD;
 	z-index: 107;
+}
+.carF{
+	background-color: #32CFBC;
+	border: 1px solid #32CFBC;
+	z-index: 108;
+}
+.carG{
+	background-color: #ff1070;
+	border: 1px solid #ff1070;
+	z-index: 109;
 }
 .carOnStation{
 	opacity: 1;
@@ -395,16 +405,18 @@ var TT = {
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2018/05/31</span>"
+			"更新日期: 2018/06/01</span>"
 	],
 	car: [
 		{"id": "carK", "name": "輕軌", "ename": "Keelung LRT", "color": "#2EA42B", trainType: "k", zIndex: 104},
-		{"id": "carW", "name": "西自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10", trainType: "w", zIndex: 108},
-        			{"id": "carE", "name": "東自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10", trainType: "e", zIndex: 109},
-        			{"id": "carR", "name": "太魯閣", "ename": "Tze-Chiang Limited Express(Tarko)", "color": "#CEB763", trainType: "r", zIndex: 110},
-        			{"id": "carT", "name": "普悠瑪", "ename": "Tze-Chiang Limited Express(Puyuma)", "color": "#ff0030", trainType: "t", zIndex: 111},
+		{"id": "carW", "name": "西自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10", trainType: "w", zIndex: 118},
+        			{"id": "carE", "name": "東自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10", trainType: "e", zIndex: 119},
+        			{"id": "carR", "name": "太魯閣", "ename": "Tze-Chiang Limited Express(Tarko)", "color": "#CEB763", trainType: "r", zIndex: 120},
+        			{"id": "carT", "name": "普悠瑪", "ename": "Tze-Chiang Limited Express(Puyuma)", "color": "#ff0030", trainType: "t", zIndex: 121},
         			{"id": "carP", "name": "區間車", "ename": "Local Train", "color": "#0D46A2", trainType: "p", zIndex: 105},
-        			{"id": "carX", "name": "區間快", "ename": "Fast Local Train", "color": "#33D2DD", trainType: "x", zIndex: 107}
+        			{"id": "carX", "name": "區間快", "ename": "Fast Local Train", "color": "#33D2DD", trainType: "x", zIndex: 107},
+        			{"id": "carF", "name": "復興", "ename": "Fu-Hsing Semi Express", "color": "#32CFBC", trainType: "f", zIndex: 108},
+        			{"id": "carG", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070", trainType: "g", zIndex: 109}
 	],
 	//big: t停東線太魯閣普悠瑪，r停西線太魯閣普悠瑪，e停東線自強，w停西線自強，x停區間快車，p停區間車，k停基隆輕軌
 	//line: k停基隆輕軌，w停西線，e停東線
@@ -822,6 +834,19 @@ TT.fn = {
         }
 }
 
+TT.flagUseBrowserCopyCheck = (function(){
+        		var Sys = {},
+					ua = navigator.userAgent.toLowerCase(),
+					sAry;
+				(sAry = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = parseInt(sAry[1]) :
+				(sAry = ua.match(/msie ([\d.]+)/)) ? Sys.ie = parseInt(sAry[1]) :
+				(sAry = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = parseInt(sAry[1]) :
+				(sAry = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = parseInt(sAry[1]) :
+				(sAry = ua.match(/opera.([\d.]+)/)) ? Sys.opera = parseInt(sAry[1]) :
+				(sAry = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = parseInt(sAry[1]) : 0;
+				
+				return ((Sys.ie && Sys.ie>=10) || (Sys.firefox && Sys.firefox>=41) || (Sys.chrome && Sys.chrome>=43) || (Sys.opera && Sys.opera>=29) || (Sys.safari && Sys.safari>=10)) ? true : false;
+})();
 TT.getLine = function(r){
 	for(var i=0; i<TT.line.length; i++){
 		if(TT.line[i].id==r) return TT.line[i];
@@ -863,6 +888,7 @@ TT.getTrainModuleTimeByMOD = function(mod){
 }
 TT.makeRouteTimeTable = function(startHour){
 	//依據 trainGoTime 抓 trainModuleTime 內容算出
+	try{
 	var tObj = false;
 	var tmpT = false, mod, startMin, tmpA, tmpB, stidAry, stTimeAry, arr, dep;
 	var tid = 't_' + TT.genID++;
@@ -930,17 +956,23 @@ TT.makeRouteTimeTable = function(startHour){
 			}else{
 				platform = (tmpT.dir==1) ? stObj.platMain[0] : stObj.platMain[1];
 			}
-			if(flagWait){
-				if(stid=='tra_1005' || stid=='tra_1003'){
-					platform = (tmpT.dir==1) ? '1a' : '2b';
-				}
-			}
+			
 			if(stid=='tra_1008' && tmpT.trainType=='p'){
 				platform = (tmpT.dir==1) ? '3a' : '4b';
 			}else if(stid=='tra_1002' && tmpT.line=='e'){
 				platform = (tmpT.dir==1) ? '1b' : '2a';
-			}else if(stid=='tra_1003' && tmpT.trainType=='w'){
+			}else if(stid=='tra_1003' && tmpT.trainType=='w' && (tmpT.from=='tra_1003' || tmpT.to=='tra_1003')){
 				platform = (tmpT.dir==1) ? '3b' : '4a';
+			}
+			
+			if(flagWait){
+				if(stid=='tra_1007' || stid=='tra_1005' || stid=='tra_1003'){
+					platform = (tmpT.dir==1) ? '1a' : '2b';
+				}else if(stid=='tra_1006'){
+					platform = (tmpT.dir==1) ? '2a' : '1b';
+				}else if(stid=='tra_1008'){
+					platform = (tmpT.dir==1) ? '3a' : '4b';
+				}
 			}
 			
 			tmpB = {
@@ -968,6 +1000,9 @@ TT.makeRouteTimeTable = function(startHour){
 		ary.push(tObj);
 	});
 	return ary;
+	}catch(e){
+		alert('產生時刻表時發生錯誤，可能列車模組資料不完整或輸入格式錯誤');
+	}
 }
 TT.makeAllRouteTimeTable = function(startHour, runHour){
 	runHour = runHour || 1;
@@ -1468,7 +1503,8 @@ TT.createMenuBar = function(){
 			},
 			vParam: function(){
 				this.page='param';
-				TT.timeArea.seen = false;TT.map.seen = false;TT.timeTableArea.seen = false;
+				TT.timeArea.seen = false;TT.map.seen = false;
+				if(!TT.setPage.flagShowPreviewTable) TT.timeTableArea.seen = false;
 				TT.setPage.seen = true;
 			}
 		}
@@ -1888,7 +1924,10 @@ TT.createMap = function(){
 	return vm;
 }
 
-TT.createTimeTableArea = function(){
+TT.createTimeTableArea = function(cfg){
+	cfg = cfg || {};
+	cfg.elID = cfg.elID || '#timeTableArea';
+	cfg.editor = cfg.editor || false;
 	var calcTimeTable = function(tmpTime){
 		var h4Table = [[],[],[],[]],
 			stAry = [[],[],[],[]];
@@ -1920,7 +1959,7 @@ TT.createTimeTableArea = function(){
 	var h4Table = tkm.h4Table,
 		stAry = tkm.stAry;
 	
-	var tpl = Vue.compile('<div class="timeTableOut" id="timeTableArea" v-bind:class="(getCompOutClass())" v-show="seen">' +
+	var tpl = Vue.compile('<div class="timeTableOut" id="' + cfg.elID + '" v-bind:class="(getCompOutClass())" v-show="seen">' +
 		'<div class="btnSwitchArea">' +
 			'<div class="btnSwitchTable bgTRA" v-on:click="(switchTable(\'t1\'))">台鐵火車 (基隆往台北)</div>' +
 			'<div class="btnSwitchTable bgTRA" v-on:click="(switchTable(\'t0\'))">台鐵火車 (台北往基隆)</div>' +
@@ -1945,7 +1984,7 @@ TT.createTimeTableArea = function(){
 		'</div>' +
 	'</div>');
 	var vm = new Vue({
-		el: '#timeTableArea',
+		el: cfg.elID,
 		render: tpl.render,
 		staticRenderFns: tpl.staticRenderFns,
 		data: {
@@ -1959,16 +1998,20 @@ TT.createTimeTableArea = function(){
 			switchTable: function(s){
 				this.comp = (/k/.test(s)) ? 'klrt' : 'tra';
 				switch(s){
+					case 0:
 					case 't1':
 						this.callIndex = 0;
 					break;
+					case 1:
 					case 't0':
 						this.railAry = stAry[1];
 						this.callIndex = 1;
 					break;
+					case 2:
 					case 'k1':
 						this.callIndex = 2;
 					break;
+					case 3:
 					case 'k0':
 						this.callIndex = 3;
 					break;
@@ -2029,11 +2072,13 @@ TT.createSetPage = function(){
 	var tpl = Vue.compile('<div class="setPage" id="' + myID + '" v-show="seen">' +
 		'<div><textarea class="jsonText" v-model="jsonText"></textarea></div>' +
 		'<div class="createBtnArea">' +
+			'<div class="setItem" v-on:click="previewTable()">{{ (flagShowPreviewTable) ? \'切回說明\' : \'開啟預覽\' }}</div>' +
+			'<div class="setItem" v-on:click="copyURL()" v-if="flagUseBrowserCopy" v-show="!flagShowPreviewTable">複製網址</div>' +
 			'<div class="setItem" v-on:click="setToTrainModule()">產生新的定型化時刻表運行列車</div>' +
 			'<div class="sucMsg" v-show="flagShowMsg" v-bind:class="getSucMsgCls()">{{ msgText }}</div>' +
 		'</div>' +
-		'<div><textarea class="textURL" v-model="textURL"></textarea></div>' +
-		'<div class="helpText" v-html="getHelp()"></div>' +
+		'<div><textarea id="setPage_textURL" class="textURL" v-model="textURL" v-show="!flagShowPreviewTable"></textarea></div>' +
+		'<div class="helpText" v-html="getHelp()" v-show="!flagShowPreviewTable"></div>' +
 	'</div>');
 	var vm = new Vue({
 		el: '#setPage',
@@ -2044,6 +2089,8 @@ TT.createSetPage = function(){
 			jsonText: '',
 			textURL: '',
 			msgText: '',
+			flagUseBrowserCopy: TT.flagUseBrowserCopyCheck,
+			flagShowPreviewTable: false,
 			flagShowMsg: false,
 			flagLinerByeMsg: false,
 			flagCreateURL: false
@@ -2052,6 +2099,12 @@ TT.createSetPage = function(){
 			updateText: function(){
 				this.clearText();
 				this.jsonText = TT.fn.getData2JSON();
+			},
+			copyURL: function(){
+				var clipArea = document.getElementById('setPage_textURL');
+				clipArea.select();
+				document.execCommand('copy');
+				this.showMsgText('複製執行完成');
 			},
 			clearText: function(){
 				this.jsonText = '';
@@ -2069,12 +2122,14 @@ TT.createSetPage = function(){
 					ts += '<li><span style="color:#4E8C9D;">' + c.id + ':</span> ' + c.name + '</li>';
 				});
 				return '<div style="max-width:1200px;">' + 
-				'<h3><span style="color:red">編輯格式簡易說明</span></h3>' +
+				'<h3><span style="color:red">操作說明</span></h3>' +
+				'<p>可直接在編輯器上以 JSON 格式修改，或複製到電腦上的編輯器修改完再貼回來測試。產生新的定型化時刻表運行列車會更新程式運行表並產生一組網址，複製網址即可分享給其他人，進入網頁後將會以編輯後的時刻表為預設時刻表。開啟預覽時每次產生時刻表均會在下方即時運算更新，以每小時產生的一輪班次為計算基礎。 </p>' +
+				'<h3><span style="color:red">編輯格式說明</span></h3>' +
 				'<p>目前可編輯的項目分成兩塊，第一塊為 trainGoTime，第二塊為 trainModuleTime </p>' +
-				'<h4><span style="color:green"> trainGoTime 格式簡易說明</span></h4>' +
+				'<h4><span style="color:green"> trainGoTime 格式說明</span></h4>' +
 				'<p>它的格式相對簡單，只有一組兩個元素的陣列，分別是 [車種 , 發車時刻]。車種的部分由第二部分的 trainModuleTime 定義，請在陣列 0 填入該車種的 mod 值；發車時刻的部分請填入每小時的第幾分鐘由第一站發車，第一站是固定而相對於 trainModuleTime 中的 from 值。' +
 				'要注意的是發車時間會與 time 值的第一個元素做比對，假設一個 time 陣列是 time:[20,24,26....] 的型式，填入 20 那列車時刻會使用 20,24,26... 運行；若填入 50 則列車時刻會用 50,54,56... 運行。</p>' +
-				'<h4><span style="color:green"> trainModuleTime 格式簡易說明</span></h4>' +
+				'<h4><span style="color:green"> trainModuleTime 格式說明</span></h4>' +
 				'<p>trainModuleTime 為陣列，用於定義行駛在所有軌道上的列車型態以及定型化班表的運轉時間，可設定內容如下</p>' +
 				'<ul>' +
 					'<li>mod: 模組名稱，不能重複，習慣命名法為 trainType_number</li>' +
@@ -2090,18 +2145,20 @@ TT.createSetPage = function(){
 						'<ul>' +
 							'<li>純數字，例如 34，代表 34 分到達此站載客後開車。</li>' +
 							'<li>文字，不停靠直接通過請輸入 p 及通過時間，例如 p25 代表 25 分時通過該站</li>' +
-							'<li>文字，要在車站待避請輸入 w 連接進站及出站時間，例如 23w27 代表 23 分進車站直到 27 分才出站。可待避車站目前只有規劃汐止及七堵兩站會進入待避月台</li>' +
+							'<li>文字，要在車站待避請輸入 w 連接進站及出站時間，例如 23w27 代表 23 分進車站直到 27 分才出站。可待避車站目前只有規劃松山、南港、汐止及七堵四站會進入待避月台</li>' +
 							'<li>文字，若有車站停靠時間要比較久則輸入 ~ 連接進站及出站時間，例如 9~11 會從 9 分進站停到 11 分才開車，所有車站皆可用</li>' +
 						'</ul>' +
 				'</ul>' +
 				'<div>';
 			},
-			setToTrainModule: function(){
+			previewTable: function(){
+				this.flagShowPreviewTable = !this.flagShowPreviewTable;
+			},
+			showMsgText: function(tx, sec1, sec2){
 				var me = this;
-				this.textURL = '';
-				var gi = TT.fn.setData2trainRawData(this.jsonText);
-				clearTimeout(ti1);clearTimeout(ti2);
-				this.msgText = (gi) ? '已更新完成' : '更新失敗，請檢查輸入格式是否有錯，例如字串未用雙引號包住或陣列內最後多了 , 而視為未完成';
+				sec1 = sec1 || 2000;
+				sec2 = sec2 || 2000;
+				this.msgText = tx;
 				this.flagLinerByeMsg = false;
 				this.flagShowMsg = true;
 				ti1 = setTimeout(function(){
@@ -2109,11 +2166,24 @@ TT.createSetPage = function(){
 					ti2 = setTimeout(function(){
 						me.flagShowMsg = false;
 						me.flagLinerByeMsg = false;
-					},2000);
-				},(gi)?2000:6000);
+					},sec1);
+				},sec2);
+			},
+			setToTrainModule: function(){
+				this.textURL = '';
+				var gi = TT.fn.setData2trainRawData(this.jsonText);
+				clearTimeout(ti1);clearTimeout(ti2);
+				var tx = (gi) ? '已更新完成，可按複製網址儲存結果' : '更新失敗，請檢查輸入格式是否有錯，例如字串未用雙引號包住或陣列內最後多了 , 而視為未完成';
+				this.showMsgText(tx, 2000, (gi)?2000:6000);
 				//Make url
 				var val = TT.parseModule.getURL();
 				this.textURL = val;
+				if(this.flagShowPreviewTable){
+					var cIdx = TT.timeTableArea.callIndex;
+					var tmpTimeTable = TT.makeAllRouteTimeTable(TT.startHour);
+					TT.timeTableArea.updateTimeTableRawData(tmpTimeTable);
+					TT.timeTableArea.switchTable(cIdx);
+				}
 			}
 		},
 		watch: {
@@ -2121,6 +2191,9 @@ TT.createSetPage = function(){
 				if(this.seen==true){
 					this.updateText();
 				}
+			},
+			flagShowPreviewTable: function(){
+				TT.timeTableArea.seen = this.flagShowPreviewTable;
 			}
 		}
 	})
@@ -2150,8 +2223,8 @@ TT.initFn = function(){
 	<div id="menuBarRenderDiv"></div>
 	<div id="timeShowArea"></div>
 	<div id="mapShowArea"></div>
-	<div id="timeTableArea"></div>
 	<div id="setPage"></div>
+	<div id="timeTableArea"></div>
 	<div id="helpArea" class="helpArea"></div>
 </body>
 </html>
