@@ -1440,12 +1440,16 @@ TT.parseModule = (function(){
 	
 	function getURL(){
 		var w = location.href.toString().replace(location.search,'');
-		return w + '?pr=1&t=' + encodeURIComponent(time2str()) + '&m=' + encodeURIComponent(module2str());
+		return w + '?pr=1&t=' + encodeURIComponent(time2str()) + '&m=' + encodeURIComponent(module2str()) + '&h=' + TT.startHour + '*' + TT.runHour;
 	}
 	function parseURL(){
 		var objA = TT.parseModule.search;
+		var spt = (objA.h) ? objA.h.split('*') : [false,false];
 		if(objA.pr==1){
 			return {
+				startHour: spt[0],
+				runHour: spt[1],
+				pr: objA.pr ,
 				trainGoTime: str2time(objA.t),
 				trainModuleTime: str2module(objA.m)
 			}
@@ -1457,7 +1461,10 @@ TT.parseModule = (function(){
 			
         if(objA.trainGoTime) TT.trainGoTime = objA.trainGoTime;
         if(objA.trainModuleTime) TT.trainModuleTime = objA.trainModuleTime;
-		
+        if(objA.startHour) TT.startHour = objA.startHour;
+        if(objA.runHour) TT.runHour = objA.runHour;
+        if(objA.pr==1) TT.autoPlayTrain = true;
+		return objA;
 	}
 	
 	return {
@@ -1561,6 +1568,12 @@ TT.createTimeArea = function(){
 				if(this.syncTimeShow && this.flagGo){
 					TT.timeTableArea.updateTimeTableRawData(TT.timeTable);
 				}
+			}
+		},
+		mounted: function(){
+			if(TT.autoPlayTrain){
+				this.sim4Rail();
+				TT.autoPlayTrain = false;
 			}
 		}
 	});
