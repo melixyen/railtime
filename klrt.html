@@ -1519,14 +1519,21 @@ TT.createMenuBar = function(){
 	return vm;
 }
 TT.createTimeArea = function(){
+	numAry = [];while(numAry.length < 23){numAry.push(numAry.length+1)}//for(var i=1; i<=23; i++){numAry.push(i);};
 	var tpl = Vue.compile('<div class="timeShowArea" id="timeShowArea"  v-show="seen">' +
 		'<div class="time" >模擬時刻 {{displayTime()}}</div>' +
 		'<div class="status" v-html="getGoStatus()"></div>' +
 		'<div v-on:click="sim4Rail()" class="setItem sim4Rail">{{ flagGo ? \'停止模擬四軌化基隆輕軌\' : \'啟動模擬四軌化基隆輕軌\' }}</div>' +
 		'<div style="margin:5px 0px 5px 20px;">' +
-			'<span>從</span><input type="text" v-model="startHour" style="width:30px;"><span>點鐘開始以</span>' +
+			'<span>從</span>' +
+			//'<input type="text" v-model="startHour" style="width:30px;">' +
+			'<select v-model="startHour"><option v-for="n1 in numAry" v-bind:value="n1">{{n1}}</option></select>' +
+			'<span>點鐘開始以</span>' +
 			'<select v-model="rateNum"><option value="20">20</option><option value="40">40</option><option value="60">60</option><option value="80">80</option></select>' +
-			'<span>倍速模擬發車</span><input type="text" v-model="runHour" style="width:30px;"><span>個小時</span>' +
+			'<span>倍速模擬發車</span>' +
+			//'<input type="text" v-model="runHour" style="width:30px;">' +
+			'<select v-model="runHour"><option v-for="n2 in numAry" v-bind:value="n2">{{n2}}</option></select>' +
+			'<span>個小時</span>' +
 			'<input type="checkbox" v-model="syncTimeShow" id="synctb"><label for="synctb" style="color:#AEAD2D;">同步更新下方時刻表 (較耗資源)</label>' +
 		'</div>' +
 	'</div>');
@@ -1537,6 +1544,7 @@ TT.createTimeArea = function(){
 		data: {
 			flagGo: false,
 			seen: true,
+			numAry: numAry,
 			syncTimeShow: true,
 			startHour: TT.startHour,
 			runHour: TT.runHour,
