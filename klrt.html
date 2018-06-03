@@ -143,6 +143,7 @@ body {
 	width: 1240px;
 	height: 326px;
 	margin-left: 20px;
+	overflow: hidden;
 }
 #canvasRoute{
 	width: 1240px;
@@ -202,6 +203,22 @@ body {
 	border: 1px solid #222;
 	box-sizing: border-box;
 	line-height: 14px;
+}
+.marArea{
+	width: 100%;
+	height: 20px;
+	position: absolute;
+	bottom: 0px;
+	z-index: 20;
+}
+.marArea .marIn{
+	transition: all 1s linear;
+	left: 100%;
+	position: absolute;
+	display: inline;
+	word-wrap: break-word;
+	word-break: break-all;
+	white-space: nowrap;
 }
 
 /* Car Class */
@@ -1695,6 +1712,7 @@ TT.parseModule = (function(){
 				startHour: spt[0],
 				runHour: spt[1],
 				pr: objA.pr ,
+				showDescription: objA.q,
 				railMode: objA.r,
 				trainGoTime: str2time(objA.t),
 				trainModuleTime: str2module(objA.m)
@@ -1711,6 +1729,7 @@ TT.parseModule = (function(){
         if(objA.runHour) TT.runHour = objA.runHour;
         if(objA.railMode) TT.rail.mode = objA.railMode;
         if(objA.pr==1) TT.autoPlayTrain = true;
+        if(objA.showDescription) TT.showDescription = true;
 		return objA;
 	}
 	
@@ -2193,6 +2212,24 @@ TT.genRouteOnMap = function(canvasID, stAry){
 
 TT.createMap = function(){
 	var rail = TT.rail;
+	var aryMarTx = [
+		false, false,
+		'使用南港到八堵間第三軌改造為基隆輕軌專用線，除南港展覽館外不增加車站，<span style="color:#CE2020;">汐止站移撥一個月台給基隆輕軌，此後南港到七堵間長達 13 公里無待避交會車站</span>，每小時最多行駛十班車，五班區間車、五班對號快車。'+
+		'基隆出發的區間車 20 分鐘一班，TRAM TRAIN 輕軌 20 分鐘一班，八堵至南港間的車站每小時可額外增加宜蘭線區間車兩班，<span style="color:#2020FE;">板南線旅客往汐止基隆可在南港站視最近列車為台鐵列車或基隆輕軌而選擇，文湖線旅客只能轉乘 20 分鐘一班的基隆輕軌</span>。'+
+		'基隆輕軌單線雙向，以七堵到汐止、汐止到南港為兩個單線運轉區間，在七堵及汐止列車交會，每一區間行駛十分鐘後交會，總行駛時間 30 分鐘。明顯缺點為一旦有列車延遲就會影響到整體行車時間且文湖線轉乘旅客候車要 20 分鐘過久。',
+		
+		'使用南港到八堵間第三軌改造為基隆輕軌專用線，除南港展覽館外並新增樟樹灣及北五堵為交會站，<span style="color:#CE2020;">汐止站移撥一個月台給基隆輕軌，此後南港到七堵間長達 13 公里無待避交會車站</span>，每小時最多行駛十班車，五班區間車、五班對號快車，且各車種分佈無法平均化。'+
+		'基隆出發的台鐵區間車 20 分鐘一班，TRAM TRAIN 輕軌 20 分鐘一班，<span style="color:#1020A0;">另行駛南港至北五堵站 TRAM TRAIN 區間車，使南港至北五堵間加密到 10 分鐘一班 TRAM TRAIN 輕軌</span>。' +
+		'八堵至南港間的車站每小時可額外增加宜蘭線區間車兩班，<span style="color:#2020FE;">板南線旅客往汐止基隆可在南港站視最近列車為台鐵列車或基隆輕軌而選擇，文湖線旅客只能轉乘 10 分鐘一班的基隆輕軌，但要往百福、七堵至基隆則依舊 20 分鐘一班</span>。' +
+		'基隆輕軌單線雙向，以<span style="color:#CE2020;">七堵、北五堵、汐止、樟樹灣、南港展覽館分拆運轉區間並交會列車</span>，基本每一行駛區間內為五分鐘，但因汐止到樟樹灣時間很短而使得北上及南下列車會多等待對向列車一至兩分鐘進行交會，並在南港展覽館進行末端交會，進南港的列車要等往基隆的列車出來後再進去。總行駛時間 32 分鐘。明顯缺點為一旦有列車延遲就會影響到整體行車時間，但誤點發生在汐止至南港間時有機會修正，若條件允許，TRAM TRAIN 區間車可行駛至七堵折返，甚至增加開進基隆的班次。' +
+		'<span style="color:#20A040;">保證可以增加班次受惠的為汐止地區</span>，其餘區間受限七堵至八堵間混線交叉班次以及貨運列車需使用來進出五堵貨調場未必可提升，',
+		
+		'南港到汐科間新建第四軌，汐科到五堵間於台五甲線大同路上高架新建 TRAM TRAIN 雙軌軌道，並可能於<span style="color:#CE2020;">汐止站前廣場新建第三月台作為基隆輕軌專用月台</span>，汐科和五堵則用原台鐵月台改造。五堵至八堵間新建雙軌，不經過百福車站，另外新增北五堵及六堵站。' +
+		'全雙軌基隆輕軌可達成全時段五分鐘一班車，並有超過半數列車為全程車開進基隆站，<span style="color:#2020FE;">台北車站台鐵也可每五分鐘發一班車，每小時六班區間車及六班快車</span>，但基隆的區間車仍只有20分鐘一班，其餘時段可靠基隆輕軌及區間快車補足。'+
+		'雖然第三軌被基隆輕軌使用，台鐵仍舊可靈活利用汐止站的待避功能增加區間車班次，但區間車明顯必需在汐止或七堵待避一次，若是板南線轉乘回基隆可以直接考慮基隆輕軌不用視情況搭台鐵。' +
+		'<span style="color:#20A040;">此方案在汐科到汐止間台鐵也可以做到十分鐘一班車，五堵及百福因待避偶爾會隔 15 分鐘一班車</span>，等同可維持通往台北的班次密度，亦可連帶提升瑞芳的班次密度。'
+	];
+	var marID  = 0;
 	var tpl = Vue.compile('<div class="mapOut" id="mapShowArea" v-show="seen">' +
 		'<div class="routeLayer" v-html="printCanvas()"></div>' +
 		'<div class="trainLayer" style="display:none;"></div>' +
@@ -2202,6 +2239,7 @@ TT.createMap = function(){
 				'<div class="platformOut" v-html="printPlatform(st)"></div>' +
 			'</div>' +
 		'</div>' +
+		'<div class="marArea"><div class="marIn" v-html="marStr"></div></div>' +
 	'</div>');
 	var vm = new Vue({
 		el: '#mapShowArea',
@@ -2209,6 +2247,7 @@ TT.createMap = function(){
 		data: {
 			seen: true,
 			neverDrawMap: true,
+			marStr: aryMarTx[rail.mode],
 			stationAry: TT.genStationOnMap()
 		},
 		methods: {
@@ -2218,11 +2257,29 @@ TT.createMap = function(){
 				}
 				this.neverDrawMap = false;
 				TT.genRouteOnMap('canvasRoute', this.stationAry);
+				if(TT.showDescription) this.updateMar();
 			},
 			reDrawMap: function(){
 				this.neverDrawMap = true;
 				this.stationAry = TT.genStationOnMap();
 				this.drawMap();
+			},
+			updateMar: function(){
+				this.marStr = aryMarTx[rail.mode];
+				clearInterval(marID);
+				var domMar = this.$el.querySelector('div.marIn');
+				domMar.style.display = 'none';
+				domMar.style.left = TT.caWidth + 100 + 'px';
+				marID = setInterval(function(){
+					var left = parseInt(domMar.style.left);
+					if(left + parseInt(domMar.clientWidth) < 0){
+						domMar.style.display = 'none';
+						domMar.style.left = TT.caWidth + 100 + 'px';
+					}else{
+						domMar.style.display = '';
+						domMar.style.left = left - 50 + 'px';
+					}
+				},1010);
 			},
 			getStationStyle: function(id){
 				var st = TT.fn.getStationByID(id, this.stationAry);
