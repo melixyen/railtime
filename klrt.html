@@ -63,6 +63,12 @@ body {
 	cursor: pointer;
 	font-size: 16px;
 }
+.setItem.sim4Rail{
+	/*background-color: #FAFAFA;*/
+	background-color: #833;
+	color: #F5F5F5;
+	border-color: #DDA60A;
+}
 .setItem.selected{
 	background-color: #DED;
 }
@@ -93,8 +99,10 @@ body {
 .timeShowArea{
 	width: 90%;
 	height: 50px;
-	margin: 0 0 10px 50px;
+	margin: 0 0 10px 20px;
+	padding: 0 0 0 20px;
 	min-width: 1200px;
+	background-color: #FCFEEA;
 }
 .timeShowArea > div{
 	float: left;
@@ -405,7 +413,7 @@ var TT = {
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2018/06/01</span>"
+			"更新日期: 2018/06/03</span>"
 	],
 	car: [
 		{"id": "carK", "name": "輕軌", "ename": "Keelung LRT", "color": "#2EA42B", trainType: "k", zIndex: 104},
@@ -705,8 +713,10 @@ var TT = {
 	r3trainGoTime: [
 		["w_1",40], ["p_1",15], ["t_1",37], ["y_3",48], ["p_1",35], ["r_1",21], ["y_3",8], ["w_1",60], ["p_1",55], ["e_1",2],
 		["r_2",0], ["w_2",5], ["p_4",10], ["y_2",35], ["e_2",40], ["p_2",30], ["y_4",25], ["t_2",20], ["p_2",50], ["w_2",45],
-		["k_1",5], ["k_1",25], ["k_1",45], ["k_2",16], ["k_2",36], ["k_2",56],
-		["k_3",10], ["k_3",30], ["k_3",50], ["k_4",26], ["k_4",46], ["k_4",6]
+		//["k_1",5], ["k_1",25], ["k_1",45], ["k_2",14], ["k_2",34], ["k_2",54],
+		//["k_3",10], ["k_3",30], ["k_3",50], ["k_4",24], ["k_4",44], ["k_4",4]
+		["k_1",5], ["k_1",25], ["k_1",45], ["k_2",13], ["k_2",33], ["k_2",53],
+		["k_3",10], ["k_3",30], ["k_3",50], ["k_4",23], ["k_4",43], ["k_4",3]
 	],
 	r3trainModuleTime: [
 		//++++東線普悠瑪號
@@ -817,25 +827,29 @@ var TT = {
 			trainType: "k", line: "k", dir: 1,
 			from: "tra_1001", to: "tra_1006",
 			tag: "基隆-南港",
-			time: [0,3,7,10,13,15,18,20,23,"24w26",30,31]
+			//time: [0,3,7,10,13,15,18,20,23,"24w26",30,31]
+			time: [0,3,7,10,13,15,18,20,23,"24w25",30,32]
 		}, {
 			mod: "k_2",
 			trainType: "k", line: "k", dir: 0,
 			from: "tra_1006", to: "tra_1001",
 			tag: "南港-基隆",
-			time: [0,2,5,7,9,11,14,16,19,22,26,29]
+			//time: [0,2,5,7,9,11,14,16,19,22,26,29]
+			time: [0,2,7,9,"11w12",14,17,19,22,25,29,32]
 		}, {
 			mod: "k_3",
 			trainType: "k", line: "k", dir: 1,
 			from: "tra_8104", to: "tra_1006",
 			tag: "北五堵-南港",
-			time: [0,3,5,8,"9w11",15,16]
+			//time: [0,3,5,8,"9w11",15,16]
+			time: [0,3,5,8,"9w10",15,17]
 		}, {
 			mod: "k_4",
 			trainType: "k", line: "k", dir: 0,
 			from: "tra_1006", to: "tra_8104",
 			tag: "南港-北五堵",
-			time: [0,2,5,7,9,11,14]
+			//time: [0,2,5,7,9,11,14]
+			time: [0,2,7,9,"11w12",14,17]
 		}
 	]
 };
@@ -974,8 +988,8 @@ TT.fn = {
 TT.processFirst = function(initFlag){
 	if(initFlag){
 		TT.backupString = {
-			trainGoTime: TT.trainGoTime,
-			trainModuleTime: TT.trainModuleTime,
+			trainGoTime: JSON.stringify(TT.trainGoTime),
+			trainModuleTime: JSON.stringify(TT.trainModuleTime),
 			line: JSON.stringify(TT.line),
 			station: JSON.stringify(TT.station)
 		}
@@ -1039,14 +1053,21 @@ TT.processFirst = function(initFlag){
 		//["k_1",5], ["k_1",25], ["k_1",45], ["k_2",16], ["k_2",36], ["k_2",56]
 		//];
 		TT.trainGoTime.splice(TT.trainGoTime.length-6);
+		var dkk = 0;
+		for(var i=0; i<TT.trainGoTime.length; i++){
+			if(/^k_2/.test(TT.trainGoTime[i][0])){
+				dkk = TT.trainGoTime[i][1] % 10;
+				TT.trainGoTime[i][1] = TT.trainGoTime[i][1] - dkk + 5;//每個 5 分發車
+			}
+		}
 		for(var i=0; i<TT.trainModuleTime.length; i++){
 			tmpA = TT.trainModuleTime[i];
 			switch(tmpA.mod){
 				case 'k_1':
-				tmpA.time = [0,3,7,10,14,18,20,23,30,31];
+				tmpA.time = [0,3,7,10,14,18,20,22,28,30];
 				break;
 				case 'k_2':
-				tmpA.time = [0,2,7,9,11,15,19,22,26,29];
+				tmpA.time = [0,2,8,10,12,16,20,24,27,30];
 				break;
 			}
 		}
@@ -1710,16 +1731,25 @@ TT.createMenuBar = function(){
 	
 	var tpl = Vue.compile('<div id="menuBarRenderDiv">' +
 		'<div class="menuBar">' +
-			'<div v-on:click="vSimulate()" class="setItem setItem2 hiasd" v-bind:class="ren(\'sim\')">基隆輕軌暨台鐵基隆南港四軌化模擬器</div>' +
+			'<div v-on:click="railSwitch()" class="menuItem menuItem2 railSwitch">切換軌道模式</div>' +
+			'<div v-on:click="vSimulate()" class="setItem setItem2 hiasd" v-bind:class="ren(\'sim\')">基隆輕軌暨台鐵基隆台北模擬器</div>' +
 			'<div v-on:click="vParam()" class="setItem setItem2" v-bind:class="ren(\'param\')">設定參數</div>' +
 			'<div v-on:click="back()" class="menuItem menuItem2 back">回到接軌時刻</div>' +
+		'</div>' +
+		'<div class="railSwitchArea" v-show="flagShowRailSwitch" style="padding:0px 10px;border-radius:5px; display:inline-block;overflow:hidden; transition:all 0.3s ease-in-out;">' +
+			'<div class="setItem" v-bind:class="getButtonCls(4)" v-on:click="setRailMode(4)">台鐵南港至八堵間四軌化、基隆輕軌雙軌化</div>' +
+			'<div class="setItem" v-bind:class="getButtonCls(3)" v-on:click="setRailMode(3)">第三軌給基隆輕軌專用，單線雙向並新增南港展覽館、樟樹灣及北五堵做交會車站</div>' +
+			'<div class="setItem" v-bind:class="getButtonCls(2)" v-on:click="setRailMode(2)">第三軌給基隆輕軌專用，只新建南港展覽館站</div>' +
 		'</div>' +
 	'</div>');
 
 	var vm = new Vue({
 		el: '#menuBarRenderDiv',
 		render: tpl.render,
+		staticRenderFns: tpl.staticRenderFns,
 		data: {
+			flagShowRailSwitch: false,
+			railMode: TT.rail.mode,
 			page: 'sim'
 		},
 		methods: {
@@ -1728,6 +1758,28 @@ TT.createMenuBar = function(){
 			},
 			ren: function(id){
 				return (id==this.page) ? 'selected' : '';
+			},
+			getButtonCls: function(n){
+				if(n==this.railMode) return 'selected';
+				return '';
+			},
+			setRailMode: function(n){
+				if(n) TT.rail.mode = n;
+				this.railMode = TT.rail.mode;
+				TT.processFirst();
+				TT.map.reDrawMap();
+				this.flagShowRailSwitch = false;
+			},
+			railSwitch: function(){
+				var dom = this.$el.querySelector('.railSwitchArea');
+				var me = this;
+				this.flagShowRailSwitch = !this.flagShowRailSwitch;
+				if(this.flagShowRailSwitch){
+					dom.style.height = '0px';
+					setTimeout(function(){
+						dom.style.height = '40px';
+					},10);
+				}
 			},
 			vSimulate: function(){
 				this.page='sim';
@@ -1752,15 +1804,13 @@ TT.createTimeArea = function(){
 		'<div v-on:click="sim4Rail()" class="setItem sim4Rail">{{ flagGo ? \'停止模擬\' : \'啟動模擬\' }}</div>' +
 		'<div style="margin:5px 0px 5px 20px;">' +
 			'<span>從</span>' +
-			//'<input type="text" v-model="startHour" style="width:30px;">' +
 			'<select v-model="startHour"><option v-for="n1 in numAry" v-bind:value="n1">{{n1}}</option></select>' +
 			'<span>點鐘開始以</span>' +
 			'<select v-model="rateNum"><option value="20">20</option><option value="40">40</option><option value="60">60</option><option value="80">80</option></select>' +
 			'<span>倍速模擬發車</span>' +
-			//'<input type="text" v-model="runHour" style="width:30px;">' +
 			'<select v-model="runHour"><option v-for="n2 in numAry" v-bind:value="n2">{{n2}}</option></select>' +
 			'<span>個小時</span>' +
-			'<input type="checkbox" v-model="syncTimeShow" id="synctb"><label for="synctb" style="color:#AEAD2D;">同步更新下方時刻表 (較耗資源)</label>' +
+			//'<input type="checkbox" v-model="syncTimeShow" id="synctb"><label for="synctb" style="color:#AEAD2D;">同步更新下方時刻表</label>' +
 		'</div>' +
 	'</div>');
 	var vm = new Vue({
@@ -2143,7 +2193,7 @@ TT.genRouteOnMap = function(canvasID, stAry){
 
 TT.createMap = function(){
 	var rail = TT.rail;
-	var tpl = Vue.compile('<div class="mapOut" id="mapOut" v-show="seen">' +
+	var tpl = Vue.compile('<div class="mapOut" id="mapShowArea" v-show="seen">' +
 		'<div class="routeLayer" v-html="printCanvas()"></div>' +
 		'<div class="trainLayer" style="display:none;"></div>' +
 		'<div class="stationLayer" id="stationLayer">' +
@@ -2168,6 +2218,11 @@ TT.createMap = function(){
 				}
 				this.neverDrawMap = false;
 				TT.genRouteOnMap('canvasRoute', this.stationAry);
+			},
+			reDrawMap: function(){
+				this.neverDrawMap = true;
+				this.stationAry = TT.genStationOnMap();
+				this.drawMap();
 			},
 			getStationStyle: function(id){
 				var st = TT.fn.getStationByID(id, this.stationAry);
@@ -2485,7 +2540,7 @@ TT.initFn = function(){
 	TT.parseModule.updateCarData();
 	TT.processFirst(true);
 	var body = document.body;
-	var menuBar = TT.createMenuBar();
+	TT.menuBar = TT.createMenuBar();
 	TT.timeArea = TT.createTimeArea();
 	TT.map = TT.createMap();
 	TT.timeTableArea = TT.createTimeTableArea();
