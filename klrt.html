@@ -30,7 +30,7 @@ body {
 
 .menuBar{
 	width: calc(100% - 30px);
-	min-width: 600px;
+	min-width: 1000px;
 	margin: 5px 10px;
 	border: 1px solid #EEE;
 	border-radius: 5px;
@@ -361,6 +361,10 @@ body {
 .timeTableIn table tr.row2{
 	background-color: #EEE;
 }
+.timeTableIn .passTrainTime{
+	font-size:10px;
+	color:transparent;
+}
 
 .bgTRA{
 	background-color: #26C;
@@ -430,7 +434,7 @@ var TT = {
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2018/06/03</span>"
+			"更新日期: 2018/06/04</span>"
 	],
 	car: [
 		{"id": "carK", "name": "輕軌", "ename": "Keelung LRT", "color": "#2EA42B", trainType: "k", zIndex: 104},
@@ -532,6 +536,7 @@ var TT = {
 	timerInterval: 1000,
 	timeTable: [],//儲存動態產生時刻表
 	timeGo: [],//儲存上線列車物件
+	editTimeTableByPeople: false,//若產生過編輯參數或讀入時帶有時刻表將之設為 true，則程式不會在切換軌道模式時做時刻表的調整
 	trainGoTime: [
 		//一小時內要發的所有列車，格時為 [mod , startTime minute]
 		["y_1",3], ["w_1",20], ["p_1",6], ["t_1",32], ["y_3",23], ["x_1",31], ["p_3",27], ["r_1",51], ["y_5",43], ["w_1",60], ["p_5",46], ["e_1",7],
@@ -1013,8 +1018,10 @@ TT.processFirst = function(initFlag){
 	}else{
 		TT.line = JSON.parse(TT.backupString.line);
 		TT.station = JSON.parse(TT.backupString.station);
-		TT.trainGoTime = JSON.parse(TT.backupString.trainGoTime);
-		TT.trainModuleTime = JSON.parse(TT.backupString.trainModuleTime);
+		if(!TT.editTimeTableByPeople){
+			TT.trainGoTime = JSON.parse(TT.backupString.trainGoTime);
+			TT.trainModuleTime = JSON.parse(TT.backupString.trainModuleTime);
+		}
 	}
 	if(TT.rail.mode==3){//三軌化來調整月台，基隆輕軌停靠站六堵改百福，改造百福站 2月台
 		var kr = TT.getLine('k'), stb;
@@ -1036,8 +1043,10 @@ TT.processFirst = function(initFlag){
 		stb = TT.fn.getStationByID('tra_1003');//七堵
 		stb.platform = ["1a1b","2a2b","3a3b","4c4d"];
 		stb.platMain = ['1b', '2a', '4c', '4d'];
-		TT.trainGoTime = JSON.parse(JSON.stringify(TT.r3trainGoTime));
-		TT.trainModuleTime = JSON.parse(JSON.stringify(TT.r3trainModuleTime));
+		if(!TT.editTimeTableByPeople){
+			TT.trainGoTime = JSON.parse(JSON.stringify(TT.r3trainGoTime));
+			TT.trainModuleTime = JSON.parse(JSON.stringify(TT.r3trainModuleTime));
+		}
 	}else if(TT.rail.mode==2){
 		var kr = TT.getLine('k'), stb;
 		kr.stationAry = ["tra_1006","tra_8108","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003","tra_1002","tra_1029","tra_1001"];
@@ -1060,32 +1069,29 @@ TT.processFirst = function(initFlag){
 		stb = TT.fn.getStationByID('tra_1003');//七堵
 		stb.platform = ["1a1b","2a2b","3a3b","4c4d"];
 		stb.platMain = ['1b', '2a', '4c', '4d'];
-		TT.trainGoTime = JSON.parse(JSON.stringify(TT.r3trainGoTime));
-		TT.trainModuleTime = JSON.parse(JSON.stringify(TT.r3trainModuleTime));
-		//修改基隆輕軌模組為無新建車站模式
-		var tmpA;
-		//TT.trainGoTime = [
-		//["y_1",3], ["w_1",10], ["p_1",5], ["t_1",07], ["y_3",18], ["p_1",25], ["r_1",51], ["y_3",38], ["w_1",30], ["p_1",45], ["e_1",32],
-		//["r_2",0], ["w_2",5], ["p_4",10], ["y_2",35], ["e_2",40], ["p_2",30], ["y_4",25], ["t_2",20], ["p_2",50], ["w_2",45], ["y_2",55],
-		//["k_1",5], ["k_1",25], ["k_1",45], ["k_2",16], ["k_2",36], ["k_2",56]
-		//];
-		TT.trainGoTime.splice(TT.trainGoTime.length-6);
-		var dkk = 0;
-		for(var i=0; i<TT.trainGoTime.length; i++){
-			if(/^k_2/.test(TT.trainGoTime[i][0])){
-				dkk = TT.trainGoTime[i][1] % 10;
-				TT.trainGoTime[i][1] = TT.trainGoTime[i][1] - dkk + 5;//每個 5 分發車
+		if(!TT.editTimeTableByPeople){
+			TT.trainGoTime = JSON.parse(JSON.stringify(TT.r3trainGoTime));
+			TT.trainModuleTime = JSON.parse(JSON.stringify(TT.r3trainModuleTime));
+			//修改基隆輕軌模組為無新建車站模式
+			var tmpA;
+			TT.trainGoTime.splice(TT.trainGoTime.length-6);
+			var dkk = 0;
+			for(var i=0; i<TT.trainGoTime.length; i++){
+				if(/^k_2/.test(TT.trainGoTime[i][0])){
+					dkk = TT.trainGoTime[i][1] % 10;
+					TT.trainGoTime[i][1] = TT.trainGoTime[i][1] - dkk + 5;//每個 5 分發車
+				}
 			}
-		}
-		for(var i=0; i<TT.trainModuleTime.length; i++){
-			tmpA = TT.trainModuleTime[i];
-			switch(tmpA.mod){
-				case 'k_1':
-				tmpA.time = [0,3,7,10,14,18,20,22,28,30];
-				break;
-				case 'k_2':
-				tmpA.time = [0,2,8,10,12,16,20,24,27,30];
-				break;
+			for(var i=0; i<TT.trainModuleTime.length; i++){
+				tmpA = TT.trainModuleTime[i];
+				switch(tmpA.mod){
+					case 'k_1':
+					tmpA.time = [0,3,7,10,14,18,20,22,28,30];
+					break;
+					case 'k_2':
+					tmpA.time = [0,2,8,10,12,16,20,24,27,30];
+					break;
+				}
 			}
 		}
 	}
@@ -1707,29 +1713,35 @@ TT.parseModule = (function(){
 	function parseURL(){
 		var objA = TT.parseModule.search;
 		var spt = (objA.h) ? objA.h.split('*') : [false,false];
-		//if(objA.pr==1){
-			return {
+		return {
 				startHour: spt[0],
 				runHour: spt[1],
 				pr: objA.pr ,
-				showDescription: objA.q,
+				guideKLRT: objA.q,
 				railMode: objA.r,
 				trainGoTime: str2time(objA.t),
 				trainModuleTime: str2module(objA.m)
-			}
-		//}
-		//return false;
+		}
 	}
 	function updateCarData(objA){
 		objA = objA || parseURL();
 			
         if(objA.trainGoTime) TT.trainGoTime = objA.trainGoTime;
         if(objA.trainModuleTime) TT.trainModuleTime = objA.trainModuleTime;
+        if(objA.trainGoTime || objA.trainModuleTime){
+        	TT.editTimeTableByPeople = true;
+        }
         if(objA.startHour) TT.startHour = objA.startHour;
         if(objA.runHour) TT.runHour = objA.runHour;
         if(objA.railMode) TT.rail.mode = objA.railMode;
         if(objA.pr==1) TT.autoPlayTrain = true;
-        if(objA.showDescription) TT.showDescription = true;
+        if(objA.guideKLRT){
+        	TT.startHour = objA.startHour || 6;
+        	TT.runHour = objA.runHour || 4;
+        	TT.rail.mode = objA.guideKLRT;
+        	TT.autoPlayTrain = true;
+			TT.showDescription = true;
+		}
 		return objA;
 	}
 	
@@ -1755,9 +1767,9 @@ TT.createMenuBar = function(){
 			'<div v-on:click="vParam()" class="setItem setItem2" v-bind:class="ren(\'param\')">設定參數</div>' +
 			'<div v-on:click="back()" class="menuItem menuItem2 back">回到接軌時刻</div>' +
 		'</div>' +
-		'<div class="railSwitchArea" v-show="flagShowRailSwitch" style="padding:0px 10px;border-radius:5px; display:inline-block;overflow:hidden; transition:all 0.3s ease-in-out;">' +
+		'<div class="railSwitchArea" v-show="flagShowRailSwitch" style="padding:0px 10px;border-radius:5px; display:inline-block;overflow:hidden; transition:all 0.3s ease-in-out; min-width:1400px;">' +
 			'<div class="setItem" v-bind:class="getButtonCls(4)" v-on:click="setRailMode(4)">台鐵南港至八堵間四軌化、基隆輕軌雙軌化</div>' +
-			'<div class="setItem" v-bind:class="getButtonCls(3)" v-on:click="setRailMode(3)">第三軌給基隆輕軌專用，單線雙向並新增南港展覽館、樟樹灣及北五堵做交會車站</div>' +
+			'<div class="setItem" v-bind:class="getButtonCls(3)" v-on:click="setRailMode(3)">第三軌給基隆輕軌專用，新增南港展覽館、樟樹灣及北五堵做交會車站</div>' +
 			'<div class="setItem" v-bind:class="getButtonCls(2)" v-on:click="setRailMode(2)">第三軌給基隆輕軌專用，只新建南港展覽館站</div>' +
 		'</div>' +
 	'</div>');
@@ -2227,7 +2239,8 @@ TT.createMap = function(){
 		'南港到汐科間新建第四軌，汐科到五堵間於台五甲線大同路上高架新建 TRAM TRAIN 雙軌軌道，並可能於<span style="color:#CE2020;">汐止站前廣場新建第三月台作為基隆輕軌專用月台</span>，汐科和五堵則用原台鐵月台改造。五堵至八堵間新建雙軌，不經過百福車站，另外新增北五堵及六堵站。' +
 		'全雙軌基隆輕軌可達成全時段五分鐘一班車，並有超過半數列車為全程車開進基隆站，<span style="color:#2020FE;">台北車站台鐵也可每五分鐘發一班車，每小時六班區間車及六班快車</span>，但基隆的區間車仍只有20分鐘一班，其餘時段可靠基隆輕軌及區間快車補足。'+
 		'雖然第三軌被基隆輕軌使用，台鐵仍舊可靈活利用汐止站的待避功能增加區間車班次，但區間車明顯必需在汐止或七堵待避一次，若是板南線轉乘回基隆可以直接考慮基隆輕軌不用視情況搭台鐵。' +
-		'<span style="color:#20A040;">此方案在汐科到汐止間台鐵也可以做到十分鐘一班車，五堵及百福因待避偶爾會隔 15 分鐘一班車</span>，等同可維持通往台北的班次密度，亦可連帶提升瑞芳的班次密度。'
+		'<span style="color:#20A040;">此方案在汐科到汐止間台鐵也可以做到十分鐘一班車，五堵及百福因待避偶爾會隔 15 分鐘一班車</span>，等同可維持通往台北的班次密度，亦可連帶提升瑞芳的班次密度。'+
+		'每小時三班基隆往返新竹的區間車中有兩班<span style="color:#CE2020;">可在汐止平行轉乘，如機場捷運長庚醫院站一樣快慢車乘客互轉</span>，加快五堵百福旅客往返松山、台北的速度。'
 	];
 	var marID  = 0;
 	var tpl = Vue.compile('<div class="mapOut" id="mapShowArea" v-show="seen">' +
@@ -2442,7 +2455,7 @@ TT.createTimeTableArea = function(cfg){
 					rt = TT.fn.transTime2HM(tmpTime.dep);
 					if(tmpTime.pass){
 						//rt = '--';
-						rt = '--' + '<span style="font-size:10px; color:transparent;">' + TT.fn.transTime2HM(tmpTime.dep) + '</span>';
+						rt = '--' + '<span class="passTrainTime">' + TT.fn.transTime2HM(tmpTime.dep) + '</span>';
 					}else if(tmpTime.wait){
 						rt = '<div>' + TT.fn.transTime2HM(tmpTime.arr)+ '到</div>' + '<div>' + TT.fn.transTime2HM(tmpTime.dep) + '開</div>';
 					}else if(stid=='tra_1008'){
@@ -2564,6 +2577,7 @@ TT.createSetPage = function(){
 			},
 			setToTrainModule: function(){
 				this.textURL = '';
+				TT.editTimeTableByPeople = true;
 				var gi = TT.fn.setData2trainRawData(this.jsonText);
 				clearTimeout(ti1);clearTimeout(ti2);
 				var tx = (gi) ? '已更新完成，可按複製網址儲存結果' : '更新失敗，請檢查輸入格式是否有錯，例如字串未用雙引號包住或陣列內最後多了 , 而視為未完成';
