@@ -4,10 +4,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width; initial-scale=1.0" />
-<meta name="description" content="接軌時刻 - 基北線模擬器" />
+<meta name="description" content="接軌時刻 - 基隆輕軌模擬器" />
 <meta name="keywords" content="CANVAS,台鐵,捷運,基隆輕軌,輕軌,接軌時刻" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<title>接軌時刻 - 基北線模擬器</title>
+<title>接軌時刻 - 基隆輕軌模擬器</title>
 <style type="text/css">
 @charset "utf-8";
 
@@ -182,6 +182,9 @@ body {
 	color: #208;
 	height: 18px;
 	overflow: hidden;
+	position: relative;
+	z-index: 41;
+	cursor: pointer;
 }
 
 .platformOut{
@@ -434,7 +437,7 @@ var TT = {
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2018/06/04</span>"
+			"更新日期: 2018/06/06</span>"
 	],
 	car: [
 		{"id": "carK", "name": "輕軌", "ename": "Keelung LRT", "color": "#2EA42B", trainType: "k", zIndex: 104},
@@ -735,8 +738,6 @@ var TT = {
 	r3trainGoTime: [
 		["w_1",40], ["p_1",15], ["t_1",37], ["y_3",48], ["p_1",35], ["r_1",21], ["y_3",8], ["w_1",60], ["p_1",55], ["e_1",2],
 		["r_2",0], ["w_2",5], ["p_4",10], ["y_2",35], ["e_2",40], ["p_2",30], ["y_4",25], ["t_2",20], ["p_2",50], ["w_2",45],
-		//["k_1",5], ["k_1",25], ["k_1",45], ["k_2",14], ["k_2",34], ["k_2",54],
-		//["k_3",10], ["k_3",30], ["k_3",50], ["k_4",24], ["k_4",44], ["k_4",4]
 		["k_1",5], ["k_1",25], ["k_1",45], ["k_2",13], ["k_2",33], ["k_2",53],
 		["k_3",10], ["k_3",30], ["k_3",50], ["k_4",23], ["k_4",43], ["k_4",3]
 	],
