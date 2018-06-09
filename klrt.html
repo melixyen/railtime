@@ -391,8 +391,17 @@ body {
 }
 .setPage .jsonText{
 	margin: 10px 5px;
-	width: 90%;
+	width: 1000px;
 	height: 500px;
+	float: left;
+}
+.setPage .paramText{
+	margin: 10px 5px;
+	width: 600px;
+	height: 500px;
+	float: left;
+	color: #945;
+	background-color: #EFFCFA;
 }
 .setPage .createBtnArea{
 	margin: 5px;
@@ -406,7 +415,7 @@ body {
 	background-color: #DDC933;
 	color: #B92E09;
 	font-size: 14px;
-	ransition: all 2s linear;
+	transition: all 2s linear;
 }
 .setPage .sucMsg.bye{
 	transition-property: opacity;
@@ -427,9 +436,56 @@ body {
 	max-width: 1260px;
 }
 
+.popupArea{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0; left: 0;
+	background-color: rgba(232,232,232,0.8);
+	z-index: 4000;
+}
+.popupArea .popupIn{
+	width: 90%;
+	height: 90%;
+	transform: translateX(-50%) translateY(-50%);
+	left: 50%; top: 50%;
+	background-color: #DEF;
+	display: inline-block;
+	position: absolute;
+	overflow: auto;
+	border-radius: 20px;
+	border: 10px solid #4AF;
+	box-sizing: border-box;
+	padding: 20px 50px;
+	font-size: 16px;
+	line-height: 26px;
+}
+.popupArea .close{
+	position: absolute;
+	z-index: 4002;
+	width: 20px;
+	height: 20px;
+	font-size: 20px;
+	line-height: 20px;
+	right: 10px;
+	top: 10px;
+	cursor: pointer;
+	border-radius: 10px;
+	border: 1px solid #AAA;
+	padding-left: 5px;
+}
+.popupArea .bgYellow{
+	background-color: #FAFA22;
+}
+.popupArea .bgPink{
+	background-color: #FADAF2;
+}
+
+
 </style>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--<script type="text/javascript" src="./libs/vue.js"></script>-->
 <script type="text/javascript">
 var TT = {
 	descriptionText: [
@@ -437,7 +493,7 @@ var TT = {
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2018/06/06</span>"
+			"更新日期: 2018/06/09</span>"
 	],
 	car: [
 		{"id": "carK", "name": "輕軌", "ename": "Keelung LRT", "color": "#2EA42B", trainType: "k", zIndex: 104},
@@ -486,7 +542,7 @@ var TT = {
 		baseKLRTHeight: 60,//基隆輕軌南下主線高度
 		colorTRA: "#26C",
 		colorKLRT: "#C26",
-		mode: 4,//4 for 四軌，3 for 三軌
+		mode: 4,//4 for 四軌，3 for 三軌增站，2 for 三軌不增站
 		lineWidth: 2,
 		lineMainWidth: 3,
 		lineOutMargin: 3,//軌道往外靜空
@@ -501,30 +557,30 @@ var TT = {
 			id: "e",
 			dir: 0,
 			color: "#005000",
-			linkStation: [
-				{linkTo: "w", linkDir: 0, stationID: "tra_1002"},
-				{linkTo: "k", linkDir: 0, stationID: "tra_1002"}
-			],
-			stationAry: ["tra_1002","tra_1802","tra_1803","tra_1804"]
+			//linkStation: [
+				//{linkTo: "w", linkDir: 0, stationID: "tra_1002"},
+				//{linkTo: "k", linkDir: 0, stationID: "tra_1002"}
+			//],
+			stationAry: ["tra_1008","tra_1007","tra_1006","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003","tra_1002","tra_1802","tra_1803","tra_1804"]
 		},
 		{
 			id: "w",
 			dir: 0,
 			color: "#000050",
-			linkStation: [
-				{linkTo: "e", linkDir: 0, stationID: "tra_1002"},
-				{linkTo: "k", linkDir: 0, stationID: "tra_1002"}
-			],
+			//linkStation: [
+				//{linkTo: "e", linkDir: 0, stationID: "tra_1002"},
+				//{linkTo: "k", linkDir: 0, stationID: "tra_1002"}
+			//],
 			stationAry: ["tra_1008","tra_1007","tra_1006","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003","tra_1002","tra_1029","tra_1001"]
 		},
 		{
 			id: "k",
 			dir: 0,
 			color: "#500000",
-			linkStation: [
-				{linkTo: "w", linkDir: 0, stationID: "tra_1002"},
-				{linkTo: "e", linkDir: 0, stationID: "tra_1002"}
-			],
+			//linkStation: [
+				//{linkTo: "w", linkDir: 0, stationID: "tra_1002"},
+				//{linkTo: "e", linkDir: 0, stationID: "tra_1002"}
+			//],
 			stationAry: ["tra_1006","tra_8108","tra_8106","tra_1031","tra_1005","tra_1004","tra_8104","tra_8102","tra_1003","tra_1002","tra_1029","tra_1001"]
 		}
 	],
@@ -1096,7 +1152,140 @@ TT.processFirst = function(initFlag){
 			}
 		}
 	}
+	if(TT.showDescription==14){//rail.mode==4 , 15分鐘內快中慢三輪制，第20分鐘為普悠瑪
+		var trm = TT.trainModuleTime;
+		trm.push({mod: "x_3", trainType: "x", line: "w", dir: 1, from: "tra_1001", to: "tra_1008", tag: "基隆-彰化", time: [31,"p33","p37",40,"p43","p47",49,51,57,62,"69~71"] });
+		trm.push({mod: "x_4", trainType: "x", line: "w", dir: 0, from: "tra_1008", to: "tra_1001", tag: "彰化-基隆", time: [0,7,12,18,20,"p22","p25",29,"p34","p36",38] });
+		TT.trainGoTime = TT.trainGoTime.concat([['x_3',2],['x_4',2]]);
+	}
 }
+TT.popupArea = (function(){
+	var rt = {};
+	var dom = document.getElementById('popupArea');
+	var din = document.getElementById('popupIn');
+	rt.close = function(){
+		rt.clear();
+		din.scrollTop = 0;
+		dom.style.display = 'none';
+	}
+	rt.show = function(){
+		dom.style.display = '';
+	}
+	rt.pop = function(html){
+		din.innerHTML = html;
+		rt.show();
+	}
+	rt.clear = function(){
+		din.innerHTML = '';
+	}
+	return rt;
+});
+TT.openNews = function(){
+	var html = '<div style="margin: 20px 50px; overflow-y:auto;">' +
+		'<p><h1><a href="http://news.ltn.com.tw/news/life/paper/1202862" target="_blank">全面四軌方案 八堵—南港發車量大增</a></h1></p>' +
+		'<hr>' +
+		'<p>〔記者鄭瑋奇／台北報導〕基隆輕軌的優化第三軌及增為四軌兩方案，對搭車民眾有何不同？交通部鐵路改建工程局表示，兩方案初期，基隆—八堵間，每小時都可較現行台鐵營運模式增加一班車；全面四軌方案，八堵—南港單向每小時的火車及輕軌列車最高可發廿二班車，較現行台鐵尖峰發十班車，或優化第三軌後的十三至十四班車，大幅增加。</p>'+
+		'<h2>單向每小時可發22班車 現行僅10班車</h2>'+
+		'<p>台鐵三軌優化可避免冗長的土地取得時間，減少施工量體與時程，以較少投資解決部分運能不足困境；<span class="bgPink">主要工程是增設第三軌交會車站，以及汐止車站規模調整</span>。輕軌從基隆出發後，八堵站、七堵站需增設獨立候車月台，並<span class="bgYellow">增加北五堵、樟樹灣、南港展覽館三站</span>，其餘都與台鐵共用車站及月台。</p>'+
+		'<h2>新增一軌 用地取得複雜但運能增</h2>' +
+		'<p>台鐵新增四軌則是將台鐵路線新增一軌道，需處理較複雜的工程、用地問題，但可更大幅增加運能。主要工程除增設車站及既有站改建外，因路線多為高架，須於道路中央設置高架橋。<span class="bgYellow">基隆站出發過八堵後，就拉出兩股獨立路廊</span>，進到新設的七堵調車場站，然後經<span class="bgYellow">新設的六堵、北五堵站，</span><span class="bgPink">中間不停靠百福站；</span><span class="bgYellow">抵達汐止站後不使用台鐵既有車站月台</span>，而後經過汐科、樟樹灣站抵達南港展覽館。</p>'+
+		'<p><span class="bgPink">目前台鐵南港—七堵，現行尖峰時段單向每小時已開出十班車，台北往基隆、花東各需五班</span>，幾乎達路線容量上限；使用Tram-Train輕軌系統後，<span class="bgYellow">台北往基隆可開行三班火車、三班輕軌<span>，多出的兩班容量就可拿去給花東使用。</p>' +
+		'<p>但若增為四軌、採基隆至南港間全面雙軌化，除<span class="bgYellow">可將台鐵兩條主幹線路線容量提升至單向每小時十二班</span>，輕軌方面，每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求，開行<span class="bgPink">北五堵站往返南港區間車</span>，可讓該區間輕軌每小時最高開行十二班車，加上火車的十班車，單向每小時可達廿二班車。</p>' +
+		'<p>2018 / 05 / 23</p></div>';
+	
+	html += '<br><br><br>';
+	html += '<div style="margin: 20px 50px;">' +
+		'<p><h1><a href="https://udn.com/news/story/10756/2631389" target="_blank">交部：基隆輕軌 傾向原方案</a></h1></p>' +
+		'<hr>' +
+		'<p>基隆輕軌今啟動的第一階段工程，斥資3億5千萬元在八堵南側增設橫跨三軌的橫渡線，讓車輛調度更靈活，提升路線容量與利用率。<span class="bgYellow">目前台北往返基隆、東部，每小時軌道容量各5班</span>，橫渡線最快明年底完工，屆時東部路線運能將提升四成。</p>' +
+		'<p>根據鐵路改建工程局規畫，橫渡線完工後、輕軌完工前，離峰時刻東部可增至7班，基隆往返台北減為3班，但另有3班往返基隆及七堵，不影響基隆運能；尖峰時段基隆台北維持5班、基隆七堵減為1班，花蓮台北維持既有容量5班。輕軌完工後，<span class="bgPink">每小時會有3班列車從基隆進台北、3班從基隆進南港展覽館</span>，另有7班從花東到台北。</p>' +
+		'<p>至於基隆輕軌是否延伸南港站，王國材表示，目前有平面、地下延伸兩方案，地下延伸會多50億元，並至少增加兩年工期，下車後要步行180公尺才能到高鐵站；平面則是沿市民大道綠帶到南港站，經費多3到5億元。目前傾向原方案，但會與台北、新北及基隆市府再討論。</p>' +
+		'<p>2017 / 08 / 09</p></div>';
+	html += '<br><br><br>';
+	
+	TT.popupArea.pop(html);
+}
+TT.teachImp = (function(){
+	var me = this;
+	me.showProgramStep = function(){
+		var html = '<h2>列車模擬程式初始化運作流程</h2>' +
+			'<p>列車模擬程式進入網頁後首先要判斷 rai.mode 值，建立軌道配置和月台配置的基礎</p>' +
+			'<ol><li>依照 station 資料將台北至基隆間所有車站建立至 stationLayer </li><li>使用 CANVAS 繪製軌道，在車站內佈設月台</li><li>用早上七點時間和預設列車模組計算一個小時的時刻表</li></ol>' +
+			'<br><br>' +
+			'<h2>基本組件</h2><ul>' +
+				'<li>TT.trainGoTime: 起站的發車時間</li><li>TT.trainModuleTime: 列車模組，存放車種、行駛路線、行駛區間、每一站的到站時刻、通過時刻、開車時刻' +
+				'<li>TT.timeTable: 計算後的列車時刻表存放於此</li><li>TT.timeGo: 動態陣列，有列車要發車時存入，列車到達終點站後移出</li>' +
+			'</ul><br><br>' +
+			'<h2>啟動模擬後的運作流程</h2><ol>' +
+				'<li>讀取使用者設定的模擬起程時間、模擬速度、模擬運轉的時間長度</li>' +
+				'<li>依照時間參數從 TT.trainGoTime 讀取發車時間，依照 TT.trainModuleTime 的排點規則產生運轉時刻表</li>' +
+				'<li>TT.timeGo 清空，此陣列用來存放上線運轉的列車物件</li>' +
+				'<li>啟動 setInterval 計時器，以 20 秒為單位跳躍，跳躍頻率依據運轉倍速決定。40x 代表每秒要運轉 40 秒進度亦即兩個20秒，所以頻率為 0.5 秒更新一次</li>' +
+				'<li>當時間超過使用者設定的時間長度且 TT.timeGo 陣列內無列車時停止計時器</li>' +
+			'</ol><br><br>' +
+			'<h2>每次計時器觸發時的運作過程</h2><ol>' +
+				'<li>檢查 TT.timeGo 陣列內是否有列車的 offlineTime 已經小於 nowTime，有的話代表已到終點站，將列車移出 TT.timeGo 以及將列車元素自 DOM 內移除</li>' +
+				'<li>找 TT.timeTable 中尚未註冊上線且發車時刻已經到了的列車  (registerTime == nowTime) </li>' +
+				'<li>用 new TT.classTrain(列車模組) 的方式產生一個新的列車物件並加入 TT.timeGo</li>' +
+				'<li>對剛加入的列車物件執行 readyGo 發車</li>' +
+			'</ol><br><br>' +
+			'<h2>classTrain 的資料和操作方法</h2><ol>' +
+				'<li>data: 列車的原始時刻表資料，運轉的基礎</li>' +
+				'<li>stationPosAry: 每一站的列車進站時刻、離站時刻、是否為通過站、是否待避資料儲存於此</li>' +
+				'<li>stepAry: 每 20 秒應該移動到的軌道位置、應該停靠的月台資料、當時運轉狀態存放於此，使用 stationPosAry 資料計算出來的</li>' +
+				'<li style="color:#2C915C;">readyGo: function，在 DOM 中產生一個列車的 div 加入 stationLayer 後發車。</li>' +
+				'<li style="color:#2C915C;">moveTrain: function，依照時間呼叫 setPosition 列車應該移動到的位置</li>' +
+				'<li style="color:#2C915C;">setPosition: 將列車移動到指定的座標，若為靠站狀態加上靠站時的 CSS 效果</li>' +
+				'<li style="color:#2C915C;">offline: function，列車到達終點將列車下線，從 stationLayer 中移除列車的 div</li>' +
+			'</ol><br><br>' +
+			'<h2>月台與股道配置原則</h2><ol>' +
+				'<li>在 station 資料中以 platform 陣列儲存，一座月台為一個陣列元素</li>' +
+				'<li>月台格式為 1a1b , 2b , 3c3d 型式，編號在前停靠側才後，島式月台有兩個停靠側，側式月台只需填寫一個</li>' +
+				'<li>ab代表台鐵月台，cd代表基隆輕軌月台；ac代表基隆看往台北方向的左側，bd代表右側</li>' +
+				'<li>在 station 資料中以 platMain 紀錄南下北上主要正線通過的月台位置，依序為台鐵逆行、台鐵順行、基隆輕軌逆行、基隆輕軌順行</li>' +
+				'<li>幹線通過車站時優先將 platMain 中的月台緊貼於幹線，再往兩旁分佈側線</li>' +
+				'<li>汐止和七堵另外設定待避股道，所以列車待避 (stationPosAry 中該站 wait狀態為 true) 時會移動至側線；七堵站則設置起迄點為七堵時停靠第三月台</li>' +
+			'</ol><br><br>' +
+			'';
+		TT.popupArea.pop(html);
+	}
+	me.showPeopleThink = function(){
+		var html = '<h2>非專業模擬程式的缺點</h2>' +
+			'<ul><li>如同捷運路網圖，站間距離和圖上位置非等比例，列車移動時間長短無法表現在移動速度上</li>' +
+			'<li>股道配置非實際走法，為了維持美觀而將南下北上的幹線直接畫一直線，無視實際運轉中東正線、中正線、西正線在南港至七堵間配置</li>'+
+			'<li>只能用旅客時刻表當作排點參考，無法使用台鐵內部運行時刻表，單位無法精準到秒數，只有列車停靠時間沒有列車通過車站的時間</li>'+
+			'<li>沒有閉塞區間資料、沒有各區段速限資料，模擬時只能顯示列車相對位置而不是絕對安全的間隔位置</li></ul><br><br>' +
+			'<h2>對民眾而言的應用面</h2>' +
+			'<ol><li>民眾不想要知道閉塞、速限、精準通過時刻，他關心的是運轉後要等多久的車、要搭多久的車</li>'+
+			'<li>民眾對新聞報導所書之改善後班次間隔、每小時列車通過數量感覺不夠具體，對時刻表抽象，對月停緩急轉乘沒有概念</li>'+
+			'<li style="color:#A9045C;">通過模擬器程式，民眾可以由全觀視角去看路線上所有列車運作狀態，在哪些車站可緩急轉乘，哪些班車會因待避停靠較久，進而擁有運轉計劃的全觀性</li>'+
+			'<li>短途通勤民眾重視發車頻率的固定性，發莗堅隔短如台北捷運不用先查時刻表，發車堅隔長如機場捷運每小時固定四個時段發車好記又固定於長庚醫院緩急轉乘，此為定型化時刻表的重要性</li>' +
+			'<li style="color:#2C915C;">模擬程式讓民眾有全線運轉概念後較容易提出意見反應，讓排點單位依據意見調整使時刻表更貼近民眾需求，降低事後改點上線民眾反感度</li>' +
+			'<li>小站旅客可經模擬器清楚知道固定在大站轉乘快車更節省時間，教育民眾接受緩急轉乘概念減少後方車站對列車待避的反感</li>' +
+			'<li>監督營運單位以及檢討實際運轉為何達不到模擬器的水準，檢討股道配置作為之後調整工程的參考</li>' +
+			'</ol><br><br>';
+		TT.popupArea.pop(html);
+	},
+	me.showClassTrain = function(){
+		var html = '<div style="color:#3254DE;font-size:20px;font-weight:700">列車的物件導向組件內容</div><br>' +
+			'<pre>TT.classTrain = ' +
+			TT.classTrain.toString().replace(/\</gi,'＜') +
+			'</pre>';
+		TT.popupArea.pop(html);
+	}
+	me.showSimReg = function(){
+		var html = '<div style="color:#3254DE;font-size:20px;font-weight:700">啟動模擬</div><br>' +
+			'<pre>TT.sim = ' +
+			TT.sim.toString().replace(/\</gi,'＜') +
+			'</pre><br><br>';
+		html += '<div style="color:#3254DE;font-size:20px;font-weight:700">註冊列車</div><br>' +
+			'<pre>TT.registerTrain = ' +
+			TT.registerTrain.toString().replace(/\</gi,'＜') +
+			'</pre><br><br>';
+		TT.popupArea.pop(html);
+	}
+	return me;
+})();
 
 TT.flagUseBrowserCopyCheck = (function(){
         		var Sys = {},
@@ -1308,7 +1497,7 @@ TT.classTrain = function(data){
 			centerOfPlatform = Math.ceil(TT.stBlockWidth/2),
 			x = 0, y = 0, bx = 0, by = 0, ax = 0, ay = 0,
 			pObj = false;
-		var intoStationMargin = 6;//Math.ceil(TT.rail.platformWidth/2) + 5;//月台兩側5px當入站點 Math.ceil((TT.stBlockWidth - TT.rail.platformWidth)/2);//月台兩側至站體邊界的中心點當進入站點
+		var intoStationMargin = 6;//月台兩側6px當入站點 
 		timeAry.map(function(c){
 			pObj = TT.map.getStationRailTop(c.stid);
 			stObj = TT.fn.getStationByID(c.stid, TT.map.stationAry);
@@ -1332,7 +1521,7 @@ TT.classTrain = function(data){
 					ay = pObj['p' + platMain];
 					by = pObj['p' + platMain];
 				}
-			}else if((data.from=='tra_1003' || data.to=='tra_1003') && c.stid=='tra_1003'){//data.trainType=='w'
+			}else if((data.from=='tra_1003' || data.to=='tra_1003') && c.stid=='tra_1003'){
 				platMain = (data.dir==1) ? '3b' : '3a';
 				ay = pObj['p' + platMain]; by = pObj['p' + platMain];
 			}else if(c.stid=='tra_1008'){
@@ -1739,9 +1928,23 @@ TT.parseModule = (function(){
         if(objA.guideKLRT){
         	TT.startHour = objA.startHour || 6;
         	TT.runHour = objA.runHour || 4;
-        	TT.rail.mode = objA.guideKLRT;
+        	TT.rail.mode = function(){
+        		var rt = 4;
+        		switch(objA.guideKLRT) {
+        			case '2':
+        			case '3':
+        			case '4':
+        				rt = parseInt(objA.guideKLRT);
+        			break;
+        			case '14':
+        			case '24':
+        				rt = 4;
+        			break;
+        		}
+        		return rt;
+			}();
         	TT.autoPlayTrain = true;
-			TT.showDescription = true;
+			TT.showDescription = parseInt(objA.guideKLRT);
 		}
 		return objA;
 	}
@@ -1801,6 +2004,7 @@ TT.createMenuBar = function(){
 				TT.processFirst();
 				TT.map.reDrawMap();
 				this.flagShowRailSwitch = false;
+				TT.timeTableArea.updateTimeTableRawData(TT.makeAllRouteTimeTable(7));
 			},
 			railSwitch: function(){
 				var dom = this.$el.querySelector('.railSwitchArea');
@@ -2241,7 +2445,11 @@ TT.createMap = function(){
 		'全雙軌基隆輕軌可達成全時段五分鐘一班車，並有超過半數列車為全程車開進基隆站，<span style="color:#2020FE;">台北車站台鐵也可每五分鐘發一班車，每小時六班區間車及六班快車</span>，但基隆的區間車仍只有20分鐘一班，其餘時段可靠基隆輕軌及區間快車補足。'+
 		'雖然第三軌被基隆輕軌使用，台鐵仍舊可靈活利用汐止站的待避功能增加區間車班次，但區間車明顯必需在汐止或七堵待避一次，若是板南線轉乘回基隆可以直接考慮基隆輕軌不用視情況搭台鐵。' +
 		'<span style="color:#20A040;">此方案在汐科到汐止間台鐵也可以做到十分鐘一班車，五堵及百福因待避偶爾會隔 15 分鐘一班車</span>，等同可維持通往台北的班次密度，亦可連帶提升瑞芳的班次密度。'+
-		'每小時三班基隆往返新竹的區間車中有兩班<span style="color:#CE2020;">可在汐止平行轉乘，如機場捷運長庚醫院站一樣快慢車乘客互轉</span>，加快五堵百福旅客往返松山、台北的速度。'
+		'每小時三班基隆往返新竹的區間車中有兩班<span style="color:#CE2020;">可在汐止平行轉乘，如機場捷運長庚醫院站一樣快慢車乘客互轉</span>，加快五堵百福旅客往返松山、台北的速度。',
+		false,//5
+		false,false,false,false,false,//10
+		false,false,false,//13
+		'採每十五分鐘一輪快中慢車，第二十分鐘一律普悠瑪模式，每小時三循環。'
 	];
 	var marID  = 0;
 	var tpl = Vue.compile('<div class="mapOut" id="mapShowArea" v-show="seen">' +
@@ -2261,7 +2469,7 @@ TT.createMap = function(){
 		data: {
 			seen: true,
 			neverDrawMap: true,
-			marStr: aryMarTx[rail.mode],
+			marStr: aryMarTx[TT.showDescription],
 			stationAry: TT.genStationOnMap()
 		},
 		methods: {
@@ -2279,7 +2487,7 @@ TT.createMap = function(){
 				this.drawMap();
 			},
 			updateMar: function(){
-				this.marStr = aryMarTx[rail.mode];
+				this.marStr = aryMarTx[TT.showDescription];
 				clearInterval(marID);
 				var domMar = this.$el.querySelector('div.marIn');
 				domMar.style.display = 'none';
@@ -2477,7 +2685,7 @@ TT.createSetPage = function(){
 	var myID = 'setPage';
 	var ti1 = 0, ti2 = 0;
 	var tpl = Vue.compile('<div class="setPage" id="' + myID + '" v-show="seen">' +
-		'<div><textarea class="jsonText" v-model="jsonText"></textarea></div>' +
+		'<div style="display:inline-block;"><textarea class="jsonText" v-model="jsonText"></textarea><textarea class="paramText" readonly="TRUE" v-model="paramText"></textarea></div>' +
 		'<div class="createBtnArea">' +
 			'<div class="setItem" v-on:click="previewTable()">{{ (flagShowPreviewTable) ? \'切回說明\' : \'開啟預覽\' }}</div>' +
 			'<div class="setItem" v-on:click="copyURL()" v-if="flagUseBrowserCopy" v-show="!flagShowPreviewTable">複製網址</div>' +
@@ -2485,7 +2693,7 @@ TT.createSetPage = function(){
 			'<div class="sucMsg" v-show="flagShowMsg" v-bind:class="getSucMsgCls()">{{ msgText }}</div>' +
 		'</div>' +
 		'<div><textarea id="setPage_textURL" class="textURL" v-model="textURL" v-show="!flagShowPreviewTable"></textarea></div>' +
-		'<div class="helpText" v-html="getHelp()" v-show="!flagShowPreviewTable"></div>' +
+		'<div class="helpText" v-html="getHelp()" v-show="!flagShowPreviewTable" v-on:click="clickHelp"></div>' +
 	'</div>');
 	var vm = new Vue({
 		el: '#setPage',
@@ -2494,6 +2702,7 @@ TT.createSetPage = function(){
 		data: {
 			seen: false,
 			jsonText: '',
+			paramText: '',
 			textURL: '',
 			msgText: '',
 			flagUseBrowserCopy: TT.flagUseBrowserCopyCheck,
@@ -2506,6 +2715,16 @@ TT.createSetPage = function(){
 			updateText: function(){
 				this.clearText();
 				this.jsonText = TT.fn.getData2JSON();
+				this.paramText = (function(){
+					var obj = {
+						station: TT.station,
+						line: TT.line,
+						car: TT.car						
+					}
+					var a = JSON.stringify(obj, undefined, '  ');
+					a = a.replace(/\n\s{8}/gi,'').replace(/\n\s{6}\]/gi,']');
+					return a;
+				})();
 			},
 			copyURL: function(){
 				var clipArea = document.getElementById('setPage_textURL');
@@ -2516,6 +2735,15 @@ TT.createSetPage = function(){
 			clearText: function(){
 				this.jsonText = '';
 				this.textURL = '';
+				this.paramText = '';
+			},
+			clickHelp: function(e){
+				var dom = e.target;
+				var act = (dom.dataset.act) ? dom.dataset.act : false;
+				if(act && TT.teachImp[act]){
+					TT.teachImp[act]();
+					return true;
+				}
 			},
 			getSucMsgCls: function(){
 				return (this.flagLinerByeMsg) ? 'bye' : '';
@@ -2529,6 +2757,14 @@ TT.createSetPage = function(){
 					ts += '<li><span style="color:#4E8C9D;">' + c.id + ':</span> ' + c.name + '</li>';
 				});
 				return '<div style="max-width:1200px;">' + 
+				'<h3><span style="color:red">程式說明</span></h3>' +
+				'<p>' +
+					'<span style="color:blue;cursor:pointer;" onclick="TT.openNews()">緣由</span> | '+
+					'<span style="color:blue;cursor:pointer;" data-act="showProgramStep">運算流程</span> | '+
+					'<span style="color:blue;cursor:pointer;" data-act="showClassTrain">列車物件原始碼</span> | '+
+					'<span style="color:blue;cursor:pointer;" data-act="showSimReg">註冊列車啟動模擬</span> | '+
+					'<span style="color:blue;cursor:pointer;" data-act="showPeopleThink">程式的缺點和應用面</span> | '+
+				'</p>' +
 				'<h3><span style="color:red">操作說明</span></h3>' +
 				'<p>可直接在編輯器上以 JSON 格式修改，或複製到電腦上的編輯器修改完再貼回來測試。產生新的定型化時刻表運行列車會更新程式運行表並產生一組網址，複製網址即可分享給其他人，進入網頁後將會以編輯後的時刻表為預設時刻表。開啟預覽時每次產生時刻表均會在下方即時運算更新，以每小時產生的一輪班次為計算基礎。 </p>' +
 				'<h3><span style="color:red">編輯格式說明</span></h3>' +
@@ -2623,6 +2859,7 @@ TT.initFn = function(){
 	document.addEventListener('touchmove', function(e){
 		TT.isMobileMove = true;
 	});
+	TT.popupArea = TT.popupArea();
 }
 </script>
 <!-- -->
@@ -2635,5 +2872,6 @@ TT.initFn = function(){
 	<div id="setPage"></div>
 	<div id="timeTableArea"></div>
 	<div id="helpArea" class="helpArea"></div>
+	<div id="popupArea" class="popupArea" style="display:none;"><div id="popupIn" class="popupIn"></div><div class="close" onclick="TT.popupArea.close()">X</div></div>
 </body>
 </html>
