@@ -1154,9 +1154,23 @@ TT.processFirst = function(initFlag){
 	}
 	if(TT.showDescription==14){//rail.mode==4 , 15分鐘內快中慢三輪制，第20分鐘為普悠瑪
 		var trm = TT.trainModuleTime;
-		trm.push({mod: "x_3", trainType: "x", line: "w", dir: 1, from: "tra_1001", to: "tra_1008", tag: "基隆-彰化", time: [31,"p33","p37",40,"p43","p47",49,51,57,62,"69~71"] });
-		trm.push({mod: "x_4", trainType: "x", line: "w", dir: 0, from: "tra_1008", to: "tra_1001", tag: "彰化-基隆", time: [0,7,12,18,20,"p22","p25",29,"p34","p36",38] });
-		TT.trainGoTime = TT.trainGoTime.concat([['x_3',2],['x_4',2]]);
+		trm.push({mod: "x_13", trainType: "x", line: "w", dir: 1, from: "tra_1001", to: "tra_1008", tag: "基隆-彰化", time: [31,"p33","p37",40,"p43","p47",49,51,57,62,"69~71"] });
+		trm.push({mod: "x_14", trainType: "x", line: "w", dir: 0, from: "tra_1008", to: "tra_1001", tag: "彰化-基隆", time: [0,7,12,18,20,"p22","p25",29,"p34","p36",38] });
+		trm.push({mod: "r_11", trainType: "r", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "花蓮-彰化", time: [51,"p54","p56","p59","p60","p61",65,70,"77~80"]});
+		trm.push({mod: "r_12", trainType: "r", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "彰化-花蓮", time: [0,7,12,"p17","p18","p19","p21","p24",26]});
+		trm.push({mod: "g_11", trainType: "g", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "花蓮-樹林", time: ["p22",24,"p28","p32",34,"p36",40,45,"52~55"]});
+		trm.push({mod: "g_12", trainType: "g", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-花蓮", time: [0,7,12,"p17",19,"p21","p25",29,"p32"]});
+		trm.push({mod: "y_16", trainType: "p", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-蘇澳", time: [55,62,67,73,"75w79",81,85,"90~91",95]});
+		trm.push({mod: "p_12", trainType: "p", line: "w", dir: 0, from: "tra_1008", to: "tra_1001", tag: "新竹-基隆", time: [5,12,17,23,"25w29",31,35,40,44,48,51]});
+		TT.trainGoTime = [
+			['x_13',30],['x_13',0], ['t_1',47], ['r_11',16],
+			['g_11',22], ['e_1',52], ['w_1',60], ['w_1',30],
+			['y_3',8],['y_5',38], ['p_1',16],['p_1',46],
+			["r_2",0], ['x_14',5], ['w_2',15], ['e_2',20],['t_2',30],['x_14',35],['w_2',45],['g_12',50],
+			["y_16",25],['p_12',10],['y_6',55],['p_12',40],
+			['k_1',5],['k_1',20],['k_1',35],['k_1',50],['k_3',60],['k_3',10],['k_3',15],['k_3',25],['k_3',30],['k_3',40],['k_3',45],['k_3',55],
+			['k_2',5],['k_2',20],['k_2',35],['k_2',50],['k_4',0],['k_4',10],['k_4',15],['k_4',25],['k_4',30],['k_4',40],['k_4',45],['k_4',55]
+		];
 	}
 }
 TT.popupArea = (function(){
@@ -1272,6 +1286,13 @@ TT.teachImp = (function(){
 			'<li>小站旅客可經模擬器清楚知道固定在大站轉乘快車更節省時間，教育民眾接受緩急轉乘概念減少後方車站對列車待避的反感</li>' +
 			'<li>監督營運單位以及檢討實際運轉為何達不到模擬器的水準，檢討股道配置作為之後調整工程的參考</li>' +
 			'</ol><br><br>';
+		TT.popupArea.pop(html);
+	},
+	me.showDemoLink = function(){
+		var html = '<a href="?q=2" target="_blank">三軌模式，只增建南港展覽館站</a><br><br>' +
+			'<a href="?q=3" target="_blank">三軌模式，優化謅建樟樹灣、北五堵交會站縮短班距</a><br><br>' +
+			'<a href="?q=4" target="_blank">四軌模式，台鐵每小時六快六慢，輕軌五分鐘一班，最大化基隆班次</a><br><br>' +
+			'<a href="?q=14" target="_blank">四軌模式，台鐵每小時八快四慢，輕軌五分鐘一班，基隆十五分鐘一班車</a><br><br>'
 		TT.popupArea.pop(html);
 	},
 	me.showStation1006 = function(){
@@ -2464,7 +2485,9 @@ TT.createMap = function(){
 		false,//5
 		false,false,false,false,false,//10
 		false,false,false,//13
-		'採每十五分鐘一輪快中慢車，第二十分鐘一律普悠瑪模式，每小時三循環。'
+		'南港到汐科間新建第四軌，汐科到五堵間於台五甲線大同路上高架新建 TRAM TRAIN 雙軌軌道，並可能於<span style="color:#CE2020;">汐止站前廣場新建第三月台作為基隆輕軌專用月台</span>，汐科和五堵則用原台鐵月台改造。五堵至八堵間新建雙軌，不經過百福車站，另外新增北五堵及六堵站。' +
+		'<span style="color:#2020FE;">台北車站台鐵也可每五分鐘發一班車，採每十五分鐘一輪兩快一慢車，每小時四循環</span>。基隆出發的台鐵區間車30分鐘一班，區間快車30分鐘一班，每小時有四班車可直達台北，另有四班基隆輕軌可至南港，頻率與機場捷運相等。' +
+		'<span style="color:#CE2020;">所有區間車都在汐止待避快車，而其中往基隆的區間車均可與自強號快慢車平行轉乘</span>，因此可略微縮短基隆往返台北的時間。板南線旅客回基隆一律在南港轉車，但可視時間選擇搭台鐵或基隆輕軌。'
 	];
 	var marID  = 0;
 	var tpl = Vue.compile('<div class="mapOut" id="mapShowArea" v-show="seen">' +
@@ -2786,6 +2809,7 @@ TT.createSetPage = function(){
 					'<span style="color:blue;cursor:pointer;" data-act="showClassTrain">列車物件原始碼</span> | '+
 					'<span style="color:blue;cursor:pointer;" data-act="showSimReg">註冊列車啟動模擬</span> | '+
 					'<span style="color:blue;cursor:pointer;" data-act="showPeopleThink">程式的缺點和應用面</span> | '+
+					'<span style="color:blue;cursor:pointer;" data-act="showDemoLink">各種展示模式</span> | '+
 				'</p>' +
 				'<h3><span style="color:red">操作說明</span></h3>' +
 				'<p>可直接在編輯器上以 JSON 格式修改，或複製到電腦上的編輯器修改完再貼回來測試。產生新的定型化時刻表運行列車會更新程式運行表並產生一組網址，複製網址即可分享給其他人，進入網頁後將會以編輯後的時刻表為預設時刻表。開啟預覽時每次產生時刻表均會在下方即時運算更新，以每小時產生的一輪班次為計算基礎。 </p>' +
