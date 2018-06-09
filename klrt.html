@@ -1163,6 +1163,14 @@ TT.popupArea = (function(){
 	var rt = {};
 	var dom = document.getElementById('popupArea');
 	var din = document.getElementById('popupIn');
+	if(!dom.isAddCloseFn){
+		dom.addEventListener('click', function(e){
+			if(e.target.id=='popupArea'){
+				rt.close();
+			}
+		}, false);
+		dom.isAddCloseFn = true;
+	}
 	rt.close = function(){
 		rt.clear();
 		din.scrollTop = 0;
@@ -1264,6 +1272,13 @@ TT.teachImp = (function(){
 			'<li>小站旅客可經模擬器清楚知道固定在大站轉乘快車更節省時間，教育民眾接受緩急轉乘概念減少後方車站對列車待避的反感</li>' +
 			'<li>監督營運單位以及檢討實際運轉為何達不到模擬器的水準，檢討股道配置作為之後調整工程的參考</li>' +
 			'</ol><br><br>';
+		TT.popupArea.pop(html);
+	},
+	me.showStation1006 = function(){
+		var html = '<h2>汐止站基隆輕軌四軌化時新建場站可能位置</h2>' +
+			'<p>基隆輕軌若為四軌化方案，將於台五甲線汐止大同路上高架雙線新輕軌軌道，汐止車站也會新建基隆輕軌專用車站及專用月台。汐止車站的旅客主要集中於一號出口靠近信義路、新昌公園方向，而汐止車站也只有此處站前廣場直接與大同路連接，其餘位置與大同路間均有民房隔閡，因此汐止車站公車站牌所用花圃和公車彎是最適合設置輕軌車站及月台的位置，並可使用空橋連接台鐵月台末端達成站內轉乘。</p>'+
+			'<div><iframe style="width:100%;height:650px;" src="https://www.google.com/maps/d/embed?mid=1WUrE8N6UAAfMopt4XLsSaSi145dyoH0l&ll=25.068974675215863%2C121.66219796613848&z=19"></div>' +
+			'';
 		TT.popupArea.pop(html);
 	},
 	me.showClassTrain = function(){
@@ -2457,7 +2472,7 @@ TT.createMap = function(){
 		'<div class="trainLayer" style="display:none;"></div>' +
 		'<div class="stationLayer" id="stationLayer">' +
 			'<div v-for="(st,idx) in stationAry" v-bind:style="getStationStyle(st.id)" class="stationOut">' +
-				'<div class="stationName" v-bind:class="(st.id)" v-bind:data-stid="(st.id)" v-bind:style="getStationNameStyle(st)">{{ st.name }}</div>' +
+				'<div class="stationName" v-on:click="popStation(st.id)" v-bind:class="(st.id)" v-bind:data-stid="(st.id)" v-bind:style="getStationNameStyle(st)">{{ st.name }}</div>' +
 				'<div class="platformOut" v-html="printPlatform(st)"></div>' +
 			'</div>' +
 		'</div>' +
@@ -2518,6 +2533,13 @@ TT.createMap = function(){
 					rt = 'width:60px;position:absolute;left:0px;text-align:left;'
 				}
 				return rt;
+			},
+			popStation: function(stid){
+				switch(stid){
+					case 'tra_1005':
+						TT.teachImp.showStation1006();
+					break;
+				}
 			},
 			printCanvas: function(){
 				return '<canvas id="canvasRoute" width="' + TT.caWidth + '" height="' + TT.caHeight + '"></canvas>';
