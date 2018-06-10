@@ -460,6 +460,11 @@ body {
 	font-size: 16px;
 	line-height: 26px;
 }
+.popupArea .popupIn.big2{
+	font-size: 40px;
+	line-height: 56px;
+}
+
 .popupArea .close{
 	position: absolute;
 	z-index: 4002;
@@ -473,6 +478,21 @@ body {
 	border-radius: 10px;
 	border: 1px solid #AAA;
 	padding-left: 5px;
+}
+.popupArea .fontTune{
+	position: absolute;
+	z-index: 4002;
+	width: 20px;
+	height: 20px;
+	font-size: 16px;
+	line-height: 16px;
+	left: 10px;
+	top: 10px;
+	cursor: pointer;
+	border-radius: 10px;
+	border: 1px solid #AAA;
+	padding-left: 5px;
+	background-color: #EEE;
 }
 .popupArea .bgYellow{
 	background-color: #FAFA22;
@@ -493,7 +513,7 @@ var TT = {
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2018/06/09</span>"
+			"更新日期: 2018/06/10</span>"
 	],
 	car: [
 		{"id": "carK", "name": "輕軌", "ename": "Keelung LRT", "color": "#2EA42B", trainType: "k", zIndex: 104},
@@ -561,7 +581,7 @@ var TT = {
 				//{linkTo: "w", linkDir: 0, stationID: "tra_1002"},
 				//{linkTo: "k", linkDir: 0, stationID: "tra_1002"}
 			//],
-			stationAry: ["tra_1008","tra_1007","tra_1006","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003","tra_1002","tra_1802","tra_1803","tra_1804"]
+			stationAry: ["tra_1008","tra_1007","tra_1006","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003","tra_1002"]
 		},
 		{
 			id: "w",
@@ -777,18 +797,6 @@ var TT = {
 			from: "tra_1006", to: "tra_8104",
 			tag: "南港-北五堵",
 			time: [0,2,6,7,9,11,14]
-		}
-	],
-	shell: [
-		{
-			title: '原始方案',
-			text: '單線雙向輕軌無新增交會站僅靠七堵及汐止交會，二十分鐘一班，終點南港展覽館',
-			score: 0,
-			klrtFreq: 20,//班次間隔分鐘數
-			klrtRail: 1,//軌道數
-			traFreq: 20,
-			traRail: 2,
-			station: ['k01','k02','k03','k04','k05','k07','k08','k09','k11']
 		}
 	],
 	r3trainGoTime: [
@@ -1152,7 +1160,7 @@ TT.processFirst = function(initFlag){
 			}
 		}
 	}
-	if(TT.showDescription==14){//rail.mode==4 , 15分鐘內快中慢三輪制，第20分鐘為普悠瑪
+	if(TT.showDescription==14){//rail.mode==4 , 15分鐘內快中慢三輪制
 		var trm = TT.trainModuleTime;
 		trm.push({mod: "x_13", trainType: "x", line: "w", dir: 1, from: "tra_1001", to: "tra_1008", tag: "基隆-彰化", time: [31,"p33","p37",40,"p43","p47",49,51,57,62,"69~71"] });
 		trm.push({mod: "x_14", trainType: "x", line: "w", dir: 0, from: "tra_1008", to: "tra_1001", tag: "彰化-基隆", time: [0,7,12,18,20,"p22","p25",29,"p34","p36",38] });
@@ -1178,6 +1186,17 @@ TT.popupArea = (function(){
 	var dom = document.getElementById('popupArea');
 	var din = document.getElementById('popupIn');
 	if(!dom.isAddCloseFn){
+		var df = document.createElement('div');
+		df.className = 'fontTune';
+		df.innerHTML = '字';
+		df.addEventListener('click', function(e){
+			if(din.className.indexOf('big2')>=0){
+				din.className = din.className.replace(' big2','');
+			}else{
+				din.className = din.className + ' big2';
+			}
+		}, false);
+		dom.appendChild(df);
 		dom.addEventListener('click', function(e){
 			if(e.target.id=='popupArea'){
 				rt.close();
@@ -1194,8 +1213,13 @@ TT.popupArea = (function(){
 		dom.style.display = '';
 	}
 	rt.pop = function(html){
+		din.className = din.className.replace(' big2','');
 		din.innerHTML = html;
 		rt.show();
+	}
+	rt.pop2 = function(html){
+		rt.pop(html);
+		din.className = din.className + ' big2';
 	}
 	rt.clear = function(){
 		din.innerHTML = '';
@@ -1242,14 +1266,14 @@ TT.teachImp = (function(){
 				'<li>讀取使用者設定的模擬起程時間、模擬速度、模擬運轉的時間長度</li>' +
 				'<li>依照時間參數從 TT.trainGoTime 讀取發車時間，依照 TT.trainModuleTime 的排點規則產生運轉時刻表</li>' +
 				'<li>TT.timeGo 清空，此陣列用來存放上線運轉的列車物件</li>' +
-				'<li>啟動 setInterval 計時器，以 20 秒為單位跳躍，跳躍頻率依據運轉倍速決定。40x 代表每秒要運轉 40 秒進度亦即兩個20秒，所以頻率為 0.5 秒更新一次</li>' +
+				'<li>啟動 setInterval 計時器，以 20 秒為單位跳躍，跳躍頻率依據運轉倍速決定。<span class="bgYellow">40x 代表每秒要運轉 40 秒進度亦即兩個20秒，所以頻率為 0.5 秒更新一次</span></li>' +
 				'<li>當時間超過使用者設定的時間長度且 TT.timeGo 陣列內無列車時停止計時器</li>' +
 			'</ol><br><br>' +
 			'<h2>每次計時器觸發時的運作過程</h2><ol>' +
-				'<li>檢查 TT.timeGo 陣列內是否有列車的 offlineTime 已經小於 nowTime，有的話代表已到終點站，將列車移出 TT.timeGo 以及將列車元素自 DOM 內移除</li>' +
+				'<li>檢查 TT.timeGo 陣列內<span class="bgYellow">是否有列車的 offlineTime 已經小於 nowTime</span>，有的話代表已到終點站，將列車移出 TT.timeGo 以及將列車元素自 DOM 內移除</li>' +
 				'<li>找 TT.timeTable 中尚未註冊上線且發車時刻已經到了的列車  (registerTime == nowTime) </li>' +
 				'<li>用 new TT.classTrain(列車模組) 的方式產生一個新的列車物件並加入 TT.timeGo</li>' +
-				'<li>對剛加入的列車物件執行 readyGo 發車</li>' +
+				'<li>對剛加入的列車物件<span class="bgPink">執行 readyGo 發車</span></li>' +
 			'</ol><br><br>' +
 			'<h2>classTrain 的資料和操作方法</h2><ol>' +
 				'<li>data: 列車的原始時刻表資料，運轉的基礎</li>' +
@@ -1263,9 +1287,9 @@ TT.teachImp = (function(){
 			'<h2>月台與股道配置原則</h2><ol>' +
 				'<li>在 station 資料中以 platform 陣列儲存，一座月台為一個陣列元素</li>' +
 				'<li>月台格式為 1a1b , 2b , 3c3d 型式，編號在前停靠側才後，島式月台有兩個停靠側，側式月台只需填寫一個</li>' +
-				'<li>ab代表台鐵月台，cd代表基隆輕軌月台；ac代表基隆看往台北方向的左側，bd代表右側</li>' +
+				'<li><span class="bgYellow">ab代表台鐵月台，cd代表基隆輕軌月台</span>；<span class="bgPink">ac代表基隆看往台北方向的左側，bd代表右側</span></li>' +
 				'<li>在 station 資料中以 platMain 紀錄南下北上主要正線通過的月台位置，依序為台鐵逆行、台鐵順行、基隆輕軌逆行、基隆輕軌順行</li>' +
-				'<li>幹線通過車站時優先將 platMain 中的月台緊貼於幹線，再往兩旁分佈側線</li>' +
+				'<li>幹線通過車站時<span class="bgPink">優先將 platMain 中的月台緊貼於幹線</span>，再往兩旁分佈側線</li>' +
 				'<li>汐止和七堵另外設定待避股道，所以列車待避 (stationPosAry 中該站 wait狀態為 true) 時會移動至側線；七堵站則設置起迄點為七堵時停靠第三月台</li>' +
 			'</ol><br><br>' +
 			'';
@@ -1276,24 +1300,29 @@ TT.teachImp = (function(){
 			'<ul><li>如同捷運路網圖，站間距離和圖上位置非等比例，列車移動時間長短無法表現在移動速度上</li>' +
 			'<li>股道配置非實際走法，為了維持美觀而將南下北上的幹線直接畫一直線，無視實際運轉中東正線、中正線、西正線在南港至七堵間配置</li>'+
 			'<li>只能用旅客時刻表當作排點參考，無法使用台鐵內部運行時刻表，單位無法精準到秒數，只有列車停靠時間沒有列車通過車站的時間</li>'+
+			'<li>沒有列車性能數據，不同車種移動速度是固定線性沒有加減速性能的差異表現</li>'+
 			'<li>沒有閉塞區間資料、沒有各區段速限資料，模擬時只能顯示列車相對位置而不是絕對安全的間隔位置</li></ul><br><br>' +
 			'<h2>對民眾而言的應用面</h2>' +
-			'<ol><li>民眾不想要知道閉塞、速限、精準通過時刻，他關心的是運轉後要等多久的車、要搭多久的車</li>'+
-			'<li>民眾對新聞報導所書之改善後班次間隔、每小時列車通過數量感覺不夠具體，對時刻表抽象，對月停緩急轉乘沒有概念</li>'+
+			'<ol><li>民眾不想要知道閉塞、速限、精準通過時刻，他關心的是運轉後<span class="bgYellow">要等多久的車、要搭多久的車</span></li>'+
+			'<li>民眾對新聞報導所書之改善後班次間隔、每小時列車通過數量感覺抽象，對時刻表資訊量感受複雜，對月台緩急轉乘沒有概念</li>'+
 			'<li style="color:#A9045C;">通過模擬器程式，民眾可以由全觀視角去看路線上所有列車運作狀態，在哪些車站可緩急轉乘，哪些班車會因待避停靠較久，進而擁有運轉計劃的全觀性</li>'+
-			'<li>短途通勤民眾重視發車頻率的固定性，發莗堅隔短如台北捷運不用先查時刻表，發車堅隔長如機場捷運每小時固定四個時段發車好記又固定於長庚醫院緩急轉乘，此為定型化時刻表的重要性</li>' +
+			'<li>短途通勤民眾重視發車頻率的固定性，發車間隔短如台北捷運不用先查時刻表，發車間隔長如機場捷運每小時固定四個時段發車好記又固定於長庚醫院緩急轉乘，此為定型化時刻表的重要性</li>' +
 			'<li style="color:#2C915C;">模擬程式讓民眾有全線運轉概念後較容易提出意見反應，讓排點單位依據意見調整使時刻表更貼近民眾需求，降低事後改點上線民眾反感度</li>' +
 			'<li>小站旅客可經模擬器清楚知道固定在大站轉乘快車更節省時間，教育民眾接受緩急轉乘概念減少後方車站對列車待避的反感</li>' +
-			'<li>監督營運單位以及檢討實際運轉為何達不到模擬器的水準，檢討股道配置作為之後調整工程的參考</li>' +
-			'</ol><br><br>';
+			'<li>監督營運單位以及檢討實際運轉為何達不到模擬器的水準，檢討股道配置作為之後調整工程的參考</li></ol><br><br>' +
+			'<h2>與運行圖的應用差異</h2>' +
+			'<ul><li>運行圖適用書面資料，而模擬器是依照運行圖、時刻表在畫面上動態展示，適合簡報場合</li>' +
+			'<li>運行圖是劇本，時刻表是小說，模擬器是動畫</li>'+
+			'<li>運行圖是全觀的，只有時間跟場站二維；模擬器的第二維是軌道因此可同時呈現基隆輕軌與台鐵縱貫線分線及共線的運轉狀況，但只能隨時間推進不方便任意看前後關係</li>'+
+			'</ul><br><br>';
 		TT.popupArea.pop(html);
 	},
 	me.showDemoLink = function(){
 		var html = '<a href="?q=2" target="_blank">三軌模式，只增建南港展覽館站</a><br><br>' +
-			'<a href="?q=3" target="_blank">三軌模式，優化謅建樟樹灣、北五堵交會站縮短班距</a><br><br>' +
+			'<a href="?q=3" target="_blank">三軌模式，優化增建樟樹灣、北五堵交會站縮短班距</a><br><br>' +
 			'<a href="?q=4" target="_blank">四軌模式，台鐵每小時六快六慢，輕軌五分鐘一班，最大化基隆班次</a><br><br>' +
 			'<a href="?q=14" target="_blank">四軌模式，台鐵每小時八快四慢，輕軌五分鐘一班，基隆十五分鐘一班車</a><br><br>'
-		TT.popupArea.pop(html);
+		TT.popupArea.pop2(html);
 	},
 	me.showStation1006 = function(){
 		var html = '<h2>汐止站基隆輕軌四軌化時新建場站可能位置</h2>' +
