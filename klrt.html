@@ -509,11 +509,11 @@ body {
 <script type="text/javascript">
 var TT = {
 	descriptionText: [
-		'本程式為接軌時刻 Web App 內之輔助工具，用於模擬基隆輕軌及台鐵四軌化、定型化時刻表後的運轉模式。',
+		'本程式為接軌時刻 Web App 內之輔助工具，用於模擬基隆輕軌及台鐵四軌化、定型化時刻表後的運轉模式。<a href="https://github.com/melixyen/railtime/blob/gh-pages/klrt.html" target="_blank">Source</a>',
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2018/06/10</span>"
+			"更新日期: 2018/06/11</span>"
 	],
 	car: [
 		{"id": "carK", "name": "輕軌", "ename": "Keelung LRT", "color": "#2EA42B", trainType: "k", zIndex: 104},
@@ -1179,6 +1179,36 @@ TT.processFirst = function(initFlag){
 			['k_1',5],['k_1',20],['k_1',35],['k_1',50],['k_3',60],['k_3',10],['k_3',15],['k_3',25],['k_3',30],['k_3',40],['k_3',45],['k_3',55],
 			['k_2',5],['k_2',20],['k_2',35],['k_2',50],['k_4',0],['k_4',10],['k_4',15],['k_4',25],['k_4',30],['k_4',40],['k_4',45],['k_4',55]
 		];
+	}else if(TT.showDescription==24){
+		var trm = [];
+		trm.push({mod: "r_1", trainType: "r", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "花蓮-樹林", time: [51,"p54","p56","p59","p60","p61",65,70,"77~80"]});
+		trm.push({mod: "t_1", trainType: "t", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "台東-樹林", time: ["p32","p34","p36","p39","p40","p41",45,50,"57~60"]});
+		trm.push({mod: "y_1", trainType: "p", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "蘇澳-樹林", time: [23,27,32,36,"38w42",44,50,55,"62~65"]});
+		trm.push({mod: "y_3", trainType: "p", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "瑞芳-新竹", time: [23,27,32,36,"38w42",44,50,55,"62~65"]});
+		trm.push({mod: "w_1", trainType: "w", line: "e", dir: 1, from: "tra_1003", to: "tra_1008", tag: "七堵-潮州", time: [0,"p4","p8",10,"p12","p16",20,"27~30"]});
+		trm.push({mod: "x_1", trainType: "x", line: "w", dir: 1, from: "tra_1003", to: "tra_1008", tag: "七堵-彰化", time: [40,"p43","p47",49,51,57,62,"69~71"] });
+		
+		trm.push({mod: "t_2", trainType: "t", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-台東", time: [40,47,52,"p57","p58","p59","p62","p64","p65"]});
+		trm.push({mod: "r_2", trainType: "r", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-花蓮", time: [0,7,12,"p17","p18","p19","p21","p24",26]});
+		trm.push({mod: "y_2", trainType: "p", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-蘇澳", time: [15,22,27,33,"36w39",42,46,51,55]});
+		trm.push({mod: "y_4", trainType: "p", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "新竹-瑞芳", time: [15,22,27,33,"36w39",42,46,51,55]});
+		trm.push({mod: "w_2", trainType: "w", line: "w", dir: 0, from: "tra_1008", to: "tra_1003", tag: "潮州-七堵", time: [10,17,"p21","p25","27~28","p30","p34",38]});
+		trm.push({mod: "x_2", trainType: "x", line: "w", dir: 0, from: "tra_1008", to: "tra_1003", tag: "彰化-七堵", time: [0,7,12,18,20,"p22","p25",29]});
+		
+		trm.push({mod: "k_1", trainType: "k", line: "k", dir: 1, from: "tra_1001", to: "tra_1006", tag: "基隆-南港", time: [0,3,7,10,13,15,18,20,22,23,27,29]});
+		trm.push({mod: "k_2", trainType: "k", line: "k", dir: 0, from: "tra_1006", to: "tra_1001", tag: "南港-基隆", time: [0,2,6,7,9,11,14,16,19,22,26,29]});
+		
+		TT.trainGoTime = [
+			//['t_1', 62],['t_1', 22],['t_1', 42], ['y_1',13],['y_3',33],['y_3',53],
+			['t_1', 67],['t_1', 22],['t_1', 37], ['r_1',51], ['y_3',13],['y_1',28],['y_3',43],['y_1',58],
+			['w_1', 30], ['w_1', 60],['x_1', 14], ['x_1', 44],
+			['t_2',0],['t_2',15],['t_2',30], ['r_2',45],['y_4',10],['y_2',25],['y_4',40],['y_2',55],
+			['w_2',5], ['w_2',35], ['x_2',20], ['x_2',50],
+			['k_1',0],['k_1',5],['k_1',10],['k_1',15],['k_1',20],['k_1',25],['k_1',30],['k_1',35],['k_1',40],['k_1',45],['k_1',50],['k_1',55],
+			['k_2',0],['k_2',5],['k_2',10],['k_2',15],['k_2',20],['k_2',25],['k_2',30],['k_2',35],['k_2',40],['k_2',45],['k_2',50],['k_2',55]
+			
+		]
+		TT.trainModuleTime = trm;
 	}
 }
 TT.popupArea = (function(){
@@ -1321,7 +1351,8 @@ TT.teachImp = (function(){
 		var html = '<a href="?q=2" target="_blank">三軌模式，只增建南港展覽館站</a><br><br>' +
 			'<a href="?q=3" target="_blank">三軌模式，優化增建樟樹灣、北五堵交會站縮短班距</a><br><br>' +
 			'<a href="?q=4" target="_blank">四軌模式，台鐵每小時六快六慢，輕軌五分鐘一班，最大化基隆班次</a><br><br>' +
-			'<a href="?q=14" target="_blank">四軌模式，台鐵每小時八快四慢，輕軌五分鐘一班，基隆十五分鐘一班車</a><br><br>'
+			'<a href="?q=14" target="_blank">四軌模式，台鐵每小時八快四慢，輕軌五分鐘一班，基隆十五分鐘一班車</a><br><br>' +
+			'<a href="?q=24" target="_blank">四軌模式，台鐵每小時四班太魯閣普悠瑪往花東，輕軌五分鐘一班，基隆不再停靠台鐵</a><br><br>'
 		TT.popupArea.pop2(html);
 	},
 	me.showStation1006 = function(){
@@ -1669,7 +1700,8 @@ TT.classTrain = function(data){
 						
 						if(/k|e/.test(data.line) && tmpY!=specY && regQiduBadu.test(st1.stid) && regQiduBadu.test(st2.stid) && (tim-st1.dep > st2.arr-tim-baseRate*2)){
 							specY = st2.beforePos[1]; tmpY = specY;
-						}else if(data.trainType=='w' && tmpY!=specY && regBaifuQidu.test(st1.stid) && regBaifuQidu.test(st2.stid) ){
+						//}else if(data.trainType=='w' && tmpY!=specY && regBaifuQidu.test(st1.stid) && regBaifuQidu.test(st2.stid) ){
+						}else if(data.from=='tra_1003' && tmpY!=specY && regBaifuQidu.test(st1.stid) && regBaifuQidu.test(st2.stid) ){
 							if((data.dir==0 && (tim-st1.dep > st2.arr-tim)) || data.dir==1  && (3*(tim-st1.dep) > st2.arr-tim)){
 								specY = st2.beforePos[1]; tmpY = specY;
 							}
@@ -2516,7 +2548,13 @@ TT.createMap = function(){
 		false,false,false,//13
 		'南港到汐科間新建第四軌，汐科到五堵間於台五甲線大同路上高架新建 TRAM TRAIN 雙軌軌道，並可能於<span style="color:#CE2020;">汐止站前廣場新建第三月台作為基隆輕軌專用月台</span>，汐科和五堵則用原台鐵月台改造。五堵至八堵間新建雙軌，不經過百福車站，另外新增北五堵及六堵站。' +
 		'<span style="color:#2020FE;">台北車站台鐵也可每五分鐘發一班車，採每十五分鐘一輪兩快一慢車，每小時四循環</span>。基隆出發的台鐵區間車30分鐘一班，區間快車30分鐘一班，每小時有四班車可直達台北，另有四班基隆輕軌可至南港，頻率與機場捷運相等。' +
-		'<span style="color:#CE2020;">所有區間車都在汐止待避快車，而其中往基隆的區間車均可與自強號快慢車平行轉乘</span>，因此可略微縮短基隆往返台北的時間。板南線旅客回基隆一律在南港轉車，但可視時間選擇搭台鐵或基隆輕軌。'
+		'<span style="color:#CE2020;">所有區間車都在汐止待避快車，而其中往基隆的區間車均可與自強號快慢車平行轉乘</span>，因此可略微縮短基隆往返台北的時間。板南線旅客回基隆一律在南港轉車，但可視時間選擇搭台鐵或基隆輕軌。',
+		false,//15
+		false,false,false,false,false,//20
+		false,false,false,//23
+		'南港到汐科間新建第四軌，汐科到五堵間於台五甲線大同路上高架新建 TRAM TRAIN 雙軌軌道，並可能於<span style="color:#CE2020;">汐止站前廣場新建第三月台作為基隆輕軌專用月台</span>，汐科和五堵則用原台鐵月台改造。五堵至八堵間新建雙軌，不經過百福車站，另外新增北五堵及六堵站。' +
+		'<span style="color:#2020FE;">台北車站台鐵也可每五分鐘發一班車，一小時四班 TEMU 往花東</span>，所有區間車都在汐止待避快車，但只能待避快車通過無法快慢車轉乘，八堵以南每小時四班區間車直達台北。' +
+		'<span style="color:#CE2020;">基隆站不再駛入台鐵列車，一律五分鐘一班輕軌，可至七堵、汐止、南港轉台鐵其他列車</span>，板南線及文湖線旅客不用考慮直接搭基隆輕軌回基隆。'
 	];
 	var marID  = 0;
 	var tpl = Vue.compile('<div class="mapOut" id="mapShowArea" v-show="seen">' +
@@ -2612,6 +2650,94 @@ TT.createMap = function(){
 	return vm;
 }
 
+TT.drawDiagram = function(railAry, timeAry, comp, caID){
+	var rt = '';
+	var canvas = document.getElementById(caID),
+		cc = canvas.getContext('2d'),
+		r = TT.rail;
+	var rowHeight = 100, per600secWidth = 120, timeStartLeft = 100, timeEndRight = 100, rowOffTop = 50, rowOffEnd = 50;
+	var secMoveX = per600secWidth/600;
+	var timeObj = (function(){
+		var stm = 900000, etm = 0;
+		timeAry.map(function(c){
+			if(c.registerTime < stm) stm = c.registerTime;
+			if(c.offlineTime > etm) etm = c.offlineTime;
+		})
+		var drawStartHour = parseInt(TT.fn.transSec2Time(stm).split(':')[0]);
+		var drawEndHour = parseInt(TT.fn.transSec2Time(etm).split(':')[0])+1;
+		return { startTime: stm, endTime: etm , totalTime: etm-stm, drawStartHour:drawStartHour, drawEndHour: drawEndHour, totalHour: drawEndHour - drawStartHour};
+	})();
+	var caWidth = timeStartLeft + (timeObj.totalHour * 6 * per600secWidth) + timeEndRight,
+		caHeight = rowOffTop + (railAry.length*rowHeight) + rowOffEnd;
+	
+	canvas.width = caWidth; canvas.height = caHeight; canvas.style.backgroundColor = '#FFF';
+	cc.clearRect(0, 0, canvas.width, canvas.height);
+	var stationDrawTop = [];
+	
+	//寫時間
+	var aryTCol = [];
+	for(var i=timeObj.drawStartHour ; i<=timeObj.drawEndHour; i++){
+		for(var j=0; j<6; j++){
+			aryTCol.push(i*3600 + j*600);
+		}
+	}
+	var baseStartTime = aryTCol[0];
+	aryTCol.map(function(c,idx){
+		var timX = idx*per600secWidth + timeStartLeft;
+		cc.font = '16px Arial'; cc.fillStyle = '#1a1a1a';
+		cc.fillText(TT.fn.transTime2HM(c), timX - 20, rowOffTop - 20);
+		cc.beginPath();
+		cc.moveTo(timX, rowOffTop);
+		cc.fillStyle = '#DDD'; cc.strokeStyle = '#DDD'; cc.setLineDash([10]);
+		if(c % 1800==0){ cc.fillStyle = '#666'; cc.strokeStyle = '#666'; cc.setLineDash([15,5]);};
+		cc.lineTo(timX, caHeight);
+		cc.stroke();
+	});
+	var getMoveX = function(time){
+		return Math.ceil((time-baseStartTime) * secMoveX + timeStartLeft);
+	}
+	//寫站名
+	for(var i=0; i<railAry.length; i++){
+		cc.font = '16px Arial'; cc.fillStyle = '#1a1a1a';
+		cc.fillText(railAry[i].name, 10, i*rowHeight + rowOffTop);
+		for(var j=1; j<timeObj.totalHour; j++){
+			cc.fillText(railAry[i].name, j*(per600secWidth*6), i*rowHeight + rowOffTop);
+		}
+		cc.beginPath();
+		cc.moveTo(timeStartLeft, i*rowHeight + rowOffTop);
+		cc.fillStyle = '#DDD'; cc.strokeStyle = '#DDD'; cc.setLineDash([10]);
+		cc.lineTo(caWidth, i*rowHeight + rowOffTop);
+		cc.stroke();
+		stationDrawTop[railAry[i].id] = i*rowHeight + rowOffTop;
+	}
+	//畫列車線
+	var tmpA = false, tmpB = false, tmpD = false, tmpCY = false, tmpCX1 = false, tmpCX2 = false;
+	cc.setLineDash([]);
+	for(var i=0; i<timeAry.length; i++){
+		tmpA = timeAry[i];
+		tmpB = TT.fn.getCarByTrainType(tmpA.trainType);
+		cc.fillStyle = tmpB.color; cc.strokeStyle = tmpB.color;
+		cc.beginPath();
+		cc.moveTo(getMoveX(tmpA.timeAry[0].arr), stationDrawTop[tmpA.timeAry[0].stid]);
+		for(var j=0; j<tmpA.timeAry.length; j++){
+			tmpD = tmpA.timeAry[j];
+			tmpCX1 = getMoveX(tmpD.arr);
+			tmpCX2 = getMoveX(tmpD.dep);
+			tmpCY = stationDrawTop[tmpD.stid];
+			if(tmpCX1==tmpCX2 && !tmpD.pass){
+				tmpCX1--;
+				tmpCX2++;
+			}
+			cc.lineTo(tmpCX1, tmpCY);
+			cc.lineTo(tmpCX2, tmpCY);
+		}
+		cc.stroke();
+		cc.fillText(tmpB.name, tmpCX1 - 10, tmpCY + 20);
+	}
+	
+	return rt;
+}
+
 TT.createTimeTableArea = function(cfg){
 	cfg = cfg || {};
 	cfg.elID = cfg.elID || '#timeTableArea';
@@ -2653,6 +2779,7 @@ TT.createTimeTableArea = function(cfg){
 			'<div class="btnSwitchTable bgTRA" v-on:click="(switchTable(\'t0\'))">台鐵火車 (台北往基隆)</div>' +
 			'<div class="btnSwitchTable bgKLRT" v-on:click="(switchTable(\'k1\'))">基隆輕軌 (基隆往南港)</div>' +
 			'<div class="btnSwitchTable bgKLRT" v-on:click="(switchTable(\'k0\'))">基隆輕軌 (南港往基隆)</div>' +
+			'<div class="btnSwitchTable " v-on:click="drawDiagram" style="background-color:#5c2c5e;">運行圖</div>' +
 		'</div>' +
 		'<div class="timeTableIn">' +
 			'<table cellpadding="0" cellspacing="0">' +
@@ -2714,6 +2841,12 @@ TT.createTimeTableArea = function(cfg){
 				stAry = tkm.stAry;
 				
 				this.switchTable('t1');
+			},
+			drawDiagram: function(){
+				var tm = this.timeAry, caID = 'canvas_diagram';
+				var ins = '<canvas id="' + caID + '"></canvas>';
+				TT.popupArea.pop('<div>' + ins + '</div>');
+				TT.drawDiagram(this.railAry, this.timeAry, this.comp, caID);
 			},
 			getCarColorStyle: function(t){
 				var color = TT.fn.getCarByTrainType(t).color;
