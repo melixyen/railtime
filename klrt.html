@@ -324,7 +324,7 @@ body {
 	position: relative;
 	max-width: calc(100% - 60px);
 	overflow-x: auto;
-	min-width: 980px;
+	min-width: 1010px;
 }
 .timeTableOut.tra{
 	border: 2px solid #26c;
@@ -386,7 +386,7 @@ body {
 /* Set Page Class */
 .setPage{
 	margin-left: 20px;
-	min-width: 1200px;
+	min-width: 1560px;
 	min-height: 600px;
 }
 .setPage .jsonText{
@@ -397,7 +397,7 @@ body {
 }
 .setPage .paramText{
 	margin: 10px 5px;
-	width: 600px;
+	width: 500px;
 	height: 500px;
 	float: left;
 	color: #945;
@@ -441,7 +441,7 @@ body {
 	height: 100%;
 	position: fixed;
 	top: 0; left: 0;
-	background-color: rgba(232,232,232,0.8);
+	background-color: rgba(242,242,242,0.8);
 	z-index: 4000;
 }
 .popupArea .popupIn{
@@ -460,9 +460,20 @@ body {
 	font-size: 16px;
 	line-height: 26px;
 }
+
+.popupArea .popupIn .diagram{
+	background-color: #FFF;
+}
+
 .popupArea .popupIn.big2{
 	font-size: 40px;
 	line-height: 56px;
+}
+.popupArea .popupIn.alphas{
+	background-color: transparent;
+}
+.popupArea .popupIn.alphas .diagram{
+	background-color: transparent;
 }
 
 .popupArea .close{
@@ -479,7 +490,7 @@ body {
 	border: 1px solid #AAA;
 	padding-left: 5px;
 }
-.popupArea .fontTune{
+.popupArea .fontTune, .popupArea .setBgAlpha{
 	position: absolute;
 	z-index: 4002;
 	width: 20px;
@@ -493,6 +504,9 @@ body {
 	border: 1px solid #AAA;
 	padding-left: 5px;
 	background-color: #EEE;
+}
+.popupArea .setBgAlpha{
+	left: 40px;
 }
 .popupArea .bgYellow{
 	background-color: #FAFA22;
@@ -509,7 +523,7 @@ body {
 <script type="text/javascript">
 var TT = {
 	descriptionText: [
-		'本程式為接軌時刻 Web App 內之輔助工具，用於模擬基隆輕軌及台鐵四軌化、定型化時刻表後的運轉模式。<a href="https://github.com/melixyen/railtime/blob/gh-pages/klrt.html" target="_blank">Source</a>',
+		'本程式為接軌時刻 Web App 內之輔助工具，用於模擬基隆輕軌及台鐵四軌化、定型化時刻表後的運轉模式。<a href="https://github.com/melixyen/railtime/blob/gh-pages/klrt.html" target="_blank">Source</a> | <span style="color:#33E;cursor:pointer;" onclick="TT.popupArea.reopen()">Window</span>',
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
@@ -532,24 +546,24 @@ var TT = {
 	//dir: 1是西部南下逆行，0是西部北上順行
 	//platMain 若為兩組數字代表南下逆跟北上順的主要月台，若為四組數字則前兩組為台鐵後兩組代表基隆輕軌的南下跟北上
 	station: [
-        {id:"tra_1001", name: "基隆", trainType: 'pkrewx', line: "kw", platform: ["1a1b","2a"], platMain: ["1b","2a"], pos: [14,0]},
-        {id:"tra_1029", name: "三坑", trainType: "pk", line: "kw", platform: ["1a1b"], platMain: ["1a","1b"], pos: [13,0]},
-        {id:"tra_1002", name: "八堵", trainType: "pkex", line: "kwe", platform: ["1b","2a","3a3b"], platMain: ["3a","3b"], pos: [12,0]},
-        {id:"tra_1003", name: "七堵", trainType: "pkewxr", line: "kwe", platform: ["1a1b","2a2b","3a3b","4a4b","5c5d"], platMain: ["1b","2a", "5c", "5d"], pos: [11,0]},
-        {id:"tra_1030", name: "百福", trainType: "p", line: "we", platform: ["1a1b","2a"], platMain: ["1a","1b"], pos: [9,0]},
-        {id:"tra_1004", name: "五堵", trainType: "pk", line: "kwe", platform: ["1a1b","2c2d"], platMain: ["1a","1b","2c","2d"], pos: [7,0]},
-        {id:"tra_1005", name: "汐止", trainType: "pkwx", line: "kwe", platform: ["1a1b","2a2b","3c3d"], platMain: ["1b","2a","3c","3d"], pos: [6,0]},
-        {id:"tra_1031", name: "汐科", trainType: "pkx", line: "kwe", platform: ["1a1b","2c2d"], platMain: ["1a","1b","2c","2d"], pos: [5,0]},
-        {id:"tra_1006", name: "南港", trainType: "pkewxtr", line: "kwe", platform: ["4b","3a3b","2a2b","1a1b","5c5d"], platMain: ["2b","1a","5c","5d"], pos: [2,0]},
-        {id:"tra_1007", name: "松山", trainType: "pewxtr", line: "we", platform: ["1a1b","2a2b"], platMain: ["1b","2a"], pos: [1,0]},
-        {id:"tra_1008", name: "台北", trainType: "pewxtr", line: "we", platform: ["3a3b","4a4b"], platMain: ["3b","4a"], pos: [0,0]},
+        {id:"tra_1001", name: "基隆", trainType: 'pkrewx', line: "kw", km: 0, platform: ["1a1b","2a"], platMain: ["1b","2a"], pos: [14,0]},
+        {id:"tra_1029", name: "三坑", trainType: "pk", line: "kw", km: 1.3, platform: ["1a1b"], platMain: ["1a","1b"], pos: [13,0]},
+        {id:"tra_1002", name: "八堵", trainType: "pkex", line: "kwe", km: 3.7, platform: ["1b","2a","3a3b"], platMain: ["3a","3b"], pos: [12,0]},
+        {id:"tra_1003", name: "七堵", trainType: "pkewxr", line: "kwe", km: 6, platform: ["1a1b","2a2b","3a3b","4a4b","5c5d"], platMain: ["1b","2a", "5c", "5d"], pos: [11,0]},
+        {id:"tra_1030", name: "百福", trainType: "p", line: "we", km: 8.7, platform: ["1a1b","2a"], platMain: ["1a","1b"], pos: [9,0]},
+        {id:"tra_1004", name: "五堵", trainType: "pk", line: "kwe", km: 11.7, platform: ["1a1b","2c2d"], platMain: ["1a","1b","2c","2d"], pos: [7,0]},
+        {id:"tra_1005", name: "汐止", trainType: "pkwx", line: "kwe", km: 13.1, platform: ["1a1b","2a2b","3c3d"], platMain: ["1b","2a","3c","3d"], pos: [6,0]},
+        {id:"tra_1031", name: "汐科", trainType: "pkx", line: "kwe", km: 14.6, platform: ["1a1b","2c2d"], platMain: ["1a","1b","2c","2d"], pos: [5,0]},
+        {id:"tra_1006", name: "南港", trainType: "pkewxtr", line: "kwe", km: 19.1, platform: ["4b","3a3b","2a2b","1a1b","5c5d"], platMain: ["2b","1a","5c","5d"], pos: [2,0]},
+        {id:"tra_1007", name: "松山", trainType: "pewxtr", line: "we", km: 21.9, platform: ["1a1b","2a2b"], platMain: ["1b","2a"], pos: [1,0]},
+        {id:"tra_1008", name: "台北", trainType: "pewxtr", line: "we", km: 28.3, platform: ["3a3b","4a4b"], platMain: ["3b","4a"], pos: [0,0]},
         //{id:"tra_1802", name: "暖暖", trainType: "p", line: "e", platform: ["1b","2a"], platMain: ["1b","2a"], pos: [12,1], rotate: true},
         //{id:"tra_1803", name: "四腳亭", trainType: "p", line: "e", platform: ["1a1b"], platMain: ["1a","1b"], pos: [12,2], rotate: true},
         //{id:"tra_1804", name: "瑞芳", trainType: "pex", line: "e", platform: ["1a1b","2a2b"], platMain: ["1b","2a"], pos: [12,3], rotate: true},
-        {id:"tra_8102", name: "六堵", trainType: "k", line: "k", platform: ["1c1d"], platMain: ["1c","1d"], pos: [10,0]},
-        {id:"tra_8104", name: "北五堵", trainType: "k", line: "k", platform: ["1c1d"], platMain: ["1c","1d"], pos: [8,0]},
-        {id:"tra_8106", name: "樟樹灣", trainType: "k", line: "k", platform: ["1c1d"], platMain: ["1c","1d"], pos: [4,0]},
-        {id:"tra_8108", name: "南港展覽館", trainType: "k", line: "k", platform: ["1c1d"], platMain: ["1c","1d"], pos: [3,0]}
+        {id:"tra_8102", name: "六堵", trainType: "k", line: "k", km: 7.8, platform: ["1c1d"], platMain: ["1c","1d"], pos: [10,0]},
+        {id:"tra_8104", name: "北五堵", trainType: "k", line: "k", km: 9.7, platform: ["1c1d"], platMain: ["1c","1d"], pos: [8,0]},
+        {id:"tra_8106", name: "樟樹灣", trainType: "k", line: "k", km: 15.5, platform: ["1c1d"], platMain: ["1c","1d"], pos: [4,0]},
+        {id:"tra_8108", name: "南港展覽館", trainType: "k", line: "k", km: 18, platform: ["1c1d"], platMain: ["1c","1d"], pos: [3,0]}
 	],
 	stBlockWidth: 80,
 	stBlockHeight: 300,
@@ -1213,6 +1227,7 @@ TT.processFirst = function(initFlag){
 }
 TT.popupArea = (function(){
 	var rt = {};
+	var lastHTML = '';
 	var dom = document.getElementById('popupArea');
 	var din = document.getElementById('popupIn');
 	if(!dom.isAddCloseFn){
@@ -1227,6 +1242,17 @@ TT.popupArea = (function(){
 			}
 		}, false);
 		dom.appendChild(df);
+		var da = document.createElement('div');
+		da.className = 'setBgAlpha';
+		da.innerHTML = '透';
+		da.addEventListener('click', function(e){
+			if(din.className.indexOf('alphas')>=0){
+				din.className = din.className.replace(' alphas','');
+			}else{
+				din.className = din.className + ' alphas';
+			}
+		}, false);
+		dom.appendChild(da);
 		dom.addEventListener('click', function(e){
 			if(e.target.id=='popupArea'){
 				rt.close();
@@ -1242,14 +1268,18 @@ TT.popupArea = (function(){
 	rt.show = function(){
 		dom.style.display = '';
 	}
-	rt.pop = function(html){
-		din.className = din.className.replace(' big2','');
+	rt.pop = function(html, flgNoRemember){
+		din.className = din.className.replace(' big2','').replace(' alphas','');
 		din.innerHTML = html;
 		rt.show();
+		if(!flgNoRemember) lastHTML = html;
 	}
 	rt.pop2 = function(html){
 		rt.pop(html);
 		din.className = din.className + ' big2';
+	}
+	rt.reopen = function(){
+		rt.pop(lastHTML);
 	}
 	rt.clear = function(){
 		din.innerHTML = '';
@@ -2655,7 +2685,7 @@ TT.drawDiagram = function(railAry, timeAry, comp, caID){
 	var canvas = document.getElementById(caID),
 		cc = canvas.getContext('2d'),
 		r = TT.rail;
-	var rowHeight = 100, per600secWidth = 120, timeStartLeft = 100, timeEndRight = 100, rowOffTop = 50, rowOffEnd = 50;
+	var rowHeight = 100, per600secWidth = 120, timeStartLeft = 100, timeEndRight = 100, rowOffTop = 50, rowOffEnd = 50, kmHeight = 30;
 	var secMoveX = per600secWidth/600;
 	var timeObj = (function(){
 		var stm = 900000, etm = 0;
@@ -2667,10 +2697,30 @@ TT.drawDiagram = function(railAry, timeAry, comp, caID){
 		var drawEndHour = parseInt(TT.fn.transSec2Time(etm).split(':')[0])+1;
 		return { startTime: stm, endTime: etm , totalTime: etm-stm, drawStartHour:drawStartHour, drawEndHour: drawEndHour, totalHour: drawEndHour - drawStartHour};
 	})();
+	var kmObj = (function(){
+		var firstStation = 0, lastStation = 0, min = 0, max = 0, aryDrawKM = [];
+		railAry.map(function(c,idx){
+			if(idx==0){
+				firstStation = c.km;
+				min = c.km;
+				max = c.km;
+			}
+			lastStation = c.km;
+			if(c.km > max) max = c.km;
+			if(c.km < min) min = c.km;
+			aryDrawKM[c.id] = c.km;
+		});
+		if(firstStation > lastStation){
+			for(var k in aryDrawKM){
+				//aryDrawKM[k] = max - aryDrawKM[k];
+			}
+		}
+		return {firstStation:firstStation, lastStation:lastStation, min:min, max:max, aryDrawKM:aryDrawKM}
+	})();
 	var caWidth = timeStartLeft + (timeObj.totalHour * 6 * per600secWidth) + timeEndRight,
-		caHeight = rowOffTop + (railAry.length*rowHeight) + rowOffEnd;
+		caHeight = rowOffTop + (kmObj.max*kmHeight) + rowOffEnd;;//caHeight = rowOffTop + (railAry.length*rowHeight) + rowOffEnd;
 	
-	canvas.width = caWidth; canvas.height = caHeight; canvas.style.backgroundColor = '#FFF';
+	canvas.width = caWidth; canvas.height = caHeight; canvas.className = 'diagram';//canvas.style.backgroundColor = '#FFF';
 	cc.clearRect(0, 0, canvas.width, canvas.height);
 	var stationDrawTop = [];
 	
@@ -2686,11 +2736,12 @@ TT.drawDiagram = function(railAry, timeAry, comp, caID){
 		var timX = idx*per600secWidth + timeStartLeft;
 		cc.font = '16px Arial'; cc.fillStyle = '#1a1a1a';
 		cc.fillText(TT.fn.transTime2HM(c), timX - 20, rowOffTop - 20);
+		cc.fillText(TT.fn.transTime2HM(c), timX - 20, caHeight - 10);
 		cc.beginPath();
 		cc.moveTo(timX, rowOffTop);
 		cc.fillStyle = '#DDD'; cc.strokeStyle = '#DDD'; cc.setLineDash([10]);
 		if(c % 1800==0){ cc.fillStyle = '#666'; cc.strokeStyle = '#666'; cc.setLineDash([15,5]);};
-		cc.lineTo(timX, caHeight);
+		cc.lineTo(timX, caHeight - rowOffTop);
 		cc.stroke();
 	});
 	var getMoveX = function(time){
@@ -2699,16 +2750,17 @@ TT.drawDiagram = function(railAry, timeAry, comp, caID){
 	//寫站名
 	for(var i=0; i<railAry.length; i++){
 		cc.font = '16px Arial'; cc.fillStyle = '#1a1a1a';
-		cc.fillText(railAry[i].name, 10, i*rowHeight + rowOffTop);
+		var stationTop = kmObj.aryDrawKM[railAry[i].id] * kmHeight + rowOffTop;//stationTop = i*rowHeight + rowOffTop
+		cc.fillText(railAry[i].name, 10, stationTop);
 		for(var j=1; j<timeObj.totalHour; j++){
-			cc.fillText(railAry[i].name, j*(per600secWidth*6), i*rowHeight + rowOffTop);
+			cc.fillText(railAry[i].name, j*(per600secWidth*6), stationTop);
 		}
 		cc.beginPath();
-		cc.moveTo(timeStartLeft, i*rowHeight + rowOffTop);
+		cc.moveTo(timeStartLeft, stationTop);
 		cc.fillStyle = '#DDD'; cc.strokeStyle = '#DDD'; cc.setLineDash([10]);
-		cc.lineTo(caWidth, i*rowHeight + rowOffTop);
+		cc.lineTo(caWidth, stationTop);
 		cc.stroke();
-		stationDrawTop[railAry[i].id] = i*rowHeight + rowOffTop;
+		stationDrawTop[railAry[i].id] = stationTop;
 	}
 	//畫列車線
 	var tmpA = false, tmpB = false, tmpD = false, tmpCY = false, tmpCX1 = false, tmpCX2 = false;
@@ -2780,6 +2832,7 @@ TT.createTimeTableArea = function(cfg){
 			'<div class="btnSwitchTable bgKLRT" v-on:click="(switchTable(\'k1\'))">基隆輕軌 (基隆往南港)</div>' +
 			'<div class="btnSwitchTable bgKLRT" v-on:click="(switchTable(\'k0\'))">基隆輕軌 (南港往基隆)</div>' +
 			'<div class="btnSwitchTable " v-on:click="drawDiagram" style="background-color:#5c2c5e;">運行圖</div>' +
+			'<div class="btnSwitchTable " v-on:click="drawDiagram(2)" style="background-color:#2c6c8e;">雙向</div>' +
 		'</div>' +
 		'<div class="timeTableIn">' +
 			'<table cellpadding="0" cellspacing="0">' +
@@ -2842,11 +2895,17 @@ TT.createTimeTableArea = function(cfg){
 				
 				this.switchTable('t1');
 			},
-			drawDiagram: function(){
+			drawDiagram: function(nf){
 				var tm = this.timeAry, caID = 'canvas_diagram';
 				var ins = '<canvas id="' + caID + '"></canvas>';
-				TT.popupArea.pop('<div>' + ins + '</div>');
-				TT.drawDiagram(this.railAry, this.timeAry, this.comp, caID);
+				TT.popupArea.pop('<div>' + ins + '</div>', true);
+				if(nf==2){
+				var aryA = JSON.parse(JSON.stringify(h4Table));
+				var aryB = (this.callIndex<=1) ? aryA[0].concat(aryA[1]) : aryA[2].concat(aryA[3])
+					TT.drawDiagram(this.railAry, aryB, this.comp, caID);
+				}else{
+					TT.drawDiagram(this.railAry, this.timeAry, this.comp, caID);
+				}
 			},
 			getCarColorStyle: function(t){
 				var color = TT.fn.getCarByTrainType(t).color;
