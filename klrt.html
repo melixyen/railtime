@@ -527,7 +527,7 @@ var TT = {
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2018/06/11</span>"
+			"更新日期: 2018/06/12</span>"
 	],
 	car: [
 		{"id": "carK", "name": "輕軌", "ename": "Keelung LRT", "color": "#2EA42B", trainType: "k", zIndex: 104},
@@ -1315,7 +1315,7 @@ TT.teachImp = (function(){
 	var me = this;
 	me.showProgramStep = function(){
 		var html = '<h2>列車模擬程式初始化運作流程</h2>' +
-			'<p>列車模擬程式進入網頁後首先要判斷 rai.mode 值，建立軌道配置和月台配置的基礎</p>' +
+			'<p>列車模擬程式進入網頁後首先要判斷 rail.mode 值，建立軌道配置和月台配置的基礎</p>' +
 			'<ol><li>依照 station 資料將台北至基隆間所有車站建立至 stationLayer </li><li>使用 CANVAS 繪製軌道，在車站內佈設月台</li><li>用早上七點時間和預設列車模組計算一個小時的時刻表</li></ol>' +
 			'<br><br>' +
 			'<h2>基本組件</h2><ul>' +
@@ -1341,12 +1341,12 @@ TT.teachImp = (function(){
 				'<li>stepAry: 每 20 秒應該移動到的軌道位置、應該停靠的月台資料、當時運轉狀態存放於此，使用 stationPosAry 資料計算出來的</li>' +
 				'<li style="color:#2C915C;">readyGo: function，在 DOM 中產生一個列車的 div 加入 stationLayer 後發車。</li>' +
 				'<li style="color:#2C915C;">moveTrain: function，依照時間呼叫 setPosition 列車應該移動到的位置</li>' +
-				'<li style="color:#2C915C;">setPosition: 將列車移動到指定的座標，若為靠站狀態加上靠站時的 CSS 效果</li>' +
+				'<li style="color:#2C915C;">setPosition: function，將列車移動到指定的座標，若為靠站狀態加上靠站時的 CSS 效果</li>' +
 				'<li style="color:#2C915C;">offline: function，列車到達終點將列車下線，從 stationLayer 中移除列車的 div</li>' +
 			'</ol><br><br>' +
 			'<h2>月台與股道配置原則</h2><ol>' +
 				'<li>在 station 資料中以 platform 陣列儲存，一座月台為一個陣列元素</li>' +
-				'<li>月台格式為 1a1b , 2b , 3c3d 型式，編號在前停靠側才後，島式月台有兩個停靠側，側式月台只需填寫一個</li>' +
+				'<li>月台格式為 1a1b , 2b , 3c3d 型式，編號在前停靠側在後，島式月台有兩個停靠側，側式月台只需填寫一個</li>' +
 				'<li><span class="bgYellow">ab代表台鐵月台，cd代表基隆輕軌月台</span>；<span class="bgPink">ac代表基隆看往台北方向的左側，bd代表右側</span></li>' +
 				'<li>在 station 資料中以 platMain 紀錄南下北上主要正線通過的月台位置，依序為台鐵逆行、台鐵順行、基隆輕軌逆行、基隆輕軌順行</li>' +
 				'<li>幹線通過車站時<span class="bgPink">優先將 platMain 中的月台緊貼於幹線</span>，再往兩旁分佈側線</li>' +
@@ -2128,6 +2128,8 @@ TT.createMenuBar = function(){
 			setRailMode: function(n){
 				if(n) TT.rail.mode = n;
 				this.railMode = TT.rail.mode;
+				TT.showDescription = false;
+				TT.map.clearMarStr();
 				TT.processFirst();
 				TT.map.reDrawMap();
 				this.flagShowRailSwitch = false;
@@ -2620,6 +2622,12 @@ TT.createMap = function(){
 				this.neverDrawMap = true;
 				this.stationAry = TT.genStationOnMap();
 				this.drawMap();
+			},
+			clearMarStr: function(){
+				clearInterval(marID);
+				this.marStr = '';
+				var domMar = this.$el.querySelector('div.marIn');
+				domMar.style.display = 'none';
 			},
 			updateMar: function(){
 				this.marStr = aryMarTx[TT.showDescription];
