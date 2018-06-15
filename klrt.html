@@ -16,6 +16,13 @@ body {
 	font-size: 14px;
 	margin: 0px;
 }
+.bs_no_select{
+   -o-user-select:none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   -webkit-user-select: none;
+   user-select: none;
+}
 
 #ttDebug{
 	position: fixed;
@@ -185,6 +192,7 @@ body {
 	position: relative;
 	z-index: 41;
 	cursor: pointer;
+	background-color: #FFF;
 }
 
 .platformOut{
@@ -203,9 +211,10 @@ body {
 	width: 40px;
 	height: 14px;
 	text-align: center;
-	border: 1px solid #222;
+	border: 1px solid transparent;
 	box-sizing: border-box;
 	line-height: 14px;
+	color: transparent;
 }
 .marArea{
 	width: 100%;
@@ -223,6 +232,29 @@ body {
 	word-break: break-all;
 	white-space: nowrap;
 }
+.penArea{
+	position: absolute;
+	top: 24px;
+	left: 0px;
+	z-index: 20;
+	color: #3AC049;
+	cursor: pointer;
+	font-size: 12px;
+}
+.penArea > div{
+	border: 1px solid #A99;
+	border-radius: 5px;
+	padding: 3px 6px;
+	margin: 2px 0px;
+}
+.penArea .penClear{
+	color: #AA20B9;
+}
+.penArea .penSave{
+	color: #3AD0B9;
+}
+
+
 
 /* Car Class */
 .carOut{
@@ -527,7 +559,7 @@ var TT = {
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2018/06/14</span>"
+			"更新日期: 2018/06/15</span>"
 	],
 	car: [
 		{"id": "carK", "name": "輕軌", "ename": "Keelung LRT", "color": "#2EA42B", trainType: "k", zIndex: 104},
@@ -1385,7 +1417,7 @@ TT.teachImp = (function(){
 			'<a href="?q=24" target="_blank">四軌模式，台鐵每小時四班太魯閣普悠瑪往花東，輕軌五分鐘一班，基隆不再停靠台鐵</a><br><br>'
 		TT.popupArea.pop2(html);
 	},
-	me.showStation1006 = function(){
+	me.showStation1005 = function(){
 		var html = '<h2>汐止站基隆輕軌四軌化時新建場站可能位置</h2>' +
 			'<p>基隆輕軌若為四軌化方案，將於台五甲線汐止大同路上高架雙線新輕軌軌道，汐止車站也會新建基隆輕軌專用車站及專用月台。汐止車站的旅客主要集中於一號出口靠近信義路、新昌公園方向，而汐止車站也只有此處站前廣場直接與大同路連接，其餘位置與大同路間均有民房隔閡，因此汐止車站公車站牌所用花圃和公車彎是最適合設置輕軌車站及月台的位置，並可使用空橋連接台鐵月台末端達成站內轉乘。</p>'+
 			'<div><iframe style="width:100%;height:650px;" src="https://www.google.com/maps/d/embed?mid=1WUrE8N6UAAfMopt4XLsSaSi145dyoH0l&ll=25.068974675215863%2C121.66219796613848&z=19"></div>' +
@@ -1590,7 +1622,6 @@ TT.makeAllRouteTimeTable = function(startHour, runHour){
 			tmpAnHour = TT.makeRouteTimeTable(startHour + i);
 			tmpTime = tmpTime.concat(tmpAnHour);
 	}
-	console.info(tmpTime);
 	tmpTime.sort(function(a,b){
 			return (a.sortMin > b.sortMin) ? 1 : -1;
 	});
@@ -1602,7 +1633,7 @@ TT.classTrain = function(data){
 	var baseRate = TT.baseRate;
 	var me = this,
 		timeAry = data.timeAry,
-		fpm = 60 / baseRate,//用 60 除以此數，代表一分鐘要切成幾塊，預設 20 秒更新一次所以一分鐘會切成 3 塊
+		fpm = 60 / baseRate,//用 60 除以此數，代表一分鐘要切成幾塊，預設 20 秒為一個進度所以一分鐘會切成 3 塊
 		carOutWidth = 120, carOutHeight = 100, carInWidth = 56, carInHeight = 24, alignWidth = 120, alignHeight = 60,
 		carOnTimeTable = false;;
 	me.data = data;
@@ -2395,6 +2426,95 @@ TT.genStationOnMap = function(){
 	return aryA;
 }
 
+
+TT.appendDrawLine = function(canvas, outDom, penDom){
+	
+	outDom = (typeof(outDom)=='string') ? document.getElementById(outDom) : outDom;
+	canvas = (typeof(canvas)=='string') ? document.getElementById(canvas) : canvas;
+	var caID = canvas.id, caWidth = canvas.width, caHeight = canvas.height, cc = canvas.getContext('2d');
+	if(penDom){
+		penDom = (typeof(penDom)=='string') ? document.getElementById(penDom) : penDom;
+		penDom.style.width = caWidth + 'px';penDom.style.height = caHeight + 'px';
+	}else{
+		penDom = outDom;
+	}
+	if(penDom.alreadyRenderPen) return false;
+	penDom.alreadyRenderPen = true;
+	var sx=0,sy=0,ex=0,ey=0,flagDraw=false,svg1=false,svgLine1=false,colorS='#01FE0a',svgLineID = caID + '_svg_line';
+	var getCalcXY=function(x,y){
+		var pos = canvas.getBoundingClientRect();
+		return {
+			x: x - Math.floor(pos.left),
+			y: y - Math.floor(pos.top)
+		}
+	}
+	var createSVG = function(x,y){
+		div = outDom;
+		if(!svg1){
+			svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+			svg1.id = caID + '_svg';
+			svg1.setAttribute('height',caHeight); svg1.setAttribute('width',caWidth);
+			svg1.style.position = 'absolute';  svg1.style.zIndex = '6';
+			div.appendChild(svg1);
+			svg1.innerHTML = '<line stroke="' + colorS + '" id="' + svgLineID + '" stroke-width="2" x1="0" y1="0" x2="1" y2="1"></line>';
+			svgLine1 = document.getElementById(svgLineID);
+		}
+		svg1.style.display = '';
+		svg1.style.left=x+'px'; svg1.style.top=y+'px';
+		svg1.setAttribute('height',0); svg1.setAttribute('width',0);
+		svgLine1 = document.getElementById(svgLineID);
+	}
+	penDom.addEventListener('mousedown', function(e){
+		if(!penDom.alreadyDrawUserLine) return false;
+		var pos = getCalcXY(e.x, e.y);
+		sx = pos.x; sy = pos.y;
+		flagDraw = true;
+		createSVG(sx,sy);
+	});
+	penDom.addEventListener('mousemove', function(e){
+		if(!svg1 || !flagDraw) return false;
+		var pos = getCalcXY(e.x, e.y);
+		var w = Math.abs(pos.x - sx), h = Math.abs(pos.y - sy);
+		if(w<2)w=2; if(h<2) h=2;
+		
+		svg1.setAttribute('height',h); svg1.setAttribute('width',w);
+		if(pos.x < sx){
+			svg1.style.left = pos.x + 'px';
+			svgLine1.setAttribute('x1', 0); svgLine1.setAttribute('x2', '100%');
+		}else{
+			svg1.style.left = sx + 'px';
+			svgLine1.setAttribute('x1', '100%'); svgLine1.setAttribute('x2', 0);
+		}
+		if(pos.y < sy){
+			svg1.style.top = pos.y + 'px';
+			svgLine1.setAttribute('y1', 0); svgLine1.setAttribute('y2', '100%');
+		}else{
+			svg1.style.top = sy + 'px';
+			svgLine1.setAttribute('y1', '100%'); svgLine1.setAttribute('y2', 0);
+		}
+	}, true);
+	penDom.addEventListener('mouseup', function(e){
+		if(!svg1 || !flagDraw) return false;
+		var pos = getCalcXY(e.x, e.y);
+		ex = pos.x; ey = pos.y;
+		cc.fillStyle = colorS;cc.strokeStyle = colorS;
+		cc.beginPath();
+		cc.moveTo(sx,sy);
+		cc.lineTo(ex,ey);
+		cc.stroke();
+		flagDraw = false;
+		svg1.style.display = 'none';
+	}, true);
+	
+	penDom.alreadyDrawUserLine = true;
+	penDom.stopDrawUserLine = function(){
+		penDom.alreadyDrawUserLine = false;
+	}
+	penDom.startDrawUserLine = function(){
+		penDom.alreadyDrawUserLine = true;
+	}
+	return penDom;
+}
 TT.genRouteOnMap = function(canvasID, stAry){
 	var canvas = document.getElementById(canvasID),
 		cc = canvas.getContext('2d'),
@@ -2402,7 +2522,10 @@ TT.genRouteOnMap = function(canvasID, stAry){
 		klrtCount = 0,
 		platfomDrawLineAry = [],
 		platfomDrawKLRT3LineAry = [], platfomDrawKLRT3LineQidu = false,
+		platformBoxAry = [],
+		platformLeftMargin = Math.ceil((TT.stBlockWidth - TT.rail.platformWidth)/2),
 		platformAry = false,
+		stNameAry = [],
 		transRailOffset = 12,
 		platformSlaveLineWidth = TT.rail.platformWidth + 8,
 		flgDir1 = false,
@@ -2418,12 +2541,14 @@ TT.genRouteOnMap = function(canvasID, stAry){
 				klrtCount++;
 			}
 		}
+		stNameAry.push([c.name, c.pos[0]*TT.stBlockWidth]);
 		if(/^tra_1002|^tra_1003/.test(c.id)){
 			if(c.id=='tra_1002') stBadu = c;
 			if(c.id=='tra_1003') stQidu = c;
 		}
 		c.platformAry.map(function(p){
 			var offsetA = 0;
+			platformBoxAry.push([c.pos[0]*TT.stBlockWidth + platformLeftMargin, p.top, p.num]);
 			if(p.comp=='TRA' && c.id!='tra_1002'){
 				if(p.ary[0] && !p.ary[0].main){
 					platfomDrawLineAry.push([c.pos[0]*TT.stBlockWidth + lineLeftRightMargin, p.platformElTop.leftRail]);
@@ -2471,7 +2596,20 @@ TT.genRouteOnMap = function(canvasID, stAry){
 	}
 	cc.stroke();
 	
-	//2.畫所有月台副線
+	//2.畫所有月台和副線
+	cc.beginPath();
+	cc.fillStyle = '#000'; cc.strokeStyle = '#222'; cc.font = '14px Arial'; cc.textAlign = 'center';
+	cc.lineWidth = TT.rail.platformBorderWidth;
+	platformBoxAry.map(function(p){
+		cc.rect(p[0]+0.5, p[1]-0.5, TT.rail.platformWidth, TT.rail.platformHeight);
+		cc.fillText(p[2], p[0]+Math.floor(TT.rail.platformWidth/2), p[1] + 12);
+	});
+	stNameAry.map(function(c){
+		cc.fillText(c[0], c[1]+TT.rail.platformWidth, 13);
+	});
+	cc.stroke();
+	
+	//+++++++++++++
 	cc.beginPath();
 	cc.fillStyle = r.colorTRA;
 	cc.strokeStyle = r.colorTRA;
@@ -2559,6 +2697,7 @@ TT.genRouteOnMap = function(canvasID, stAry){
 
 TT.createMap = function(){
 	var rail = TT.rail;
+	var pen = false;
 	var aryMarTx = [
 		false, false,
 		'使用南港到八堵間第三軌改造為基隆輕軌專用線，除南港展覽館外不增加車站，<span style="color:#CE2020;">汐止站移撥一個月台給基隆輕軌，此後南港到七堵間長達 13 公里無待避交會車站</span>，每小時最多行駛十班車，五班區間車、五班對號快車。'+
@@ -2591,15 +2730,21 @@ TT.createMap = function(){
 	];
 	var marID  = 0;
 	var tpl = Vue.compile('<div class="mapOut" id="mapShowArea" v-show="seen">' +
-		'<div class="routeLayer" v-html="printCanvas()"></div>' +
+		'<div class="routeLayer" v-html="printCanvas()" id="routeLayer"></div>' +
 		'<div class="trainLayer" style="display:none;"></div>' +
-		'<div class="stationLayer" id="stationLayer">' +
+		'<div class="stationLayer bs_no_select" id="stationLayer">' +
 			'<div v-for="(st,idx) in stationAry" v-bind:style="getStationStyle(st.id)" class="stationOut">' +
 				'<div class="stationName" v-on:click="popStation(st.id)" v-bind:class="(st.id)" v-bind:data-stid="(st.id)" v-bind:style="getStationNameStyle(st)">{{ st.name }}</div>' +
 				'<div class="platformOut" v-html="printPlatform(st)"></div>' +
 			'</div>' +
 		'</div>' +
 		'<div class="marArea"><div class="marIn" v-html="marStr"></div></div>' +
+		'<div class="penArea">' +
+			'<div class="penEnable" v-show="!enableDrawUserLine" v-on:click="setDrawUserLine(true)">我要畫線</div>' +
+			'<div class="penDisable" v-show="enableDrawUserLine" v-on:click="setDrawUserLine(false)">關閉畫線</div>' +
+			'<div class="penClear" v-on:click="reDrawMap">清除畫線</div>' +
+			'<div class="penSave" v-on:click="saveCanvas">匯出圖檔</div>' +
+		'</div>' +
 	'</div>');
 	var vm = new Vue({
 		el: '#mapShowArea',
@@ -2607,6 +2752,7 @@ TT.createMap = function(){
 		data: {
 			seen: true,
 			neverDrawMap: true,
+			enableDrawUserLine: false,
 			marStr: aryMarTx[TT.showDescription],
 			stationAry: TT.genStationOnMap()
 		},
@@ -2661,12 +2807,15 @@ TT.createMap = function(){
 				if(st.rotate){
 					rt = 'width:60px;position:absolute;left:0px;text-align:left;'
 				}
+				if(st.id=='tra_1005'){
+					rt += 'color:#2e2fef;text-decoration: underline;';
+				}
 				return rt;
 			},
 			popStation: function(stid){
 				switch(stid){
 					case 'tra_1005':
-						TT.teachImp.showStation1006();
+						TT.teachImp.showStation1005();
 					break;
 				}
 			},
@@ -2680,10 +2829,26 @@ TT.createMap = function(){
 					rt += '<div class="platformDiv" style="top:' + c.top + 'px;">' + c.num + '</div>';
 				});
 				return rt;
+			},
+			saveCanvas: function(){
+				var canvas = document.getElementById('canvasRoute');
+				var img = canvas.toDataURL("image/png");
+				var aLink = document.createElement('a');
+				window.open(img);
+			},
+			setDrawUserLine: function(flg){
+				if(flg){
+					pen.startDrawUserLine();
+				}else{
+					pen.stopDrawUserLine();
+				}
+				this.enableDrawUserLine = flg;
 			}
 		},
 		mounted: function(){
 			this.drawMap();
+			pen = TT.appendDrawLine("canvasRoute", document.getElementById('stationLayer'));
+			this.setDrawUserLine(this.enableDrawUserLine);
 		}
 	})
 	return vm;
@@ -2796,6 +2961,7 @@ TT.drawDiagram = function(railAry, timeAry, comp, caID){
 		cc.fillText(tmpB.name, tmpCX1 - 10, tmpCY + 20);
 	}
 	
+	TT.appendDrawLine(canvas, document.getElementById(caID + '_out'), document.getElementById(caID + '_pen'));//測試 Draw Line
 	return rt;
 }
 
@@ -2906,8 +3072,9 @@ TT.createTimeTableArea = function(cfg){
 			},
 			drawDiagram: function(nf){
 				var tm = this.timeAry, caID = 'canvas_diagram';
-				var ins = '<canvas id="' + caID + '"></canvas>';
-				TT.popupArea.pop('<div>' + ins + '</div>', true);
+				var ins = '<canvas id="' + caID + '"></canvas>' +
+					'<div id="' + caID + '_pen" style="position:absolute;top:0px;left:0px;display:inline-block;z-index:10;"></div>';
+				TT.popupArea.pop('<div style="position:relative;display:inline-block;" id="' + caID + '_out">' + ins + '</div>', true);
 				if(nf==2){
 				var aryA = JSON.parse(JSON.stringify(h4Table));
 				var aryB = (this.callIndex<=1) ? aryA[0].concat(aryA[1]) : aryA[2].concat(aryA[3])
