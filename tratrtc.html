@@ -805,10 +805,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.5.6",
-            "產生日期": "2018/05/30"
+            "版本": "Beta 0.5.7",
+            "產生日期": "2018/08/22"
         },
         programUpdateInfo: [
+                    'Beta 0.5.7: 新增台鐵速查系統連結。',
                     'Beta 0.5.6: 修正台鐵沙崙線轉平溪線無法查詢錯誤。',
                     'Beta 0.5.5: 新增台鐵新富站。',
                     'Beta 0.5.4: 新增機場捷運與台北捷運蘆洲線透過三重與大橋頭轉乘。',
@@ -867,6 +868,7 @@ var TT = (function(){
         			{"id": "1103", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1107", "name": "普悠瑪號", "ename": "Tze-Chiang Limited Express(Puyuma)", "color": "#ff0030"},
         			{"id": "1108", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "1109", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1110", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
         			{"id": "1111", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
         			{"id": "1114", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
@@ -976,8 +978,23 @@ var TT = (function(){
                 {id:"tra_1242", name: "新左營", estring: "xingzouying", sect: "kaohsiung", big: 's'},
                 {id:"tra_1236", name: "左營", estring: "zouying", sect: "kaohsiung"},
                 {id:"tra_1238", name: "高雄", estring: "kaohsiunggaoxung", sect: "kaohsiung", big: 'ws'},
+                {id:"tra_1402", name: "鳳山", estring: "fongshanfengshan", sect: "kaohsiung"},
+                {id:"tra_1403", name: "後庄", estring: "hozhuang", sect: "kaohsiung"},
+                {id:"tra_1404", name: "九曲堂", estring: "jiuqutang", sect: "kaohsiung"},
+                {id:"tra_1405", name: "六塊厝", estring: "liukuaicuo", sect: "pingdong"},
                 {id:"tra_1406", name: "屏東", estring: "pingtungpingdong", sect: "pingdong", big: 'ws', noShow: true},
+                {id:"tra_1407", name: "歸來", estring: "gueilai", sect: "pingdong"},
+                {id:"tra_1408", name: "麟洛", estring: "linluo", sect: "pingdong"},
+                {id:"tra_1409", name: "西勢", estring: "xishi", sect: "pingdong"},
+                {id:"tra_1410", name: "竹田", estring: "zhutian", sect: "pingdong"},
                 {id:"tra_1411", name: "潮州", estring: "chaozhouchaojhou", sect: "pingdong", big: 'ws', noShow: true},
+                {id:"tra_1412", name: "崁頂", estring: "kanding", sect: "pingdong"},
+                {id:"tra_1413", name: "南州", estring: "nanzho", sect: "pingdong"},
+                {id:"tra_1414", name: "鎮安", estring: "zhengan", sect: "pingdong"},
+                {id:"tra_1415", name: "林邊", estring: "linbian", sect: "pingdong"},
+                {id:"tra_1416", name: "佳冬", estring: "jiadong", sect: "pingdong"},
+                {id:"tra_1417", name: "東海", estring: "donghai", sect: "pingdong"},
+                {id:"tra_1418", name: "枋寮", estring: "fangliao", sect: "pingdong"},
                 {id:"tra_1802", name: "暖暖", estring: "nuannuan", sect: "northeast"},
                 {id:"tra_1803", name: "四腳亭", estring: "sijiaoting", sect: "northeast"},
                 {id:"tra_1804", name: "瑞芳", estring: "ruifang", sect: "northeast", big: 'e'},
@@ -6846,7 +6863,7 @@ var TT = (function(){
         createTool: function(){
             TT.ui.center.tool = TT.ui.createDiv('tt_tool', 'centerPage tool', TT.ui.centerDiv.id);
             TT.ui.center.tool.innerHTML = '<div style="padding-left: 40px;"><a href="calc_tymetro.html">連結至桃園機場捷運時刻表產生器</a></div>' +
-				'<div style="padding-left: 40px;"><span><a href="klrt.html">基隆輕軌模擬器</a> | </span><span><a href="ctra2016.html">連結至台鐵 2016 年旅運量報表</a> | </span><span><a href="ctra2017.html">連結至台鐵 2017 年旅運量報表</a></span></div>';
+				'<div style="padding-left: 40px;"><span><a href="ft.html">台鐵快查系統</a> | <span><a href="klrt.html">基隆輕軌模擬器</a> | </span><span><a href="ctra2016.html">連結至台鐵 2016 年旅運量報表</a> | </span><span><a href="ctra2017.html">連結至台鐵 2017 年旅運量報表</a></span></div>';
             
             //DATA Frame
             TT.ui.center.tool.dataDiv = TT.ui.createDiv('tt_tool_data', 'frameA trtc', TT.ui.center.tool.id);
