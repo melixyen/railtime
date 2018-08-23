@@ -189,7 +189,7 @@ body {
     background-color: #DFD;
 }
 
-.define_rail_bgcolor_tra_xibu, .define_rail_bgcolor_tra_shan, .define_rail_bgcolor_tra_zhjy, .define_rail_bgcolor_tra_jygx, .define_rail_bgcolor_tra_yilan, .define_rail_bgcolor_tra_beihui,
+.define_rail_bgcolor_tra_xibu, .define_rail_bgcolor_tra_shan, .define_rail_bgcolor_tra_zhjy, .define_rail_bgcolor_tra_jygx, .define_rail_bgcolor_tra_pingdong, .define_rail_bgcolor_tra_yilan, .define_rail_bgcolor_tra_beihui,
 .define_rail_bgcolor_tra_pingxi, .define_rail_bgcolor_tra_liujia, .define_rail_bgcolor_tra_huadong, .define_rail_bgcolor_tra_shalun,
 .define_rail_bgcolor_tymetro_1,
 .define_rail_bgcolor_trtc_2, .define_rail_bgcolor_trtc_3, .define_rail_bgcolor_trtc_4, .define_rail_bgcolor_trtc_5{
@@ -206,6 +206,9 @@ body {
 }
 .define_rail_bgcolor_tra_jygx{
     background-color: #302040 !important;
+}
+.define_rail_bgcolor_tra_pingdong{
+    background-color: #7D3810 !important;
 }
 .define_rail_bgcolor_tra_yilan{
     background-color: #500000 !important;
@@ -806,10 +809,10 @@ var TT = (function(){
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本": "Beta 0.5.7",
-            "產生日期": "2018/08/22"
+            "產生日期": "2018/08/23"
         },
         programUpdateInfo: [
-                    'Beta 0.5.7: 新增台鐵速查系統連結。',
+                    'Beta 0.5.7: 新增台鐵速查系統連結及屏東線內部潮州轉乘。',
                     'Beta 0.5.6: 修正台鐵沙崙線轉平溪線無法查詢錯誤。',
                     'Beta 0.5.5: 新增台鐵新富站。',
                     'Beta 0.5.4: 新增機場捷運與台北捷運蘆洲線透過三重與大橋頭轉乘。',
@@ -839,7 +842,7 @@ var TT = (function(){
                     'Beta 0.3: 新增路網圖選擇器提供北台灣軌道運輸路網站點選擇。'
         ],
         displayPri: {
-                "tra": ['tra_shan','tra_liujia','tra_pingxi','tra_shalun','tra_beihui','tra_yilan','tra_xibu','tra_zhjy','tra_jygx'],
+                "tra": ['tra_shan','tra_liujia','tra_pingxi','tra_shalun','tra_beihui','tra_yilan','tra_xibu','tra_zhjy','tra_jygx','tra_pingdong'],
                 "trtc": ['trtc_5','trtc_2','trtc_3','trtc_4','trtc_1'],
                 "tymetro": ['tymetro_1']
         },
@@ -1130,10 +1133,24 @@ var TT = (function(){
                     area: 'w',
                     link: {
                         "tra_zhjy": {station: "tra_1215", dir: "0"},
+                        "tra_pingdong": {station: "tra_1238", dir: "1"},
                         "tra_shalun": {station: "tra_1230", dir: "1"}
                     },
             		station: ["tra_1215","tra_1217","tra_1218","tra_1219","tra_1220","tra_1221","tra_1222","tra_1223","tra_1224","tra_1225","tra_1244","tra_1226","tra_1227","tra_1239","tra_1228",
                         "tra_1229","tra_1243","tra_1230","tra_1231","tra_1232","tra_1233","tra_1234","tra_1235","tra_1242","tra_1236","tra_1238"]
+            	}, {
+            		id: "tra_pingdong",
+                    name: "屏東線",
+                    trainSect: ["kaohsiung", "pingdong"],
+                    color: "#7D3810",
+            		dir: "1",
+                    area: 'w',
+                    innerNeedTransAt: 'tra_1411',
+                    link: {
+                        "tra_jygx": {station: "tra_1238", dir: "0"}
+                    },
+            		station: ["tra_1238","tra_1402","tra_1403","tra_1404","tra_1405","tra_1406","tra_1407","tra_1408","tra_1409",
+                        "tra_1410","tra_1411","tra_1412","tra_1413","tra_1414","tra_1415","tra_1416","tra_1417","tra_1418"]
             	}, {
             		id: "tra_yilan",
                     name: "宜蘭線",
@@ -1653,9 +1670,14 @@ var TT = (function(){
                     walkMinute: 4
                 }, {
                     id: 'gaoxungtra1', name: "高雄",
-                    changeLine: ["tra_jygx", "tra_jygx"],
+                    changeLine: ["tra_jygx", "tra_pingdong"],
                     changeStation: ['tra_1238','tra_1238'],
                     walkMinute: 4
+                }, {
+                    id: 'chaozhoutra1', name: "潮州",
+                    changeLine: ["tra_pingdong", "tra_pingdong"],
+                    changeStation: ['tra_1411','tra_1411'],
+                    walkMinute: 1
                 }, {
                     id: 'zhuzhongtra1', name: "竹中",
                     changeLine: ["tra_liujia", "tra_liujia"],
@@ -2067,6 +2089,30 @@ var TT = (function(){
                     {
                         line: ["tra_zhjy", "tra_jygx"],
                         transStation: ["gaoxungtra1"]
+                    }
+                ]
+            }, {
+                id: 'traInnerTrans_tra_jygx,tra_pingdong',
+                fromToLine: ["tra_jygx","tra_pingdong"],
+                sect: ['chiayi','tainan','kaohsiung','pingdong'],
+                route: [
+                    {
+                        line: ["tra_jygx", "tra_pingdong"],
+                        transStation: ["gaoxungtra1"]
+                    },
+                    {
+                        line: ["tra_pingdong", "tra_pingdong"],
+                        transStation: ["chaozhoutra1"]
+                    }
+                ]
+            }, {
+                id: 'traInnerTrans_tra_pingdong',
+                fromToLine: ["tra_pingdong","tra_pingdong"],
+                sect: ['kaohsiung','pingdong'],
+                route: [
+                    {
+                        line: ["tra_pingdong", "tra_pingdong"],
+                        transStation: ["chaozhoutra1"]
                     }
                 ]
             }, {
@@ -2698,15 +2744,15 @@ var TT = (function(){
                 rType: 'direct',//direct , trans 
                 company: 'tra',
                 big: 'w',
-                lineStr: 'tra_xibu,tra_shan,tra_zhjy,tra_jygx',
-                directSect: 'keeling,taipei,taoyuan,hsinchu,miaoli,taichung,chungha,yunlin,chiayi,tainan,kaohsiung'
+                lineStr: 'tra_xibu,tra_shan,tra_zhjy,tra_jygx,tra_pingdong',
+                directSect: 'keeling,taipei,taoyuan,hsinchu,miaoli,taichung,chungha,yunlin,chiayi,tainan,kaohsiung,pingdong'
             }, {
                 id: 'tra_r4',
                 rType: 'direct',//direct , trans 
                 company: 'tra',
                 big: 'w',
-                lineStr: 'tra_huadong,tra_beihui,tra_yilan,tra_shan,tra_zhjy,tra_jygx',
-                directSect: 'northeast,yilan,beihui,hualian,taidong,miaoli,taichung,chungha,yunlin,chiayi,tainan,kaohsiung'
+                lineStr: 'tra_huadong,tra_beihui,tra_yilan,tra_shan,tra_zhjy,tra_jygx,tra_pingdong',
+                directSect: 'northeast,yilan,beihui,hualian,taidong,miaoli,taichung,chungha,yunlin,chiayi,tainan,kaohsiung,pingdong'
             }, {
                 id: 'tra_r5',
                 rType: 'direct',//direct , trans 
@@ -3033,6 +3079,50 @@ var TT = (function(){
                         line: ['tra_zhjy'],
                         sect: ['kaohsiung'],
                         transStation: 'gaoxungtra1'
+                    }
+                ]
+            }, {
+                id: 'tra_jygx_pingdong_trans',
+                rType: 'trans',
+                company: 'tra',
+                routeMapID: 'traInnerTrans_tra_jygx,tra_pingdong',
+                lineInclude: [
+                    ['tra_jygx','tra_shalun'],
+                    ['tra_pingdong']
+                ],
+                regLine: "^tra_jygx$|^tra_pingdong$|^tra_xibu$|^tra_shan$|^tra_zhjy$|^tra_shalun$|^tra_liujia$",
+                lineIsSame: {
+                    "tra_jygx": "^tra_xibu$|^tra_shan$|^tra_zhjy$|^tra_shalun$|^tra_liujia$"
+                },
+                rule: [
+                    {
+                        line: ['tra_jygx','tra_shalun','tra_pingdong'],
+                        sect: ['pingdong','kaohsiung','tainan'],
+                        transStation: 'chaozhoutra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        sect: ['tainan'],
+                        transStation: 'tainantra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        sect: ['kaohsiung','tainan'],
+                        transStation: 'gaoxungtra1'
+                    }
+                ]
+            }, {
+                id: 'tra_pingdong_inner_trans',
+                rType: 'trans',
+                company: 'tra',
+                routeMapID: 'traInnerTrans_tra_pingdong',
+                lineInclude: [
+                    ['tra_pingdong'],
+                    ['tra_pingdong']
+                ],
+                rule: [
+                    {
+                        line: ['tra_pingdong'],
+                        sect: ['pingdong','kaohsiung'],
+                        transStation: 'chaozhoutra1'
                     }
                 ]
             }, {
@@ -3993,6 +4083,7 @@ var TT = (function(){
                 "tra_shan": /^tra_1028$/,
                 "tra_zhjy": /^tra_1120$/,
                 "tra_jygx": /^tra_1215$/,
+                "tra_pingdong": /^tra_1238$/,
                 "tra_yilan": /^tra_1002$/,
                 "tra_beihui": /^tra_1826$/,
                 "tra_huadong": /^tra_1715$/
@@ -4654,6 +4745,19 @@ var TT = (function(){
                     case 'tra':
                         var ary = TT.fn.getTRA_stationOnSameLine(a,b), lineData;
                         if(ary){
+                            var lineData = TT.fn.getCommon_lineData(ary[0]);
+                            if(lineData.innerNeedTransAt && a!=lineData.innerNeedTransAt && b!=lineData.innerNeedTransAt){
+                                var aidx =0, bidx = 0, cidx = 0;
+                                lineData.station.map(function(c,idx){
+                                    if(a==c) aidx = idx;
+                                    if(b==c) bidx = idx;
+                                    if(lineData.innerNeedTransAt==c) cidx = idx;
+                                });
+                                if((aidx>cidx && bidx<cidx) || (aidx<cidx && bidx>cidx)){
+                                    return true;
+                                }
+                            }
+                            
                             return false;
                         }else{
                             return true;

@@ -598,7 +598,7 @@ var TT = {
             		id: "tra_pingdong",
                     name: "屏東線",
                     trainSect: ["kaohsiung", "pingdong"],
-                    color: "#501F020",
+                    color: "#501F02",
             		dir: "1",
                     area: 'w',
                     link: {
@@ -706,7 +706,7 @@ var TT = {
 	descriptionText: [
 		'接軌時刻快查系統，',
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 15px;">' +
-			"更新日期: 2018/08/22</span>"
+			"更新日期: 2018/08/23</span>"
 	]
 };
 
@@ -893,6 +893,16 @@ TT.fn = {
             }
             if(ary.length > 5) ary.splice(5);
             localStorage.setItem('fastFindStationIDText', ary.join(','));
+        },
+        searchJieGueiURL: function(a,b){
+            var nowTime = TT.fn.getNowTimeObj().num;
+            var str = 'index.html?a=' + a + '&b=' + b;
+            var sTime = Math.floor(nowTime/300) * 300;
+            var eTime = sTime + 60*60*2;
+            if(eTime >= 86400) eTime = eTime - 86400;
+            var startTime = encodeURIComponent(TT.fn.transSec2Time(sTime));
+            var endTime = encodeURIComponent(TT.fn.transSec2Time(eTime));
+            return str + '&startTime=' + startTime + '&endTime=' + endTime + '&findTrain=1';
         }
 }
 
@@ -928,17 +938,19 @@ TT.ui = {
             var displayAreaHeight = h - tmpA.height() - 40;
             document.getElementById('displayArea').style.height = displayAreaHeight + 'px';
             var mapCubeSize = (displayAreaHeight > w) ? w : displayAreaHeight;
+            var mapWithCubeSize = (displayAreaHeight > w) ? w : Math.floor(w * 0.9);
+            var fontBaseBigSize = (mapWithCubeSize > mapCubeSize) ? mapWithCubeSize*(mapCubeSize/mapWithCubeSize)*1.2 : mapCubeSize;
             
             var mapArea = $('#mapArea');
-            mapArea.width(mapCubeSize);mapArea.height(mapCubeSize);
+            mapArea.width(mapWithCubeSize);mapArea.height(mapCubeSize);
             var mapMarginTop = (displayAreaHeight > w) ? Math.ceil((displayAreaHeight - w)/9) : 0;
             mapArea.css('marginTop', mapMarginTop)
             
             var stationBtnAll = $('#mapArea div.stationBtn');
-            TT.ui.stationBtnSize = Math.floor(mapCubeSize/24.5);
-            TT.ui.stationBtnPadding = Math.floor(mapCubeSize/60);
-            TT.ui.stationBtnMargin = Math.floor(mapCubeSize/80);
-            TT.ui.stationBtnBorder = Math.floor(mapCubeSize/100);
+            TT.ui.stationBtnSize = Math.floor(fontBaseBigSize/24.5);
+            TT.ui.stationBtnPadding = Math.floor(fontBaseBigSize/60);
+            TT.ui.stationBtnMargin = Math.floor(fontBaseBigSize/80);
+            TT.ui.stationBtnBorder = Math.floor(fontBaseBigSize/100);
             stationBtnAll.css('fontSize', TT.ui.stationBtnSize+'px').css('padding', TT.ui.stationBtnPadding+'px').css('margin', TT.ui.stationBtnMargin+'px').css('borderWidth', TT.ui.stationBtnBorder+'px');
             
             var setApplyBtn = $('#setpage .applyBtn');
@@ -947,8 +959,9 @@ TT.ui = {
             setFastStationBtn.css('fontSize', TT.ui.stationBtnSize+'px').css('padding', TT.ui.stationBtnPadding+'px').css('margin', TT.ui.stationBtnMargin+'px').css('borderWidth', TT.ui.stationBtnBorder+'px');
             
             var timePage = $('#timepage');
-            timePage.width(mapCubeSize);timePage.height(mapCubeSize);
+            timePage.width(mapWithCubeSize);timePage.css('minHeight',mapCubeSize+'px');//timePage.height(mapCubeSize);
             timePage.css('fontSize', Math.floor(mapCubeSize/20)+'px');
+            timePage.css('marginTop', mapMarginTop)
             
     }
 }
@@ -1144,6 +1157,7 @@ TT.makeMainAreaRenderDiv = function(){
                         ctlist = this.ctlist,
                         delayStr = '',
                         esName = '',
+                        jgURL = TT.fn.searchJieGueiURL(TT.goingData.stationID, this.tsid),
                         car = false;
                     if(ctlist){
                         if(ctlist.isCanTakeFirstTrain){
@@ -1160,7 +1174,7 @@ TT.makeMainAreaRenderDiv = function(){
                             if(!car || car=='') car = ctlist.nearTrain.TrainTypeName.Zh_tw;
                             esName = (TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID)) ? TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID).name : ctlist.nearTrain.EndingStationName;
                             rt = '<div class="no">' + LANG.sptr009.replace('{time}',ctlist.nearTrain.DepartureTime).replace('{TrainNO}', ctlist.nearTrain.TrainNo).replace('{CarClass}', car).replace('{es}', esName).replace('{st}', targetStationObj.name) + '</div>';
-                            rt = rt.replace('<fn1>', '<a style="color:#44F;" href="index.html?a=' + TT.goingData.stationID + '&b=' + this.tsid + '" target="_new">').replace('</fn1>','</a>');
+                            rt = rt.replace('<fn1>', '<a style="color:#44F;" href="' + jgURL + '" target="_new">').replace('</fn1>','</a>');
                             rt += '<br>';
                             if(fc){
                                 var car2 = TT.fn.getTRA_carClassName(fc.TrainTypeID);
@@ -1172,7 +1186,7 @@ TT.makeMainAreaRenderDiv = function(){
                                 rt += '<div class="yes">' + LANG.sptr010.replace('{time}',fc.DepartureTime).replace('{TrainNO}', fc.TrainNo).replace('{CarClass}', car2).replace('{es}', esName2).replace('{st}', targetStationObj.name) + delayStr + '</div>';
                             }
                         }else{
-                            rt = LANG.sptr016.replace('<fn1>', '<a style="color:#44F;" href="index.html?a=' + TT.goingData.stationID + '&b=' + this.tsid + '" target="_new">').replace('</fn1>','</a>');
+                            rt = LANG.sptr016.replace('<fn1>', '<a style="color:#44F;" href="' + jgURL + '" target="_new">').replace('</fn1>','</a>');
                             rt = '<div class="no">' + rt + '</div>';
                         }
                     }
