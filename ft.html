@@ -314,6 +314,8 @@ var LANG = {
     sptr014: '提醒您 {TrainNO} 次往{es}{CarClass}將會誤點 {min} 分鐘，請耐心等待。',
     sptr015: '是否要回到接軌時刻 Web App 首頁？您將可查詢非直達的轉乘資訊。',
     sptr016: '查無班車，請<fn1>查詢是否需要轉車才能抵達</fn1>。',
+    sptr017: '最近一班 {time} 開車的 {TrainNO} 次往{es}{CarClass}有停靠{st}站，<alrt>但需注意此車種限制持對號車票搭乘，使用電子票證或無該次車票者禁止乘車</alrt>。',
+    sptr018: '下一班有停靠{st}站的列車是 {time} 開車的 {TrainNO} 次往{es}{CarClass}，<alrt>但需注意此車種限制持對號車票搭乘，使用電子票證或無該次車票者禁止乘車</alrt>。',
     zx: ''
 }
 var TT = {
@@ -781,9 +783,7 @@ TT.fn = {
         processTimeTable: function(timeAry){
             for(var i=0; i<timeAry.length; i++){
                 timeAry[i].sortMin = TT.fn.transTime2Sec(timeAry[i].DepartureTime);
-                if(timeAry[i].sortMin <= 7200){
-                    timeAry[i].sortMin = timeAry[i].sortMin + 86400;
-                }
+                //if(timeAry[i].sortMin <= 7200) timeAry[i].sortMin = timeAry[i].sortMin + 86400;
             }
             timeAry.sort(function(a,b){
                 return (a.sortMin > b.sortMin) ? 1 : -1;
@@ -1113,6 +1113,14 @@ TT.makeMainAreaRenderDiv = function(){
         TT.goingData.stationTodayTime.sort(function(a,b){
         	return (a.sortMin > b.sortMin) ? 1 : -1;
         });
+        TT.goingData.targetStationTodayTime.map(function(c){
+            if(delayTrain["t"+c.TrainNo]){
+                c.sortMin = c.sortMin + delayTrain["t"+c.TrainNo]*60;
+            }
+        });
+        TT.goingData.targetStationTodayTime.sort(function(a,b){
+        	return (a.sortMin > b.sortMin) ? 1 : -1;
+        });
         //2.取出兩站目前時間之後的班車
         TT.goingData.stationTodayTime.map(function(c){
             if(c.sortMin > nowTime && c.Direction==dir && 'tra_'+c.EndingStationID!=TT.goingData.stationID){
@@ -1172,7 +1180,11 @@ TT.makeMainAreaRenderDiv = function(){
                             if(ctlist.nearTrain.delayTime){
                                 delayStr = '<br><br>' + LANG.sptr014.replace('{TrainNO}', ctlist.nearTrain.TrainNo).replace('{CarClass}', car).replace('{es}', esName).replace('{min}', ctlist.nearTrain.delayTime);
                             }
-                            rt = '<div class="yes">' + LANG.sptr008.replace('{time}',ctlist.nearTrain.DepartureTime).replace('{TrainNO}', ctlist.nearTrain.TrainNo).replace('{CarClass}', car).replace('{es}', esName).replace('{st}', targetStationObj.name) + delayStr +'</div>';
+                            var carStr = LANG.sptr008;
+                            if(/1102|1107/.test(ctlist.nearTrain.TrainTypeID)){
+                            	carStr = LANG.sptr017.replace('<alrt>','<span style="color:#F11;">').replace('</alrt>','</span>');
+                            }
+                            rt = '<div class="yes">' + carStr.replace('{time}',ctlist.nearTrain.DepartureTime).replace('{TrainNO}', ctlist.nearTrain.TrainNo).replace('{CarClass}', car).replace('{es}', esName).replace('{st}', targetStationObj.name) + delayStr +'</div>';
                         }else if(ctlist.nearTrain){
                             var fc = ctlist.canTakeTrainTime[0];
                             car = TT.fn.getTRA_carClassName(ctlist.nearTrain.TrainTypeID);
@@ -1188,7 +1200,11 @@ TT.makeMainAreaRenderDiv = function(){
                                 if(fc.delayTime){
                                     delayStr = '<br><br>' + LANG.sptr014.replace('{TrainNO}', fc.TrainNo).replace('{CarClass}', car2).replace('{es}', esName2).replace('{min}', fc.delayTime);
                                 }
-                                rt += '<div class="yes">' + LANG.sptr010.replace('{time}',fc.DepartureTime).replace('{TrainNO}', fc.TrainNo).replace('{CarClass}', car2).replace('{es}', esName2).replace('{st}', targetStationObj.name) + delayStr + '</div>';
+                                var carStr = LANG.sptr010;
+                                if(/1102|1107/.test(fc.TrainTypeID)){
+                                	carStr = LANG.sptr018.replace('<alrt>','<span style="color:#F11;">').replace('</alrt>','</span>');
+                                }
+                                rt += '<div class="yes">' + carStr.replace('{time}',fc.DepartureTime).replace('{TrainNO}', fc.TrainNo).replace('{CarClass}', car2).replace('{es}', esName2).replace('{st}', targetStationObj.name) + delayStr + '</div>';
                             }
                         }else{
                             rt = LANG.sptr016.replace('<fn1>', '<a style="color:#44F;" href="' + jgURL + '" target="_new">').replace('</fn1>','</a>');
