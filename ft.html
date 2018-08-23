@@ -1105,11 +1105,16 @@ TT.makeMainAreaRenderDiv = function(){
                 delayTrain["t"+c.TrainNo] = c.DelayTime;
             }
         });
-        //2.取出兩站目前時間之後的班車
         TT.goingData.stationTodayTime.map(function(c){
             if(delayTrain["t"+c.TrainNo]){
                 c.sortMin = c.sortMin + delayTrain["t"+c.TrainNo]*60;
             }
+        });
+        TT.goingData.stationTodayTime.sort(function(a,b){
+        	return (a.sortMin > b.sortMin) ? 1 : -1;
+        });
+        //2.取出兩站目前時間之後的班車
+        TT.goingData.stationTodayTime.map(function(c){
             if(c.sortMin > nowTime && c.Direction==dir && 'tra_'+c.EndingStationID!=TT.goingData.stationID){
                 aTime.push(c);
             }
