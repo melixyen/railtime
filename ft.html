@@ -306,16 +306,17 @@ var LANG = {
     sptr006: '正在為您尋找中...',
     sptr007: '載入中...',
     sptr008: '最近一班 {time} 開車的 {TrainNO} 次往{es}{CarClass}有停靠{st}站，可以搭乘。',
-    sptr009: '最近一班 {time} 開車的 {TrainNO} 次往{es}{CarClass}沒有停靠{st}站，<span class="rd">請勿搭乘</span>或<fn1>查詢是否需要轉車才能抵達</fn1>。',
+    sptr009: '最近一班 {time} 開車的 {TrainNO} 次往{es}{CarClass}沒有停靠{st}站，<span class="rd">請勿搭乘</span>或<fn1>詢問是否需要轉車才能抵達</fn1>。',
     sptr010: '下一班有停靠{st}站的列車是 {time} 開車的 {TrainNO} 次往{es}{CarClass}，請在月台稍候。',
     sptr011: '返回查詢畫面',
     sptr012: '常用車站',
     sptr013: '清除常用車站紀錄',
     sptr014: '提醒您 {TrainNO} 次往{es}{CarClass}將會誤點 {min} 分鐘，請耐心等待。',
     sptr015: '是否要回到接軌時刻 Web App 首頁？您將可查詢非直達的轉乘資訊。',
-    sptr016: '查無班車，請<fn1>查詢是否需要轉車才能抵達</fn1>。',
+    sptr016: '查無班車，請<fn1>詢問是否需要轉車才能抵達</fn1>。',
     sptr017: '最近一班 {time} 開車的 {TrainNO} 次往{es}{CarClass}有停靠{st}站，<alrt>但需注意此車種限制持對號車票搭乘，使用電子票證或無該次車票者禁止乘車</alrt>。',
     sptr018: '下一班有停靠{st}站的列車是 {time} 開車的 {TrainNO} 次往{es}{CarClass}，<alrt>但需注意此車種限制持對號車票搭乘，使用電子票證或無該次車票者禁止乘車</alrt>。',
+    sptr019: '交通部公共運輸整合資訊流通服務平台 PTX 回應失敗，目前無法取得資料。',
     zx: ''
 }
 var TT = {
@@ -519,6 +520,36 @@ var TT = {
                 {id:"tra_1630", name: "鹿野", estring: "luye", sect: "taidong"},
                 {id:"tra_1631", name: "山里", estring: "shanli", sect: "taidong"},
                 {id:"tra_1632", name: "台東", estring: "taitungtaidong", sect: "taidong", big: 'es'},
+                //海線及南迴線臨時資料
+                
+                {id:"tra_1102", name: "談文", sect: "miaoli"},
+                {id:"tra_1104", name: "大山", sect: "miaoli"},
+                {id:"tra_1105", name: "後龍", sect: "miaoli"},
+                {id:"tra_1106", name: "龍港", sect: "miaoli"},
+                {id:"tra_1107", name: "白沙屯", sect: "miaoli"},
+                {id:"tra_1108", name: "新埔", sect: "miaoli"},
+                {id:"tra_1109", name: "通霄", sect: "miaoli"},
+                {id:"tra_1110", name: "苑裡", sect: "miaoli"},
+                {id:"tra_1111", name: "日南", sect: "taichung"},
+                {id:"tra_1112", name: "大甲", sect: "taichung"},
+                {id:"tra_1113", name: "臺中港", sect: "taichung"},
+                {id:"tra_1114", name: "清水", sect: "taichung"},
+                {id:"tra_1115", name: "沙鹿", sect: "taichung"},
+                {id:"tra_1116", name: "龍井", sect: "taichung"},
+                {id:"tra_1117", name: "大肚", sect: "taichung"},
+                {id:"tra_1118", name: "追分", sect: "taichung"},
+                
+                {id:"tra_1502", name: "加祿", sect: "pingdong"},
+                {id:"tra_1503", name: "內獅", sect: "pingdong"},
+                {id:"tra_1504", name: "枋山", sect: "pingdong"},
+                {id:"tra_1507", name: "古莊", sect: "taidong"},
+                {id:"tra_1508", name: "大武", sect: "taidong"},
+                {id:"tra_1510", name: "瀧溪", sect: "taidong"},
+                {id:"tra_1512", name: "金崙", sect: "taidong"},
+                {id:"tra_1514", name: "太麻里", sect: "taidong"},
+                {id:"tra_1516", name: "知本", sect: "taidong"},
+                {id:"tra_1517", name: "康樂", sect: "taidong"},
+                //海線及南迴線臨時資料
                 {id:"tra_2003", name:"八斗子", estring:"badouzi", sect:"northeast"},
                 {id:"tra_6103", name:"海科館", estring:"haikeguan", sect:"northeast"},
                 {id:"tra_1903", name:"大華", estring:"dahua", sect:"northeast"},
@@ -553,6 +584,7 @@ var TT = {
                     link: {
                         "tra_yilan": {station: "tra_1002", dir: "0"},
                         "tra_shan": {station: "tra_1028", dir: "1"},
+                        "tra_hai": {station: "tra_1028", dir: "1"},
                         "tra_liujia": {station: "tra_1025", dir: "0"}
                     },
             		station: ["tra_1001","tra_1029","tra_1002","tra_1003","tra_1030","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1009","tra_1011","tra_1032","tra_1012","tra_1013","tra_1014",//taipei
@@ -579,6 +611,7 @@ var TT = {
                     area: 'w',
                     link: {
                         "tra_shan": {station: "tra_1120", dir: "0"},
+                        "tra_hai": {station: "tra_1120", dir: "0"},
                         "tra_jygx": {station: "tra_1215", dir: "1"}
                     },
             		station: ["tra_1120","tra_1202","tra_1240","tra_1203","tra_1204","tra_1205","tra_1206","tra_1207","tra_1208","tra_1209","tra_1210","tra_1211","tra_1212","tra_1213","tra_1214","tra_1241","tra_1215"]
@@ -604,7 +637,8 @@ var TT = {
             		dir: "1",
                     area: 'w',
                     link: {
-                        "tra_jygx": {station: "tra_1238", dir: "0"}
+                        "tra_jygx": {station: "tra_1238", dir: "0"},
+                        "tra_nanhuei": {station: "tra_1418", dir: "1"}
                     },
             		station: ["tra_1238","tra_1402","tra_1403","tra_1404","tra_1405","tra_1406","tra_1407","tra_1408","tra_1409",
                         "tra_1410","tra_1411","tra_1412","tra_1413","tra_1414","tra_1415","tra_1416","tra_1417","tra_1418"]
@@ -643,10 +677,35 @@ var TT = {
             		dir: "0",
                     area: 'e',
                     link: {
-                        "tra_beihui": {station: "tra_1715", dir: "1"}
+                        "tra_beihui": {station: "tra_1715", dir: "1"},
+                        "tra_nanhuei": {station: "tra_1632", dir: "0"}
                     },
             		station: ["tra_1715","tra_1602","tra_1604","tra_1605","tra_1606","tra_1607","tra_1609","tra_1610","tra_1611","tra_1612","tra_1613","tra_1614","tra_1616","tra_1617","tra_1619",
                         "tra_1621","tra_1622","tra_1623","tra_1624","tra_1625","tra_1626","tra_1628","tra_1629","tra_1630","tra_1631","tra_1632"]
+                }, {
+            		id: "tra_nanhuei",
+                    name: "南迴線",
+                    trainSect: ["taidong","pingdong"],
+                    color: "#3040A0",
+            		dir: "0",
+                    area: 'e',
+                    link: {
+                        "tra_huadong": {station: "tra_1632", dir: "1"},
+                        "tra_pingdong": {station: "tra_1418", dir: "0"}
+                    },
+            		station: ["tra_1632","tra_1517","tra_1516","tra_1514","tra_1512","tra_1510","tra_1508","tra_1507","tra_1504","tra_1503","tra_1502","tra_1418"]
+                }, {
+            		id: "tra_hai",
+                    name: "海線",
+                    trainSect: ["miaoli","taichung"],
+                    color: "#2050C0",
+            		dir: "1",
+                    area: 'w',
+                    link: {
+                        "tra_xibu": {station: "tra_1028", dir: "0"},
+                        "tra_zhjy": {station: "tra_1120", dir: "1"}
+                    },
+            		station: ["tra_1028","tra_1102","tra_1104","tra_1105","tra_1106","tra_1107","tra_1108","tra_1109","tra_1110","tra_1111","tra_1112","tra_1113","tra_1114","tra_1115","tra_1116","tra_1117","tra_1118","tra_1120"]
                 }, {
             		id: "tra_pingxi",
                     name: "平溪線",
@@ -709,7 +768,21 @@ var TT = {
 		'接軌時刻快查系統，',
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 15px;">' +
 			"更新日期: 2018/08/23</span>"
-	]
+	],
+    defined: {
+        GetP: (function(){
+            var s = location.search, aryParam, tmpParam, rt;
+            if(s.indexOf('?')!=-1){
+                rt = {};
+                aryParam = s.split('?')[1].split('&');
+                aryParam.map(function(tmpA){
+                    tmpParam = tmpA.split('=');
+                    rt[tmpParam[0]] = tmpParam[1];
+                });
+            }
+            return rt;
+        })(),
+    }
 };
 
 TT.fn = {
@@ -891,7 +964,7 @@ TT.fn = {
                     break;
                 }
             }
-            if(ary.length > 5) ary.splice(5);
+            if(ary.length > 10) ary.splice(10);
             localStorage.setItem('fastFindStationIDText', ary.join(','));
         },
         searchJieGueiURL: function(a,b){
@@ -923,6 +996,10 @@ TT.ui = {
     stationBtnPadding: 5,
     stationBtnMargin: 4,
     stationBtnBorder: 3,
+    showPTXAjaxFail: function(){
+        TT.ui.unmask();
+        alert(LANG.sptr019);
+    },
     resizeFn: function(e){
             var h = TT.fn.getWindowHeight();
             var w = TT.fn.getWindowWidth();
@@ -1067,12 +1144,17 @@ TT.pubData = {
         }
         var fm = new XMLHttpRequest();
         fm.addEventListener("load", reqListener);
+        fm.addEventListener("error", reqListener);
+        fm.addEventListener("abort", reqListener);
+        fm.addEventListener("timeout", reqListener);
         fm.open('GET', url);
+        fm.timeout = 6000;
         var headerObj = this.GetAuthorizationHeader();
         for(var k in headerObj){
             fm.setRequestHeader(k, headerObj[k]);
         }
         fm.send();
+        TT.a1 = fm;
     },
     getStationLiveInfo: function(stid, cbFn){
         stid = (stid) ? stid.replace('tra_','') : '1008';
@@ -1092,7 +1174,7 @@ TT.pubData = {
 TT.makeMainAreaRenderDiv = function(){
     var elID = 'mainAreaRenderDiv';
     var defaultStID = TT.goingData.stationID;
-    var canDrawLineReg = /xibu|shan|zhjy|jygx|pingdong|yilan|beihui|huadong/;
+    var canDrawLineReg = /xibu|shan|zhjy|jygx|pingdong|yilan|beihui|huadong|nanhuei|hai/;
     function findTrainByAB(aObj, bObj, dir, liveInfo){
         var aTime = [],
             bTime = [],
@@ -1109,6 +1191,7 @@ TT.makeMainAreaRenderDiv = function(){
             if(delayTrain["t"+c.TrainNo]){
                 c.sortMin = c.sortMin + delayTrain["t"+c.TrainNo]*60;
             }
+            if(c.sortMin < (4*60*60) && nowTime>(12*60*60)) c.sortMin = c.sortMin + 86400;
         });
         TT.goingData.stationTodayTime.sort(function(a,b){
         	return (a.sortMin > b.sortMin) ? 1 : -1;
@@ -1117,6 +1200,7 @@ TT.makeMainAreaRenderDiv = function(){
             if(delayTrain["t"+c.TrainNo]){
                 c.sortMin = c.sortMin + delayTrain["t"+c.TrainNo]*60;
             }
+            if(c.sortMin < (4*60*60) && nowTime>(12*60*60)) c.sortMin = c.sortMin + 86400;
         });
         TT.goingData.targetStationTodayTime.sort(function(a,b){
         	return (a.sortMin > b.sortMin) ? 1 : -1;
@@ -1191,7 +1275,7 @@ TT.makeMainAreaRenderDiv = function(){
                             if(!car || car=='') car = ctlist.nearTrain.TrainTypeName.Zh_tw;
                             esName = (TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID)) ? TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID).name : ctlist.nearTrain.EndingStationName;
                             rt = '<div class="no">' + LANG.sptr009.replace('{time}',ctlist.nearTrain.DepartureTime).replace('{TrainNO}', ctlist.nearTrain.TrainNo).replace('{CarClass}', car).replace('{es}', esName).replace('{st}', targetStationObj.name) + '</div>';
-                            rt = rt.replace('<fn1>', '<a style="color:#44F;" href="' + jgURL + '" target="_new">').replace('</fn1>','</a>');
+                            rt = rt.replace('<fn1>', '<a style="color:#040436;" href="' + jgURL + '" target="_new">').replace('</fn1>','</a>');
                             rt += '<br>';
                             if(fc){
                                 var car2 = TT.fn.getTRA_carClassName(fc.TrainTypeID);
@@ -1207,7 +1291,7 @@ TT.makeMainAreaRenderDiv = function(){
                                 rt += '<div class="yes">' + carStr.replace('{time}',fc.DepartureTime).replace('{TrainNO}', fc.TrainNo).replace('{CarClass}', car2).replace('{es}', esName2).replace('{st}', targetStationObj.name) + delayStr + '</div>';
                             }
                         }else{
-                            rt = LANG.sptr016.replace('<fn1>', '<a style="color:#44F;" href="' + jgURL + '" target="_new">').replace('</fn1>','</a>');
+                            rt = LANG.sptr016.replace('<fn1>', '<a style="color:#040436;" href="' + jgURL + '" target="_new">').replace('</fn1>','</a>');
                             rt = '<div class="no">' + rt + '</div>';
                         }
                     }
@@ -1309,16 +1393,16 @@ TT.makeMainAreaRenderDiv = function(){
     var tpl = Vue.compile('<div class="' + elID + '" id="' + elID + '" style="height:' + TT.fn.getWindowHeight() + 'px;">' +
 		'<div id="menuBar">' +
             '<div class="leftBox menu_barBox bs_no_select" v-on:click="backPage()">&nbsp;&lt;</div>' +
-            '<div id="menuText" v-html="getMenuText()" v-on:click="switchStation()"></div>' +
+            '<div id="menuText" v-html="getMenuText()" v-on:click="clickMenuText()"></div>' +
             '<div class="rightBox menu_barBox bs_no_select" v-on:click="switchSet()">≡</div>' +
         '</div>' +
         '<div id="displayArea">' +
             '<div id="mapArea" v-show="flagShowMap">' +
                 '<div id="mapDir0">' +
-                    '<div v-for="(st0,aidx) in dir0StationAry" class="stationBtn bs_no_select" v-bind:style="getStationBtnStyle()" v-on:click="findStation(st0, 0)">{{st0.name}}</div>' +
+                    '<div v-for="(st0,aidx) in dir0StationAry" class="stationBtn bs_no_select" v-bind:style="getStationBtnStyle(st0)" v-on:click="findStation(st0, 0)">{{st0.name}}</div>' +
                 '</div>' +
                 '<div id="mapDir1">' +
-                    '<div v-for="(st1,bidx) in dir1StationAry" class="stationBtn bs_no_select" v-bind:style="getStationBtnStyle()" v-on:click="findStation(st1, 1)">{{st1.name}}</div>' +
+                    '<div v-for="(st1,bidx) in dir1StationAry" class="stationBtn bs_no_select" v-bind:style="getStationBtnStyle(st1)" v-on:click="findStation(st1, 1)">{{st1.name}}</div>' +
                 '</div>' +
             '</div>' + 
             '<div id="timeArea" v-show="flagShowTime">' +
@@ -1343,6 +1427,7 @@ TT.makeMainAreaRenderDiv = function(){
             stationID: defaultStID,
             dir0StationAry: [],
             dir1StationAry: [],
+            stationStyleData: [],
             canTakeTrainList: false,
             targetStationID: '',
             menuTextStr: ''
@@ -1370,8 +1455,16 @@ TT.makeMainAreaRenderDiv = function(){
                 TT.ui.mask(LANG.sptr006);
                 me.targetStationID = stObj.id;
                 TT.pubData.getStationTodayTime(stObj.id, function(data){
+                    if(data=='fail'){
+                        TT.ui.showPTXAjaxFail();
+                        return false;
+                    }
                     TT.goingData.targetStationTodayTime = TT.fn.processTimeTable(data);
                     TT.pubData.getStationLiveInfo(me.stationID, function(info){
+                        if(data=='fail'){
+                            TT.ui.showPTXAjaxFail();
+                            return false;
+                        }
                         TT.ui.unmask();
                         var canAry = findTrainByAB(TT.fn.getStationByID(me.stationID), stObj, dir, info);
                         me.canTakeTrainList = JSON.parse(JSON.stringify(canAry));
@@ -1387,7 +1480,9 @@ TT.makeMainAreaRenderDiv = function(){
                     otherLine = [],
                     dir0StAry = [],
                     dir1StAry = [],
+                    me = this;
                     stIndex = 0;
+                this.stationStyleData = [];
                 for(var f=0; f<lineAry.length; f++){
                     //先找到第一個出現此車站的 line
                     var c = lineAry[f];
@@ -1433,18 +1528,65 @@ TT.makeMainAreaRenderDiv = function(){
                         }
                     }
                 }
-                function getStationFromLine(line, stIndex){
-                  for(var i=1; i<maxCatchNum+1; i++){
-                      if(line.dir=='1'){//往下為1，往上為0
-                          if(dir1StAry.length<maxCatchNum && line.station[stIndex + i]) dir1StAry.push(line.station[stIndex + i]);
-                          if(dir0StAry.length<maxCatchNum && (stIndex - i)>=0 && line.station[stIndex - i]) dir0StAry.push(line.station[stIndex - i]);
-                      }else{
-                          if(dir0StAry.length<maxCatchNum && line.station[stIndex + i]) dir0StAry.push(line.station[stIndex + i]);
-                          if(dir1StAry.length<maxCatchNum && (stIndex - i)>=0 && line.station[stIndex - i]) dir1StAry.push(line.station[stIndex - i]);
-                      }
-                  }
+                //特別處理 function 山海線車站對竹南與彰化附近車站有均分需要，可設定山線停抓點保留其他車站位置給海線
+                function specialStopTest(line, lastID){
+                    var stid = stObj.id;
+                    var rt = false;
+                    if(/1120|1202/.test(stid)){
+                        if(line.id=='tra_shan' && lastID=='tra_1308') rt = true;
+                    }else if(/1240|1203/.test(stid)){
+                        if(line.id=='tra_shan' && lastID=='tra_1310') rt = true;
+                    }else if(/1025|1035|1026/.test(stid)){
+                        if(line.id=='tra_shan' && lastID=='tra_1318') rt = true;
+                    }else if(/1027|1028/.test(stid)){
+                        if(line.id=='tra_shan' && lastID=='tra_1319') rt = true;
+                    }
+                    return rt;
                 }
-                //先由此車站往順逆行各抓最大 16 站
+                function getStationFromLine(line, stIndex){
+                    var lastPushDir1ID = false,
+                        lastPushDir0ID = false,
+                        backUpSearchMaxNum = maxCatchNum,
+                        flagStopPushDir1 = false,
+                        flagStopPushDir0 = false;
+                    //部分車站可能有山海線需求可多查幾站
+                    if(/1120|1202|1240|1203|1025|1035|1026|1027|1028/.test(me.stationID)){
+                        if(line.id=='tra_hai') maxCatchNum = 22;
+                    }
+                    for(var i=1; i<maxCatchNum+1; i++){
+                        lastPushDir0ID = false; lastPushDir1ID = false;
+                        if(line.dir=='1'){//往下為1，往上為0
+                            if(dir1StAry.length<maxCatchNum && line.station[stIndex + i] && !flagStopPushDir1){
+                                lastPushDir1ID = line.station[stIndex + i];
+                                dir1StAry.push(lastPushDir1ID);
+                            }
+                            if(dir0StAry.length<maxCatchNum && (stIndex - i)>=0 && line.station[stIndex - i] && !flagStopPushDir0){
+                                lastPushDir0ID = line.station[stIndex - i];
+                                dir0StAry.push(lastPushDir0ID);
+                            }
+                        }else{
+                            if(dir0StAry.length<maxCatchNum && line.station[stIndex + i] && !flagStopPushDir0){
+                                lastPushDir0ID = line.station[stIndex + i];
+                                dir0StAry.push(lastPushDir0ID);
+                            }
+                            if(dir1StAry.length<maxCatchNum && (stIndex - i)>=0 && line.station[stIndex - i] && !flagStopPushDir1){
+                                lastPushDir1ID = line.station[stIndex - i];
+                                dir1StAry.push(lastPushDir1ID);
+                            }
+                        }
+                        
+                        if(lastPushDir1ID){
+                            me.stationStyleData[lastPushDir1ID] = {'color': line.color};
+                            flagStopPushDir1 = specialStopTest(line, lastPushDir1ID);
+                        }
+                        if(lastPushDir0ID){
+                            flagStopPushDir0 = specialStopTest(line, lastPushDir0ID);
+                            me.stationStyleData[lastPushDir0ID] = {'color': line.color};
+                        }
+                    }
+                    maxCatchNum = backUpSearchMaxNum;
+                }
+                //先由此車站往順逆行各抓最大 19 站
                 getStationFromLine(line, stIndex);
                 //對抓不滿的陣列做處理先往 otherLine 抓
                 if(otherLine.length > 0){
@@ -1466,8 +1608,12 @@ TT.makeMainAreaRenderDiv = function(){
                 var stObj = TT.fn.getStationByID(this.stationID);
                 return LANG.sptr001.replace('{stname}', '<div class="name">' + stObj.name + '</div>');
             },
-            getStationBtnStyle: function(){
-                return 'font-size:' + TT.ui.stationBtnSize + 'px; padding:' + TT.ui.stationBtnPadding + 'px; margin:' + TT.ui.stationBtnMargin + 'px; border-width:' + TT.ui.stationBtnBorder + 'px;';
+            getStationBtnStyle: function(stObj){
+                var cssColor = '';
+                if(this.stationStyleData[stObj.id]){
+                    cssColor = 'color:#FFF; background-color:' + this.stationStyleData[stObj.id].color;
+                }
+                return 'font-size:' + TT.ui.stationBtnSize + 'px; padding:' + TT.ui.stationBtnPadding + 'px; margin:' + TT.ui.stationBtnMargin + 'px; border-width:' + TT.ui.stationBtnBorder + 'px;' + cssColor;
             },
             hideAllPanel: function(){
                 this.flagShowTime = false;
@@ -1476,6 +1622,14 @@ TT.makeMainAreaRenderDiv = function(){
             },
             listStatus: function(){
                 return TT.descriptionText.join('');
+            },
+            clickMenuText: function(){
+                if(this.flagShowMap){
+                    this.switchSet();
+                }else{
+                    this.hideAllPanel();
+                    this.flagShowMap = true;
+                }
             },
             switchTime: function(){
                 if(!this.flagShowTime){
@@ -1501,16 +1655,26 @@ TT.makeMainAreaRenderDiv = function(){
             },
             updateFnData: function(){
                 if(this.stationID != TT.goingData.stationID || !TT.goingData.stationTodayTime){
-                  this.stationID = TT.goingData.stationID;
-                  this.getMap();
-                  TT.ui.mask(LANG.sptr007);
-                  TT.pubData.getStationTodayTime(this.stationID, function(data){
-                      TT.goingData.stationTodayTime = TT.fn.processTimeTable(data);
-                      TT.ui.unmask();
-                  });
+                    this.stationID = TT.goingData.stationID;
+                    this.getMap();
+                    TT.ui.mask(LANG.sptr007);
+                    TT.pubData.getStationTodayTime(this.stationID, function(data){
+                        if(data=='fail'){
+                            TT.ui.showPTXAjaxFail();
+                            return false;
+                        }
+                        TT.goingData.stationTodayTime = TT.fn.processTimeTable(data);
+                        TT.ui.unmask();
+                    });
                 }
             }
 		},
+        watch: {
+            stationID: function(){
+                var stid = this.stationID.replace('tra_','');
+                if(window.history) history.pushState({a:stid},'','?a=' + stid);
+            }
+        },
 		mounted: function(){
             TT.ui.resizeFn();
             this.updateFnData();
@@ -1525,6 +1689,12 @@ TT.initFn = function(){
 		TT.isMobileMove = true;
 	});
     window.addEventListener('resize', TT.ui.resizeFn, false); 
+    if(TT.defined.GetP){
+        var GetP = TT.defined.GetP;
+        if(GetP["a"]){
+            TT.goingData.stationID = (/^tra/.test(GetP["a"])) ? GetP["a"] : 'tra_' + GetP["a"];
+        }
+    }
     TT.mainArea = TT.makeMainAreaRenderDiv();
 	TT.popupArea = TT.popupArea();
 }
