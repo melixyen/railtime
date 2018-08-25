@@ -163,7 +163,7 @@
                         "tra_1011": {x: -300, y: 90, name: '板橋', stationClass: 1, company: true },
                         "tra_1032": {x: -370, y: 100, name: '浮洲', stationClass: 4},
                         "tra_1012": {x: -440, y: 170, name: '樹林', stationClass: 2},
-                        "tra_4102": {x: -440, y: 255, name: '南樹林', stationClass: 4, noClick: true},
+                        "tra_1034": {x: -440, y: 255, name: '南樹林', stationClass: 4},
                         "tra_1013": {x: -440, y: 285, name: '山佳', stationClass: 4},
                         "tra_1014": {x: -440, y: 310, name: '鶯歌', stationClass: 3, company: true},
                         "tra_fengming": {x: -440, y: 460, name: '鳳鳴', stationClass: 4, noClick: true},
