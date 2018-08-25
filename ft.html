@@ -317,6 +317,7 @@ var LANG = {
     sptr017: '最近一班 {time} 開車的 {TrainNO} 次往{es}{CarClass}有停靠{st}站，<alrt>但需注意此車種限制持對號車票搭乘，使用電子票證或無該次車票者禁止乘車</alrt>。',
     sptr018: '下一班有停靠{st}站的列車是 {time} 開車的 {TrainNO} 次往{es}{CarClass}，<alrt>但需注意此車種限制持對號車票搭乘，使用電子票證或無該次車票者禁止乘車</alrt>。',
     sptr019: '交通部公共運輸整合資訊流通服務平台 PTX 回應失敗，目前無法取得資料。',
+    sptr020: '以 QR CODE 分享查詢{stname}站',
     zx: ''
 }
 var TT = {
@@ -1338,6 +1339,9 @@ TT.makeMainAreaRenderDiv = function(){
             '</div>' +
             '<div style="height: 50px;">' +
             '</div>' +
+            '<div class="aline">' +
+            	'<span style="color:#105498;cursor:pointer;" v-on:click="showNowURLQRCode">{{LANG.sptr020.replace(\'{stname}\',getStationByID(stationID).name)}}</span>' +
+            '</div>' +
         '</div>',
         data: function() {
             return {
@@ -1345,6 +1349,7 @@ TT.makeMainAreaRenderDiv = function(){
                 lineID: 'tra_xibu',
                 stationID: defaultStID,
                 fastStationAry: TT.fn.getFastStationObj(),
+                getStationByID: TT.fn.getStationByID,
                 getStationNameAry: function(){
                     var lineObj = TT.fn.getLineByID(this.lineID);
                     var stAry = lineObj.station;
@@ -1371,6 +1376,15 @@ TT.makeMainAreaRenderDiv = function(){
                 fastStationChange: function(id){
                     this.stationID = id;
                     this.updateStationID();
+                },
+                showNowURLQRCode: function(){
+                	var url = location.href;
+                	if(url.indexOf('?')==-1){
+                		url = url + '?a=' + TT.goingData.stationID.replace('tra_','');
+                	}
+                	var imgS = "http://chart.apis.google.com/chart?cht=qr&chl="+ encodeURIComponent(url) +"&chs=240x240";
+                	var html = '<div><img src="' + imgS + '"></img></div>';
+                	TT.popupArea.pop(html);
                 },
                 updateStationID: function(){
                     TT.goingData.stationID = this.stationID;
