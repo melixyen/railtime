@@ -329,9 +329,16 @@ var TT = {
         			{"id": "1101", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1102", "name": "太魯閣號", "ename": "Tze-Chiang Limited Express(Tarko)", "color": "#FD8A10"},
         			{"id": "1103", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "1106", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1107", "name": "普悠瑪號", "ename": "Tze-Chiang Limited Express(Puyuma)", "color": "#ff0030"},
         			{"id": "1108", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1109", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "110A", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "110B", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "110C", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "110D", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "110E", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "110F", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1110", "name": "莒光號", "ename": "Chu-Kuang Express", "color": "#ff1070"},
         			{"id": "1111", "name": "莒光號", "ename": "Chu-Kuang Express", "color": "#ff1070"},
         			{"id": "1114", "name": "莒光號", "ename": "Chu-Kuang Express", "color": "#ff1070"},
@@ -1182,6 +1189,7 @@ TT.makeMainAreaRenderDiv = function(){
             bTime = [],
             delayTrain = {},
             canTakeTime = [],
+            stationTodayTime = JSON.parse(JSON.stringify(TT.goingData.stationTodayTime)),
             nowTime = TT.fn.getNowTimeObj().num;
         //1.依照 liveInfo 內容判斷最近列車是否有誤點
         liveInfo.map(function(c){
@@ -1189,13 +1197,13 @@ TT.makeMainAreaRenderDiv = function(){
                 delayTrain["t"+c.TrainNo] = c.DelayTime;
             }
         });
-        TT.goingData.stationTodayTime.map(function(c){
+        stationTodayTime.map(function(c){
             if(delayTrain["t"+c.TrainNo]){
                 c.sortMin = c.sortMin + delayTrain["t"+c.TrainNo]*60;
             }
             if(c.sortMin < (4*60*60) && nowTime>(12*60*60)) c.sortMin = c.sortMin + 86400;
         });
-        TT.goingData.stationTodayTime.sort(function(a,b){
+        stationTodayTime.sort(function(a,b){
         	return (a.sortMin > b.sortMin) ? 1 : -1;
         });
         TT.goingData.targetStationTodayTime.map(function(c){
@@ -1208,7 +1216,7 @@ TT.makeMainAreaRenderDiv = function(){
         	return (a.sortMin > b.sortMin) ? 1 : -1;
         });
         //2.取出兩站目前時間之後的班車
-        TT.goingData.stationTodayTime.map(function(c){
+        stationTodayTime.map(function(c){
             if(c.sortMin > nowTime && c.Direction==dir && 'tra_'+c.EndingStationID!=TT.goingData.stationID){
                 aTime.push(c);
             }
@@ -1234,11 +1242,12 @@ TT.makeMainAreaRenderDiv = function(){
                 }
             }
         });
-        return {
+        TT.goingData.findResult = {
             canTakeTrainTime: canTakeTime,
             nearTrain: aTime[0],
             isCanTakeFirstTrain: isCanTakeFirstTrain
         }
+        return TT.goingData.findResult;
     }
     
     Vue.component('timeshowout', {
