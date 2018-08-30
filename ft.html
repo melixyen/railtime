@@ -155,6 +155,7 @@ body {
     cursor: pointer;
     display: inline-block;
     line-height: normal;
+    float: left;
 }
 #setpage .fastStationBtn.clearFastStation{
     border: 4px solid #F21C4D;
@@ -216,9 +217,8 @@ body {
 	border-radius: 20px;
 	border: 10px solid #4AF;
 	box-sizing: border-box;
-	padding: 20px 50px;
+	padding: 3% 6%;
 	font-size: 16px;
-	line-height: 26px;
 }
 
 .popupArea .popupIn .diagram{
@@ -275,6 +275,16 @@ body {
 	background-color: #FADAF2;
 }
 
+.nearTimeTableList{
+    text-align: left;
+}
+.nearTimeTableList tr:nth-child(even){
+    background-color: #D6E8F6;
+}
+.nearTimeTableList th, .nearTimeTableList td{
+    padding: 8px 6px;
+}
+
 </style>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
@@ -318,6 +328,15 @@ var LANG = {
     sptr018: '下一班有停靠{st}站的列車是 {time} 開車的 {TrainNO} 次往{es}{CarClass}，<alrt>但需注意此車種限制持對號車票搭乘，使用電子票證或無該次車票者禁止乘車</alrt>。',
     sptr019: '交通部公共運輸整合資訊流通服務平台 PTX 回應失敗，目前無法取得資料。',
     sptr020: '以 QR CODE 分享查詢{stname}站',
+    sptr021: '顯示最近幾班',
+    sptr022: '開往',
+    sptr023: '車種',
+    sptr024: '車次',
+    sptr025: '開車時間',
+    sptr026: '到{stname}',
+    sptr027: '備註',
+    sptr028: '最近幾班有停靠{stname}站的列車時間',
+    sptr029: '誤點 {min} 分',
     zx: ''
 }
 var TT = {
@@ -776,7 +795,7 @@ var TT = {
 	descriptionText: [
 		'接軌時刻快查系統，',
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 15px;">' +
-			"更新日期: 2018/08/23</span>"
+			"更新日期: 2018/08/30</span>"
 	],
     defined: {
         GetP: (function(){
@@ -1235,6 +1254,7 @@ TT.makeMainAreaRenderDiv = function(){
                     if(delayTrain["t"+c.TrainNo]){
                         c.delayTime = delayTrain["t"+c.TrainNo];
                     }
+                    c.targetArrTime = bTime[i].ArrivalTime;
                     canTakeTime.push(c);
                     startIndex = i+1;
                     if(idx==0) isCanTakeFirstTrain = true;
@@ -1245,15 +1265,68 @@ TT.makeMainAreaRenderDiv = function(){
         TT.goingData.findResult = {
             canTakeTrainTime: canTakeTime,
             nearTrain: aTime[0],
+            targetStationObj: bObj,
             isCanTakeFirstTrain: isCanTakeFirstTrain
         }
         return TT.goingData.findResult;
     }
     
+    Vue.component('timetablelist', {
+        template: '<div>' +
+        //'<div>{{targetStationName()}}</div>' + 
+        '<table class="nearTimeTableList" v-bind:style="tableStyle()">' +
+            '<tr>' +
+                '<th>' + LANG.sptr022 + '</th><th>' + LANG.sptr024 + '</th><th>' + LANG.sptr023 + '</th><th>' + LANG.sptr025 + '</th><th v-html="targetStationName()">' + LANG.sptr026 + '</th><th>' + LANG.sptr027 + '</th>' +
+            '</tr>' +
+            '<tr v-for="(train,idx) in trainTimeAry">' +
+                '<td>{{train.EndingStationName}}</td>' +
+                '<td>{{train.TrainNo}}</td>' +
+                '<td v-html="getCarClass(train)"></td>' +
+                '<td>{{train.DepartureTime}}</td>' +
+                '<td>{{train.targetArrTime}}</td>' +
+                '<td>{{getOtherInfo(train)}}</td>' +
+            '</tr>' +
+        '</table></div>',
+        data: function() {
+            return {
+                trainTimeAry: false,
+                tableStyle: function(){
+                    return 'font-size:' + TT.ui.stationBtnSize + 'px;';
+                },
+                targetStationName: function(){
+                    return LANG.sptr026.replace('{stname}',TT.goingData.findResult.targetStationObj.name);
+                },
+                getCarClass: function(train){
+                    var car = TT.fn.getTRA_carClassName(train.TrainTypeID);
+                    if(!car || car=='') car = train.TrainTypeName.Zh_tw;
+                    return car;
+                },
+                getOtherInfo: function(train){
+                    var rt = '';
+                    if(train.delayTime){
+                        rt = LANG.sptr029.replace('{min}',train.delayTime);
+                    }
+                    return rt;
+                }
+            }
+        },
+        mounted: function(){
+            var ks = [];
+            for(var i=0; i<TT.goingData.findResult.canTakeTrainTime.length; i++){
+                ks.push(JSON.parse(JSON.stringify(TT.goingData.findResult.canTakeTrainTime[i])));
+                if(i >= 10) break;
+            }
+            this.trainTimeAry = ks;
+        }
+    });
+    
     Vue.component('timeshowout', {
         template: '<div id="timepage">' +
             '<div class="printInfo" v-html="printInfo()"></div>' +
-            '<div class="returnBtn" v-on:click="returnSearch()">' + LANG.sptr011 + '</div>' +
+            '<div>' +
+                '<div class="returnBtn" v-on:click="listSearch()" v-bind:style="timeshowBtnStyle()">' + LANG.sptr021 + '</div>' +
+                '<div class="returnBtn" v-on:click="returnSearch()" v-bind:style="timeshowBtnStyle()">' + LANG.sptr011 + '</div>' +
+            '</div>' +
         '</div>',
         props: ['ctlist', 'tsid'],
         data: function() {
@@ -1307,6 +1380,16 @@ TT.makeMainAreaRenderDiv = function(){
                         }
                     }
                     return rt;
+                },
+                listSearch: function(){
+                    var rtb = '<div id="listSearchMain"><timetablelist></timetablelist></div>';
+                    TT.popupArea.pop(rtb);
+                    var lsm = new Vue({
+                        el: '#listSearchMain'
+                    });
+                },
+                timeshowBtnStyle: function(){
+                    return 'font-size:' + TT.ui.stationBtnSize + 'px;margin:' + TT.ui.stationBtnMargin + 'px;';
                 },
                 returnSearch: function(){
                     vm.switchStation();
