@@ -808,10 +808,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.5.7",
-            "產生日期": "2018/08/23"
+            "版本": "Beta 0.5.8",
+            "產生日期": "2018/09/06"
         },
         programUpdateInfo: [
+                    'Beta 0.5.8: 新增台鐵捷運化 2018 年啟用之台中及高雄通勤站。',
                     'Beta 0.5.7: 新增台鐵速查系統連結及屏東線內部潮州轉乘。',
                     'Beta 0.5.6: 修正台鐵沙崙線轉平溪線無法查詢錯誤。',
                     'Beta 0.5.5: 新增台鐵新富站。',
@@ -940,9 +941,14 @@ var TT = (function(){
                 {id:"tra_1314", name: "泰安", estring: "taian", sect: "miaoli"},
                 {id:"tra_1315", name: "后里", estring: "houli", sect: "taichung"},
                 {id:"tra_1317", name: "豐原", estring: "fengyuan", sect: "taichung", big: 'w'},
+                {id:"tra_1325", name: "栗林", estring: "lilin", sect: "taichung"},
                 {id:"tra_1318", name: "潭子", estring: "tanzi", sect: "taichung"},
+                {id:"tra_1326", name: "頭家厝", estring: "toujiacuo", sect: "taichung"},
+                {id:"tra_1327", name: "松竹", estring: "toujiacuo", sect: "songzhu"},
                 {id:"tra_1323", name: "太原", estring: "taiyuan", sect: "taichung"},
+                {id:"tra_1328", name: "精武", estring: "jingwu", sect: "taichung"},
                 {id:"tra_1319", name: "台中", estring: "taizhongtaichung", sect: "taichung", big: 'w'},
+                {id:"tra_1329", name: "五權", estring: "wuquan", sect: "taichung"},
                 {id:"tra_1322", name: "大慶", estring: "daqing", sect: "taichung"},
                 {id:"tra_1320", name: "烏日", estring: "wuri", sect: "taichung"},
                 {id:"tra_1324", name: "新烏日", estring: "xinwuri", sect: "taichung"},
@@ -988,7 +994,14 @@ var TT = (function(){
                 {id:"tra_1235", name: "楠梓", estring: "nanzi", sect: "kaohsiung"},
                 {id:"tra_1242", name: "新左營", estring: "xingzouying", sect: "kaohsiung", big: 's'},
                 {id:"tra_1236", name: "左營", estring: "zouying", sect: "kaohsiung"},
+                {id:"tra_1245", name: "內惟", estring: "neiwei", sect: "kaohsiung"},
+                {id:"tra_1246", name: "美術館", estring: "meishuguanmuseumoffinearts", sect: "kaohsiung"},
+                {id:"tra_1237", name: "鼓山", estring: "gushan", sect: "kaohsiung"},
+                {id:"tra_1247", name: "三塊厝", estring: "sankuaicuo", sect: "kaohsiung"},
                 {id:"tra_1238", name: "高雄", estring: "kaohsiunggaoxung", sect: "kaohsiung", big: 'ws'},
+                {id:"tra_1419", name: "民族", estring: "mingzhu", sect: "kaohsiung"},
+                {id:"tra_1420", name: "科工館", estring: "kegongguanscienceandtecnologymuseum", sect: "kaohsiung"},
+                {id:"tra_1421", name: "正義", estring: "zhengyi", sect: "kaohsiung"},
                 {id:"tra_1402", name: "鳳山", estring: "fongshanfengshan", sect: "kaohsiung"},
                 {id:"tra_1403", name: "後庄", estring: "hozhuang", sect: "kaohsiung"},
                 {id:"tra_1404", name: "九曲堂", estring: "jiuqutang", sect: "kaohsiung"},
@@ -1049,6 +1062,7 @@ var TT = (function(){
                 {id:"tra_1605", name: "平和", estring: "pinghe", sect: "hualian"},
                 {id:"tra_1606", name: "壽豐", estring: "shoufeng", sect: "hualian"},
                 {id:"tra_1607", name: "豐田", estring: "fengtian", sect: "hualian"},
+                {id:"tra_1608", name: "林榮新光", estring: "lingrongzinguanglingrongshinkong", sect: "hualian"},
                 {id:"tra_1609", name: "南平", estring: "nanping", sect: "hualian"},
                 {id:"tra_1610", name: "鳳林", estring: "fenglinfonglin", sect: "hualian"},
                 {id:"tra_1611", name: "萬榮", estring: "wanrong", sect: "hualian"},
@@ -1118,8 +1132,8 @@ var TT = (function(){
                         "tra_xibu": {station: "tra_1028", dir: "0"},
                         "tra_zhjy": {station: "tra_1120", dir: "1"}
                     },
-            		station: ["tra_1028","tra_1302","tra_1304","tra_1305","tra_1307","tra_1308","tra_1310","tra_1314","tra_1315","tra_1317",
-                        "tra_1318","tra_1323","tra_1319","tra_1322","tra_1320","tra_1324","tra_1321","tra_1120"]
+            		station: ["tra_1028","tra_1302","tra_1304","tra_1305","tra_1307","tra_1308","tra_1310","tra_1314","tra_1315","tra_1317", "tra_1325",
+                        "tra_1318","tra_1326","tra_1327","tra_1323","tra_1328","tra_1319","tra_1329","tra_1322","tra_1320","tra_1324","tra_1321","tra_1120"]
             	}, {
             		id: "tra_zhjy",
                     name: "西部幹線(彰化-嘉義)",
@@ -1145,7 +1159,7 @@ var TT = (function(){
                         "tra_shalun": {station: "tra_1230", dir: "1"}
                     },
             		station: ["tra_1215","tra_1217","tra_1218","tra_1219","tra_1220","tra_1221","tra_1222","tra_1223","tra_1224","tra_1225","tra_1244","tra_1226","tra_1227","tra_1239","tra_1228",
-                        "tra_1229","tra_1243","tra_1230","tra_1231","tra_1232","tra_1233","tra_1234","tra_1235","tra_1242","tra_1236","tra_1238"]
+                        "tra_1229","tra_1243","tra_1230","tra_1231","tra_1232","tra_1233","tra_1234","tra_1235","tra_1242","tra_1236","tra_1245","tra_1246","tra_1237","tra_1247","tra_1238"]
             	}, {
             		id: "tra_pingdong",
                     name: "屏東線",
@@ -1157,7 +1171,7 @@ var TT = (function(){
                     link: {
                         "tra_jygx": {station: "tra_1238", dir: "0"}
                     },
-            		station: ["tra_1238","tra_1402","tra_1403","tra_1404","tra_1405","tra_1406","tra_1407","tra_1408","tra_1409",
+            		station: ["tra_1238","tra_1419","tra_1420","tra_1421","tra_1402","tra_1403","tra_1404","tra_1405","tra_1406","tra_1407","tra_1408","tra_1409",
                         "tra_1410","tra_1411","tra_1412","tra_1413","tra_1414","tra_1415","tra_1416","tra_1417","tra_1418"]
             	}, {
             		id: "tra_yilan",
@@ -1196,7 +1210,7 @@ var TT = (function(){
                     link: {
                         "tra_beihui": {station: "tra_1715", dir: "1"}
                     },
-            		station: ["tra_1715","tra_1602","tra_1604","tra_1605","tra_1606","tra_1607","tra_1609","tra_1610","tra_1611","tra_1612","tra_1613","tra_1614","tra_1616","tra_1617","tra_1619",
+            		station: ["tra_1715","tra_1602","tra_1604","tra_1605","tra_1606","tra_1607","tra_1608","tra_1609","tra_1610","tra_1611","tra_1612","tra_1613","tra_1614","tra_1616","tra_1617","tra_1619",
                         "tra_1621","tra_1622","tra_1623","tra_1624","tra_1625","tra_1626","tra_1628","tra_1629","tra_1630","tra_1631","tra_1632"]
                 }, {
             		id: "tra_pingxi",
