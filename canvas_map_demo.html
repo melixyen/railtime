@@ -12,8 +12,23 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script type="text/javascript" src="canvasTaiwanRailwayMap.js"></script>
 <script type="text/javascript">
+	var GetP = (function(){
+            var s = location.search, aryParam, tmpParam, rt = {};
+            if(s.indexOf('?')!=-1){
+                rt = {};
+                aryParam = s.split('?')[1].split('&');
+                aryParam.map(function(tmpA){
+                    tmpParam = tmpA.split('=');
+                    rt[tmpParam[0]] = tmpParam[1];
+                });
+            }
+            return rt;
+    })();
     function initFn(){
-        var a = new canvasTaiwanRailwayMapJS();
+    	var s = GetP.s || 0;
+        var a = new canvasTaiwanRailwayMapJS({
+			stationNameRenderStyle: s
+		});
         a.initAll();
     }
 </script>

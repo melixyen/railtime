@@ -86,6 +86,7 @@
             stationClassFontSize: [18,18,16,14,12,10,8],
             stationClassFontMaxWidth: [100,90,80,80,70,60,50],
             stationNameColor: '#000',
+            stationNameRenderStyle: 0,//0 白底黑框黑字，1 路線圖色底黑框白字，2 白底路線圖色框黑字，3 路線圖色底框白字
             zIndex: 130,
             zoom: 1
         }
@@ -144,6 +145,7 @@
                         {type: 'station', id: 'tra_1012'},
                         {type: 'station', id: 'tra_1013'},
                         {type: 'station', id: 'tra_1014'},
+                        {type: 'turn', id: 'tra_1014', ox: 0, oy: 105},
                         {type: 'station', id: 'tra_fengming'},
                         {type: 'station', id: 'tra_1015'},
                         {type: 'station', id: 'tra_1028'}
@@ -167,7 +169,7 @@
                         "tra_1034": {x: -440, y: 255, name: '南樹林', stationClass: 4},
                         "tra_1013": {x: -440, y: 285, name: '山佳', stationClass: 4},
                         "tra_1014": {x: -440, y: 310, name: '鶯歌', stationClass: 3, company: true},
-                        "tra_fengming": {x: -440, y: 460, name: '鳳鳴', stationClass: 4, noClick: true},
+                        "tra_fengming": {x: -370, y: 460, name: '鳳鳴', stationClass: 4, noClick: true},
                         "tra_1015": {x: pos.tauoyuan.x, y: pos.tauoyuan.y, name: '桃園', stationClass: 1, company: true},
                         "tra_1016": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+130, name: '內壢', stationClass: 4},
                         "tra_1017": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 2, company: true},
@@ -672,7 +674,7 @@
                         fontColor: '#FFF',
                         id:'thsr_03', 
                         ox: -235, 
-                        oy: 0
+                        oy: 150
                     },
                     dir: "1",
                     line: [
@@ -824,7 +826,7 @@
                         "trtc_101": {x: 290, y: 150, name: '信義安和', stationClass: 4 },
                         "trtc_100": {x: 370, y: 150, name: '台北101/世貿', stationClass: 4 },
                         "trtc_099": {x: 435, y: 150, name: '象山', stationClass: 3 },
-                        "trtc_R01": {x: 500, y: 150, name: '廣慈/奉天宮', stationClass: 3 }
+                        "trtc_R01": {x: 500, y: 150, name: '廣慈/奉天宮', stationClass: 3, noClick: true}
                     }
                 }, {
                     id: "trtc_3",
@@ -1189,8 +1191,8 @@
                         "trtc_lb07": {x: -390, y: 355, name: '臺北大學', stationClass: 4, noClick: true},
                         "trtc_lb08": {x: -480, y: 335, name: '鶯歌', stationClass: 3, company: true, noClick: true},
                         "trtc_lb09": {x: -480, y: 380, name: '陶瓷老街', stationClass: 4, noClick: true},
-                        "trtc_lb10": {x: -480, y: 435, name: '國華', stationClass: 4, noClick: true},
-                        "trtc_lb11": {x: -380, y: 460, name: '永吉公園', stationClass: 4, noClick: true},
+                        "trtc_lb10": {x: -480, y: 405, name: '國華', stationClass: 4, noClick: true},
+                        "trtc_lb11": {x: -300, y: 460, name: '永吉公園', stationClass: 4, noClick: true},
                         "trtc_lb12": {x: -180, y: 535, name: '鶯桃福德', stationClass: 4, noClick: true}
                     }
                 }, {
@@ -1351,12 +1353,12 @@
                         "tymetro_a07": {x: -550, y: -160, name: '體育大學', stationClass: 4},
                         "tymetro_a08": {x: -550, y: -110, name: '長庚醫院', stationClass: 3},
                         "tymetro_a09": {x: -550, y: -60, name: '林口', stationClass: 4},
-                        "tymetro_a10": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-220, name: '山鼻', stationClass: 4},
-                        "tymetro_a11": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-190, name: '坑口', stationClass: 3},
-                        "tymetro_a12": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-160, name: '機場第一航廈', stationClass: 3},
-                        "tymetro_a13": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-130, name: '機場第二航廈', stationClass: 3},
-                        "tymetro_a14": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-100, name: '機場第三航廈', stationClass: 3, noClick: true},
-                        "tymetro_a14a": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-70, name: '機場旅館', stationClass: 4},
+                        "tymetro_a10": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-190, name: '山鼻', stationClass: 4},
+                        "tymetro_a11": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-160, name: '坑口', stationClass: 3},
+                        "tymetro_a12": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-130, name: '機場第一航廈', stationClass: 3},
+                        "tymetro_a13": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-100, name: '機場第二航廈', stationClass: 3},
+                        "tymetro_a14": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-70, name: '機場第三航廈', stationClass: 3, noClick: true},
+                        "tymetro_a14a": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-40, name: '機場旅館', stationClass: 4},
                         "tymetro_a15": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+60, name: '大園', stationClass: 4},
                         "tymetro_a16": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+90, name: '橫山', stationClass: 4},
                         "tymetro_a17": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+120, name: '領航', stationClass: 4},
@@ -1606,6 +1608,22 @@
             return '';
         }
         
+        function getLineData(lineID){
+        	var rt = false,
+				tmpA = false;
+        	for(var k in lineData){
+        		tmpA = lineData[k];
+        		for(var i=0; i<tmpA.length; i++){
+        			if(tmpA[i].id==lineID){
+        				rt = tmpA[i];
+        				break;
+        			}
+        		}
+        		if(rt) break;
+        	}
+        	return rt;
+        }
+        
         //================== canvas start =====================
         var ca = {
             el: document.createElement('canvas'),
@@ -1673,11 +1691,27 @@
         
         ca.writeStation = function(ust){
             ust = ust || {};
+            var defaultColorStyle = {
+            	fontColor: cfg.stationNameColor,
+            	borderColor: '#000',
+            	bgColor: '#FFF'
+            }
+            if(cfg.stationNameRenderStyle != 0){
+            	var lineObj = getLineData(ust.lineID);
+            	var lineColor = lineObj.color
+					nameColor = lineObj.nameTag.fontColor;
+            	if(cfg.stationNameRenderStyle==1 || cfg.stationNameRenderStyle==3){
+					defaultColorStyle.fontColor = nameColor;
+					defaultColorStyle.bgColor = lineColor;
+				}
+            	if(cfg.stationNameRenderStyle==2 || cfg.stationNameRenderStyle==3) defaultColorStyle.borderColor = lineColor;
+            	//if(cfg.stationNameRenderStyle==3) defaultColorStyle.borderColor = 'rgba(0,0,0,0)';
+            }
             var st = $.extend({
-                fontColor: (ust.isPlanStation && !cfg.drawPlanLineOriginalColor) ? cfg.drawPlanColor : cfg.stationNameColor,
-                borderColor: (ust.isPlanStation && !cfg.drawPlanLineOriginalColor) ? cfg.drawPlanColor : '#000',
+                fontColor: (ust.isPlanStation && !cfg.drawPlanLineOriginalColor) ? cfg.drawPlanColor : defaultColorStyle.fontColor,
+                borderColor: (ust.isPlanStation && !cfg.drawPlanLineOriginalColor) ? cfg.drawPlanColor : defaultColorStyle.borderColor,
                 borderWidth: 1,
-                bgColor: '#FFF',
+                bgColor: defaultColorStyle.bgColor,
                 x: 0, y:0,
                 stationClass: 0,
                 name: '臺北'
@@ -1700,10 +1734,13 @@
             cube.y = ca.y(st.y) - Math.ceil(cube.height/2);//ca.y(st.y) - Math.ceil(cube.height * cfg.zoom/2)
             
             cc.fillStyle = st.bgColor;
-            cc.fillRect(cube.x, cube.y, cube.width, cube.height);
-            
-            cc.strokeStyle = st.borderColor;
-            cc.strokeRect(cube.x-st.borderWidth, cube.y-st.borderWidth , cube.width+st.borderWidth*2, cube.height+st.borderWidth*2);
+            if(cfg.stationNameRenderStyle==3){
+            	cc.fillRect(cube.x-st.borderWidth, cube.y-st.borderWidth , cube.width+st.borderWidth*2, cube.height+st.borderWidth*2);
+            }else{
+            	cc.fillRect(cube.x, cube.y, cube.width, cube.height);
+            	cc.strokeStyle = st.borderColor;
+            	cc.strokeRect(cube.x-st.borderWidth, cube.y-st.borderWidth , cube.width+st.borderWidth*2, cube.height+st.borderWidth*2);
+            }
             
             cc.fillStyle = st.fontColor;
             cc.fillText(st.name, cube.x+1, cube.y+fontI, maxWidth);
