@@ -25,11 +25,27 @@
             return rt;
     })();
     function initFn(){
-    	var s = GetP.s || 0;
+    	var s = GetP.s || 0,
+            p = (parseInt(GetP.p)===0) ? false : true,
+    	    c = (parseInt(GetP.c)===0) ? false : true;
         var a = new canvasTaiwanRailwayMapJS({
-			stationNameRenderStyle: s
+			stationNameRenderStyle: s,
+			drawPlanLine: p,
+			drawPlanLineOriginalColor: c
 		});
         a.initAll();
+        //增加另存圖檔按鈕
+        var btnA = document.createElement('div');
+        btnA.style.position = 'absolute';btnA.style.top = '0px';btnA.style.left = '800px';btnA.style.cursor = 'pointer';btnA.style.zIndex='150';
+        btnA.style.borderRadius='2px';btnA.style.border='3px solid #3CE';btnA.style.padding='3px';
+        btnA.innerHTML = '另存新檔';
+        btnA.addEventListener('click', function(e){
+            var canvas = document.querySelector('canvas');
+            var img = canvas.toDataURL("image/png");
+			var aLink = document.createElement('a');
+			window.open(img);
+        }, false);
+        document.body.appendChild(btnA);
     }
 </script>
 <!-- -->

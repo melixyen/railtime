@@ -2,7 +2,7 @@
 *   License: LGPL
 *   作者: melixyen@gmail.com
 *   發行單位: 極光駭客
-*   version: Beta 0.3
+*   version: Beta 0.4
 *   
 *   lineData格式
 *   {
@@ -169,7 +169,7 @@
                         "tra_1034": {x: -440, y: 255, name: '南樹林', stationClass: 4},
                         "tra_1013": {x: -440, y: 285, name: '山佳', stationClass: 4},
                         "tra_1014": {x: -440, y: 310, name: '鶯歌', stationClass: 3, company: true},
-                        "tra_fengming": {x: -370, y: 460, name: '鳳鳴', stationClass: 4, noClick: true},
+                        "tra_fengming": {x: -240, y: 460, name: '鳳鳴', stationClass: 4, noClick: true},
                         "tra_1015": {x: pos.tauoyuan.x, y: pos.tauoyuan.y, name: '桃園', stationClass: 1, company: true},
                         "tra_1016": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+130, name: '內壢', stationClass: 4},
                         "tra_1017": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 2, company: true},
@@ -324,7 +324,7 @@
                         "tra_1230": {x: pos.tainan.x, y: pos.tainan.y+76, name: '中洲', stationClass: 2 },
                         "tra_1231": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-400, name: '大湖', stationClass: 4 },
                         "tra_1232": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-375, name: '路竹', stationClass: 4 },
-                        "tra_1233": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-350, name: '岡山', stationClass: 4 },
+                        "tra_1233": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-350, name: '岡山', stationClass: 3, company: true},
                         "tra_1234": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-305, name: '橋頭', stationClass: 3, company: true},
                         "tra_1235": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-250, name: '楠梓', stationClass: 4 },
                         "tra_1242": {x: pos.kaohsiung.x-100, y: pos.kaohsiung.y-200, name: '新左營', stationClass: 3 },
@@ -504,7 +504,7 @@
                     id: "tra_nanhuei",
                     name: "[台鐵]南迴線",
                     color: "#3040A0",
-                    isPlanLine: true,
+                    isNoClickLine: true,
                     nameTag: {
                         fontColor: '#FFF',
                         id:'tra_1517', 
@@ -536,7 +536,7 @@
                     id: "tra_hai",
                     name: "[台鐵]海線",
                     color: "#2050C0",
-                    isPlanLine: true,
+                    isNoClickLine: true,
                     nameTag: {
                         fontColor: '#FFF',
                         id:'tra_1110', 
@@ -642,6 +642,31 @@
                         "tra_2208": {x: pos.hsinchu.x+460, y: pos.hsinchu.y-30, name: '合興', stationClass: 4 },
                         "tra_2209": {x: pos.hsinchu.x+500, y: pos.hsinchu.y-30, name: '富貴', stationClass: 4 },
                         "tra_2210": {x: pos.hsinchu.x+540, y: pos.hsinchu.y-30, name: '內灣', stationClass: 3}
+                    }
+                }, {
+                    id: "tra_jiji",
+                    name: "[台鐵]集集線",
+                    color: "#22A050",
+                    isNoClickLine: true,
+                    nameTag: {
+                        fontColor: '#FFF',
+                        id:'tra_2707', 
+                        ox: -53, 
+                        oy: 21
+                    },
+                    dir: "0",
+                    line: [
+                        {type: 'station', id: 'tra_1207'},
+                        {type: 'station', id: 'tra_2707'}
+                    ],
+                    station: {
+                        "tra_1207": {x: pos.changhua.x+75, y: pos.changhua.y+173, name: '二水', stationClass: 3, noDraw: true},
+                        "tra_2702": {x: pos.changhua.x+125, y: pos.changhua.y+173, name: '源泉', stationClass: 4},
+                        "tra_2703": {x: pos.changhua.x+175, y: pos.changhua.y+173, name: '濁水', stationClass: 4},
+                        "tra_2704": {x: pos.changhua.x+225, y: pos.changhua.y+173, name: '龍泉', stationClass: 4},
+                        "tra_2705": {x: pos.changhua.x+275, y: pos.changhua.y+173, name: '集集', stationClass: 4},
+                        "tra_2706": {x: pos.changhua.x+325, y: pos.changhua.y+173, name: '水里', stationClass: 4},
+                        "tra_2707": {x: pos.changhua.x+375, y: pos.changhua.y+173, name: '車埕', stationClass: 4},
                     }
                 }, {
                     id: "tra_shalun",
@@ -997,8 +1022,8 @@
                     nameTag: {
                         fontColor: '#425',
                         id:'trtc_y16', 
-                        ox: -80, 
-                        oy: -22
+                        ox: -20, 
+                        oy: -32
                     },
                     dir: "0",
                     line: [
@@ -1178,8 +1203,12 @@
                         {type: 'station', id: 'trtc_lb08'},
                         {type: 'station', id: 'trtc_lb09'},
                         {type: 'station', id: 'trtc_lb10'},
+                        {type: 'turn', id: 'trtc_lb10', ox: 30, oy: 25},
+                        {type: 'turn', id: 'trtc_lb10', ox: 300, oy: 25},
                         {type: 'station', id: 'trtc_lb11'},
-                        {type: 'station', id: 'trtc_lb12'}
+                        {type: 'station', id: 'trtc_lb12'},
+                        {type: 'station', id: 'trtc_lb13'},
+                        {type: 'station', id: 'trtc_lb14'}
                     ],
                     station: {
                         "trtc_076": {x: -300, y: 330, name: '頂埔', stationClass: 4, noDraw: true},
@@ -1191,9 +1220,11 @@
                         "trtc_lb07": {x: -390, y: 355, name: '臺北大學', stationClass: 4, noClick: true},
                         "trtc_lb08": {x: -480, y: 335, name: '鶯歌', stationClass: 3, company: true, noClick: true},
                         "trtc_lb09": {x: -480, y: 380, name: '陶瓷老街', stationClass: 4, noClick: true},
-                        "trtc_lb10": {x: -480, y: 405, name: '國華', stationClass: 4, noClick: true},
-                        "trtc_lb11": {x: -300, y: 460, name: '永吉公園', stationClass: 4, noClick: true},
-                        "trtc_lb12": {x: -180, y: 535, name: '鶯桃福德', stationClass: 4, noClick: true}
+                        "trtc_lb10": {x: -460, y: 405, name: '國華', stationClass: 4, noClick: true},
+                        "trtc_lb11": {x: -160, y: 460, name: '永吉公園', stationClass: 4, noClick: true},
+                        "trtc_lb12": {x: -90, y: 535, name: '鶯桃福德', stationClass: 4, noClick: true},
+                        "trtc_lb13": {x: -60, y: 575, name: '豎啣埤', stationClass: 4, noClick: true},
+                        "trtc_lb14": {x: -30, y: 638, name: '大湳', stationClass: 3, noClick: true, company: true}
                     }
                 }, {
                     id: "trtc_minxi",
@@ -1369,6 +1400,57 @@
                         "tymetro_a22": {x: pos.tauoyuan.x-150, y: pos.tauoyuan.y+200, name: '老街溪', stationClass: 4, noClick: true},
                         "tymetro_a23": {x: pos.tauoyuan.x-85, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 3, noClick: true, company: true}
                     }
+                }, {
+                    id: "tymetro_2",
+                    name: "[桃捷]航空城線",
+                    color: "#64A03C",
+                    isPlanLine: true,
+                    nameTag: {
+                        fontColor: '#FFF',
+                        id:'tymetro_G1', 
+                        ox: 20, 
+                        oy: 0
+                    },
+                    dir: "1",
+                    line: [
+                        {type: 'station', id: 'tymetro_G1'},
+                        {type: 'station', id: 'tymetro_G2'},
+                        {type: 'station', id: 'tymetro_G4'},
+                        {type: 'station', id: 'tymetro_G7'},
+                        {type: 'station', id: 'tymetro_G8'},
+                        {type: 'station', id: 'tymetro_G11'},
+                        {type: 'station', id: 'tymetro_G13a'},
+                        {type: 'station', id: 'tymetro_G14'},
+                        {type: 'station', id: 'tymetro_G15'},
+                        {type: 'station', id: 'tymetro_G17'},
+                        {type: 'station', id: 'tymetro_a16'},
+                        {type: 'move', id: 'tymetro_G14'},
+                        {type: 'station', id: 'tymetro_G31'},
+                        {type: 'station', id: 'tymetro_a11'},
+                    ],
+                    station: {
+                        "tymetro_G1": {x: pos.tauoyuan.x+300, y: pos.tauoyuan.y+120, name: '八德', stationClass: 4},
+                        "tymetro_G2": {x: pos.tauoyuan.x+270, y: pos.tauoyuan.y+90, name: '建國路', stationClass: 4},
+                        "tymetro_G3": {x: pos.tauoyuan.x+240, y: pos.tauoyuan.y+60, name: '麻園', stationClass: 4},
+                        "tymetro_G4": {x: pos.tauoyuan.x+210, y: pos.tauoyuan.y+30, name: '大湳', stationClass: 3, company: true},
+                        "tymetro_G5": {x: pos.tauoyuan.x+140, y: pos.tauoyuan.y+30, name: '忠勇西街', stationClass: 4},
+                        "tymetro_G6": {x: pos.tauoyuan.x+80, y: pos.tauoyuan.y+30, name: '陽明公園', stationClass: 4},
+                        "tymetro_G7": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+26, name: '桃園車站', stationClass: 1, company: true},
+                        "tymetro_G8": {x: pos.tauoyuan.x-80, y: pos.tauoyuan.y+26, name: '永和市場', stationClass: 4},
+                        "tymetro_G9": {x: pos.tauoyuan.x-105, y: pos.tauoyuan.y+1, name: '民光路', stationClass: 4},
+                        "tymetro_G10": {x: pos.tauoyuan.x-130, y: pos.tauoyuan.y-25, name: '大興西路', stationClass: 4},
+                        "tymetro_G11": {x: pos.tauoyuan.x-155, y: pos.tauoyuan.y-50, name: '展演中心', stationClass: 4},
+                        "tymetro_G12": {x: pos.tauoyuan.x-170, y: pos.tauoyuan.y-75, name: '南崁轉運站', stationClass: 4},
+                        "tymetro_G13": {x: pos.tauoyuan.x-180, y: pos.tauoyuan.y-100, name: '南竹', stationClass: 4},
+                        "tymetro_G13a": {x: pos.tauoyuan.x-190, y: pos.tauoyuan.y-125, name: '蘆竹工業區', stationClass: 4},
+                        "tymetro_G14": {x: pos.tauoyuan.x-245, y: pos.tauoyuan.y-125, name: '長興', stationClass: 3},
+                        "tymetro_G15": {x: pos.tauoyuan.x-245, y: pos.tauoyuan.y+30, name: '航空城一', stationClass: 4},
+                        "tymetro_G16": {x: pos.tauoyuan.x-245, y: pos.tauoyuan.y+60, name: '航空城二', stationClass: 4},
+                        "tymetro_G17": {x: pos.tauoyuan.x-245, y: pos.tauoyuan.y+90, name: '航空城三', stationClass: 4},
+                        "tymetro_a16": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+90, name: '橫山', stationClass: 4, noDraw: true},
+                        "tymetro_G31": {x: pos.tauoyuan.x-265, y: pos.tauoyuan.y-160, name: '菓林', stationClass: 4},
+                        "tymetro_a11": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-160, name: '坑口', stationClass: 3, noDraw: true},
+                    }
                 }
             ],
             crtc: [
@@ -1434,7 +1516,7 @@
                     },
                     dir: "1",
                     line: [
-                        {type: 'station', id: 'krtc_R24'},
+                        {type: 'station', id: 'krtc_R25'},
                         {type: 'station', id: 'krtc_R21'},
                         {type: 'station', id: 'krtc_R20'},
                         {type: 'station', id: 'krtc_R18'},
@@ -1446,7 +1528,8 @@
                         {type: 'station', id: 'krtc_R3'}
                     ],
                     station: {
-                        "krtc_R24": {x: pos.kaohsiung.x-180, y: pos.kaohsiung.y-330, name: '南崗山', stationClass: 4},
+                        "krtc_R25": {x: pos.kaohsiung.x-180, y: pos.kaohsiung.y-352, name: '岡山', stationClass: 3, company: true},
+                        "krtc_R24": {x: pos.kaohsiung.x-180, y: pos.kaohsiung.y-330, name: '南岡山', stationClass: 4},
                         "krtc_R23": {x: pos.kaohsiung.x-180, y: pos.kaohsiung.y-305, name: '橋頭火車站', stationClass: 4},
                         "krtc_R22A": {x: pos.kaohsiung.x-180, y: pos.kaohsiung.y-283, name: '橋頭糖廠', stationClass: 4},
                         "krtc_R22": {x: pos.kaohsiung.x-180, y: pos.kaohsiung.y-261, name: '青埔', stationClass: 4},
@@ -1508,7 +1591,6 @@
                     id: "krtc_C",
                     name: "[高捷]環狀輕軌",
                     color: "#61c851",
-                    isPlanLine: true,
                     isNoClickLine: true,
                     nameTag: {
                         fontColor: '#FFF',
@@ -1681,6 +1763,10 @@
                     }
 
                     cc.moveTo(ax,ay);
+                    if(da.turn){
+                        cc.arc(ax, ay, 0.1, 0, 2 * Math.PI);cc.stroke();cc.moveTo(ax,ay);//轉折處畫園，若太慢移除此行
+                    }
+                    
                 });
             }else{
                 cc.lineTo(ex,ey);
@@ -1716,6 +1802,10 @@
                 stationClass: 0,
                 name: '臺北'
             }, ust);
+            if(ust.isPlanStation && !cfg.drawPlanLineOriginalColor && (cfg.stationNameRenderStyle==1 || cfg.stationNameRenderStyle==3)){
+                st.fontColor = '#FFF';
+                st.bgColor = cfg.drawPlanColor;
+            }
             var fontSize = cfg.stationClassFontSize[st.stationClass];//cfg.stationClassFontSize[st.stationClass] * cfg.zoom
             var fontI = Math.ceil(fontSize);
             var maxWidth = cfg.stationClassFontMaxWidth[st.stationClass];//cfg.stationClassFontMaxWidth[st.stationClass] * cfg.zoom
