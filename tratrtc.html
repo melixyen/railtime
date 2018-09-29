@@ -767,6 +767,7 @@ body {
 //      完成 resetCountOfTrainRouteBox 獨立於所有 checkbox 結束後才呼叫重算 NO. 並改以獨立 ID 命名 span 加快更新速度
 //      完成 getRoute_mapSystemOfFromToLine 跨出地區從系統上尋找路由
 //      新增 getRoute_filterSameRoute 過濾不必要的路由 giveRoute_transStationOtherData
+//		新增 getTRA_linkRouteV1 及 getTRA_linkMap 做自動化路由搜尋
 var TT = (function(){
 
     var TT = {//name space TT for TimeTable
@@ -808,10 +809,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.5.8",
-            "產生日期": "2018/09/06"
+            "版本": "Beta 0.5.9",
+            "產生日期": "2018/09/29"
         },
         programUpdateInfo: [
+                    'Beta 0.5.9: 新增台鐵補償式自動化搜尋連結處理屏東線往返東部鐵路。',
                     'Beta 0.5.8: 新增台鐵捷運化 2018 年啟用之台中及高雄通勤站。',
                     'Beta 0.5.7: 新增台鐵速查系統連結及屏東線內部潮州轉乘。',
                     'Beta 0.5.6: 修正台鐵沙崙線轉平溪線無法查詢錯誤。',
@@ -843,7 +845,7 @@ var TT = (function(){
                     'Beta 0.3: 新增路網圖選擇器提供北台灣軌道運輸路網站點選擇。'
         ],
         displayPri: {
-                "tra": ['tra_shan','tra_liujia','tra_pingxi','tra_shalun','tra_beihui','tra_yilan','tra_xibu','tra_zhjy','tra_jygx','tra_pingdong'],
+                "tra": ['tra_shan','tra_liujia','tra_pingxi','tra_shalun','tra_huadong','tra_beihui','tra_yilan','tra_xibu','tra_zhjy','tra_jygx','tra_pingdong'],
                 "trtc": ['trtc_5','trtc_2','trtc_3','trtc_4','trtc_1'],
                 "tymetro": ['tymetro_1']
         },
@@ -893,6 +895,99 @@ var TT = (function(){
         			{"id": "1150", "name": "柴油車", "ename": "na"}
         		]
         	},
+            running_ary: [{
+                    id: 'eTemu', cate: 'express', CarClass: ['1107','1102'], dir: '0', area: 'e', range: ['tra_1012','tra_1632'], name: '東部幹線太魯閣號、普悠瑪號',
+                    rangeSplit: 'tra_1715',
+                    lineOf: ['tra_xibu','tra_yilan','tra_beihui','tra_huadong'],
+                    mustStop: ['tra_1012', 'tra_1011', 'tra_1008', 'tra_1007', 'tra_1715', 'tra_1619', 'tra_1632'],
+                    maybeStop: ['tra_1006','tra_1003','tra_1820','tra_1823','tra_1606','tra_1610','tra_1612','tra_1616','tra_1626'],
+                    lessStop: ['tra_1002','tra_1804', 'tra_1816', 'tra_1818','tra_1712','tra_1602','tra_1604','tra_1611','tra_1623','tra_1624','tra_1630']
+                }, {
+                    id: 'eZi', cate: 'express', CarClass: ['1100','1101','1103','1108','1109','110A','110B','110C','110D','110E','110F'], dir: '0', area: 'e', range: ['tra_1012','tra_1632'], name: '東部幹線自強號',
+                    rangeSplit: 'tra_1715',
+                    lineOf: ['tra_xibu','tra_yilan','tra_beihui','tra_huadong'],
+                    mustStop: ['tra_1012', 'tra_1011', 'tra_1008', 'tra_1007','tra_1820','tra_1823', 'tra_1715', 'tra_1619', 'tra_1632'],
+                    maybeStop: ['tra_1003','tra_1804','tra_1816','tra_1818','tra_1826','tra_1705','tra_1712','tra_1602','tra_1604','tra_1611','tra_1623','tra_1624','tra_1630'],
+                    lessStop: ['tra_1009','tra_1006','tra_1005','tra_1002','tra_1808','tra_1810','tra_1709']
+                }, {
+                    id: 'eJv', cate: 'express', CarClass: ['1110','11111','1114','1115'], dir: '0', area: 'e', range: ['tra_1012','tra_1632'], name: '東部幹線莒光號',
+                    rangeSplit: 'tra_1715',
+                    lineOf: ['tra_xibu','tra_yilan','tra_beihui','tra_huadong'],
+                    mustStop: ['tra_1012', 'tra_1011', 'tra_1008', 'tra_1007','tra_1804','tra_1816','tra_1818','tra_1820','tra_1823', 'tra_1715', 'tra_1619', 'tra_1632'],
+                    maybeStop: ['tra_1005','tra_1003','tra_1826','tra_1705','tra_1712','tra_1602','tra_1604','tra_1611','tra_1623','tra_1624','tra_1630'],
+                    lessStop: ['tra_1009','tra_1002','tra_1805','tra_1808','tra_1810','tra_1704','tra_1709','tra_1607','tra_1621','tra_1622']
+                }, {//西部對號
+                    id: 'wZi', cate: 'express', CarClass: ['1100','1101','1103','1108','1109','110A','110B','110C','110D','110E','110F'], dir: '1', area: 'w', range: ['tra_1003','tra_1411'], name: '西部幹線自強號',
+                    lineOf: ['tra_xibu','tra_shan','tra_zhjy','tra_jygx','tra_pingdong'],
+                    mustStop: ['tra_1003','tra_1007','tra_1008','tra_1011','tra_1015','tra_1017','tra_1025','tra_1305','tra_1317','tra_1319','tra_1120','tra_1210','tra_1215','tra_1228','tra_1242','tra_1238','tra_1402','tra_1406','tra_1411'],
+                    maybeStop: ['tra_1005','tra_1028','tra_1203','tra_1206','tra_1211','tra_1220','tra_1404'],
+                    lessStop: ['tra_1006','tra_1012','tra_1214','tra_1225','tra_1227','tra_1233']
+                }, {
+                    id: 'wJv', cate: 'express', CarClass: ['1110','11111','1114','1115'], dir: '1', area: 'w', range: ['tra_1003','tra_1411'], name: '西部幹線莒光號',
+                    lineOf: ['tra_xibu','tra_shan','tra_zhjy','tra_jygx','tra_pingdong'],
+                    mustStop: ['tra_1003','tra_1005','tra_1007','tra_1008','tra_1011','tra_1012','tra_1015','tra_1017','tra_1019','tra_1021','tra_1025','tra_1028',
+                        'tra_1105', 'tra_1109', 'tra_1110', 'tra_1112', 'tra_1114', 'tra_1115',      'tra_1305','tra_1317','tra_1319',
+                        'tra_1120','tra_1203','tra_1206','tra_1210','tra_1211','tra_1215','tra_1220','tra_1223','tra_1225','tra_1228','tra_1233','tra_1242','tra_1238','tra_1402','tra_1406','tra_1411'],
+                    maybeStop: ['tra_1023','tra_1207','tra_1213','tra_1214','tra_1227','tra_1404'],
+                    lessStop: ['tra_1014','tra_1107','tra_1117','tra_1214','tra_1226','tra_1231','tra_1232']
+                }, {//南迴線對號
+                    id: 'sZi', cate: 'express', CarClass: ['1100','1101','1103','1108','1109','110A','110B','110C','110D','110E','110F'], dir: '1', area: 's', range: ['tra_1242','tra_1632'], name: '南迴線自強號',
+                    lineOf: ['tra_jygx','tra_pingdong'],
+                    mustStop: ['tra_1242', 'tra_1238','tra_1402','tra_1406','tra_1411','tra_1418','tra_1508','tra_1514','tra_1516','tra_1632'],
+                    maybeStop: ['tra_1413','tra_1415','tra_1512'],
+                    lessStop: ['tra_1404','tra_1510','tra_1517']
+                }, {
+                    id: 'sJvFu', cate: 'express', CarClass: ['1110','11111','1114','1115','1120'], dir: '1', area: 's', range: ['tra_1242','tra_1632'], name: '南迴線莒光號、復興號',
+                    lineOf: ['tra_jygx','tra_pingdong'],
+                    mustStop: ['tra_1242', 'tra_1238','tra_1402','tra_1406','tra_1411','tra_1418','tra_1508','tra_1512','tra_1514','tra_1516','tra_1632'],
+                    maybeStop: ['tra_1404','tra_1413','tra_1415','tra_1510','tra_1517'],
+                    lessStop: []
+                }, {
+                    id: 'eLocal1', cate: 'local', CarClass: ['1131'], dir: '0', area: 'e', range: ['tra_1012','tra_1827'], name: '宜蘭線區間車', stopAll: true,
+                    lineOf: ['tra_xibu','tra_yilan']
+                }, {
+                    id: 'eLocal2', cate: 'local', CarClass: ['1131'], dir: '0', area: 'e', range: ['tra_1820','tra_1715'], name: '北迴線區間車', stopAll: true,
+                    lineOf: ['tra_yilan','tra_beihui']
+                }, {
+                    id: 'eLocal3', cate: 'local', CarClass: ['1131'], dir: '0', area: 'e', range: ['tra_1715','tra_1632'], name: '臺東線區間車', stopAll: true, maybeStop: ['tra_1608'],//當stopAll 時 maybeStop 表示為不一定停靠
+                    lineOf: ['tra_huadong']
+                }, {
+                    id: 'wLocal1', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1001','tra_1025'], name: '基隆新竹段區間車', stopAll: true,
+                    lineOf: ['tra_xibu']
+                }, {
+                    id: 'wLocal2', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1025','tra_1120'], name: '山線區間車', stopAll: true,
+                    lineOf: ['tra_xibu','tra_shan']
+                //}, {
+                    //id: 'wLocal3', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1025','tra_1120'], name: '海線區間車', stopAll: true,
+                    //lineOf: ['tra_xibu','tra_hai']
+                }, {
+                    id: 'wLocal4', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1120','tra_1215'], name: '彰化嘉義段區間車', stopAll: true,
+                    lineOf: ['tra_zhjy']
+                }, {
+                    id: 'wLocal5', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1215','tra_1411'], name: '嘉義潮州段區間車', stopAll: true,
+                    lineOf: ['tra_jygx','tra_pingdong']
+                }, {
+                    id: 'wLocal6', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1411','tra_1418'], name: '潮州枋寮段區間車', stopAll: true,
+                    lineOf: ['tra_pingdong']
+                }, {
+                    id: 'sLocal', cate: 'local', CarClass: ['1131'], dir: '1', area: 's', range: ['tra_1418','tra_1632'], name: '南迴線區間車', stopAll: true,
+                    lineOf: ['']
+                }, {
+                    id: 'subPX', cate: 'local', CarClass: ['1150','1131'], dir: '0', area: 'e', range: ['tra_2003','tra_1908'], name: '平溪線', stopAll: true,
+                    lineOf: ['tra_pingxi']
+                }, {
+                    id: 'subLJ', cate: 'local', CarClass: ['1131'], dir: '0', area: 'w', range: ['tra_1025','tra_2214'], name: '六家線', stopAll: true,
+                    lineOf: ['tra_liujia']
+                }, {
+                    id: 'subNW', cate: 'local', CarClass: ['1150','1131'], dir: '0', area: 'w', range: ['tra_2203','tra_2210'], name: '內灣線', stopAll: true,
+                    lineOf: ['tra_liujia']
+                }, {
+                    id: 'subJJ', cate: 'local', CarClass: ['1150','1131'], dir: '1', area: 'w', range: ['tra_1207','tra_2707'], name: '集集線', stopAll: true,
+                    lineOf: ['']
+                }, {
+                    id: 'subSL', cate: 'local', CarClass: ['1150','1131'], dir: '1', area: 'w', range: ['tra_1228','tra_5102'], name: '沙崙線', stopAll: true,
+                    lineOf: ['tra_jygx','tra_shalun']
+            }],
         	sect_ary: ['pingdong','kaohsiung','tainan','chiayi','yunlin','changhua','taichung','miaoli','hsinchu','taoyuan','taipei','keelung',
                     'northeast','yilan','beihui','hualian','taidong'
             ],
@@ -1002,16 +1097,16 @@ var TT = (function(){
                 {id:"tra_1419", name: "民族", estring: "mingzhu", sect: "kaohsiung"},
                 {id:"tra_1420", name: "科工館", estring: "kegongguanscienceandtecnologymuseum", sect: "kaohsiung"},
                 {id:"tra_1421", name: "正義", estring: "zhengyi", sect: "kaohsiung"},
-                {id:"tra_1402", name: "鳳山", estring: "fongshanfengshan", sect: "kaohsiung"},
+                {id:"tra_1402", name: "鳳山", estring: "fongshanfengshan", sect: "kaohsiung", big: 'w'},
                 {id:"tra_1403", name: "後庄", estring: "hozhuang", sect: "kaohsiung"},
                 {id:"tra_1404", name: "九曲堂", estring: "jiuqutang", sect: "kaohsiung"},
                 {id:"tra_1405", name: "六塊厝", estring: "liukuaicuo", sect: "pingdong"},
-                {id:"tra_1406", name: "屏東", estring: "pingtungpingdong", sect: "pingdong", big: 'ws', noShow: true},
+                {id:"tra_1406", name: "屏東", estring: "pingtungpingdong", sect: "pingdong", big: 'ws'},
                 {id:"tra_1407", name: "歸來", estring: "gueilai", sect: "pingdong"},
                 {id:"tra_1408", name: "麟洛", estring: "linluo", sect: "pingdong"},
                 {id:"tra_1409", name: "西勢", estring: "xishi", sect: "pingdong"},
                 {id:"tra_1410", name: "竹田", estring: "zhutian", sect: "pingdong"},
-                {id:"tra_1411", name: "潮州", estring: "chaozhouchaojhou", sect: "pingdong", big: 'ws', noShow: true},
+                {id:"tra_1411", name: "潮州", estring: "chaozhouchaojhou", sect: "pingdong", big: 'ws'},
                 {id:"tra_1412", name: "崁頂", estring: "kanding", sect: "pingdong"},
                 {id:"tra_1413", name: "南州", estring: "nanzho", sect: "pingdong"},
                 {id:"tra_1414", name: "鎮安", estring: "zhengan", sect: "pingdong"},
@@ -1053,7 +1148,7 @@ var TT = (function(){
                 {id:"tra_1709", name: "和平", estring: "heping", sect: "beihui"},
                 {id:"tra_1710", name: "和仁", estring: "heren", sect: "beihui"},
                 {id:"tra_1711", name: "崇德", estring: "chongde", sect: "hualian"},
-                {id:"tra_1712", name: "新城", estring: "xinchengsincheng", sect: "hualian"},
+                {id:"tra_1712", name: "新城", estring: "xinchengsincheng", sect: "hualian", big: 'e'},
                 {id:"tra_1713", name: "景美", estring: "jingmei", sect: "hualian"},
                 {id:"tra_1714", name: "北埔", estring: "beipu", sect: "hualian"},
                 {id:"tra_1715", name: "花蓮", estring: "hualienhualian", sect: "hualian", big: 'e'},//sect:hualian
@@ -1221,7 +1316,7 @@ var TT = (function(){
                     area: 'e',
                     protectStation: ["tra_1804"],
                     link: {
-                        "tra_yilan": {station: "tra_1806", dir: "1"}
+                        "tra_yilan": {station: "tra_1804", dir: "1"}
                     },
             		station: ["tra_2003","tra_6103","tra_1804","tra_1805","tra_1806","tra_1903","tra_1904","tra_1905","tra_1906","tra_1907","tra_1908"]
                 }, {
@@ -1556,6 +1651,11 @@ var TT = (function(){
                     changeStation: ['tra_1715','tra_1715'],
                     walkMinute: 4
                 }, {
+                    id: 'xingcheng', name: "新城",
+                    changeLine: ["tra_beihui", "tra_beihui"],
+                    changeStation: ['tra_1712','tra_1712'],
+                    walkMinute: 2
+                }, {
                     id: 'nanaotra1', name: "南澳",
                     changeLine: ["tra_beihui", "tra_beihui"],
                     changeStation: ['tra_1705','tra_1705'],
@@ -1695,6 +1795,16 @@ var TT = (function(){
                     changeLine: ["tra_jygx", "tra_pingdong"],
                     changeStation: ['tra_1238','tra_1238'],
                     walkMinute: 4
+                }, {
+                    id: 'fongshantra1', name: "鳳山",
+                    changeLine: ["tra_pingdong", "tra_pingdong"],
+                    changeStation: ['tra_1402','tra_1402'],
+                    walkMinute: 1
+                }, {
+                    id: 'pingdongtra1', name: "屏東",
+                    changeLine: ["tra_pingdong", "tra_pingdong"],
+                    changeStation: ['tra_1406','tra_1406'],
+                    walkMinute: 1
                 }, {
                     id: 'chaozhoutra1', name: "潮州",
                     changeLine: ["tra_pingdong", "tra_pingdong"],
@@ -2121,6 +2231,10 @@ var TT = (function(){
                     {
                         line: ["tra_jygx", "tra_pingdong"],
                         transStation: ["gaoxungtra1"]
+                    },
+                    {
+                        line: ["tra_pingdong", "tra_pingdong"],
+                        transStation: ["fongshantra1"]
                     },
                     {
                         line: ["tra_pingdong", "tra_pingdong"],
@@ -2795,8 +2909,8 @@ var TT = (function(){
                 company: 'tra',
                 dir: "0",
                 link:[
-                    'tra_jygx,tra_zhjy,tra_shan,tra_xibu,tra_yilan,tra_pingxi',
-                    'tra_jygx,tra_zhjy,tra_shan,tra_xibu,tra_yilan,tra_beihui,tra_huadong',
+                    'tra_pingdong,tra_jygx,tra_zhjy,tra_shan,tra_xibu,tra_yilan,tra_pingxi',
+                    'tra_pingdong,tra_jygx,tra_zhjy,tra_shan,tra_xibu,tra_yilan,tra_beihui,tra_huadong',
                     'tra_shalun,tra_jygx,tra_zhjy,tra_shan,tra_xibu,tra_yilan,tra_beihui,tra_huadong'
                 ]
             }, {
@@ -3104,6 +3218,84 @@ var TT = (function(){
                     }
                 ]
             }, {
+                id: 'tra_xibu_shan_zhjy_pingdong_trans',
+                rType: 'trans',
+                company: 'tra',
+                routeMapID: 'traInnerTrans_tra_zhjy,tra_pingdong',
+                lineInclude: [
+                    ['tra_xibu','tra_shan','tra_zhjy','tra_liujia'],
+                    ['tra_pingdong']
+                ],
+                rule: [
+                    {
+                        line: ['tra_pingdong'],
+                        sect: ['keelung'],
+                        transStation: 'qidutra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        station: ["tra_1004","tra_1005","tra_1031","tra_1006"],
+                        transStation: 'songshantra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        station: ["tra_1009","tra_1032","tra_1012","tra_1013"],
+                        transStation: 'banqiaotra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        station: ["tra_1012","tra_1013","tra_1014"],
+                        transStation: 'taoyuantra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        station: ["tra_1016","tra_1018"],
+                        sect: ["taoyuan"],
+                        transStation: 'zhonglitra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        station: ["tra_1019","tra_1020","tra_1036"],
+                        sect: ['hsinchu'],
+                        transStation: 'hsinchutra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        sect: ['miaoli'],
+                        transStation: 'miaolitra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        sect: ['taichung'],
+                        transStation: 'taizhongtra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        sect: ['changhua'],
+                        transStation: 'zhanghuatra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        sect: ['changhua'],
+                        transStation: 'yuanlintra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        sect: ['yunlin'],
+                        transStation: 'douliutra1'
+                    }, {
+                        line: ['tra_pingdong'],
+                        sect: ['chiayi'],
+                        transStation: 'jiayitra1'
+                    }, {
+                        line: ['tra_zhjy'],
+                        sect: ['kaohsiung'],
+                        transStation: 'gaoxungtra1'
+                    }, {
+                        line: ['tra_zhjy'],
+                        sect: ['kaohsiung'],
+                        transStation: 'fongshantra1'
+                    }, {
+                        line: ['tra_zhjy'],
+                        sect: ['pingdong'],
+                        transStation: 'pingdongtra1'
+                    }, {
+                        line: ['tra_zhjy'],
+                        sect: ['pingdong'],
+                        transStation: 'chaozhoutra1'
+                    }
+                ]
+            }, {
                 id: 'tra_jygx_pingdong_trans',
                 rType: 'trans',
                 company: 'tra',
@@ -3112,10 +3304,6 @@ var TT = (function(){
                     ['tra_jygx','tra_shalun'],
                     ['tra_pingdong']
                 ],
-                regLine: "^tra_jygx$|^tra_pingdong$|^tra_xibu$|^tra_shan$|^tra_zhjy$|^tra_shalun$|^tra_liujia$",
-                lineIsSame: {
-                    "tra_jygx": "^tra_xibu$|^tra_shan$|^tra_zhjy$|^tra_shalun$|^tra_liujia$"
-                },
                 rule: [
                     {
                         line: ['tra_jygx','tra_shalun','tra_pingdong'],
@@ -3276,9 +3464,9 @@ var TT = (function(){
                 id: 'trtc_trans_tra_west',
                 rType: 'cross',//direct , trans 
                 company: ['trtc','tra'],// cross company serial
-                regLine: "^trtc_1$|^trtc_2$|^trtc_3$|^trtc_4|^trtc_5$|^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_shalun$",
+                regLine: "^trtc_1$|^trtc_2$|^trtc_3$|^trtc_4|^trtc_5$|^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_pingdong|^tra_shalun$",
                 lineIsSame: {
-                    "tra_xibu": "^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_shalun$"
+                    "tra_xibu": "^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_pingdong$|^tra_shalun$"
                 },
                 link: [
                 	{
@@ -3294,7 +3482,7 @@ var TT = (function(){
                 		transStation: [['taipei2']]
                 	}
                 ],
-                sect: ['hsinchu','taoyuan','taipei','keeling','miaoli','taichung','changhua','yunlin','chiayi','tainan','kaohsiung']
+                sect: ['hsinchu','taoyuan','taipei','keeling','miaoli','taichung','changhua','yunlin','chiayi','tainan','kaohsiung','pingdong']
             }, {
             //TRA and TYMETRO trans
                 id: 'tymetro_trans_tra_east',
@@ -3317,9 +3505,9 @@ var TT = (function(){
                 id: 'tymetro_trans_tra_west',
                 rType: 'cross',//direct , trans 
                 company: ['tymetro','tra'],// cross company serial
-                regLine: "^tymetro_1$|^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_shalun$",
+                regLine: "^tymetro_1$|^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_pingdong$|^tra_shalun$",
                 lineIsSame: {
-                    "tra_xibu": "^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_shalun$"
+                    "tra_xibu": "^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_pingdong$|^tra_shalun$"
                 },
                 link: [
                 	{
@@ -3329,7 +3517,7 @@ var TT = (function(){
                 		]
                 	}
                 ],
-                sect: ['hsinchu','taoyuan','taipei','keeling','miaoli','taichung','changhua','yunlin','chiayi','tainan','kaohsiung']
+                sect: ['hsinchu','taoyuan','taipei','keeling','miaoli','taichung','changhua','yunlin','chiayi','tainan','kaohsiung','pingdong']
             }
         ]
     }
@@ -3402,6 +3590,9 @@ var TT = (function(){
         },
         dLog: function(st){
             if(!TT.defined.debugMode) return false;
+            if(window.console) console.log(st);
+        },
+        d2Log: function(st){
             if(window.console) console.log(st);
         },
         findStationByString: function(str){
@@ -3480,6 +3671,35 @@ var TT = (function(){
                 trtcAry: trtcAry,
                 allAry: allAry
             }
+        },
+        getComon_allStationOfLineByFromTo: function(a, b, line){
+        	if(typeof(line)=='string') line = TT.fn.getCommon_lineData(line);
+        	var stAry = JSON.parse(JSON.stringify(line.station));
+        	if(line.subWorkingArea && (line.subWorkingArea.station.indexOf(a)>=0 || line.subWorkingArea.station.indexOf(b)>=0)){
+        		var transIdx = stAry.indexOf(line.subWorkingArea.transAt);
+        		var mainArea = stAry.slice(0, stAry.indexOf(line.subWorkingArea.station[0]));
+        		var saidx = line.subWorkingArea.station.indexOf(a),
+        			sbidx = line.subWorkingArea.station.indexOf(b);
+        		if((saidx<0 && stAry.indexOf(a)>=transIdx) || (sbidx<0 && stAry.indexOf(b)>=transIdx)){
+        			mainArea = mainArea.reverse();
+        		}
+        		var tAry = mainArea.slice(0, mainArea.indexOf(line.subWorkingArea.transAt)+1).concat(line.subWorkingArea.station);
+        		stAry = tAry;
+        	}
+        	var aidx = stAry.indexOf(a),
+				bidx = stAry.indexOf(b),
+				dir = line.dir;
+			if(aidx > bidx){
+				stAry = stAry.reverse();
+				dir = (dir=='1') ? '0' : '1';
+				aidx = stAry.indexOf(a);
+				bidx = stAry.indexOf(b);
+			}
+			return {
+				station: stAry.slice(aidx, bidx+1),
+				dir: dir,
+				id: line.id
+			}
         },
         getCommon_lineColor: function(line){
             var cp = TT.fn.getCompanyOfLine(line);
@@ -3633,6 +3853,9 @@ var TT = (function(){
                     }
                 }
             }
+            //搜尋至此時，routeT 應該為一個陣列，陣列內每個物件內容應為 {company:'yyy', line:'xxxx', takeRange:[a,b], transStation:transStation, transStationID: 'vvv'}
+            //若 routeT 仍舊為空，則進行自動分段路網搜尋
+            if(routeT.length==0) routeT = TT.fn.getRoute_searchAutoSplitRoute(a, b, routeT);
             return routeT;
         },
         getCommon_timeRangeBestByFromTo: function(a, b, startTime, endTime, flagAD, w){
@@ -3962,10 +4185,40 @@ var TT = (function(){
             }
             return false;
         },
-        getCommon_transStationBySameChangeStation: function(st){
+        getCommon_transStationAllByStation: function(st, regLine){
+        	var tsAry = TT.data.transStation;
+        	var rt = [];
+        	if(regLine){
+        		if(typeof(regLine)=='string') regLine = new RegExp('^' + regLine + '$');
+        		tsAry.map(function(c){
+        			if(c.changeStation.indexOf(st)>=0 && (regLine.test(c.changeLine[0]) || regLine.test(c.changeLine[1]))) rt.push(c);
+        		});
+        	}else{
+        		tsAry.map(function(c){
+        			if(c.changeStation.indexOf(st)>=0) rt.push(c);
+        		});
+        	}
+        	return rt;
+        },
+        getCommon_transStationBySameChangeStation: function(st, aLine, bLine, st2){
         	var ts = TT.data.transStation;
-        	for(var i=0; i<ts.length; i++){
-        		if(ts[i].changeStation[0]==st && ts[i].changeStation[1]==st) return ts[i];
+        	if(aLine && bLine){
+        		var ta = false, tb = false, flgA = false;
+        		for(var i=0; i<ts.length; i++){
+        			ta = !!(ts[i].changeLine[0]==aLine || ts[i].changeLine[1]==aLine);
+        			tb = !!(ts[i].changeLine[0]==bLine || ts[i].changeLine[1]==bLine);
+        			st2 = st2 || st;
+        			flgA = (ts[i].changeStation[0].indexOf(st)>=0 && ts[i].changeStation.indexOf(st2)>=0); 
+        			if(ta && tb && flgA) return ts[i];
+        		}
+        	}else if(aLine){
+        		for(var i=0; i<ts.length; i++){
+        			if(ts[i].changeStation[0]==st && ts[i].changeStation[1]==st && ts[i].changeLine.indexOf(aLine)>=0) return ts[i];
+        		}
+        	}else{
+        		for(var i=0; i<ts.length; i++){
+        			if(ts[i].changeStation[0]==st && ts[i].changeStation[1]==st) return ts[i];
+        		}
         	}
         	return false;
         },
@@ -4807,6 +5060,15 @@ var TT = (function(){
                 return true;
             }
         },
+        getRoute_searchAutoSplitRoute: function(a, b, routeT){//自動分段演算搜尋法
+            
+            var aComp = TT.fn.getCompanyOfStation(a),
+                bComp = TT.fn.getCompanyOfStation(b);
+            if(aComp==bComp && bComp=='tra'){
+                routeT = TT.fn.getTRA_linkRouteV1(a, b, routeT);
+            }
+            return routeT;
+        },
         getRoute_systemById: function(id){
             var d = TT.data.routeSystem;
             for(var i=0; i<d.length; i++){
@@ -4820,6 +5082,17 @@ var TT = (function(){
                 if(d[i].id==id) return d[i];
             }
             return false;
+        },
+        getRoute_transStationByStationId: function(stid, line1, line2){
+            var d = TT.data.transStation;
+            var tmpA = false, tmpB = false;
+            for(var i=0; i<d.length; i++){
+                if(d[i].changeStation.indexOf(stid)>=0 && (d[i].changeLine.indexOf(line1)>=0 && d[i].changeLine.indexOf(line2)>=0)) return d[i];
+                if(d[i].changeStation.indexOf(stid)>=0 && (d[i].changeLine.indexOf(line1)>=0 || d[i].changeLine.indexOf(line2)>=0)) tmpA = d[i];
+                if(d[i].changeStation.indexOf(stid)>=0) tmpB = d[i];
+            }
+            if(tmpA) return tmpA;
+            return tmpB;
         },
         giveRoute_transStationOtherData: function(t, aLine, bLine){
             var tmp = $.extend({},TT.fn.getCommon_transStationByID(t));
@@ -4863,6 +5136,64 @@ var TT = (function(){
             return t;
         },
         //TRA Function
+        createTRA_routeFile: function(){
+            //除了西部與東部幹線固定作範例設計於 routeMap 外，其他 TRA 路線可用自動產生方式製作
+            var routeTransStation = {
+                "tra_xibu": {
+                    sect: ['keelung','taipei','taoyuan','hsinchu'],
+                    transStation: ["qidutra1","songshantra1","taipeitra1","banqiaotra1","taoyuantra1","zhonglitra1","hsinchutra1"]
+                },
+                "tra_shan": {
+                    sect: ['miaoli','taichung'],
+                    transStation: ["miaolitra1","fengyuantra1","taizhongtra1"]
+                },
+                "tra_zhjy": {
+                    sect: ['changhua','yunlin','chiayi'],
+                    transStation: ["zhanghuatra1","yuanlintra1","douliutra1","jiayitra1"]
+                    
+                },
+                "tra_jygx": {
+                    sect: ['chiayi','tainan','kaohsiung'],
+                    transStation: ["jiayitra1","xinyingtra1","tainantra1","gangshantra1","gaoxungtra1"]
+                },
+                "tra_pingdong": {
+                    sect: ['kaohsiung','pingdong'],
+                    transStation: ["gaoxungtra1","fongshantra1","pingdongtra1","chaozhoutra1"]
+                }
+            }
+            
+            var rm = [], tmpA = false, tmpSect = false, tmpTS = false, aryA = false, aryB = false;
+            function createFn(aLine, bLine){
+                tmpSect = routeTransStation[aLine].sect.concat(routeTransStation[bLine].sect);
+                tmpTS = (function(){
+                    aryA = [];
+                    aryB = [];
+                    aryA = JSON.parse(JSON.stringify(routeTransStation[aLine].transStation)).concat(routeTransStation[bLine].transStation);
+                    aryA = aryA.filter(function(el, idx, arr){
+                        return arr.indexOf(el) === idx;
+                    });
+
+                    aryA.map(function(c){
+                        aryB.push({
+                            line: [aLine, bLine],
+                            transStation: [c]
+                        });
+                    });
+                })();
+                tmpA = {
+                    id: 'traInnerTrans_' + aLine + ',' + bLine,
+                    fromToLine: [aLine,bLine],
+                    sect: tmpSect,
+                    route: aryB
+                }
+                return tmpA
+            }
+            var routeMap = TT.data.routeMap;
+            routeMap.push(createFn("tra_xibu", "tra_pingdong"));
+            routeMap.push(createFn("tra_shan", "tra_pingdong"));
+            routeMap.push(createFn("tra_zhjy", "tra_pingdong"));
+            routeMap.push(createFn("tra_jygx", "tra_pingdong"));
+        },
         getTRA_allTimeByFromTo: function(a,b,timeTable){
             var dir = TT.fn.getTRA_LineDirByFromTo(a,b);
             if(!timeTable){
@@ -5150,12 +5481,551 @@ var TT = (function(){
                 }
             }
         },
+        getTRA_LineMainDisplayName: function(a,b,lineAry){
+            var aLine = TT.fn.getTRA_stationOnWhatLine(a),
+                bLine = TT.fn.getTRA_stationOnWhatLine(b),
+                regSubLine = /^tra_pingxi$|^tra_liujia$|^tra_shalun$/,
+                displayPri = TT.defined.displayPri['tra'],
+                sameLine = TT.fn.getTRA_stationOnSameLine(a,b);
+            if(sameLine && sameLine.length>=1){
+                return sameLine[0];
+            }
+            var rtAry = aLine.concat(bLine);
+            if(lineAry){
+                var flg1, flg2;
+                rtAry = rtAry.filter(function(el,idx,arr){
+                    flg1 = !!(el.indexOf(arr)==idx);
+                    flg2 = !!(el.indexOf(lineAry)>=0);
+                    return flg1 && flg2;
+                });
+            }
+            for(var i=0; i<displayPri.length; i++){
+                if(!regSubLine.test(displayPri[i]) && rtAry.indexOf(displayPri[i])>=0) return displayPri[i];
+            }
+            return '';
+        },
         getTRA_LineRouteReverse: function(Line){
             var ary;
             ary = Line.station;
             Line.dir = TT.fn.getTRA_LineDirReverseNum(Line.dir);
             Line.station = ary;
             return Line;
+        },
+        getTRA_linkMap: function(from, to){//尋找 from 站至 to 站可以經過的所有路線和車站
+        	var afterTestLine = [],//存放格式為 lineName + '_dir' + lineDir, ex: tra_xibu_dir1
+        		routeIndex = 0,
+        		fromInLine = TT.fn.getTRA_stationOnWhatLine(from),
+        		toInLine = TT.fn.getTRA_stationOnWhatLine(to),
+        		lineLinkAry = [],
+        		lineLinkStationAry = [],
+        		rtAry = [];
+        	
+        	function checkIsTestLine(line, dir){
+        		return !!(afterTestLine.indexOf(line + '_dir' + dir) >= 0);
+        	}
+        	function addAfterTestLine(line, dir){
+        		afterTestLine.push(line + '_dir' + dir);
+        	}
+        	function findLineLink(lineStr, lineRoute, stationRoute){
+        		var lineObj = TT.fn.getCommon_lineData(lineStr);
+        		var linkObj = lineObj.link;
+        		var tmpLink = false, tmpAryRoute = false, tmpStationRoute = false, flagIsStopLine = false, flagReWorkLine = false;
+        		var rt = [];
+        		for(var k in linkObj){
+        			if(lineRoute.indexOf(k)>=0) continue;//不找回頭路線
+        			tmpLink = linkObj[k];
+        			flagIsStopLine = !!(toInLine.indexOf(k)>=0);
+        			if(!checkIsTestLine(k, tmpLink.dir) && !flagIsStopLine){
+        				addAfterTestLine(k, tmpLink.dir);
+        				tmpAryRoute = JSON.parse(JSON.stringify(lineRoute)); tmpStationRoute = JSON.parse(JSON.stringify(stationRoute));
+        				tmpAryRoute.push(k); tmpStationRoute.push(linkObj[k].station);
+        				rt.concat(findLineLink(k, tmpAryRoute, tmpStationRoute));
+        			}else if(flagIsStopLine){
+        				tmpAryRoute = JSON.parse(JSON.stringify(lineRoute)); tmpStationRoute = JSON.parse(JSON.stringify(stationRoute));
+        				tmpAryRoute.push(k); tmpStationRoute.push(linkObj[k].station);
+        				flagReWorkLine = false; 
+						tmpStationRoute.map(function(c, idx){ if(tmpStationRoute.lastIndexOf(c)!=idx){flagReWorkLine = true;} });//檢查是否有路線因車站重疊兩條線而重複產生
+						if(!flagReWorkLine){
+        					lineLinkAry.push(tmpAryRoute); lineLinkStationAry.push(tmpStationRoute);
+        				}
+        			}
+        		}
+        		return rt;
+        	}
+        	
+        	if(TT.fn.getTRA_stationOnSameLine(from,to)){
+				var mb = TT.fn.getTRA_stationOnSameLine(from,to);
+				mb.map(function(c){
+					rtAry.push([{
+						line: c,
+						goRange: [from, to]
+					}]);
+				});
+        	}else{
+	        	fromInLine.map(function(line){
+	        		var ary = [line];
+	        		var aryStation = [from];
+	        		findLineLink(line, [line], [from]);
+	        	});
+	        	var tmpB = false, aryB = false, tsA = '', tsB = '', nextST = '';
+	        	lineLinkAry.map(function(route, ridx){
+	        		aryB = [];
+	        		route.map(function(c, idx){
+	        			tsA = lineLinkStationAry[ridx][idx];
+	        			tsB = lineLinkStationAry[ridx][idx+1];
+	        			if(idx==0){
+	        				tsA = from;
+	        			}else if(idx == route.length-1){
+	        				tsB = to;
+	        			}
+	        			tmpB = {
+	        				line: c,
+	        				goRange: [tsA,tsB]
+	        			};
+	        			aryB.push(tmpB);
+	        		});
+	        		rtAry.push(aryB);
+	        	});
+        	}
+        	//取得所有經過的車站
+        	var routeA = false,
+        		routeB = false,
+        		allStation = [],
+        		flagStIsOver = false,
+        		bigList = (function(){ return TT.data.tra.station_ary.filter(function(el,idx){ return !!(el.big); }) })(),
+        		allBig = [],
+        		tmpBigIndex = -1,
+				objLine = false;
+			var bigStationIDList = (function(){ var rt = []; bigList.map(function(c){ rt.push(c.id); }); return rt; })();
+        	for(var r=0; r<rtAry.length; r++){
+        		routeA = rtAry[r];
+        		allStation = []; allBig = [];
+        		for(var i=0; i<routeA.length; i++){
+        			routeB = routeA[i];
+        			objLine = TT.fn.getComon_allStationOfLineByFromTo(routeB.goRange[0],routeB.goRange[1],routeB.line);
+        			routeB.station = objLine.station;
+        			routeB.dir = objLine.dir;
+        			allStation = allStation.concat(routeB.station);
+        		}
+        		allStation = allStation.filter(function(el, idx, arr){
+        			flagStIsOver = !(arr[idx]==arr[idx-1]);
+        			if(flagStIsOver){//檢查是否為大站
+        				tmpBigIndex = bigStationIDList.indexOf(el);
+        				if(tmpBigIndex>=0){
+        					allBig.push(bigList[tmpBigIndex].id);
+        				}
+        			}
+        			return flagStIsOver;
+        		});
+        		routeA.allStation = allStation;
+        		routeA.allBig = allBig;
+        	}
+        	return rtAry;
+        },
+        getTRA_linkRouteV1: function(from, to, routeT, linkMap){//找出所有經過的路線與車站後，分切適當的乘車與轉乘點
+            routeT = routeT || [];
+        	linkMap = linkMap || TT.fn.getTRA_linkMap(from, to);
+            var fromObj = TT.fn.getCommon_stationDataOfID(from),
+                toObj = TT.fn.getCommon_stationDataOfID(to),
+                sect_ary = TT.data.tra.sect_ary;
+            if(!TT.cData) TT.cData = {};//存放動態計算的固定資料，若曾建立過則下次不用再演算
+            var cdt = TT.cData;
+            //取東線及西線幹線列車運行經過車站
+            cdt.defEastTrainStation = cdt.defEastTrainStation || TT.fn.getTRA_throughStationByLine('tra_1012','tra_1632', ['tra_xibu','tra_yilan','tra_beihui','tra_huadong']).allStation;
+            cdt.defWestTrainStation = cdt.defWestTrainStation || TT.fn.getTRA_throughStationByLine('tra_1001','tra_1418', ['tra_xibu','tra_shan','tra_zhjy','tra_jygx','tra_pingdong']).allStation;
+            //取東線及西線區域(東線+蘇澳+平溪線，西線+六家+沙崙+海線+集集線)
+            var eastAreaStation = cdt.defEastTrainStation.concat(TT.fn.getCommon_lineData('tra_pingxi').station).concat(['tra_1827']);
+            var westAreaStation = cdt.defWestTrainStation.concat(TT.fn.getCommon_lineData('tra_liujia').station).concat(TT.fn.getCommon_lineData('tra_shalun').station);
+            var overTaipei = -1, overKaohsiung = -1, overTaidong = -1, overBadu = -1, overShuling = -1, overChaozhou = -1, overFangliao = -1,
+                displayPri = TT.defined.displayPri,
+				flagCrossSect = fromObj.sect != toObj.sect,
+                flagFromInWest = !!(westAreaStation.indexOf(from)!=-1),
+                flagFromInEast = !!(eastAreaStation.indexOf(from)!=-1),
+                flagToInWest = !!(westAreaStation.indexOf(to)!=-1),
+                flagToInEast = !!(eastAreaStation.indexOf(to)!=-1),
+                flagIsCrossWE = false,
+                flagIsLongway = TT.fn.getTRA_recommendSectTrans(fromObj, toObj),//兩站間要穿過一個 sect 時視為長途需搭快車
+                flagBypassThisRoute = false,
+                routeB = false,routeC = false,routeD = false, routeE = false,
+                ras = false,
+                routeFileFrom = '', routeFileTo = '',
+                lineObj = false, tsObj = false, runningAry = [], testOnDirectly = [],
+                regSubLine = /^tra_pingxi$|^tra_liujia$|^tra_shalun$/,
+                ptr = 0,//pointer of allStation
+                oldLinePtr = 0, linePtr = 0,//pointer of line
+                nowSect = fromObj.sect,
+                wesMainStationAry = false,
+                routeMethd = [], tmpRoute = false,
+                routeConcatAry = [],
+                tmpA = false, tmpB = false, tmpC = false;
+        	//針對 linkMap 中的所有走法 (通常只會抓到一種) 依序進行下列演算，若可抓到最後一站即代表已有全程走法可結束並組合路由回傳
+        	//1.查起點是否為支線 subWorkingArea，是的或先抓中繼轉乘，point指到中繼轉乘站
+        	//2.查起點或 point 是否為支線，是的話先抓到幹線大站，point指到幹線大站
+        	//3.倒過來查終點是否為支線及 subWorkingArea，是的話也先抓幹線到終點間
+            //測試語法 TT.fn.getTRA_linkRouteV1('tra_1715','tra_1418')
+            function createRoute(routeX){
+            	//回傳陣列內每個物件內容應為 {company:'yyy', line:'xxxx', takeRange:[a,b], transStation:transStation, transStationID: 'vvv'} 最後一段不用 transStation transStationID
+            	routeMethd = [];
+                routeX.map(function(routeFile, ridx){
+                	tmpC = (routeFile.running && routeFile.running.lineOf[0]) ? routeFile.running.lineOf[0] : routeFile.line;
+                	for(var i=0; i<displayPri['tra'].length; i++){
+                		if(routeFile.running && routeFile.running.lineOf.indexOf(displayPri['tra'][i])>=0){
+                			tmpC = displayPri['tra'][i];
+                			break;
+                		}
+                	};
+                	tmpA = {company: 'tra', line: tmpC, takeRange: routeFile.goRange}
+                	if(routeFile.running) tmpA.runningID = routeFile.running.id;
+                	if(ridx < routeX.length-1){
+						tmpA.transStation = JSON.parse(JSON.stringify(routeFile.transStation));
+						tmpA.transStationID = routeFile.transStation.id;
+						tmpA.transStation.walkMinute = 0;//特殊計算自動抓轉乘，將轉乘時間歸零
+					}
+					routeMethd.push(tmpA);
+                });
+                return routeMethd;
+            }
+            
+            linkMap.map(function(routeA){
+                ras = routeA.allStation;
+                flagBypassThisRoute = false;
+                routeMethd = [];
+                overTaipei = ras.indexOf('tra_1008')>-1; overKaohsiung = ras.indexOf('tra_1238')>-1; overTaidong = ras.indexOf('tra_1632')>-1;//跨東西線南迴線時在以上車站轉車
+                overBadu = ras.indexOf('tra_1002')>-1; overShuling = ras.indexOf('tra_1012')>-1; overChaozhou = ras.indexOf('tra_1411')>-1; overFangliao = ras.indexOf('tra_1418')>-1;//確認行程是否有跨運行區間
+                flagIsCrossWE = ((flagFromInWest && flagToInEast && !flagFromInEast && !flagToInWest) || (!flagFromInWest && !flagToInEast && flagFromInEast && flagToInWest)) && overTaipei;
+                wesMainStationAry = (function(stAry){
+                	var ary = [];
+                	if(overTaipei && flagIsCrossWE) ary.push({id: 'tra_1008', ptr: ras.indexOf('tra_1008')});
+                	//if(overKaohsiung) ary.push({id: 'tra_1238', ptr: ras.indexOf('tra_1238')}); //當南迴線啟用後打開這個設定
+                	//if(overTaidong) ary.push({id: 'tra_1632', ptr: ras.indexOf('tra_1632')});
+                	ary.sort(function(a,b){return (a.ptr > b.ptr) ? 1 : -1;});
+                	return ary;
+                })(ras);
+                //第一步: 將全線搭區間車的搭法切段放到 routeB
+                routeB = []; ptr = 0; linePtr = 0;
+                routeA.map(function(routeFile, ridx){
+                    flagIsAddRouteFile = false;
+                    lineObj = TT.fn.getCommon_lineData(routeFile.line);
+                    if(lineObj.subWorkingArea || lineObj.innerNeedTransAt){//本來就知道必需中繼轉乘的路線
+                        runningAry = TT.fn.getTRA_runningByFromToLine(routeFile.line, routeFile.line, {cate: 'local', stopStation: routeFile.goRange});
+                        if(runningAry.length==0){
+                            if(lineObj.subWorkingArea){
+                                tmpA = lineObj.subWorkingArea.transAt;
+                            }else{
+                                tmpA = lineObj.innerNeedTransAt
+                            }
+                            tmpB = TT.fn.getTRA_runningByFromToLine(routeFile.line, routeFile.line, {cate: 'local', stopStation: [ras[ptr], tmpA]})[0];
+                            routeB.push({goRange: [ras[ptr], tmpA], line: routeFile.line, running: tmpB});
+                            ptr = ras.indexOf(tmpA);
+                            tmpC = TT.fn.getTRA_runningByFromToLine(routeFile.line, routeFile.line, {cate: 'local', stopStation: [tmpA, routeFile.goRange[1]]})[0];
+                            routeB.push({goRange: [tmpA, routeFile.goRange[1]], line: routeFile.line, running: tmpC});
+                            ptr = ras.indexOf(routeFile.goRange[1]);
+                        }else{
+                            routeB.push({goRange: [ras[ptr], routeFile.goRange[1]], line: routeFile.line, running: runningAry[0]});
+                            ptr = ras.indexOf(routeFile.goRange[1]);
+                        }
+                    }else if(routeFile.station.indexOf(ras[ptr])>=0){
+                        runningAry = TT.fn.getTRA_runningByFromToLine(routeFile.line, routeFile.line, {cate: 'local', stopStation: [ras[ptr], routeFile.goRange[1]]});
+                        if(runningAry.length==0){//經探查此線要搭的兩站無直通區間車需要在某站轉乘，抓目標站有運行的各種列車且起迄點與目前站有運行連結的班車
+                            var run2Ary = TT.fn.getTRA_runningByFromToLine(routeFile.line, routeFile.line, {cate: 'local', stopStation: routeFile.goRange[1]});
+                            var tmpTargetStationAry = []; run2Ary.map(function(c){tmpTargetStationAry = tmpTargetStationAry.concat(c.range);});
+                            var run3Ary = false, run3Station = '';
+                            for(var i=0; i<tmpTargetStationAry.length; i++){
+                                run3Ary = TT.fn.getTRA_runningByFromToLine(routeFile.line, routeFile.line, {cate: 'local', stopStation: [ras[ptr], tmpTargetStationAry[i]]});
+                                run3Station = tmpTargetStationAry[i];
+                                if(run3Ary.length > 0 && ras.indexOf(run3Station)>=0){
+                                    run3Station = tmpTargetStationAry[i];
+                                    routeB.push({goRange: [ras[ptr], run3Station], line: routeFile.line, running: run3Ary[0]});
+                                    ptr = ras.indexOf(run3Station);
+                                    runningAry = TT.fn.getTRA_runningByFromToLine(routeFile.line, routeFile.line, {cate: 'local', stopStation: [ras[ptr], routeFile.goRange[1]]});
+                                    break;
+                                }
+                            }
+                        }
+                        routeB.push({goRange: [ras[ptr], routeFile.goRange[1]], line: routeFile.line, running: runningAry[0]});
+                        ptr = ras.indexOf(routeFile.goRange[1]);;
+                    }else{
+                    	TT.fn.d2Log('Train route error on getTRA_linkRouteV1'); flagBypassThisRoute=true; return false;
+                    }
+                });
+                //第二步: 整理前後相同的路線放到 routeC
+                routeC = []; ptr = 0; linePtr = 0; tmpA = '';
+                var lastRouteCFile = false;
+                routeB.map(function(routeFile, ridx){
+                	thisLineMustStop = routeFile.running.mustStop;
+                    routeFile = JSON.parse(JSON.stringify(routeFile)); routeFileFrom = routeFile.goRange[0]; routeFileTo = routeFile.goRange[1];
+                	if(tmpA!=routeFile.running.id){
+	                	if(routeC.length>0){//確認換運行列車，為前一段添加轉乘站
+							lastRouteCFile = routeC[routeC.length-1];
+	                		if(regSubLine.test(lastRouteCFile.line) && routeA.allBig.length>0){//先檢查前一段是否為支線，支線列車是否直通大站
+								if(lastRouteCFile.running.mustStop.indexOf(routeA.allBig[0])>=0){
+	                				lastRouteCFile.goRange[1] = routeA.allBig[0];
+	                				routeFileFrom = routeA.allBig[0];
+	                			}
+	                		}else if(regSubLine.test(routeFile.line) && routeA.allBig.length>0){//再檢查本段列車是否為支線而前一段是否為幹線，支線列車是否可從大站搭
+	                			if(routeFile.running.mustStop.indexOf(routeA.allBig.slice(-1)[0])>=0){
+	                				lastRouteCFile.goRange[1] = routeA.allBig.slice(-1)[0];
+	                				routeFileFrom = routeA.allBig.slice(-1)[0];
+	                			}
+	                		}
+	                		tmpB = TT.fn.getRoute_transStationByStationId(lastRouteCFile.goRange[1],lastRouteCFile.line,routeFile.line);
+	                		if(!tmpB){
+	                			tmpB = {
+	                				id: lastRouteCFile.goRange[1] + '_' + lastRouteCFile.line + '_' + routeFile.line,
+	                				name: TT.fn.getTRA_stationDataOfID(lastRouteCFile.goRange[1]).name,
+	                				changeLine: [lastRouteCFile.line,routeFile.line],
+	                				changeStation: [lastRouteCFile.goRange[1], lastRouteCFile.goRange[1]],
+	                				walkMinute: 4
+	                			};
+	                			TT.data.transStation.push(tmpB);
+	                		}
+	                		lastRouteCFile.transStation = tmpB;
+	                	}
+                		routeC.push(routeFile);
+                		tmpA = routeFile.running.id;
+                	}else{
+                		routeC[routeC.length-1].goRange[1] = routeFileTo;
+                	}
+                });
+                if(!flagBypassThisRoute && !flagIsLongway) routeConcatAry.push(createRoute(routeC));;
+                //第三步: 如果是長途，加入對號快車轉乘機制
+                if(flagIsLongway){
+                	routeD = []; routeE = []; ptr = 0; linePtr = 0; tmpA = '';
+                	var firstBig = routeA.allBig[0],
+                		lastBig = routeA.allBig.slice(-1)[0],
+                		wesMainPtr = 0,
+                		nowIsOnBoneFastTrain = false,
+                		nowWES = (flagFromInWest) ? 'w' : (flagFromInEast) ? 'e' : 's',
+                		//aryFastMustStop = [],
+						flagAfterUseFastTrain = false;
+					var firstBigPtr = ras.indexOf(firstBig), lastBigPtr = ras.indexOf(lastBig);
+                	routeC.map(function(routeFile, ridx){
+                        routeFile = JSON.parse(JSON.stringify(routeFile)); routeFileFrom = routeFile.goRange[0]; routeFileTo = routeFile.goRange[1];
+                		if(ras.indexOf(routeFileTo) <= firstBigPtr){
+                			routeD.push(routeFile);
+                			ptr = ras.indexOf(routeFileTo);
+                		}else if(!nowIsOnBoneFastTrain && ras.indexOf(routeFileTo) >= firstBigPtr){//電車在此段內遇到第一個大站，改轉乘站至此
+                			if(routeFile.goRange[0] != firstBig){
+                				tmpA = JSON.parse(JSON.stringify(routeFile));
+                				tmpA.goRange[1] = firstBig;
+                				tmpA.transStation = TT.fn.getRoute_transStationByStationId(tmpA.goRange[1],routeFile.line,routeFile.line);
+                				routeD.push(tmpA);
+                				ptr = firstBigPtr;
+                			}
+                			nowIsOnBoneFastTrain = true;
+                		}
+                		if(nowIsOnBoneFastTrain && !flagAfterUseFastTrain){//開始切快速的各分段
+                			tmpA = JSON.parse(JSON.stringify(routeFile));
+                			if(wesMainStationAry[wesMainPtr] && ras.indexOf(routeFileTo) >= wesMainStationAry[wesMainPtr].ptr){
+                				tmpA.goRange = [ras[ptr], wesMainStationAry[wesMainPtr].id];
+                                tmpA.running = TT.fn.getTRA_runningByFromToStation(tmpA.goRange[0], tmpA.goRange[1], {cate: 'express'})[0];
+                                if(!tmpA.running) tmpA.running = TT.fn.getTRA_runningByFromToStation(tmpA.goRange[0], tmpA.goRange[1], {cate: 'express', compare: 'maybe', irdReg: /Zi/})[0];
+                				tmpA.transStation = TT.fn.getRoute_transStationByStationId(lastRouteCFile.goRange[1],lastRouteCFile.line,routeFile.line);
+                				tmpA.transStation = TT.fn.getRoute_transStationByStationId(tmpA.goRange[1],routeFile.line,routeFile.line);
+                                tmpA.line = TT.fn.getTRA_LineMainDisplayName(tmpA.goRange[0], tmpA.goRange[1]);
+                				routeD.push(tmpA);
+                				ptr = wesMainStationAry[wesMainPtr].ptr;
+                				wesMainPtr++;
+                			}
+                			tmpA = JSON.parse(JSON.stringify(routeFile));
+							if(ras.indexOf(routeFileTo) >= lastBigPtr){
+                				tmpA.goRange = [ras[ptr], ras[lastBigPtr]];
+                                tmpA.running = TT.fn.getTRA_runningByFromToStation(ras[ptr], ras[lastBigPtr], {cate: 'express'})[0];
+                                if(!tmpA.running) tmpA.running = TT.fn.getTRA_runningByFromToStation(ras[ptr], ras[lastBigPtr], {cate: 'express', compare: 'maybe', irdReg: /Zi/})[0];
+                				tmpA.transStation = TT.fn.getRoute_transStationByStationId(tmpA.goRange[1],routeFile.line,routeFile.line);
+                                tmpA.line = TT.fn.getTRA_LineMainDisplayName(tmpA.goRange[0], tmpA.goRange[1]);
+                				routeD.push(tmpA);
+                				ptr = lastBigPtr;
+                				flagAfterUseFastTrain = true;
+                			}
+                		}
+                		if(flagAfterUseFastTrain){//尾段的區間車
+                			if(ras.indexOf(routeFileTo) > ptr){
+                				tmpA = JSON.parse(JSON.stringify(routeFile));
+                				tmpA.goRange = [ras[ptr], routeFileTo];
+                                tmpA.line = TT.fn.getTRA_LineMainDisplayName(tmpA.goRange[0], tmpA.goRange[1]);
+                				routeD.push(tmpA);
+                				ptr = ras.indexOf(routeFileTo);
+                			}
+                		}
+                	});
+                	if(!flagBypassThisRoute && routeD.length>0) routeConcatAry.push(createRoute(routeD));
+                	//尋找另一頭可能更靠近的快速轉車站
+                	var flgHasNewRouteOfFast = false, route2D = JSON.parse(JSON.stringify(routeD));
+                	route2D.map(function(routeFile, ridx){
+                		tmpA = route2D[ridx-1];
+                		if(route2D[ridx-1] && !regSubLine.test(route2D[ridx-1].line) && routeFile.goRange[0]==firstBig && routeFile.running && routeFile.running.cate=='express'){
+                			var aLineAry = TT.fn.getTRA_stationOnWhatLine(route2D[ridx-1].goRange[0]);
+                			var aLine = false;
+                			aLineAry.map(function(c){if(routeFile.running.lineOf.indexOf(c)>=0){aLine = c;}});
+                			if(aLine){
+                				var aBig = TT.fn.getTRA_nearBigStation(route2D[ridx-1].goRange[0], aLine, routeFile.running.area);
+                				aBig = (aBig[0]==firstBig) ? aBig[1] : aBig[0];
+                				var sa = TT.fn.getTRA_throughStationByLine(aBig, firstBig, tmpA.line).allStation;
+                				var aCanJoin = !!((sa.indexOf(tmpA.goRange[0]) / sa.length) < 0.35);
+                				if(aCanJoin && TT.fn.getTRA_stationDataOfID(aBig).sect == TT.fn.getTRA_stationDataOfID(tmpA.goRange[0]).sect){
+                					tmpA.goRange[1] = aBig;
+                					routeFile.goRange[0] = aBig;
+                					tmpA.transStation = TT.fn.getRoute_transStationByStationId(aBig,tmpA.line,tmpA.line);
+                					flgHasNewRouteOfFast = true;
+                				}
+                			}
+                		}
+                		tmpB = route2D[ridx+1];
+                		if(tmpB && !regSubLine.test(tmpB.line) && routeFile.goRange[1]==lastBig && routeFile.running && routeFile.running.cate=='express'){
+                			var aLineAry = TT.fn.getTRA_stationOnWhatLine(tmpB.goRange[1]);
+                			var aLine = false;
+                			aLineAry.map(function(c){if(routeFile.running.lineOf.indexOf(c)>=0){aLine = c;}});
+                			if(aLine){
+                				var aBig = TT.fn.getTRA_nearBigStation(tmpB.goRange[1], aLine, routeFile.running.area);
+                				aBig = (aBig[0]==lastBig) ? aBig[1] : aBig[0];
+                				var sa = TT.fn.getTRA_throughStationByLine(aBig, lastBig, tmpB.line).allStation;
+                				var aCanJoin = !!((sa.indexOf(tmpB.goRange[1]) / sa.length) < 0.35);
+                				if(aCanJoin && TT.fn.getTRA_stationDataOfID(aBig).sect == TT.fn.getTRA_stationDataOfID(tmpB.goRange[1]).sect){
+                					tmpB.goRange[0] = aBig;
+                					routeFile.goRange[1] = aBig;
+                					routeFile.transStation = TT.fn.getRoute_transStationByStationId(aBig,tmpA.line,tmpA.line);
+                					flgHasNewRouteOfFast = true;
+                				}
+                			}
+                		}
+                	});
+                	if(!flagBypassThisRoute && flgHasNewRouteOfFast && route2D.length>0) routeConcatAry.push(createRoute(route2D));
+                	//若搭的幹線快車其實有一定比例停靠自身則減省一段轉乘
+                	var flgHasDirectFastRoute = false, route3D = [];
+                	var nowCate = '', prevCate = '', flagLocal2ExpressTrans = false, flagExpress2LocalTrans = false;
+                	routeD.map(function(routeFile, ridx){
+                		tmpA = routeD[ridx-1];
+                		tmpB = false;
+                		nowCate = '', prevCate = '';
+                		if(tmpA){
+                			nowCate = routeFile.running.cate;
+                			prevCate = tmpA.running.cate;
+                			flagLocal2ExpressTrans = !!(nowCate=='express' && prevCate=='local');
+							flagExpress2LocalTrans = !!(nowCate=='local' && prevCate=='express');
+							if(flagLocal2ExpressTrans) tmpB = TT.fn.getTRA_runningByFromToStation(tmpA.goRange[0], tmpA.goRange[1], {id: routeFile.running.id , compare: 'maybe'})[0];
+							if(flagExpress2LocalTrans) tmpB = TT.fn.getTRA_runningByFromToStation(routeFile.goRange[0], routeFile.goRange[1], {id: tmpA.running.id , compare: 'maybe'})[0];
+                		}
+                		if(flagLocal2ExpressTrans && tmpB){
+                			tmpC = JSON.parse(JSON.stringify(routeFile));
+                			tmpC.goRange[0] = tmpA.goRange[0];
+                			route3D[route3D.length-1] = tmpC;
+                			flgHasDirectFastRoute = true;
+                		}else if(flagExpress2LocalTrans && tmpB){
+                			tmpC = route3D[route3D.length-1];
+                			tmpC.goRange[1] = routeFile.goRange[1];
+                			if(!routeFile.transStation){
+                				delete tmpC.transStation;
+                			}else{
+                				tmpC.transStation = routeFile.transStation
+                			}
+                			flgHasDirectFastRoute = true;
+                		}else{
+                			route3D.push(routeFile);
+                		}
+                	});
+                	if(flgHasDirectFastRoute && route3D.length>0) routeConcatAry.push(createRoute(route3D));
+                }
+            });
+            return routeT.concat(routeConcatAry);
+        },
+        getTRA_recommendSectTrans: function(a, b){//Return true for trans, false for direct
+            var fromObj = (typeof(a)=='string') ? TT.fn.getTRA_stationDataOfID(a) : a,
+                toObj = (typeof(b)=='string') ? TT.fn.getTRA_stationDataOfID(b) : b,
+                tryOnTaipeiArea = /^taipei$|^keelung$|^northeast$/,
+                rt = false,
+                sect_ary = TT.data.tra.sect_ary;
+            var flagNotSectTaipeiArea = !(tryOnTaipeiArea.test(fromObj.sect) && tryOnTaipeiArea.test(toObj.sect));
+            if(Math.abs((sect_ary.indexOf(fromObj.sect)%sect_ary.length) - (sect_ary.indexOf(toObj.sect)%sect_ary.length)) > 1){
+                if(flagNotSectTaipeiArea){
+                    rt = true;
+                }
+            }
+            return rt;
+        },
+        getTRA_runningByFromToStation: function(a, b, filter){
+            filter = filter || false;
+            var rt = [],
+                ary = TT.data.tra.running_ary,
+                aLine = TT.fn.getTRA_stationOnWhatLine(a),
+                bLine = TT.fn.getTRA_stationOnWhatLine(b),
+                tmpR = [], everAddAry = [],
+                sameLine = TT.fn.getTRA_stationOnSameLine(a,b);
+            aLine.map(function(aa){
+                bLine.map(function(bb){
+                    tmpR = tmpR.concat(TT.fn.getTRA_runningByFromToLine(aa,bb));
+                });
+            });
+            tmpR = tmpR.filter(function(el, idx, arr){
+                if(everAddAry.indexOf(el.id)>-1) return false;
+                everAddAry.push(el.id);
+                return true;
+            });
+            tmpR = tmpR.filter(function(el, idx, arr){
+            	if(filter.compare && /^maybe$|^less$/.test(filter.compare)){
+            		if(filter.compare=='maybe') return !!(el.mustStop.concat(el.maybeStop).indexOf(a)>-1 && el.mustStop.concat(el.maybeStop).indexOf(b)>-1);
+            		if(filter.compare=='less') return !!(el.mustStop.concat(el.maybeStop).concat(el.lessStop).indexOf(a)>-1 && el.mustStop.concat(el.maybeStop).concat(el.lessStop).indexOf(b)>-1);
+            	}else{
+                	return !!(el.mustStop.indexOf(a)>-1 && el.mustStop.indexOf(b)>-1);
+                }
+            });
+            if(filter){
+                var flg = true;
+                tmpR = tmpR.filter(function(el, idx, arr){
+                    flg = true;
+                    for(var k in filter){
+                        if(el[k]){
+                        switch(k){
+                            case 'mustStop':
+                            case 'CarClass':
+                            case 'range':
+                                if(typeof(filter[k])=='string') filter[k] = [filter[k]];
+                                filter[k].map(function(c){
+                                    if(el[k].indexOf(c)==-1) flg = false;
+                                });
+                            break;
+                            default:
+                                flg = flg && !!(el[k] == filter[k]);
+                            break;
+                        }
+                        }else{
+                        	if(k=='idReg') flg = flg && filter[k].test(el.id);
+                        }
+                    }
+                    return flg;
+                })
+            }
+            return tmpR;
+        },
+        getTRA_runningByFromToLine: function(aLine, bLine, filter){
+            filter = filter || false;
+            var ary = false, rt = [];
+            ary = TT.data.tra.running_ary;
+            for(var i=0; i<ary.length; i++){
+                if(ary[i].lineOf.indexOf(aLine)>=0 && ary[i].lineOf.indexOf(bLine)>=0){
+                    if(filter){
+                        if(filter.cate && ary[i].cate != filter.cate) continue;
+                        if(filter.area && ary[i].area != filter.area) continue;
+                    }
+                    if(ary[i].stopAll && !ary[i].mustStop) ary[i].mustStop = TT.fn.getTRA_throughStationByLine(ary[i].range[0], ary[i].range[1], ary[i].lineOf).allStation;
+                    if(filter && filter.stopStation){
+                        if(typeof(filter.stopStation)=='string'){
+                            if(ary[i].mustStop.indexOf(filter.stopStation)==-1) continue;
+                        }else{
+                            if((ary[i].mustStop.indexOf(filter.stopStation[0])==-1) || (ary[i].mustStop.indexOf(filter.stopStation[1])==-1)) continue;
+                        }
+                    }
+                    rt.push(ary[i]);
+                }
+            }
+            return rt;
+        },
+        getTRA_runningByID: function(id){
+            var ary = false;
+            ary = TT.data.tra.running_ary;
+            for(var i=0; i<ary.length; i++){
+                if(ary[i].id==id) return ary[i];
+            }
         },
         getTRA_stationDataOfID: function(id, lineID){
             var ary=TT.data.tra.station_ary;
@@ -5170,6 +6040,7 @@ var TT = (function(){
             return false;
         },
         getTRA_stationIsOnThisLine: function(stationID, Line){
+        	if(typeof(Line)=='string') Line = TT.fn.getCommon_lineData(Line);
             for(var i=0; i<Line.station.length; i++){
                 if(stationID==Line.station[i]) return i;
             }
@@ -5260,6 +6131,44 @@ var TT = (function(){
             if(intA==intB) return 0;
             if(intA < intB) return -1;
             if(intA > intB) return 1;
+        },
+        getTRA_throughStationByLine: function(from, to, lineAry){
+            if(typeof(lineAry)=='string') lineAry = lineAry.split(',');
+            var rt = [],
+                nextLine = '', flagStIsOver = false,
+                tmpStart = from, tmpEnd = '',
+                allStation = [], allBig = [],
+                bigList = (function(){ return TT.data.tra.station_ary.filter(function(el,idx){ return !!(el.big); }) })(),
+                tmpBigIndex = 0,
+                line = false,
+                tmpA = false;
+            var bigStationIDList = (function(){ var rt = []; bigList.map(function(c){ rt.push(c.id); }); return rt; })();
+            lineAry.map(function(c, idx){
+                line = TT.fn.getCommon_lineData(c);
+                nextLine = lineAry[idx+1];
+                if(nextLine){//還有下一條，先抓到 link 下一條的轉車站
+                    tmpEnd = line.link[nextLine].station;
+                }else{
+                    tmpEnd = to;
+                }
+                tmpA = TT.fn.getComon_allStationOfLineByFromTo(tmpStart, tmpEnd, c);
+                allStation = allStation.concat(tmpA.station);
+                rt.push(tmpA);
+                tmpStart = tmpEnd;//抓完後將 tmpStart 指到本次結束的車站
+            });
+            allStation = allStation.filter(function(el, idx, arr){
+        			flagStIsOver = !(arr[idx]==arr[idx-1]);
+        			if(flagStIsOver){//檢查是否為大站
+        				tmpBigIndex = bigStationIDList.indexOf(el);
+        				if(tmpBigIndex>=0){
+        					allBig.push(bigList[tmpBigIndex].id);
+        				}
+        			}
+        			return flagStIsOver;
+        	});
+            rt.allStation = allStation;
+            rt.allBig = allBig;
+            return rt;
         },
         getTRA_JSON_by_TRA_JSON: function(json){
             var rt = json.TrainInfos;
@@ -8204,6 +9113,11 @@ var TT = (function(){
         //msff.style.display = 'none';
         //msff.remove();
         //.....
+        
+        //產生動態計算之固定路由資料
+        TT.fn.createTRA_routeFile();
+        
+        //產生 UI
         TT.ui.createBaseDiv();
         TT.ui.createHeader();
         TT.ui.createStatus();
