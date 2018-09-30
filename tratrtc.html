@@ -4057,14 +4057,10 @@ var TT = (function(){
                         routeB = routeA[i];             
                         switch(routeB.company){
                             case 'tra':
-                                routeB.timeTable = TT.fn.getTRA_timeRangeByFromTo(routeB.takeRange[0], routeB.takeRange[1], startT, endT, flagAD, w);      
-                                //if(routeB.timeTable[0]) startT = routeB.timeTable[0].getFromToTime(routeB.takeRange[0],routeB.takeRange[1])[1];
-                                //if(routeB.timeTable[routeB.timeTable.length-1]) endT = routeB.timeTable[routeB.timeTable.length-1].getFromToTime(routeB.takeRange[0],routeB.takeRange[1])[1];
+                                routeB.timeTable = TT.fn.getTRA_timeRangeByFromTo(routeB.takeRange[0], routeB.takeRange[1], startT, endT, flagAD, w);
                             break;
                             case 'trtc':
                                 routeB.timeTable = TT.fn.getTRTC_timeRangeByFromTo(routeB.takeRange[0], routeB.takeRange[1], startT, endT, flagAD, routeB.line, w);
-                                //if(routeB.timeTable[0]) startT = routeB.timeTable[0][1];
-                                //if(routeB.timeTable[routeB.timeTable.length-1]) endT = routeB.timeTable[routeB.timeTable.length-1][1];
                             break;
                             case 'tymetro':
                                 routeB.timeTable = TT.fn.tymetro.get_timeRangeByFromTo(routeB.takeRange[0], routeB.takeRange[1], startT, endT, flagAD, routeB.line, w);
@@ -4073,7 +4069,6 @@ var TT = (function(){
                         routeB = getFormatTime(routeB.company, routeB);
                         if(routeB.transStation){
                                     startT = TT.fn.transSec2Time(TT.fn.transTime2Sec(startT) + routeB.transStation.walkMinute*60);
-                                    //endT = TT.fn.transSec2Time(TT.fn.transTime2Sec(endT) + routeB.transStation.walkMinute*60);
                         }
                         routeA[i] = routeB;
                     }
@@ -4083,13 +4078,10 @@ var TT = (function(){
                         switch(routeB.company){
                             case 'tra':
                                 routeB.timeTable = TT.fn.getTRA_timeRangeByFromTo(routeB.takeRange[0], routeB.takeRange[1], startT, endT, flagAD, w);
-                                //startT = routeB.timeTable[0].getFromToTime(routeB.takeRange[0],routeB.takeRange[1])[0];
-                                //if(routeB.timeTable[routeB.timeTable.length-1]) endT = routeB.timeTable[routeB.timeTable.length-1].getFromToTime(routeB.takeRange[0],routeB.takeRange[1])[0];
                                 if(routeB.timeTable[routeB.timeTable.length-1]) endT = TT.fn.getTRA_fromToTime(routeB.timeTable[routeB.timeTable.length-1],routeB.takeRange[0],routeB.takeRange[1])[0];
                             break;
                             case 'trtc':
                                 routeB.timeTable = TT.fn.getTRTC_timeRangeByFromTo(routeB.takeRange[0], routeB.takeRange[1], startT, endT, flagAD, routeB.line, w);
-                                //startT = routeB.timeTable[0][0];
                                 if(routeB.timeTable[routeB.timeTable.length-1]) endT = routeB.timeTable[routeB.timeTable.length-1][0];
                             break;
                             case 'tymetro':
@@ -4115,6 +4107,7 @@ var TT = (function(){
                     if(routeA[tc].transStation && routeA[tc+1]){//Have next trans
                         routeB1 = routeA[tc]; routeB2 = routeA[tc+1];
                         crossOffsetSec = routeB1.transStation.walkMinute*60;
+						if(routeB1.searchRouteBy && routeB1.searchRouteBy=='linkRouteV1' && !TT.fn.getTRA_recommendSectTrans(routeB2.takeRange[0],routeB2.takeRange[1])){crossOffsetSec = 0;}
                         pointerA = -1;
                         b2idx = 0;
                         
@@ -4147,7 +4140,6 @@ var TT = (function(){
                                 routeB1.formatTimeTable[i].bestStart = true;
                             }
                         }
-                        //routeA[tc] = routeB1;
                     }
                 }
                 return routeA;
@@ -4257,15 +4249,11 @@ var TT = (function(){
         },
         saveDataJSON2Data: function(node, str){
             var obj = JSON.parse(str);
-            //if(node=='tra' || node=='trtc'){
                 for(var k in TT.data[node]){
                     if(obj[k]){
                         TT.data[node][k] = obj[k];
                     }
                 }
-            //}else{
-                //TT.data[node] = obj;
-            //}
         },
         getEncodeStationID: function(sid, comp){
             return comp + '_' + sid;
@@ -4366,7 +4354,6 @@ var TT = (function(){
             
             if(TT.fn.getRoute_needRouteByFromTo(a,b)){
                 var rt = new Array(),tkLen, ckSame = new Array();
-                //var regSameRouteDiffLineName = /^tra_pingxi$|tra_
                 for(var i=0; i<aLine.length; i++){
                     for(var j=0; j<bLine.length; j++){
                         if(aLine[i] != bLine[j]){
@@ -4393,7 +4380,6 @@ var TT = (function(){
                 //Check if a to b maybe directly
                 var bMayDirect = ((aComp=='tra' && bComp=='tra') || (aComp=='tymetro' && bComp=='tymetro'));
                 var everAddList = new Array();
-                //if(bMayDirect) rt.length = 0;
                 //console.info(bMayDirect);
                 
                 if(rt.length < 1 || bMayDirect){
@@ -5646,40 +5632,35 @@ var TT = (function(){
                 flagIsCrossWE = false,
                 flagIsLongway = TT.fn.getTRA_recommendSectTrans(fromObj, toObj),//兩站間要穿過一個 sect 時視為長途需搭快車
                 flagBypassThisRoute = false,
-                routeB = false,routeC = false,routeD = false, routeE = false,
+                routeB = false,routeC = false,routeD = false,
                 ras = false,
                 routeFileFrom = '', routeFileTo = '',
-                lineObj = false, tsObj = false, runningAry = [], testOnDirectly = [],
+                lineObj = false, tsObj = false, runningAry = [],
                 regSubLine = /^tra_pingxi$|^tra_liujia$|^tra_shalun$/,
                 ptr = 0,//pointer of allStation
-                oldLinePtr = 0, linePtr = 0,//pointer of line
-                nowSect = fromObj.sect,
                 wesMainStationAry = false,
-                routeMethd = [], tmpRoute = false,
+                routeMethd = [],
                 routeConcatAry = [],
-                tmpA = false, tmpB = false, tmpC = false;
+                tmpA = false, tmpB = false, tmpC = false, tmpD = false;
         	//針對 linkMap 中的所有走法 (通常只會抓到一種) 依序進行下列演算，若可抓到最後一站即代表已有全程走法可結束並組合路由回傳
-        	//1.查起點是否為支線 subWorkingArea，是的或先抓中繼轉乘，point指到中繼轉乘站
-        	//2.查起點或 point 是否為支線，是的話先抓到幹線大站，point指到幹線大站
-        	//3.倒過來查終點是否為支線及 subWorkingArea，是的話也先抓幹線到終點間
             //測試語法 TT.fn.getTRA_linkRouteV1('tra_1715','tra_1418')
             function createRoute(routeX){
             	//回傳陣列內每個物件內容應為 {company:'yyy', line:'xxxx', takeRange:[a,b], transStation:transStation, transStationID: 'vvv'} 最後一段不用 transStation transStationID
             	routeMethd = [];
                 routeX.map(function(routeFile, ridx){
                 	tmpC = (routeFile.running && routeFile.running.lineOf[0]) ? routeFile.running.lineOf[0] : routeFile.line;
+                	tmpD = TT.fn.getTRA_stationOnWhatLine(routeFile.goRange[1]).concat(TT.fn.getTRA_stationOnWhatLine(routeFile.goRange[0]));
                 	for(var i=0; i<displayPri['tra'].length; i++){
-                		if(routeFile.running && routeFile.running.lineOf.indexOf(displayPri['tra'][i])>=0){
+                		if(routeFile.running && routeFile.running.lineOf.indexOf(displayPri['tra'][i])>=0 && tmpD.indexOf(displayPri['tra'][i])>=0){
                 			tmpC = displayPri['tra'][i];
                 			break;
                 		}
                 	};
-                	tmpA = {company: 'tra', line: tmpC, takeRange: routeFile.goRange}
+                	tmpA = {company: 'tra', line: tmpC, takeRange: routeFile.goRange, searchRouteBy: 'linkRouteV1'}
                 	if(routeFile.running) tmpA.runningID = routeFile.running.id;
                 	if(ridx < routeX.length-1){
 						tmpA.transStation = JSON.parse(JSON.stringify(routeFile.transStation));
 						tmpA.transStationID = routeFile.transStation.id;
-						tmpA.transStation.walkMinute = 0;//特殊計算自動抓轉乘，將轉乘時間歸零
 					}
 					routeMethd.push(tmpA);
                 });
@@ -5702,7 +5683,7 @@ var TT = (function(){
                 	return ary;
                 })(ras);
                 //第一步: 將全線搭區間車的搭法切段放到 routeB
-                routeB = []; ptr = 0; linePtr = 0;
+                routeB = []; ptr = 0;
                 routeA.map(function(routeFile, ridx){
                     flagIsAddRouteFile = false;
                     lineObj = TT.fn.getCommon_lineData(routeFile.line);
@@ -5749,7 +5730,7 @@ var TT = (function(){
                     }
                 });
                 //第二步: 整理前後相同的路線放到 routeC
-                routeC = []; ptr = 0; linePtr = 0; tmpA = '';
+                routeC = []; ptr = 0; tmpA = '';
                 var lastRouteCFile = false;
                 routeB.map(function(routeFile, ridx){
                 	thisLineMustStop = routeFile.running.mustStop;
@@ -5790,7 +5771,7 @@ var TT = (function(){
                 if(!flagBypassThisRoute && !flagIsLongway) routeConcatAry.push(createRoute(routeC));;
                 //第三步: 如果是長途，加入對號快車轉乘機制
                 if(flagIsLongway){
-                	routeD = []; routeE = []; ptr = 0; linePtr = 0; tmpA = '';
+                	routeD = []; ptr = 0; tmpA = '';
                 	var firstBig = routeA.allBig[0],
                 		lastBig = routeA.allBig.slice(-1)[0],
                 		wesMainPtr = 0,
@@ -8735,9 +8716,10 @@ var TT = (function(){
             var tDiv = document.createElement('div');
             tDiv.className = 'timeRouteDiv';
             var tTD = (function(){
-                var td = '', tbd;
+                var td = '', tbd, tAfter, transInfoHTML = '', tsStyle = '';
                 for(var i=0; i<routeP.routeMap.length; i++){
                     tbd = routeP.routeMap[i];
+                    tAfter = (i<routeP.routeMap.length-1) ? routeP.routeMap[i+1] : false;
                     td += '<tr>' +
                         '<td class="sect">' + (i+1) + '</td>' +
                         '<td class="time">' + createTimeBox(tbd, tbd.time[0], tbd.time[1]) + '</td>' +
@@ -8747,10 +8729,17 @@ var TT = (function(){
                         '<td class="other">' + '' + '</td>' +
                     '</tr>';
                     if(tbd.transStation){
+                    	if(tAfter && tAfter.company==tbd.company && tAfter.info && tbd.info && tAfter.info.Train==tbd.info.Train){//同一列車
+                    		transInfoHTML = '同一班列車直通無需轉乘';
+                    		tsStyle = ' style="border-bottom: 1px solid transparent;"';
+                    	}else{
+                    		transInfoHTML = createTransStationBox(tbd.transStation, tbd.takeRange[1]);
+                    		tsStyle = '';
+                    	}
                         td += '<tr>' +
                             '<td></td>' +
                             '<td class="time"></td>' +
-                            '<td colspan="3" class="transStation">' + createTransStationBox(tbd.transStation, tbd.takeRange[1]) + '</td>' +
+                            '<td colspan="3" class="transStation"' + tsStyle + '>' + transInfoHTML + '</td>' +
                             '<td></td>' +
                         '</tr>';
                     }
