@@ -813,7 +813,7 @@ var TT = (function(){
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本": "Beta 0.5.9",
-            "產生日期": "2018/09/29"
+            "產生日期": "2018/10/07"
         },
         programUpdateInfo: [
                     'Beta 0.5.9: 新增台鐵補償式自動化搜尋連結處理屏東線及海線。',
@@ -5256,6 +5256,9 @@ var TT = (function(){
         },
         getTRA_allTimeByFromTo: function(a,b,timeTable){
             var dir = TT.fn.getTRA_LineDirByFromTo(a,b);
+            var fromInLine = TT.fn.getTRA_stationOnWhatLine(a), toInLine = TT.fn.getTRA_stationOnWhatLine(b);
+            var flagIsShanHaiTrans = !!(fromInLine.length==1 && toInLine.length==1 && ((fromInLine[0]=='tra_hai' && toInLine[0]=='tra_shan') || (fromInLine[0]=='tra_shan' && toInLine[0]=='tra_hai')));
+
             if(!timeTable){
                 timeTable = TT.fn.getTRA_dayTimeTable();
             }else if(typeof(timeTable)=='string'){
@@ -5263,12 +5266,14 @@ var TT = (function(){
             }
             
             var aryTime = new Array();
+            var flgDirIsReady = false;
             for(var i=0; i<timeTable.length; i++){
                 var timeInfo = timeTable[i].TimeInfo;
                 var aST = TT.fn.getTRA_stationIsOnThisTime(a, timeInfo);
                 var bST = TT.fn.getTRA_stationIsOnThisTime(b, timeInfo);
                 var pTimeTable;
-                if(aST!==false && bST!==false && timeTable[i].LineDir==dir){
+                flgDirIsReady = (timeTable[i].LineDir==dir) || (flagIsShanHaiTrans);
+                if(aST!==false && bST!==false && flgDirIsReady){
                     if(aST > bST) continue;
                     pTimeTable = $.extend({},timeTable[i]);
                     //pTimeTable = TT.fn.giveTRA_timeTableTool(pTimeTable);

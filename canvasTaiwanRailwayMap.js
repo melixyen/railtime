@@ -555,7 +555,7 @@
                     id: "tra_hai",
                     name: "[台鐵]海線",
                     color: "#2050C0",
-                    isNoClickLine: true,
+                    isNoClickLine: false,
                     nameTag: {
                         fontColor: '#FFF',
                         id:'tra_1110', 
