@@ -4096,6 +4096,7 @@ var TT = (function(){
                                 time: TT.fn.getTRA_fromToTime(routeB.timeTable[i]),
                                 info: routeB.timeTable[i]
                             }
+                            objA.tt_sortTime = (flagAD) ? TT.fn.transTime2Sec(objA.time[1], true) : TT.fn.transTime2Sec(objA.time[0], true);
                             ary.push(objA);
                         }
                     break;
@@ -4105,6 +4106,7 @@ var TT = (function(){
                                 time: routeB.timeTable[i],
                                 info: {}
                             }
+                            objA.tt_sortTime = (flagAD) ? TT.fn.transTime2Sec(objA.time[1], true) : TT.fn.transTime2Sec(objA.time[0], true);
                             ary.push(objA);
                         }
                     break;
@@ -4114,7 +4116,7 @@ var TT = (function(){
                                 time: TT.fn.tymetro.get_fromToTimeArray(routeB.timeTable[i]),
                                 info: routeB.timeTable[i]
                             }
-                            objA.tt_sortTime = (flagAD) ? TT.fn.transTime2Sec(objA.time[1]) : TT.fn.transTime2Sec(objA.time[0]);
+                            objA.tt_sortTime = (flagAD) ? TT.fn.transTime2Sec(objA.time[1], true) : TT.fn.transTime2Sec(objA.time[0], true);
                             ary.push(objA);
                         }
                         ary.sort(TT.fn.getTRA_sortByTTSortTime);
@@ -4142,7 +4144,7 @@ var TT = (function(){
                         }
                         routeB = getFormatTime(routeB.company, routeB);
                         if(routeB.transStation){
-                                    startT = TT.fn.transSec2Time(TT.fn.transTime2Sec(startT) + routeB.transStation.walkMinute*60);
+                                    startT = TT.fn.transSec2Time(TT.fn.transTime2Sec(startT));
                         }
                         routeA[i] = routeB;
                     }
@@ -4165,8 +4167,8 @@ var TT = (function(){
                         }
                         routeB = getFormatTime(routeB.company, routeB);
                         if(routeB.transStation){
-                                    startT = TT.fn.transSec2Time(TT.fn.transTime2Sec(startT) - routeB.transStation.walkMinute*60);
-                                    endT = TT.fn.transSec2Time(TT.fn.transTime2Sec(endT) - routeB.transStation.walkMinute*60);
+                                    startT = TT.fn.transSec2Time(TT.fn.transTime2Sec(startT));
+                                    endT = TT.fn.transSec2Time(TT.fn.transTime2Sec(endT));
                         }
                         routeA[i] = routeB;
                     }
@@ -4175,29 +4177,34 @@ var TT = (function(){
             }
             
             function getNextPointer(routeA){
-                var routeB1, routeB2, crossOffsetSec, pointerA = -1, b1EndTime, b2StartTime, b2idx = 0;
+                var routeB1, routeB2, crossOffsetSec, crossReallySec, pointerA = -1, b1EndTime, b2StartTime, b2idx = 0;
                 var crossDaySec = TT.fn.transTime2Sec(TT.defined.defaultCrossDayTime), offset1Day = 86400;
+                var flgB1B2isSameTrain = false, B1Train = false, B2Train = false;
                 for(var tc=0; tc<routeA.length; tc++){
                     if(routeA[tc].transStation && routeA[tc+1]){//Have next trans
                         routeB1 = routeA[tc]; routeB2 = routeA[tc+1];
+                        routeA[tc+1].formatTimeTable.sort(TT.fn.getTRA_sortByTTSortTime);
                         crossOffsetSec = routeB1.transStation.walkMinute*60;
-						if(routeB1.searchRouteBy && routeB1.searchRouteBy=='linkRouteV1' && !TT.fn.getTRA_recommendSectTrans(routeB2.takeRange[0],routeB2.takeRange[1])){crossOffsetSec = 0;}
                         pointerA = -1;
                         b2idx = 0;
                         
                         for(var i=0; i<routeB1.formatTimeTable.length; i++){
-                            b1EndTime = routeB1.formatTimeTable[i].time[1];
-                            b1EndTime = TT.fn.transTime2Sec(b1EndTime) + crossOffsetSec;
+                            B1Train = routeB1.formatTimeTable[i];
+                            b1EndTime = B1Train.time[1];
+                            b1EndTime = TT.fn.transTime2Sec(b1EndTime);
                             if(b1EndTime < crossDaySec) b1EndTime += offset1Day;
                             for(var j=b2idx; j<routeB2.formatTimeTable.length; j++){
-                                b2StartTime = TT.fn.transTime2Sec(routeB2.formatTimeTable[j].time[0]);
+                                B2Train = routeB2.formatTimeTable[j];
+                                flgB1B2isSameTrain = !!(B1Train.info.Train && B2Train.info.Train && B1Train.info.Train==B2Train.info.Train);
+                                b2StartTime = TT.fn.transTime2Sec(B2Train.time[0]);
                                 if(b2StartTime < crossDaySec) b2StartTime += offset1Day;
                                 pointerA = -1;
                                 if(!flagAD) b2idx = j;
                                 routeB2.formatTimeTable[j].prevPointer = i-1;
                                 routeB2.formatTimeTable[j].myPointer = j;
-                                if(routeB1.doNotTakeTrain){routeB2.formatTimeTable[j].bestEnd = true;}
-                                if(b2StartTime >= b1EndTime){
+                                if(routeB1.doNotTakeTrain){B2Train.bestEnd = true;}
+                                crossReallySec = (flgB1B2isSameTrain) ? 0 : crossOffsetSec;
+                                if(b2StartTime >= b1EndTime + crossReallySec){
                                     pointerA = j;
                                     routeB2.formatTimeTable[j].prevPointer = i;
                                     routeB2.formatTimeTable[j].bestEnd = true;
@@ -5272,11 +5279,10 @@ var TT = (function(){
                 var aST = TT.fn.getTRA_stationIsOnThisTime(a, timeInfo);
                 var bST = TT.fn.getTRA_stationIsOnThisTime(b, timeInfo);
                 var pTimeTable;
-                flgDirIsReady = (timeTable[i].LineDir==dir) || (flagIsShanHaiTrans);
+                flgDirIsReady = true;//(timeTable[i].LineDir==dir) || (flagIsShanHaiTrans);
                 if(aST!==false && bST!==false && flgDirIsReady){
                     if(aST > bST) continue;
                     pTimeTable = $.extend({},timeTable[i]);
-                    //pTimeTable = TT.fn.giveTRA_timeTableTool(pTimeTable);
                     pTimeTable.fromStation = a;
                     pTimeTable.toStation = b;
                     aryTime.push(pTimeTable);
@@ -5577,6 +5583,8 @@ var TT = (function(){
             return Line;
         },
         getTRA_linkMap: function(from, to){//尋找 from 站至 to 站可以經過的所有路線和車站
+            var fromObj = TT.fn.getCommon_stationDataOfID(from),
+                toObj = TT.fn.getCommon_stationDataOfID(to);
         	var afterTestLine = [],//存放格式為 lineName + '_dir' + lineDir, ex: tra_xibu_dir1
         		routeIndex = 0,
         		fromInLine = TT.fn.getTRA_stationOnWhatLine(from),
@@ -5584,6 +5592,7 @@ var TT = (function(){
         		lineLinkAry = [],
         		lineLinkStationAry = [],
         		rtAry = [];
+            var flagFromHai = !!(fromInLine.length==1 && fromInLine[0]=='tra_hai'), flagToIsHai = !!(toInLine.length==1 && toInLine[toInLine.length-1]=='tra_hai');
             var flagIsShanHaiTrans = !!(fromInLine.length==1 && toInLine.length==1 && ((fromInLine[0]=='tra_hai' && toInLine[0]=='tra_shan') || (fromInLine[0]=='tra_shan' && toInLine[0]=='tra_hai')));
             var flagDoNotGoShan = !!(fromInLine.length==1 && fromInLine[0]=='tra_hai' && !flagIsShanHaiTrans),
                 flagDoNotGoHai = !!(fromInLine.length==1 && fromInLine[0]=='tra_shan' && !flagIsShanHaiTrans);
@@ -5597,12 +5606,12 @@ var TT = (function(){
         	function findLineLink(lineStr, lineRoute, stationRoute){
         		var lineObj = TT.fn.getCommon_lineData(lineStr);
         		var linkObj = lineObj.link;
-        		var tmpLink = false, tmpAryRoute = false, tmpStationRoute = false, flagIsStopLine = false, flagReWorkLine = false;
+        		var tmpLink = false, tmpAryRoute = false, tmpStationRoute = false, flagIsStopLine = false, flagReWorkLine = false, tHaiRoute, tHaiStation;
         		var rt = [];
         		for(var k in linkObj){
         			if(flagDoNotGoShan && k=='tra_shan') continue;//海線出發不找山線
         			if(flagDoNotGoHai && k=='tra_hai') continue;//山線出發不找海線
-        			if(lineRoute.indexOf(k)>=0) continue;//不找回頭路線
+        			if(lineRoute.indexOf(k)>=0) continue;//不找回頭路線，但海線例外可找改經山線走法
         			tmpLink = linkObj[k];
         			flagIsStopLine = !!(toInLine.indexOf(k)>=0);
         			if(!checkIsTestLine(k, tmpLink.dir) && !flagIsStopLine){
@@ -5617,6 +5626,16 @@ var TT = (function(){
 						tmpStationRoute.map(function(c, idx){ if(tmpStationRoute.lastIndexOf(c)!=idx){flagReWorkLine = true;} });//檢查是否有路線因車站重疊兩條線而重複產生
 						if(!flagReWorkLine){
         					lineLinkAry.push(tmpAryRoute); lineLinkStationAry.push(tmpStationRoute);
+        					if((flagFromHai || flagToIsHai) && !flagIsShanHaiTrans){//海線到發的長途搜尋固定加上走山線到另一頭折返的路由，例如台北經台中至彰化到追分
+        						tHaiRoute = tmpAryRoute.map(function(c){return c;}); tHaiStation = tmpStationRoute.map(function(c){return c;});
+        						if(flagFromHai && tmpAryRoute[1]=='tra_xibu' && fromObj.sect=='taichung'){
+									tHaiRoute.splice(1,0,'tra_shan'); lineLinkAry.push(tHaiRoute);
+									tHaiStation.splice(1,0,'tra_1120'); lineLinkStationAry.push(tHaiStation);
+								}else if(flagToIsHai && tmpAryRoute[tmpAryRoute.length-2]=='tra_xibu' && toObj.sect=='taichung'){
+									tHaiRoute.splice(-1,0,'tra_shan'); lineLinkAry.push(tHaiRoute);
+									tHaiStation.push('tra_1120'); lineLinkStationAry.push(tHaiStation);
+								}
+        					}
         				}
         			}
         		}
@@ -5673,7 +5692,7 @@ var TT = (function(){
 			var bigStationIDList = (function(){ var rt = []; bigList.map(function(c){ rt.push(c.id); }); return rt; })();
         	for(var r=0; r<rtAry.length; r++){
         		routeA = rtAry[r];
-        		allStation = []; allBig = [];
+        		allStation = []; allBig = []; allMajor = [];
         		for(var i=0; i<routeA.length; i++){
         			routeB = routeA[i];
         			objLine = TT.fn.getComon_allStationOfLineByFromTo(routeB.goRange[0],routeB.goRange[1],routeB.line);
@@ -5746,7 +5765,7 @@ var TT = (function(){
                 		}
                 	};
                 	tmpA = {company: 'tra', line: tmpC, takeRange: routeFile.goRange, searchRouteBy: 'linkRouteV1'}
-                	if(routeFile.running) tmpA.runningID = routeFile.running.id;
+                	if(routeFile.running) tmpA.running = routeFile.running;
                 	if(ridx < routeX.length-1){
 						tmpA.transStation = JSON.parse(JSON.stringify(routeFile.transStation));
 						tmpA.transStationID = routeFile.transStation.id;
@@ -5813,7 +5832,7 @@ var TT = (function(){
                             }
                         }
                         routeB.push({goRange: [ras[ptr], routeFile.goRange[1]], line: routeFile.line, running: runningAry[0]});
-                        ptr = ras.indexOf(routeFile.goRange[1]);;
+                        ptr = ras.indexOf(routeFile.goRange[1]);
                     }else{
                     	TT.fn.d2Log('Train route error on getTRA_linkRouteV1'); flagBypassThisRoute=true; return false;
                     }
@@ -6050,7 +6069,20 @@ var TT = (function(){
                 }
 //console.info(JSON.parse(JSON.stringify(routeConcatAry)));
             });
-            return routeT.concat(routeConcatAry);
+            var res = routeT.concat(routeConcatAry),
+				resCheckAry = [];
+            var resA1 = res.filter(function(rr){//過濾重複路線
+            	var ary = [], tx1 = '';
+            	ary = rr.map(function(c){ return c.takeRange.join(',') + c.line; });
+            	tx1 = ary.join('==');
+            	if(resCheckAry.indexOf(tx1)>=0){
+            		return false;
+            	}else{
+            		resCheckAry.push(tx1);
+            		return true;
+            	}
+            });
+            return resA1;
         },
         getTRA_recommendSectTrans: function(a, b){//Return true for trans, false for direct
             var fromObj = (typeof(a)=='string') ? TT.fn.getTRA_stationDataOfID(a) : a,
@@ -7092,6 +7124,7 @@ var TT = (function(){
                             info: bestLink[i][j].info,
                             time: bestLink[i][j].time
                         }
+                        if(routeA[j].running) routeS.running = routeA[j].running;
                         if(routeA[j].transStation){
                             routeS.transStation = routeA[j].transStation;
                             routeS.transStationID = routeA[j].transStationID;
@@ -8872,7 +8905,6 @@ var TT = (function(){
                     '</tr>';
                     if(tbd.transStation){
                     	if(tAfter && tAfter.company==tbd.company && tAfter.info && tbd.info && tAfter.info.Train && tbd.info.Train && tAfter.info.Train==tbd.info.Train){//同一列車
-                    	console.info(tbd);
                     		transInfoHTML = '同一班列車直通無需轉乘';
                     		tsStyle = ' style="border-bottom: 1px solid transparent;"';
                     	}else{
