@@ -666,7 +666,7 @@
                     id: "tra_jiji",
                     name: "[台鐵]集集線",
                     color: "#22A050",
-                    isNoClickLine: true,
+                    isNoClickLine: false,
                     nameTag: {
                         fontColor: '#FFF',
                         id:'tra_2707', 
