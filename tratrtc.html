@@ -1268,6 +1268,7 @@ var TT = (function(){
                     link: {
                         "tra_shan": {station: "tra_1120", dir: "0"},
                         "tra_hai": {station: "tra_1120", dir: "0"},
+                        "tra_jiji": {station: "tra_1207", dir: "1"},
                         "tra_jygx": {station: "tra_1215", dir: "1"}
                     },
             		station: ["tra_1120","tra_1202","tra_1240","tra_1203","tra_1204","tra_1205","tra_1206","tra_1207","tra_1208","tra_1209","tra_1210","tra_1211","tra_1212","tra_1213","tra_1214","tra_1241","tra_1215"]
@@ -3571,9 +3572,9 @@ var TT = (function(){
                 id: 'tymetro_trans_tra_west',
                 rType: 'cross',//direct , trans 
                 company: ['tymetro','tra'],// cross company serial
-                regLine: "^tymetro_1$|^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_pingdong$|^tra_shalun$|^tra_hai$|^tra_hai$",
+                regLine: "^tymetro_1$|^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_pingdong$|^tra_shalun$|^tra_hai$|^tra_hai$|^tra_jiji$",
                 lineIsSame: {
-                    "tra_xibu": "^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_pingdong$|^tra_shalun$|^tra_hai$|^tra_hai$"
+                    "tra_xibu": "^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_pingdong$|^tra_shalun$|^tra_hai$|^tra_hai$|^tra_jiji$"
                 },
                 link: [
                 	{
@@ -4418,6 +4419,7 @@ var TT = (function(){
                 "tra_pingxi": /^tra_1804$|^tra_1805$|^tra_1806$/,
                 "tra_shan": /^tra_1028$/,
                 "tra_zhjy": /^tra_1120$/,
+                "tra_jiji": /^tra_1207$/,
                 "tra_jygx": /^tra_1215$/,
                 "tra_pingdong": /^tra_1238$/,
                 "tra_yilan": /^tra_1002$/,
