@@ -1487,8 +1487,13 @@ TT.teachImp = (function(){
 	},
 	me.showStation1005 = function(){
 		var html = '<h2>汐止站基隆輕軌四軌化時新建場站可能位置</h2>' +
-			'<p>基隆輕軌若為四軌化方案，將於台五甲線汐止大同路上高架雙線新輕軌軌道，汐止車站也會新建基隆輕軌專用車站及專用月台。汐止車站的旅客主要集中於一號出口靠近信義路、新昌公園方向，而汐止車站也只有此處站前廣場直接與大同路連接，其餘位置與大同路間均有民房隔閡，因此汐止車站公車站牌所用花圃和公車彎是最適合設置輕軌車站及月台的位置，並可使用空橋連接台鐵月台末端達成站內轉乘。</p>'+
-			'<div><iframe style="width:100%;height:650px;" src="https://www.google.com/maps/d/embed?mid=1WUrE8N6UAAfMopt4XLsSaSi145dyoH0l&ll=25.068974675215863%2C121.66219796613848&z=19"></div>' +
+			'<p>基隆輕軌若為四軌化方案，為保持汐止站雙島式月台火車待避功能，應於台五甲線汐止大同路上高架雙線新輕軌軌道，汐止車站也會新建基隆輕軌專用車站及專用月台。汐止車站的旅客主要集中於一號出口靠近信義路、新昌公園方向，而汐止車站也只有此處站前廣場直接與大同路連接，其餘位置與大同路間均有民房隔閡，因此汐止車站公車站牌所用花圃和公車彎是最適合設置輕軌車站及月台的位置，並可使用空橋連接台鐵月台末端達成站內轉乘。</p>'+
+			'<div><iframe style="width:100%;height:650px;" src="https://www.google.com/maps/d/embed?mid=1WUrE8N6UAAfMopt4XLsSaSi145dyoH0l&ll=25.068974675215863%2C121.66219796613848&z=19"></iframe></div>' +
+            '<br>' +
+            '<p>使用汐止站前廣場與公車彎之廣場用地改建為車站大樓，一樓為轉運站，目前可轉運聯營公車、新北市新巴士、省道客運如 1032、國道客運如 1880，樓上為汐止車站聯通道以及輕軌站通道，可通往大同路上方的基隆輕軌剪票口並進入月台層候車，另於汐止中正路設一出口方便國泰醫院與建成路社區旅客使用。</p>' +
+            '<img src="https://i.imgur.com/ex7vamO.jpg" width="90%"></img><br>' + 
+            '<img src="https://i.imgur.com/43U6yIw.jpg" width="90%"></img><br>' + 
+            '<img src="https://i.imgur.com/CvEx7TI.jpg" width="90%"></img><br>' + 
 			'';
 		TT.popupArea.pop(html);
 	},
@@ -2172,6 +2177,7 @@ TT.parseModule = (function(){
 				runHour: spt[1],
 				pr: objA.pr ,
 				guideKLRT: objA.q,
+				stationInfoWindow: objA.sw,
 				railMode: objA.r,
 				trainGoTime: str2time(objA.t),
 				trainModuleTime: str2module(objA.m)
@@ -2189,6 +2195,7 @@ TT.parseModule = (function(){
         if(objA.runHour) TT.runHour = objA.runHour;
         if(objA.railMode) TT.rail.mode = objA.railMode;
         if(objA.pr==1) TT.autoPlayTrain = true;
+        if(objA.stationInfoWindow) TT.open_stationInfoWindow = objA.stationInfoWindow;
         if(objA.guideKLRT){
         	TT.startHour = objA.startHour || 6;
         	TT.runHour = objA.runHour || 4;
@@ -2979,6 +2986,12 @@ TT.createMap = function(){
 			this.drawMap();
 			pen = TT.appendDrawLine("canvasRoute", document.getElementById('stationLayer'));
 			this.setDrawUserLine(this.enableDrawUserLine);
+			if(TT.open_stationInfoWindow){
+				setTimeout(function(){
+				TT.map.popStation('tra_' + TT.open_stationInfoWindow);
+				TT.open_stationInfoWindow = false;
+				},1000);
+			}
 		}
 	})
 	return vm;
