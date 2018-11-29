@@ -316,6 +316,18 @@ __createLibTT.data = function(TT){
                 {id:"tra_1630", name: "鹿野", estring: "luye", sect: "taidong"},
                 {id:"tra_1631", name: "山里", estring: "shanli", sect: "taidong"},
                 {id:"tra_1632", name: "台東", estring: "taitungtaidong", sect: "taidong", big: 'es'},
+                
+                {id:"tra_1502", name: "加祿", sect: "pingdong"},
+                {id:"tra_1503", name: "內獅", sect: "pingdong"},
+                {id:"tra_1504", name: "枋山", sect: "pingdong"},
+                {id:"tra_1507", name: "古莊", sect: "taidong"},
+                {id:"tra_1508", name: "大武", sect: "taidong"},
+                {id:"tra_1510", name: "瀧溪", sect: "taidong"},
+                {id:"tra_1512", name: "金崙", sect: "taidong"},
+                {id:"tra_1514", name: "太麻里", sect: "taidong"},
+                {id:"tra_1516", name: "知本", sect: "taidong"},
+                {id:"tra_1517", name: "康樂", sect: "taidong"},
+                                                
                 {id:"tra_1102", name: "談文", estring: "tanwen", sect: "miaoli"},
                 {id:"tra_1104", name: "大山", estring: "dashan", sect: "miaoli"},
                 {id:"tra_1105", name: "後龍", estring: "holong", sect: "miaoli", big: 'w'},

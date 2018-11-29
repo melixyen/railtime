@@ -4,10 +4,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width; initial-scale=1.0" />
-<meta name="description" content="接軌時刻 - 台灣鐵路火車捷運時刻表及路線轉乘查詢系統 Taiwan Railway MRT Timetable Web APP" />
-<meta name="keywords" content="捷運,台鐵,火車,鐵路,時刻表,轉乘,TRA,TRTC,MRT,Timetable,Taiwan Railway,接軌時刻" />
+<meta name="description" content="列車行駛模式群組化系統" />
+<meta name="keywords" content="台鐵,火車,鐵路,時刻表,轉乘,TRA,Timetable,Taiwan Railway,接軌時刻" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<title>接軌時刻 - Taiwan Railway MRT Timetable Web APP</title>
+<title>接軌時刻 - 列車行駛模式群組化系統</title>
 <style type="text/css">
 @charset "utf-8";
 
@@ -130,7 +130,7 @@ body {
 .center .frameA{
     border: 1px solid #2E9CB5;
     margin: 10px auto;
-    max-width: 1000px;
+    max-width: 1600px;
     padding: 3px;
 }
 .center .frameA .title{
@@ -149,14 +149,13 @@ body {
 .center .ttbDisplay{
     border: 1px solid #4E8CE5;
     margin: 10px auto;
-    max-width: 1000px;
+    max-width: 1600px;
 }
 
 .center .ttbDisplay .route{
     background-color: #FCF9FD;
     border-bottom: 1px solid #4A4C55;
     margin: 0px;
-    min-height: 80px;
     width: 100%;
 }
 .center .ttbDisplay .train{
@@ -251,176 +250,14 @@ body {
     background-color: #005eb8 !important;
 }
 
-.tt_ck_route_sh{
-    display:inline-block; border:1px solid #222;
-    background-color: #EFBCDF;
-    margin: 8px;
-    height: 24px;
-}
-.tt_ck_route_sh .stag{
-    color: #FDFDFD;
-    background-color: #9c6f2e;
-    border:1px solid #812;
-    display:inline-block;
-    margin-right: 8px;
-}
-.tt_ck_route_sh .fmin{
-    color: #223EED;
-}
-.tt_ck_route_filterPri{
-    display:inline-block; 
-    border:2px solid #BA2;
-    border-radius: 5px;
-    background-color: #EFDC3F;
-    margin: 3px 8px;
-    height: 20px;
-    width: 20px;
-    text-align: center;
-    font-size: 140%;
-    line-height: 20px;
-    cursor: pointer;
-}
 
-.tt_ck_sortby_sh{
-    display:inline-block; 
-    border:1px solid #29A;
-    border-radius: 8px;
-    background-color: #AFBCBF;
-    margin: 5px 10px;
-    padding: 1px 5px 1px 8px;
-    cursor: pointer;
-    position: relative;
-}
-.tt_ck_sortby_sh.select{
-    border:1px solid #2A9;
-    border-left: 20px solid #3E4;;
-    background-color: #AFECAF;
-    color: #5C1B6F;
-}
-.helpForSortBySelectButton .arrow, .helpForRouteCheckBox .arrow{
-    display: inline-block;
-    position: relative;
-    top: 3px;
-    border-right: 8px solid #2A9;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    margin-right: 5px;
-}
-.helpForSortBySelectButton{
-    color: #FEFEFE;
-}
-.helpForRouteCheckBox{
-    color: #2B3D9A;
-}
-
-.timeTableTrainRouteBox{
-    margin: 10px 50px 20px 50px;
-    padding: 5px 0px;
-    border-bottom: 2px solid #041239;
-    background-color: #FFF;
-}
-.timeTableTrainRouteBox .header{
-    display: inline-block;
-    padding: 5px;
-    border: 1px solid #D2E5BA;
-}
-.timeTableTrainRouteBox .header .sub{
-    display: inline;
-    margin: 3px 20px 3px 0px;
-}
-
-.timeTableTrainRouteBox .header .num{
-    color: #901111;
-    font-size: 14px;
-}
-.timeTableTrainRouteBox .header .count .val{
-    color: #FF2C0E;
-}
-.timeTableTrainRouteBox .header .totalTime .val{
-    color: #1F9C8E;
-}
-.timeTableTrainRouteBox .header .startTime .val, .timeTableTrainRouteBox .header .endTime .val{
-    color: #1F6CFE;
-}
-.timeTableTrainRouteBox .header .printCanvas{
-    color: #DFF2D2;
-    background-color: #30201A;
-    padding: 0px 5px;
-    border: 1px solid #40302A;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.timeTableTrainRouteBox .timeRouteDiv{
-    position: relative;
-}
-.timeTableTrainRouteBox .table th{
-    margin: 3px 10px;
-    background-color: #B7EFF0;
-    color: #2E0E1E;
-    font-size: 16px;
-    font-weight: 400;
-    border: 2px solid #FDFDFD;
-}
-.timeTableTrainRouteBox .table td{
-    margin: 3px 10px;
-    color: #2E0E1E;
-    font-size: 14px;
-    font-weight: 400;
-}
-.timeTableTrainRouteBox .table .sect{
-    min-width: 40px;
-}
-.timeTableTrainRouteBox .table .time{
-    min-width: 70px;
-}
-.timeTableTrainRouteBox .table .station{
-    min-width: 120px;
-}
-.timeTableTrainRouteBox .table .info{
-    min-width: 150px;
-    max-width: 150px;
-}
-.timeTableTrainRouteBox .table .line{
-    min-width: 190px;
-    max-width: 250px;
-}
-.timeTableTrainRouteBox .table .other{
-    min-width: 80px;
-}
-.timeTableTrainRouteBox .table td.sect{
-    color: #BD122B;
-}
-.timeTableTrainRouteBox .transStationVideoClick{
-    display: inline-block;
-    margin-left: 18px;
-    padding: 0px 5px;
-    color: #F0FE46;
-    background-color: #202029;
-    border-radius: 8px;
-    cursor: pointer;
-    animation-duration: 1s;
-    animation-name: ccblink;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
-    animation-timing-function: ease-in-out;
-}
 @keyframes ccblink{
     0%{color: #F0FE46;}
     40%{color: #A0FE66;}
     70%{color: #80FE86;}
     100%{color: #A0FE66;}
 }
-.timeTableTrainRouteBox .transStationAdjustWalkTime{
-    display: inline-block;
-    margin-left: 18px;
-    padding: 0px 5px;
-    color: #1deafc;
-    background-color: #7c3014;
-    border-radius: 8px;
-    cursor: pointer;
-}
+
 
 @media screen and (max-width: 579px) {
     .timeTableTrainRouteBox .table .info, .timeTableTrainRouteBox .table .line, .timeTableTrainRouteBox .table .other{
@@ -437,103 +274,10 @@ body {
         display: none;
     }
 }
-.timeTableTrainRouteBox .timeRouteDiv.showAll .table .info, .timeTableTrainRouteBox .timeRouteDiv.showAll .table .line, .timeTableTrainRouteBox .timeRouteDiv.showAll .table .other{
-    display: table-cell;
-}
-.timeTableTrainRouteBox .timeRouteDiv .more, .help_timeTableResultMore{
-    width: 40px;
-    height: 32px;
-    font-size: 200%;
-    color: #BBB;
-    font-weight: bold;
-    position: absolute;
-    right: -40px;
-    top: 7px;
-    background-color: #DDD;
-    border: 1px solid #BBB;
-    overflow: hidden;
-    cursor: pointer;
-}
-.help_timeTableResultMore{
-    position: static;
-    display: inline-block;
-}
 @media screen and (min-width: 910px) {
     .timeTableTrainRouteBox .timeRouteDiv .more{
         display: none;
     }
-}
-.timeTableTrainRouteBox .timeRouteDiv.showAll .more{display: none;}
-
-.timeTableTrainRouteBox .table .timeBox .value, .timeTableTrainRouteBox .table .stationBox .value{
-    min-height: 20px;
-    font-size: 120%;
-}
-.timeTableTrainRouteBox .table .timeBox .deep, .timeTableTrainRouteBox .table .stationBox .deep{
-    text-align: center;
-    min-height: 50px;
-}
-.timeTableTrainRouteBox .table .timeBox .deep .minute{
-    line-height: 50px;
-    color: #8E8E8E;
-}
-.timeTableTrainRouteBox .table .deep .line_color{
-    border: 1px solid #000000;
-    width: 5px;
-    height: 48px;
-    overflow: hidden;
-}
-.timeTableTrainRouteBox .table .deep .line_color .bd{
-    height: 48px;
-    border-left: 5px dashed #000000;
-}
-.timeTableTrainRouteBox .table .deep .line_color.trtc_2, .timeTableTrainRouteBox .table .deep .line_color.trtc_2 .bd{border-color: #cb2c30;}
-.timeTableTrainRouteBox .table .deep .line_color.trtc_3, .timeTableTrainRouteBox .table .deep .line_color.trtc_3 .bd{border-color: #007749;}
-.timeTableTrainRouteBox .table .deep .line_color.trtc_4, .timeTableTrainRouteBox .table .deep .line_color.trtc_4 .bd{border-color: #ffa300;}
-.timeTableTrainRouteBox .table .deep .line_color.trtc_5, .timeTableTrainRouteBox .table .deep .line_color.trtc_5 .bd{border-color: #005eb8;}
-.timeTableTrainRouteBox .table .deep .line_color.trtc_2 .bd,
-.timeTableTrainRouteBox .table .deep .line_color.trtc_3 .bd,
-.timeTableTrainRouteBox .table .deep .line_color.trtc_4 .bd,
-.timeTableTrainRouteBox .table .deep .line_color.trtc_5 .bd{
-    border-style: solid;
-}
-.timeTableTrainRouteBox .table .deep .line_color.tymetro_1, .timeTableTrainRouteBox .table .deep .line_color.tymetro_1 .bd{
-    border-color: #8e47ad;
-}
-.timeTableTrainRouteBox .table td.transStation{
-    color: #9D92AB;
-    border-bottom: 1px solid #CCC;
-}
-.timeTableTrainRouteBox .table .trtcArriveTimeInfo{
-    font-size: 80%;
-    color: #AA2010;
-}
-
-.editTool .tag{
-    display: block;
-    width: 100%;
-    height: 40px;
-}
-.editTool .tag .tagSelect{
-    /*display: inline;*/
-    float: left;
-    margin: 0px 10px;
-    padding: 5px;
-    border: 2px solid #2C2E2F;
-    background-color: #EEC;
-    cursor: pointer;
-}
-.editTool .tag .tagSelect.selected{background-color: #DCE;}
-.editTool .editor{
-    width: 100%;
-}
-.editTool .editor textarea{
-    width: 90%;
-    height: 400px;
-}
-.editTool .editor .btnDiv{
-    display: inline;
-    margin: 0 10px 0 0;
 }
 
 .ckWeekLoaded{
@@ -606,11 +350,17 @@ body {
     position: absolute;
     top: 0px;
     height: 0px;
+    max-width: 95%;
+    max-height: calc(100% - 50px);
 }
 .ttWindow .inner{
     background-color: #F2F2F2;
     min-width: 160px;
     min-height: 100px;
+    display: inline-block;
+    max-width: 100%;
+    max-height: 90vh;
+    overflow: auto;
 }
 .ttWindow .ttWindowClose, .ttMapSelector .ttWindowClose{
     width: 16px;
@@ -728,24 +478,96 @@ body {
     }
 }
 
-.transStationWalkTimeWindow .contentBox{
-    margin: 10px;
+/* Group Station Check Div */
+.groupStationDiv{
+    background-color: #EFB1EA;
+    padding: 10px;
+    display: inline-block;
 }
-.transStationWalkTimeWindow .buttonBox{
-    margin: 10px;
-}
-.transStationWalkTimeWindow .buttonBox button{
+
+.groupStationDiv .modeFunction{
+    float: left;
+    padding: 5px;
+    border:1px solid #444;
+    border-radius:5px;
+    cursor: pointer;
     margin-right: 10px;
 }
-.transStationWalkTimeWindow .stationName{
-    color:#307F98;
-    font-weight:bold;
+.groupStationDiv .big1{
+    background-color: #EDE8F3;
+    display: inline-block;
+    width: 100%
 }
-.transStationWalkTimeWindow .minute{
-    width: 40px;
-    text-align: right;
-    font-size: 120%;
+.groupStationDiv .big2{
+    background-color: #E8F2F3;
+    display: inline-block;
+    width: 100%
 }
+.groupStationDiv .customGoupStation{
+	background-color: #C8D2F3;
+    display: inline-block;
+    width: 100%
+}
+.groupStationDiv .stationBtn{
+    float: left;
+    margin: 5px 10px;
+    border: 1px solid #A55;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.groupStationDiv .stationBtn.checked{
+    background-color: #EBB;
+}
+
+#tt_timeTable_d_route .routeBox{
+    margin: 5px 10px;
+}
+#tt_timeTable_d_route .routeBtn{
+    display: inline-block;
+    margin: 5px 10px;
+    border: 1px solid #55A;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+#tt_timeTable_d_route .routeBtn.checked{
+    background-color: #BBE;
+}
+#tt_timeTable_d_route .routeBtn .lineBox{
+    padding: 3px 6px;
+    display: inline;
+}
+
+/* Group Search Result */
+.resultTable{
+    margin: 4px 8px;
+    border-spacing: 0px 2px;
+}
+.resultTable tr.bigStation{
+    background-color: #F3F3F3;
+}
+.resultTable tr.bigStation td.stationName{
+    font-weight: 700;
+}
+.resultTable td{
+    padding: 2px 10px;
+}
+.resultTable td.head{
+    margin: 3px 6px;
+    cursor: pointer;
+}
+
+.trainTimeTable{
+	margin-right: 20px;
+}
+.trainTimeTable td{
+	padding: 7px;
+	min-width: 50px;
+}
+
 
 /* All common CSS */
 .tt_display_none{display: none;}
@@ -758,73 +580,28 @@ body {
 <script type="text/javascript" src="ttlib/fn.js"></script>
 <script type="text/javascript" src="ttlib/fn_tymetro.js"></script>
 <script type="text/javascript">
-//進度: 完成 getTRA_timeRangeByFromTo，可尋找某一時段間往來兩站的班次
-//      完成 getTRA_timeRangeByFromTo 資料加上 getFromToTime , 接下來製作 TRTC 兩站時間查詢
-//      完成 getTRTC_allTimeByFromTo 查全部兩站時間, 接下來製作時間範圍內查證
-//      完成 getTRTC_timeRangeByFromTo 查台北捷運兩站範圍內時間 , 接下來製作跨台鐵捷運查詢
-//      完成 getRoute_needRouteByFromTo 查兩站間是否需路由 , 接下來製作路由查詢正反向回傳路由
-//      完成 getRoute_allRouteByFromTo 查兩站間路由 , 接下來製作路由上所有時間查詢
-//      完成 getCommon_timeRangeByFromTo 查兩站間的時間 , 接下來 getCommon_timeTakeByFromTo
-//      完成 getCommon_timeTakeByFromTo 對接時間內的 next prev , 接下按照 flagAD 整理每一組的最佳選擇
-//      完成 getCommon_timeRangeBestByFromTo 整理最佳選擇 , 接下來 UI 印出最佳時間列車
-//      完成 findTrain 與選項 UI , 接下來 printTrain 印出所有路線
-//      完成 getData2JSON 及 saveDataJSON2Data 可由工具編輯 TT.data 內的資料但不含時刻表檔案
-//      完成 createTrainRouteSelectBox 可勾選隱藏不想要經過的路徑
-//      完成 createWeekSelect 可以選擇使用星期幾去搜尋
-//      完成 getTRTC_stationOnOutArea 可查詢 TRTC 站是否在非重疊區
-//      完成 classMapSelector 路線挑選器基礎視窗
-//      完成 timeTableTrainRouteBox 及路線挑選器簡易的 media query 適應小寬度平台
-//      完成 resetCountOfTrainRouteBox 獨立於所有 checkbox 結束後才呼叫重算 NO. 並改以獨立 ID 命名 span 加快更新速度
-//      完成 getRoute_mapSystemOfFromToLine 跨出地區從系統上尋找路由
-//      新增 getRoute_filterSameRoute 過濾不必要的路由 giveRoute_transStationOtherData
-//		新增 getTRA_linkRouteV1 及 getTRA_linkMap 做自動化路由搜尋
+
 var TT = (function(){
 
     var TT = {//name space TT for TimeTable
         data: {},
+        stationGroupAry: ["tra_1008", "tra_1011", "tra_1015", "tra_1017", "tra_1025", "tra_1319", "tra_1120", "tra_1215", "tra_1228", "tra_1238","tra_1305","tra_1210","tra_1406","tra_1411","tra_1820","tra_1823","tra_1715","tra_1619","tra_1632","tra_1019","tra_1032","tra_1016"],
+        minGroupCount: 1,
         os: {}
     }
     
     __createLibTT.defined(TT);
     
     TT.defined.programAbout = {
-            "程式名稱": "接軌時刻",
+            "程式名稱": "列車行駛模式群組化系統",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.5.9",
-            "產生日期": "2018/11/01"
+            "版本": "Beta 0.1.1",
+            "產生日期": "2018/11/29"
     };
     TT.defined.programUpdateInfo = [
-                    'Beta 0.5.9: 新增台鐵補償式自動化搜尋連結處理屏東線及海線和集集線。',
-                    'Beta 0.5.8: 新增台鐵捷運化 2018 年啟用之台中及高雄通勤站。',
-                    'Beta 0.5.7: 新增台鐵速查系統連結及屏東線內部潮州轉乘。',
-                    'Beta 0.5.6: 修正台鐵沙崙線轉平溪線無法查詢錯誤。',
-                    'Beta 0.5.5: 新增台鐵新富站。',
-                    'Beta 0.5.4: 新增機場捷運與台北捷運蘆洲線透過三重與大橋頭轉乘。',
-                    'Beta 0.5.3: 新增機場捷運與台北捷運部分路線互相轉乘查詢。',
-                    'Beta 0.5.2: 新增機場捷運與台鐵互相轉乘查詢。',
-                    'Beta 0.5.1: 新增機場捷運時刻表，可在路網內查詢。',
-                    'Beta 0.5.0: 調整路線圖內桃園機場捷運為正式路線，工具新增機場捷運時刻表計算器。',
-                    'Beta 0.4.9: 新增台鐵三姓橋站及八斗子站。',
-                    'Beta 0.4.8: 台鐵時刻表改讀公開資訊 JSON 格式檔加速時候表載入。',
-                    'Beta 0.4.7: 新增沙崙線。',
-                    'Beta 0.4.6: 新增西部幹線嘉義至高雄。',
-                    'Beta 0.4.5: 新增西部幹線彰化至嘉義。',
-                    'Beta 0.4.4: 新增山線。',
-                    'Beta 0.4.3: 過濾部分迂迴的路徑。',
-                    'Beta 0.4.2: 隱藏無班車的路由，新增輸入站名搜尋功能。',
-                    'Beta 0.4.1: 更新 canvas map 及新增松山站轉乘教學。',
-                    'Beta 0.4: 新增台東線。',
-                    'Beta 0.3.9: 調整 canvas map，增加截圖功能。',
-                    'Beta 0.3.8: 新增內灣線，修正東線可直達六家線。',
-                    'Beta 0.3.7: 新增新竹地區至竹南以及六家線。',
-                    'Beta 0.3.6: 修正東部幹線轉捷運互相查詢後路由會失效的錯誤。',
-                    'Beta 0.3.5: 修正西部大站與東部小站間使用轉乘系統。',
-                    'Beta 0.3.4: 新增北迴線的轉乘查詢。',
-                    'Beta 0.3.3: 更新松山站提供轉乘教學影片。',
-                    'Beta 0.3.2: 新增平溪線及宜蘭線的轉乘查詢。',
-                    'Beta 0.3.1: 更新南港站提供轉乘教學影片。',
-                    'Beta 0.3: 新增路網圖選擇器提供北台灣軌道運輸路網站點選擇。'
+                    'Beta 0.1.1: 新增路由選擇。',
+                    'Beta 0.1: 新增車站選擇器。'
     ];
     
     __createLibTT.data(TT);
@@ -1089,6 +866,157 @@ var TT = (function(){
         classMapSelector: classMapSelector
     }
     
+    function groupTrain(aryTime, from, to, cfg){
+        cfg = cfg || {};
+        var a = TT.fn.getTRA_stationID(from), b = TT.fn.getTRA_stationID(to);
+        var aryGroupTag = {}, aryList = [], stStepFlag = 0;//{id: 'tra_1001,tra_1002...', list: [trainInfo]}
+        var idName = '', collsName = '', aryStations = [], rangeAryStations = [], rte = false;
+        var filterTrainNumber = ['1','2'];
+        var anyStopStation = [];
+        aryTime.map(function(tr){
+            if(filterTrainNumber.indexOf(tr.Train)!=-1) return false;
+            collsName = ''; aryStations = []; rangeAryStations = []; stStepFlag = 0;
+            aryStations = tr.TimeInfo.map(function(ts, idx, arr){
+                rte = '';
+                if(stStepFlag===0){
+                    if(ts.Station == a){
+                        stStepFlag = 1;
+                        tr.sortTime = TT.fn.transTime2Sec(ts.DepTime);
+                    }
+                }
+                
+                if(stStepFlag==1){
+                    rangeAryStations.push('tra_' + ts.Station);
+                    rte = 'tra_' + ts.Station;
+                    
+                    if(ts.Station == b) stStepFlag = 2;
+                }
+                return rte;
+            });
+            tr.rangeAryStations = rangeAryStations;
+            aryStations = aryStations.filter(function(c){
+                return c != '';
+            });
+            //如果有大站模式，只歸類大站
+            if(TT.stationGroupAry.length > 0){
+                aryStations = aryStations.filter(function(c){
+                    return !!(TT.stationGroupAry.indexOf(c) != -1);
+                });
+            }
+            idName = aryStations.join(',');
+            if(idName=='') idName = 'none';
+            collsName = 't' + aryStations.join(',');
+            if(aryGroupTag[collsName] || aryGroupTag[collsName]===0){
+                var mList = aryList[aryGroupTag[collsName]];
+                rangeAryStations.forEach(function(c){
+                    mList.stationStopCount[c] = (mList.stationStopCount[c]) ? mList.stationStopCount[c] + 1 : 1;
+                    if(anyStopStation.indexOf(c)==-1) anyStopStation.push(c);
+                });
+                mList.trainNumber.push(tr.Train);
+                mList.classCount['c' + tr.CarClass] = (mList.classCount['c' + tr.CarClass]) ? mList.classCount['c' + tr.CarClass] + 1 : 1;
+                mList.list.push(tr);
+            }else{
+                aryList.push({
+                    id: idName,
+                    stationStopCount: {},
+                    trainNumber: [],
+                    classCount: {},
+                    list: [tr]
+                });
+                var mList = aryList[aryList.length -1];
+                rangeAryStations.forEach(function(c){
+                    mList.stationStopCount[c] = (mList.stationStopCount[c]) ? mList.stationStopCount[c] + 1 : 1;
+                    if(anyStopStation.indexOf(c)==-1) anyStopStation.push(c);
+                });
+                mList.trainNumber.push(tr.Train);
+                mList.classCount['c' + tr.CarClass] = (mList.classCount['c' + tr.CarClass]) ? mList.classCount['c' + tr.CarClass] + 1 : 1;
+                aryGroupTag[collsName] = aryList.length -1;
+            }
+        });
+        aryList.anyStopStation = anyStopStation;
+        aryList.forEach(function(tm){
+        	tm.stationStopAry = Object.keys(tm.stationStopCount);
+        	var classAry = Object.keys(tm.classCount).map(function(c){
+        		return {
+					id: c,
+        			cnt: tm.classCount[c]
+        		}
+        	});
+        	classAry.sort(function(a,b){ return (a.cnt < b.cnt) ? 1 : -1;});
+        	tm.classCountAry = classAry;
+        	tm.classObj = getTrainClass(classAry[0].id);
+        });
+        return aryList;
+    }
+    
+    function getLinkRoute(from, to){
+        var aryA = TT.fn.getTRA_linkMap(from, to);
+        aryA = aryA.map(function(routeA){
+            routeA.displayRoute = routeA.allBig;
+            if(routeA.displayRoute.length < 2) routeA.displayRoute = routeA.allStation;
+            routeA.lineAry = routeA.map(function(m){
+                return m.line;
+            });
+            return routeA;
+        });
+        return aryA;
+    }
+    
+    function getTrainClass(val){
+    		val = val.replace('c','');
+            var data = TT.data.tra.defined["CarClass"], rt = '';
+            for(var i=0; i<data.length; i++){
+                if(data[i].id==val){
+                    return data[i];
+                }
+            }
+    }
+    
+    function makeRouteSelectDiv(elID){
+            var tpl = Vue.compile('<div class="route" id="' + elID + '" >' +
+                '<div class="routeBox">' +
+                    '<div v-for="(rr,aidx) in aryRoute" class="routeBtn bs_no_select" v-bind:class="ckCls(aidx)" v-on:click="toggleRoute(aidx)" v-html="getName(rr)"></div>' +
+                '</div>' +
+	        '</div>');
+            var vm = new Vue({
+    		    el: '#' + elID,
+    		    render: tpl.render,
+    		    staticRenderFns: tpl.staticRenderFns,
+    		    data: {
+                    flagGo: false,
+                    selIndex: 0,
+                    aryRoute: []
+                },
+                methods: {
+                    ckCls: function(st){
+                        return (this.selIndex==st) ? ' checked' : '';
+                    },
+                    getName: function(rr){
+                        var routeS = rr.lineAry.map(function(c){
+                            var colorSt = 'define_rail_bgcolor_' + c;
+                            return '<div class="lineBox ' + colorSt + '">' + TT.fn.getCommon_lineData(c).name + '</div>';
+                        });
+                        var div2 = '<div style="display:inline; padding-left: 10px;">' + rr.displayRoute.map(function(c){return TT.fn.getTRA_stationDataOfID(c).name}).join(' - ') + '</div>';
+                        return routeS.join('') + div2;
+                        
+                    },
+                    toggleRoute: function(st){
+                        this.selIndex = st;
+                        TT.ui.printTrain();
+                    }
+                },
+                watch: {
+                    selIndex: function(){
+                        
+                    }
+                },
+                mounted: function(){
+                
+                }
+            });
+            return vm;
+    }
+    
     TT.ui = {
         randomIdNum: 0,
         bodyScroll: function(val){
@@ -1113,11 +1041,6 @@ var TT = (function(){
             }
             sysTop = document.body.scrollTop;
             return sysTop;
-        },
-        centerTimeTableDisplayDivClear: function(){
-            TT.ui.center.timeTable.displayDiv.trainDiv.innerHTML = '';
-            TT.ui.center.timeTable.displayDiv.routeDiv.innerHTML = '';
-            TT.now = false;
         },
         createDiv: function(id, cls, appendT){
             var dom = document.createElement('div');
@@ -1150,23 +1073,22 @@ var TT = (function(){
             helpDiv.divTitle = TT.ui.createDiv(helpDiv.id + '_title', 'title', helpDiv.id);
             helpDiv.divTitle.innerHTML = '說明';
             helpDiv.divText1 = TT.ui.createDiv(helpDiv.id + '_text1', 'text', helpDiv.id);
-            helpDiv.divText1.innerHTML = '<p>' + '一般使用者進行查詢請使用時刻表功能，研究使用者要調整各項參數與路由可從工具內調整。' + '</p>' +
-                '<p>' + '有關時刻表功能之簡單說明如下' + '</p>' +
-                '<ul>' +
-                    '<li><b>我在每個轉乘站的步行時間：</b>可依個人步行速度或預期誤點可能性調整轉車預留時間。</li>' +
-                    '<li><b>出發站、到達站：</b>可從下拉選單中選擇一個車站，或者從右邊的<div class="help_selectStationByLine">選擇車站</div>中依照路線選擇車站。</li>' +
-                    '<li><b>從這個時間開始、到這個時間為止：</b>調整預計搭車的時間，假設 08:00 後才出發可以設定 08:00 到 09:00 之間，建議間隔不要超過三小時避免搜尋出來的資料過多。</li>' +
-                    '<li><b>出發的列車：</b>設定為出發的列車將會以出發站的時間來做計算。</li>' +
-                    '<li><b>到達的列車：</b>設定為到達的列車將會以到達站的時間來做計算，例如 08:50 前要到市政府站可以設定時間 07:50 開始到 08:50 為止去做查詢。</li>' +
-                '</ul>' +
+            helpDiv.divText1.innerHTML = '<p>' + '本程式可選擇一組起迄站，將兩站間的所有班車列出來，選定要分析的停靠站後依照停靠站的不同將列車停靠模式自動帶出。' + '</p>' +
                 '<p>' + '有關搜尋出結果之簡單說明如下' + '</p>' +
                 '<ul>' +
-                    '<li><b>排序：</b>可依個人需求調整排序的方式，像是越早抵達、花費時間越短之類的需求。</li>' +
-                    '<li><b>路徑：</b>搜尋完會將系統上所有可以轉車的方式列出來，並附有花費時間作參考，可以勾選清除不想看的路徑，例如花費時間太長的或轉車次數太多的。</li>' +
-                    '<li><b>怎麼路徑上有<div class="tt_ck_route_filterPri">1</div><div class="tt_ck_route_filterPri">2</div><div class="tt_ck_route_filterPri">3</div>？</b>那是快速切換只看最快(1)到前三快(3)轉乘路徑。</li>' +
-                    '<li><b>螢幕不夠寬怎麼看全部資訊？</b>網頁部分資訊採用 RWD　呈現，當螢幕不夠寬會隱藏部分資訊，想看完整資訊可點右邊的<div class="help_timeTableResultMore">&gt;&gt;</div>。</li>' +
-                    '<li><b>搜尋完後網址變了？</b>在支援 HTML5 history 功能的瀏覽器上，網址會自動帶上搜尋參數，複製網址給別人連進來可以自動搜尋你當初搜尋的條件。</li>' +
-                '</ul>';
+                    '<li><b>起迄站原則：</b>選擇的起迄站代表分析器會抓取所有直通這兩站的列車，任何未停靠或只停靠其中一站的列車都不會被加入，因此像分析基隆到中壢時最好選七堵到中壢。</li>' +
+                    '<li><b>起迄站技巧：</b>起迄站選擇絕對大站如台北、高雄、花蓮可分析最多列車，選擇台中時將不會有海線列車，起迄站選擇太遠時可能不會有區間車等短途列車。</li>' +
+                    '<li><b>模式化選站基礎：</b>請至少選擇起站、迄站及兩站間的任何一站非全停站，才能有效鑑別與分類行車模式。</li>' +
+                    '<li><b>選站原則：</b>任何被選擇的車站都會被列入分析獨立的停靠模式，例如選擇了浮洲站或汐科站，因為它只停區間車，所以所有的區間車會被獨立出來。</li>' +
+                    '<li><b>選站技巧：</b>若沒有選擇小站，則小站會被併入停靠站數最多的行駛模式中作為選擇性停靠站標記；若沒有選擇大站，則難有列車停靠模式鑑別度。</li>' +
+                    '<li><b>選站清空：</b>不選擇任何車站，代表所有列車都為獨立模式，只整合所有停靠站相同的列車為同一模式。</li>' +
+                    '<li><b>路由切換：</b>若起迄站間可能需要顯示兩種以上路由時，可透過路由切換搜尋結果左側顯示的停靠站名稱。</li>' +
+                    '<li>&nbsp;</li>' +
+                    '<li><b>時刻表依據：</b>同 [接軌時刻] App 之時刻表資料來源，由台鐵提供之公開時刻表 JSON 檔擷取其中七天作為一星期的時刻表選項。</li>' +
+                    '<li><b>顯示結果的車種：</b>車種顯示以相同模式中最多類型的 CarClass 作代表，不見得完全都是該車種。</li>' +
+                '</ul>' +
+                '<p>' + '支援台鐵的幹線為主，海線只有選擇起迄站在相鄰路段時會顯示，其餘以山線為主。目前無法查詢南迴線車站，因尚未處理南迴線路由，也無法顯示南迴線車站。' + '</p>' +
+                '<p>使用 DEMO 按鈕時，將會自動選取兩站之間建議的模式群組化原則依據車站做參考，您仍可以按車站修改。請注意，沒有放在歸屬大站列表中的車站將全部顯示於其他車站列表中，按下 [+] 可開啟更多車站選擇。</p>';
             //HELP Frame
             TT.ui.center.home.update = TT.ui.createDiv('tt_home_update', 'frameA update', TT.ui.center.home.id);
             var updateDiv = TT.ui.center.home.update;
@@ -1177,89 +1099,12 @@ var TT = (function(){
                 '<div style="height: 80px; overflow-y:scroll; overflow-x:hidden;"><ul>' +
                 (function(){ return '<li>' + TT.defined.programUpdateInfo.join('</li><li>') + '</li>'; })() +
                 '</ul><div>';
-            
-            //TRA Frame
-            TT.ui.center.home.tra = TT.ui.createDiv('tt_home_tra', 'frameA tra', TT.ui.center.home.id);
-            TT.ui.center.home.tra.divTitle = TT.ui.createDiv('tt_home_tra_title', 'title', TT.ui.center.home.tra.id);
-            TT.ui.center.home.tra.divTitle.innerHTML = '台鐵 TRA';
-            TT.ui.center.home.tra.divText1 = TT.ui.createDiv('tt_home_tra_text1', 'text', TT.ui.center.home.tra.id);
-            TT.ui.center.home.tra.divText1.innerHTML = '<p>台鐵時刻表載入自政府資料開放平台之鐵路時刻表。</p>' +
-                '<p>下載開發者替換時刻表檔案請在網頁同目錄下儲存w0.json ~ w6.json，w0為星期日。</p>';
-            TT.ui.center.home.tra.divCkWeek = TT.ui.createDiv('tt_home_tra_ckWeek', 'option', TT.ui.center.home.tra.id);
-            TT.ui.center.home.tra.divCkWeek.innerHTML = '<ul>' +
-                '<li><input type="checkbox" id="tt_home_tra_ckWeek_1" class="ckWeek">讀取星期一<div id="tt_home_tra_ckWeekLoaded_1" class="ckWeekLoaded">已讀取</div></li>' +
-                '<li><input type="checkbox" id="tt_home_tra_ckWeek_2" class="ckWeek">讀取星期二<div id="tt_home_tra_ckWeekLoaded_2" class="ckWeekLoaded">已讀取</div></li>' +
-                '<li><input type="checkbox" id="tt_home_tra_ckWeek_3" class="ckWeek">讀取星期三<div id="tt_home_tra_ckWeekLoaded_3" class="ckWeekLoaded">已讀取</div></li>' +
-                '<li><input type="checkbox" id="tt_home_tra_ckWeek_4" class="ckWeek">讀取星期四<div id="tt_home_tra_ckWeekLoaded_4" class="ckWeekLoaded">已讀取</div></li>' +
-                '<li><input type="checkbox" id="tt_home_tra_ckWeek_5" class="ckWeek">讀取星期五<div id="tt_home_tra_ckWeekLoaded_5" class="ckWeekLoaded">已讀取</div></li>' +
-                '<li><input type="checkbox" id="tt_home_tra_ckWeek_6" class="ckWeek">讀取星期六<div id="tt_home_tra_ckWeekLoaded_6" class="ckWeekLoaded">已讀取</div></li>' +
-                '<li><input type="checkbox" id="tt_home_tra_ckWeek_0" class="ckWeek">讀取星期日<div id="tt_home_tra_ckWeekLoaded_0" class="ckWeekLoaded">已讀取</div></li>' +
-            '</ul>';
-            TT.ui.center.home.tra.buttonReadWeekTimeTable = TT.ui.createSystemButton({
-                id: 'tt_home_tra_btnReadWeekTimeTable', 
-                text: '手動讀取時刻表',
-                appendT: TT.ui.center.home.tra.id,
-                clickFn: function(e){
-                    var aryCkWeek = $('.center .home .frameA.tra input.ckWeek');
-                    var ws = '';
-                    aryCkWeek.each(function(e,t){
-                        var w = t.id.replace('tt_home_tra_ckWeek_','');
-                        if(t.checked==true){
-                            ws += w;
-                        }
-                    });
-                    TT.fn.getTRA_TimeTable2Data(ws);
-                }
-            });
-            
-            //TRTC Frame
-            TT.ui.center.home.trtc = TT.ui.createDiv('tt_home_trtc', 'frameA trtc', TT.ui.center.home.id);
-            TT.ui.center.home.trtc.divTitle = TT.ui.createDiv('tt_home_trtc_title', 'title', TT.ui.center.home.trtc.id);
-            TT.ui.center.home.trtc.divTitle.innerHTML = '台北捷運 TRTC';
-            TT.ui.center.home.trtc.divText1 = TT.ui.createDiv('tt_home_trtc_text1', 'text', TT.ui.center.home.trtc.id);
-            TT.ui.center.home.trtc.divText1.innerHTML = '<p>因沒有台北捷運如台鐵的每列班車資訊，目前台北捷運的資料以網友ronnywang自台北捷運官網轉換出來的csv檔轉成json後匯入，沒有時刻表的車站會以站間行駛時間做相對計算。<span style="color:#FF4020;">台北捷運無法查詢新北投線、小碧潭線、文湖線</span>，行車時間均以台北捷運官方網站查詢之<span style="color:#1FB020;">站間行駛時間相加或相減於南港站、松山站、淡水站及南勢角站</span>，故時間上可能與真正的到站時刻有一兩分鐘的誤差。</p>' +
-                '<p>替換時刻表檔案請在網頁同目錄下儲存 <a target="_new" href="ronnywang_trtc.json">ronnywang_trtc.json</a> </p>';
-            
             //Program Frame
             TT.ui.center.home.prog = TT.ui.createDiv('tt_home_prog', 'frameA prog', TT.ui.center.home.id);
             TT.ui.center.home.prog.divTitle = TT.ui.createDiv('tt_home_prog_title', 'title', TT.ui.center.home.prog.id);
-            TT.ui.center.home.prog.divTitle.innerHTML = '接軌時刻 Web APP 概述';
+            TT.ui.center.home.prog.divTitle.innerHTML = '列車行駛模式群組化原則系統';
             TT.ui.center.home.prog.divText1 = TT.ui.createDiv('tt_home_prog_text1', 'text', TT.ui.center.home.prog.id);
-            TT.ui.center.home.prog.divText1.innerHTML = '<p>接軌時刻是建立台灣的跨營運系統間轉乘時間查詢程式，便於研究有效率的轉乘路徑。</p>' +
-                '<p>接軌時刻的授權原則' +
-                    '<ul>' +
-                        '<li>任何使用均可 E-Mail 原作者取得授權，但修改網頁後執行於網頁伺服器上請加註作者名稱於取得版本的作者之後，以區別為個人化版本，版本、發行單位、日期可自由調整。</li>' +
-                        '<li>台北捷運時刻表 JSON 資料轉換自網友 <a target="_new" href="https://sheethub.com/ronnywang/%E5%8F%B0%E5%8C%97%E6%8D%B7%E9%81%8B%E7%8F%AD%E6%AC%A1%E6%99%82%E5%88%BB%E8%A1%A8">ronnywang 網站</a>，相關授權請洽詢他本人</li>' +
-                    '</ul>' +
-                '</p>' +
-                /*'<p>前導網頁的開發原則' +
-                    '<ul>' +
-                        //'<li>除非必要，否則不使用jQuery基本版以外的套件，網頁上的元件盡量以 HTML 原生元件操作以維持相容性並避免其他 library 授權問題，前導網頁不特別要求元件外觀與整體美觀，簡單易讀方便操作修改為原則。</li>' +
-                        '<li>使用 HTML、Javascript、CSS構成，不使用任何伺服器端技術與資料庫，保持未來移植其他平台離線使用可能性。</li>' +
-                        '<li>時刻表與路由資料原則採離線運作，所需要之台鐵或捷運公司時刻表下載後存放在網頁同目錄下讀取。</li>' +
-                       // '<li>為方便由本機進行 Ajax 存取，本機開發需相容 Firefox 瀏覽器，在伺服器線上時必需相容 Chrome，其餘瀏覽器(如 Safari、Opera、IE)相容性在前導網頁不特別要求。</li>' +
-                        //'<li>時刻表或大型資料以搜尋運用時才讀取為原則，加快進入網頁速度。</li>' +
-                        //'<li>有更新開發進度時可以簡單寫一行在 Javascript 開頭的註解區。</li>' +
-                        '<li>軌道的運轉方向與台鐵接近平行者採相同為原則，其餘視點由北往南、由東向西，若相近於逆時針時 dir 為 1，相近於順時針時 dir 為 0。</li>' +
-                        '<li>不使用網路上或它處取得的圖檔以避免圖像授權問題，自行製作的圖檔盡量以 base64 編碼後存於 CSS 來利用。</li>' +
-                        //'<li>前導網頁的 HTML、Javascript、CSS 存放於單一網頁檔內，不使用任何壓縮 code 或 Build 方式才運作，轉為正式版時才進行分拆作業。</li>' +
-                        '<li>Name Space 為 TT，進入點為 TT.initFn()，底層演算法和工具存放於 TT.fn 下，與網頁外觀顯示相關存放於 TT.ui 下，基礎資料存放於 TT.data 下，基本定義存放於 TT.defined 下，當次搜尋結果存放於 TT.now 下。</li>' +
-                        //'<li>HTML CODE 的 BODY 保持內容乾淨，UI以 createElement 的方式附加上去，元件內容則可以 innerHTML 直接設計。</li>' +
-                        '<li>轉乘步行時間存在 TT.data.transStation 下各站的 walkMinute，理論上每一種轉乘方式都要建立一個轉乘站，例如台北站台鐵捷運之間就要建立台鐵至板南線、台鐵至淡水信義線、板南線至淡水信義線，分別存放步行時間並成為該種路線的路由點。</li>' +
-                        '<li>轉乘路由方式存在 TT.data.routeMap 下，目前以人工方式整理可能的路由。</li>' +
-                        //'<li>下拉上背景色，當車站下拉選單超過兩百個選項以上時需著手進行車站選擇器的新 UI 調整，不適合再使用單純的 SELECT 元件。</li>' +
-                        //'<li></li>' +
-                    '</ul>' +
-                '</p>' +*/
-                '<p>接軌時刻的運作現況' +
-                    '<ul>' +
-                        '<li><span style="color:#FE2010;">搜尋時間間隔超過三小時可能造成計算過久。</span></li>' +
-                        '<li>台鐵部分目前只開放基隆至高雄站、八堵至台東站。</li>' +
-                        '<li>台北捷運的部分目前僅建立部分車站資料台北捷運說明框內敘述。</li>' +
-                        '<li>台北捷運無台鐵般詳細的每列車到站與離站資訊，時間上均採用相對計算方式於台北捷運說明框內敘述。</li>' +
-                        '<li>因為將資料載入到前端做計算，好處是連續查詢都在前端完成不用跑伺服器速度快，壞處是在運算效能低落的裝置上計算較慢。</li>' +
-                    '</ul>' +
-                '</p>' +
+            TT.ui.center.home.prog.divText1.innerHTML = '<p>列車行駛模式群組化原則系統是用來研究特定路線、區段、列車運行模式的輔助工具。</p>' +
                 '<p>關於' +
                     (function(){
                         var rt = '';
@@ -1283,15 +1128,15 @@ var TT = (function(){
             
             //Control Frame
             TT.ui.center.timeTable.controlDiv = TT.ui.createDiv('tt_timeTable_control', 'frameA control', TT.ui.center.timeTable.id);
-            TT.ui.center.timeTable.controlDiv.preSettingDiv = TT.ui.createPreSetting({id: 'ttc_preSetting', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.stationSelectDiv = TT.ui.createTakeStation({id: 'ttc_stationSelect', renderID: 'tt_timeTable_control'});
-            TT.ui.center.timeTable.controlDiv.timeSelectDiv = TT.ui.createTakeTimeSelect({id: 'ttc_timeSelect', renderID: 'tt_timeTable_control'});
+            //TT.ui.center.timeTable.controlDiv.timeSelectDiv = TT.ui.createTakeTimeSelect({id: 'ttc_timeSelect', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.weekSelectDiv = TT.ui.createWeekSelect({id: 'ttc_weekSelect', renderID: 'tt_timeTable_control'});
+            TT.ui.center.timeTable.controlDiv.groupStationSelectDiv = TT.ui.createGroupStationSelect({id: 'ttc_groupStationSelect', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.depArrDiv = TT.ui.createTakeTimeFindDepArr({id: 'ttc_ADSelect', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.findButtonDiv = TT.ui.createTakeFindButton({id: 'ttc_findButton', renderID: 'tt_timeTable_control'});
             //Set default param
-            var defaultFromStation = (localDataFn.getItem('defaultFromStation')) ? localDataFn.getItem('defaultFromStation') : 'tra_1005',
-                defaultToStation = (localDataFn.getItem('defaultToStation')) ? localDataFn.getItem('defaultToStation') : 'trtc_093',
+            var defaultFromStation = (localDataFn.getItem('defaultFromStation')) ? localDataFn.getItem('defaultFromStation') : 'tra_1008',
+                defaultToStation = (localDataFn.getItem('defaultToStation')) ? localDataFn.getItem('defaultToStation') : 'tra_1238',
                 defaultSearchDay = new Date().getDay(),
                 defaultStartTime = (localDataFn.getItem('defaultStartTime')) ? localDataFn.getItem('defaultStartTime') : '07:00',
                 defaultEndTime = (localDataFn.getItem('defaultEndTime')) ? localDataFn.getItem('defaultEndTime') : '09:00';
@@ -1306,8 +1151,8 @@ var TT = (function(){
             }
             TT.ui.center.timeTable.controlDiv.stationSelectDiv.fnSetStart(defaultFromStation);
             TT.ui.center.timeTable.controlDiv.stationSelectDiv.fnSetEnd(defaultToStation);
-            TT.ui.center.timeTable.controlDiv.timeSelectDiv.fnSetStartTime(defaultStartTime);
-            TT.ui.center.timeTable.controlDiv.timeSelectDiv.fnSetEndTime(defaultEndTime);
+            //TT.ui.center.timeTable.controlDiv.timeSelectDiv.fnSetStartTime(defaultStartTime);
+            //TT.ui.center.timeTable.controlDiv.timeSelectDiv.fnSetEndTime(defaultEndTime);
             TT.ui.center.timeTable.controlDiv.weekSelectDiv.fnSetDay(defaultSearchDay);
             
             //Display Frame
@@ -1315,68 +1160,9 @@ var TT = (function(){
             TT.ui.center.timeTable.displayDiv.routeDiv = TT.ui.createDiv('tt_timeTable_d_route', 'route', TT.ui.center.timeTable.displayDiv.id);
             TT.ui.center.timeTable.displayDiv.trainDiv = TT.ui.createDiv('tt_timeTable_d_train', 'train', TT.ui.center.timeTable.displayDiv.id);
             
-            //Window
-            TT.ui.createTransStationWalkTimeWindow();
-        },
-        createTool: function(){
-            TT.ui.center.tool = TT.ui.createDiv('tt_tool', 'centerPage tool', TT.ui.centerDiv.id);
-            TT.ui.center.tool.innerHTML = '<div style="padding-left: 40px;"><a href="calc_tymetro.html">連結至桃園機場捷運時刻表產生器</a></div>' +
-				'<div style="padding-left: 40px;"><span><a href="ft.html">台鐵快查系統</a> | </span<span><a href="klrt.html">基隆輕軌模擬器</a> | </span<span><a href="group_train.html">列車行駛模式群組化系統</a> | </span><span><a href="ctra2016.html">連結至台鐵 2016 年旅運量報表</a> | </span><span><a href="ctra2017.html">連結至台鐵 2017 年旅運量報表</a></span></div>';
+            //Vue create div
+            TT.ui.center.timeTable.displayDiv.routeDiv = makeRouteSelectDiv(TT.ui.center.timeTable.displayDiv.routeDiv.id);
             
-            //DATA Frame
-            TT.ui.center.tool.dataDiv = TT.ui.createDiv('tt_tool_data', 'frameA trtc', TT.ui.center.tool.id);
-            TT.ui.center.tool.dataDiv.divTitle = TT.ui.createDiv('tt_tool_data_title', 'title', TT.ui.center.tool.dataDiv.id);
-            TT.ui.center.tool.dataDiv.divTitle.innerHTML = '1. TT.data 編輯工具';
-            TT.ui.center.tool.dataDiv.divText1 = TT.ui.createDiv('tt_tool_data_text1', 'text', TT.ui.center.tool.dataDiv.id);
-            TT.ui.center.tool.dataDiv.divText1.innerHTML = '<p>請由下方選擇要編輯的 TT.data 子節點，資料以 JSON 格式編輯。如果編輯的資料需要重新產生時刻表的選單，例如車站，請儲存完後再按右邊的<span style="color:orange">[重新產生時刻表 UI]</span> 按鈕。</p>';
-            
-            TT.ui.center.tool.dataDiv.divEditTool = (function(dv){
-                var tagDiv = TT.ui.createDiv('tt_tool_data_edit_tag', 'tag');
-                var tagSelect1 = '';
-                for(var k in TT.data){
-                    tagSelect1 += '<div class="tagSelect ' + k + '" tttag="' + k + '">' + k + '</div>';
-                }
-                tagDiv.innerHTML = tagSelect1;
-                
-                var editorDiv = TT.ui.createDiv('tt_tool_data_edit_editor', 'editor');
-                editorDiv.innerHTML = '<textarea class="textarea" id="' + editorDiv.id + '_textarea"></textarea>' +
-                    '<div class="btnDiv"><button class="btnSaveTTDataEditTool">儲存編輯完成的資料</button></div>' +
-                    '<div class="btnDiv"><button class="btnRebuildTimeTableUI">重新產生時刻表 UI</button></div>';
-                
-                var rtDiv = TT.ui.createDiv('tt_tool_data_edit', 'edit', dv.id);
-                rtDiv.className = 'editTool';
-                rtDiv.fnUpdateTag = function(){
-                    var ts = $('.center .editTool .tag .tagSelect');
-                    ts.each(function(m){
-                        ts[m].className = ts[m].className.replace(' selected','');
-                    });
-                    var nowTs = $('.center .editTool .tag .tagSelect.' + TT.editToolTagOn)[0];
-                    nowTs.className = nowTs.className + ' selected';
-                };
-                rtDiv.addEventListener('click', function(e){
-                    var tcls = e.target.className; 
-                    
-                    if(tcls.indexOf('tagSelect')>=0){
-                        tttag = e.target.attributes.getNamedItem('tttag').value;
-                        TT.editToolTagOn = tttag;
-                        document.getElementById(editorDiv.id + '_textarea').value = TT.fn.getData2JSON(tttag);
-                        rtDiv.fnUpdateTag();
-                    }
-                    if(tcls.indexOf('btnSaveTTDataEditTool')>=0){
-                        TT.fn.saveDataJSON2Data(TT.editToolTagOn, document.getElementById(editorDiv.id + '_textarea').value);
-                        TT.msg.show('已更新 TT.data.' + TT.editToolTagOn + ' 的資料');
-                    }
-                    if(tcls.indexOf('btnRebuildTimeTableUI')>=0){
-                        TT.ui.createTimeTable();
-                    }
-                }, false);
-                
-                rtDiv.appendChild(tagDiv);
-                rtDiv.tagDiv = tagDiv;
-                rtDiv.appendChild(editorDiv);
-                rtDiv.editorDiv = editorDiv;
-                return rtDiv;
-            })(TT.ui.center.tool.dataDiv);
         },
         createHeader: function(){
             var dom = document.createElement('div');
@@ -1385,13 +1171,13 @@ var TT = (function(){
             dom.className = 'headerBar';
             
             TT.ui.buttonHome = TT.ui.createHeaderButton({id: 'tt_hdBtn_home', text: '說明', clickFn: function(e){TT.ui.setCenterActive('home');}});
-            TT.ui.buttonTimeTable = TT.ui.createHeaderButton({id: 'tt_hdBtn_timeTable', text: '時刻表', clickFn: function(e){TT.ui.setCenterActive('timeTable');}});
-            TT.ui.buttonTool = TT.ui.createHeaderButton({id: 'tt_hdBtn_tool', text: '工具', clickFn: function(e){TT.ui.setCenterActive('tool');}});
+            TT.ui.buttonTimeTable = TT.ui.createHeaderButton({id: 'tt_hdBtn_timeTable', text: '停靠站整理', clickFn: function(e){TT.ui.setCenterActive('timeTable');}});
+            TT.ui.buttonBack = TT.ui.createHeaderButton({id: 'tt_hdBtn_back', text: '返回接軌時刻', clickFn: function(e){location.href = './'}});
             TT.ui.buttonBackTop = TT.ui.createHeaderButton({id: 'tt_hdBtn_backTop', text: '回到頂端', cls: 'headerButton2', clickFn: function(e){TT.ui.centerScroll(0);TT.ui.bodyScroll(0);}});
             
             dom.appendChild(TT.ui.buttonHome);
             dom.appendChild(TT.ui.buttonTimeTable);
-            dom.appendChild(TT.ui.buttonTool);
+            dom.appendChild(TT.ui.buttonBack);
             dom.appendChild(TT.ui.buttonBackTop);
         },
         createButton: function(cfg){
@@ -1452,23 +1238,6 @@ var TT = (function(){
             
             div.appendChild(btn);
             
-            if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
-            return div;
-        },
-        createPreSetting: function(cfg){
-            cfg = cfg || {};
-            if(!cfg.id) cfg.id = TT.ui.genRandomId();
-            
-            var div = document.createElement('div');
-            div.id = cfg.id;
-            div.className = 'preSetting';
-            div.innerHTML = '<div class="title">預先調整參數</div>' +
-            '<div><span>' +
-                '<button class="transStationWalkTimeWindow">' + '我在每個轉乘站的步行時間' + '</button>' +
-            '</span></div>';
-            div.addEventListener('click', function(e){
-                if(e.target.className=='transStationWalkTimeWindow') TT.ui.transStationWalkTimeWindow.show();
-            }, false);
             if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
             return div;
         },
@@ -1734,8 +1503,6 @@ var TT = (function(){
             if(!cfg.id) cfg.id = TT.ui.genRandomId();
             if(!cfg.flagAD) cfg.flagAD = true;//true=Dep, Default Dep
             if(!cfg.fieldText) cfg.fieldText = '';
-            if(!cfg.fieldDepText) cfg.fieldDepText = '出發的列車';
-            if(!cfg.fieldArrText) cfg.fieldArrText = '到達的列車';
             var div = document.createElement('div');
             div.id = cfg.id;
             
@@ -1743,12 +1510,7 @@ var TT = (function(){
             var f1ck = (cfg.flagAD) ? ' checked' : '';
             
             var fieldTextDiv = (cfg.fieldText=='') ? '' : '<div id="' + div.id + '_fieldText">' + '<span>' + cfg.fieldText + '</span>' + '</div>';
-            div.innerHTML = fieldTextDiv +
-            '<div class="radioAD" id="' + cfg.id + '">' +
-                '<input type="radio" name="' + cfg.id + '_gp" value="1" id="' + cfg.id + '_1" ' + f1ck + '>' + '</span>' + cfg.fieldDepText + '</span>' +
-                '<div style="display:inline-block;width: 50px;"></div>' +
-                '<input type="radio" name="' + cfg.id + '_gp" value="0" id="' + cfg.id + '_0" ' + f0ck + '>' + '</span>' + cfg.fieldArrText + '</span>' +
-            '</div>';
+            div.innerHTML = fieldTextDiv;
             
             div.fnGetValue = function(){
                 return document.getElementById(cfg.id+'_1').checked;
@@ -1859,7 +1621,7 @@ var TT = (function(){
             cfg = cfg || {};
             if(!cfg.id) cfg.id = TT.ui.genRandomId();
             if(!cfg.cls) cfg.cls = '';
-            if(!cfg.fieldText) cfg.fieldText = '星期幾要搭乘呢？';
+            if(!cfg.fieldText) cfg.fieldText = '星期幾的時刻表？';
             var div = document.createElement('div');
             div.id = cfg.id;
             
@@ -1894,445 +1656,147 @@ var TT = (function(){
             return div;
         
         },
-        createTrainRouteSelectBox: function(aryRoute){
-            var rDiv = TT.ui.center.timeTable.displayDiv.routeDiv;
-            var sortByNow = (TT.now.sortBy) ? TT.now.sortBy : '';
-            //+++++++++++ Create sort select box +++++++++++
-            var sdtx = '', sDiv = document.createElement('div');
-            sdtx += '<div class="tt_ck_sortby_sh" id="tt_timeTable_seSortBy_">' + '越早抵達目的地的越上面' + '</div>';
-            sdtx += '<div class="tt_ck_sortby_sh" id="tt_timeTable_seSortBy_travelMinute">' + '花費時間越短的越上面' + '</div>';
-            sdtx += '<div class="tt_ck_sortby_sh" id="tt_timeTable_seSortBy_transCount">' + '轉乘次數越少的越上面' + '</div>';
-            sDiv.innerHTML = sdtx + '<span class="helpForSortBySelectButton"><div class="arrow"></div>' + '點一下，你可以換個排列順序' + '</span>';
-            sDiv.style.borderBottom = '1px solid #23C';
-            sDiv.style.backgroundColor = '#332';
-            sDiv.addEventListener('click', function(e){
-                var t = e.target;
-                var tid = t.id.replace('tt_timeTable_seSortBy_','');
-                if(sortByNow != tid){
-                    var aryCk = new Array();
-                    function callback(){
-                        $('.tt_ck_route_sh .ckRoute').each(function(idx,domA){
-                            domA.checked = aryCk[idx];
-                            changeChecked(domA);
-                        });
-                        resetCountOfTrainRouteBox();
-                        TT.ui.unmask();
-                        TT.msg.show('排序已調整',500);
-                    }
-                    $('.tt_ck_route_sh .ckRoute').each(function(idx,domA){
-                        aryCk[idx] = domA.checked;
-                    });
-                    if(TT.now.sortRoute.length > 100){
-                        TT.ui.mask();
-                        setTimeout(function(){
-                            TT.ui.printTrain(TT.now.totalRoute, tid, callback);
-                        },100);
-                    }else{
-                        TT.ui.printTrain(TT.now.totalRoute, tid, callback);
-                    }
-                }
-            }, false);
-            //+++++++++++ End sort select box +++++++++++
-            var routeBy = '', routeP, tmpS = '', st = '', ht ='', fastestStr='', dmClass='', ckDom, hDiv = document.createElement('div'), sortTC = new Array();
-            for(var tc=0; tc<aryRoute.length; tc++){
-                routeP = aryRoute[tc];
-                routeBy = ''; st = ''; tmpS='';
-                for(var i=0; i<routeP.length; i++){
-                    if(routeP[i].transStation){
-                        tmpS += '<div class="stag">' + routeP[i].transStation.name + '</div>';
-                    }
-                }
-                fastestStr = '(' + '最快' + ' <span class="fmin">' + TT.ui.formatMinute2HM(routeP[0].total_fastestMinute) + '</span> ' + ')&nbsp;';
-                dmClass = '';
-                if(routeP[0].total_fastestMinute==9999){
-                    fastestStr = '(無班車)&nbsp;';
-                    dmClass = ' tt_display_none';
-                }
-                st = '經由' + ' ' + tmpS + fastestStr;
-                if(routeP.length==1 && !(routeP[0].transStation)) st = '<span class="stag ' + TT.defined.railBgcolor + routeP[0].line + '">' + TT.fn.getCommon_lineName(routeP[0].line) + '</span>' + '直達' + fastestStr;
-                routeBy = '<div class="tt_ck_route_sh' + dmClass + '">' +
-                    '<input type="checkbox" id="tt_timeTable_ckRoute_' + tc + '" class="ckRoute" checked>' + st +
-                '</div>';
-                sortTC.push({id: 'tt_timeTable_ckRoute_' + tc, tc:tc, tt_sortTime: routeP[0].total_fastestMinute, routeBy:routeBy});
-                //ht += routeBy;
-            }
-            if(sortTC.length > 1){
-                sortTC = sortTC.sort(TT.fn.getTRA_sortByTTSortTime);
-                ht += '<div class="tt_ck_route_filterPri" tmf="1">1</div>';
-                if(sortTC.length > 2) ht += '<div class="tt_ck_route_filterPri" tmf="2">2</div>';
-                if(sortTC.length > 3) ht += '<div class="tt_ck_route_filterPri" tmf="3">3</div>';
-            }
-            sortTC.map(function(objA){
-                ht += objA.routeBy;
-            });
-            hDiv.innerHTML = ht + '<span class="helpForRouteCheckBox"><div class="arrow"></div>' + '把勾取消，隱藏你不想轉乘的路徑' + '</span>';
-            hDiv.style.backgroundColor = '#DEF';
-            hDiv.addEventListener('click', function(e){
-                var t = e.target;
-                var tmf = t.attributes.getNamedItem('tmf');
-                if(tmf && tmf.value){
-                    var domCk;
-                    tmf = parseInt(tmf.value,10);
-                    //sortTC.map(function(objA,idx){
-                        //domCk = document.getElementById(objA.id);
-                        //if(idx<tmf){
-                            //domCk.checked = true;
-                        //}else{
-                            //domCk.checked = false;
-                        //}
-                        //changeChecked(domCk);
-                    //});
-                    function callChangeChk(objA, idx){
-                        domCk = document.getElementById(objA.id);
-                        if(idx<tmf){
-                            domCk.checked = true;
-                        }else{
-                            domCk.checked = false;
-                        }
-                        changeChecked(domCk);
-                        idx++;
-                        if(sortTC.length > idx){
-                            setTimeout(function(){
-                                callChangeChk(sortTC[idx], idx);
-                            },10);
-                        }else{
-                            resetCountOfTrainRouteBox();
-                            TT.ui.unmask();
-                        }
-                    }
-                    if(TT.now.sortRoute.length > 100){
-                        TT.ui.mask();
-                        setTimeout(function(){ callChangeChk(sortTC[0], 0); },100);
-                    }else{
-                        callChangeChk(sortTC[0], 0);
-                    }
-                }
-            }, false);
-            rDiv.appendChild(sDiv);
-            rDiv.appendChild(hDiv);
-            function changeChecked(domCk){
-                    //if(typeof(domCk)=='string') domCk = document.getElementById(domCk);
-                    var ckcss = domCk.id.replace('tt_timeTable_ckRoute_','.tt_search_route_css_');
-                    if(domCk.checked==true){
-                        $('#' + TT.ui.center.timeTable.displayDiv.trainDiv.id + ' ' + ckcss).show();
-                    }else{
-                        $('#' + TT.ui.center.timeTable.displayDiv.trainDiv.id + ' ' + ckcss).hide();
-                    }
-            }
-            function resetCountOfTrainRouteBox(){
-                    var ct = 0;
-                    $('#' + TT.ui.center.timeTable.displayDiv.trainDiv.id + ' .timeTableTrainRouteBox').each(function(idx,dom){
-                        if(dom.style.display != 'none'){
-                            ct++;
-                            //$('#timeTableTrainRouteBox_' + idx + ' .sub.num span.val')[0].innerHTML = ct;//Too slow
-                            document.getElementById('timeTableTrainRouteBoxCountVal_' + idx).innerHTML = ct;
-                        }
-                    });
-            }
-            for(var tc=0; tc<aryRoute.length; tc++){
-                ckDom = document.getElementById('tt_timeTable_ckRoute_' + tc);
-                ckDom.addEventListener('change', function(e){
-                    changeChecked(e.target);
-                    resetCountOfTrainRouteBox();
-                }, false);
-            }
-            $('.tt_ck_sortby_sh').each(function(idx,dom){
-                dom.className = dom.className.replace(' select','');
-                var tid = dom.id.replace('tt_timeTable_seSortBy_','');
-                if(tid==sortByNow){
-                    dom.className = dom.className + ' select';
-                }
-            });
-        },
-        createTrainRouteTimeBox: function(routeP, ct, renderID){
-            if(!renderID) renderID = TT.ui.center.timeTable.displayDiv.trainDiv.id;
-            var id = 'timeTableTrainRouteBox_' + ct;
+        createGroupStationSelect: function(cfg){
+            cfg = cfg || {};
+            if(!cfg.id) cfg.id = TT.ui.genRandomId();
+            if(!cfg.cls) cfg.cls = '';
             var div = document.createElement('div');
-            div.className = 'timeTableTrainRouteBox' + ' tt_search_route_css_' + routeP.routeIndex;
-            div.id = id;
+            div.id = cfg.id;
+            if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
+            var tmpSTS = '';
+            var otherStations = TT.data.tra.station_ary.map(function(c){
+            	tmpSTS = c.id;
+            	return (TT.stationBigAll.indexOf(tmpSTS)==-1) ? tmpSTS : false;
+            }).filter(function(c){
+				return !!c;
+			});
             
-            function createTimeBox(tbd, startTime, endTime){
-                if(tbd.doNotTakeTrain) return '';
-                var st = Math.ceil(TT.fn.transTime2Sec(startTime)/60),
-                    ed = Math.ceil(TT.fn.transTime2Sec(endTime)/60),
-                    min;
-                
-                if(ed < st) ed = 1440 + ed;
-                min = ed - st;
-                
-                return '<div class="timeBox">' +
-                    '<div class="value start">' + TT.fn.transTime2HM(startTime) + '</div>' +
-                    '<div class="deep"><div class="minute">' + TT.ui.formatMinute2HM(min) + '</div></div>' +
-                    '<div class="value end">' + TT.fn.transTime2HM(endTime) + '</div>' +
-                '</div>';
-            }
-            function createStationBox(tbd, a, b, line){
-                var aObj = TT.fn.getCommon_stationDataOfID(a);
-                var bObj = TT.fn.getCommon_stationDataOfID(b);
-                if(tbd.doNotTakeTrain) return aObj.name;
-                
-                return '<div class="stationBox">' +
-                    '<div class="value from">' + aObj.name + '</div>' +
-                    '<div class="deep"><div class="line_color ' + line + '"><div class="bd"></div></div>' + '</div>' +
-                    '<div class="value to">' + bObj.name + '</div>' +
-                '</div>';
-            }
-            
-            function createInfoBox(tbd, info, line){
-                if(tbd.doNotTakeTrain) return '';
-                var rt = '';
-                if(TT.fn.getCompanyOfLine(line)=='tra'){//TRA info
-                    var se = '', st = TT.fn.getTRA_stationDataOfID('tra_' + info['TimeInfo'][0].Station).name,
-                        ed = TT.fn.getTRA_stationDataOfID('tra_' + info['TimeInfo'][info['TimeInfo'].length-1].Station).name;
-                    if(st && ed) se = '<div>' + '[' + st + ' -&gt; ' + ed + ']' + '</div>';
-                    rt = '<div class="infoBox">' +
-                        se +
-                        '<div>' + '車次: ' + info['Train'] + '</div>' +
-                        '<div>' + '車種: ' + TT.fn.getTRA_carClassName(info['CarClass'], {color: true}) + '</div>' +
-                    '</div>';
-                }else if(TT.fn.getCompanyOfLine(line)=='trtc'){
-                    var trtcSpe = '台北捷運到站時間是以官方站間行駛時間做相對計算模擬。';
-                    var outArea=TT.fn.getTRTC_stationOnOutArea(tbd.takeRange[0], tbd.takeRange[1], line);
-                    if(outArea){
-                        trtcSpe = '請留意是否需在<span class="defineFontStyle1">' + TT.fn.getTRTC_stationDataOfID(outArea.transAt).name + '</span>改搭下一班車，因目的地並非每班車都有到。';
-                    }
-                    rt = '<div class="infoBox">' +
-                        '<span class="trtcArriveTimeInfo">' + trtcSpe + '</span>' +
-                    '</div>';
-                }else if(TT.fn.getCompanyOfLine(line)=='tymetro'){
-                    var trtcSpe = '桃園捷運時間是以官方頭末班車時間做相對計算。';
-                    rt = '<div class="infoBox">' +
-                        '<span class="trtcArriveTimeInfo">' + trtcSpe + '</span>' +
-                        '<div style="padding-bottom:10px;"> </div>' +
-                        '<div>' + '車種: ' + TT.fn.tymetro.get_carTypeName(info['type'], {color: true}) + '</div>' +
-                    '</div>';
-                }
-                return rt;
-            }
-            
-            function createLineBox(tbd, line){
-                var rt = '',
-                    name = TT.fn.getCommon_lineName(line);//,
-                    //color = TT.fn.getCommon_lineColor(line);
-                //var ary = name.split(']');
-                //rt = ary[0] + ']' + '<span style="color:' + color + ';">' + ary[1] + '</span>';
-                rt = '<span class="' + TT.defined.railBgcolor + line + '">' + name + '</span>';
-                return rt;
-            }
-            
-            function createTransStationBox(ts, st){
-                var vLink = '';
-                if(ts.video && ts.video[st]){
-                    vLink = '<div class="transStationVideoClick" tsid="' + ts.id + '" stid="' + st + '">轉乘教學</div>';
-                }
-                var adjTime = ['<div class="transStationAdjustWalkTime">', '調整時間', '</div>'].join('');
-                return '轉乘步行時間: ' + ts.walkMinute + '分鐘' + vLink + adjTime;
-            }
-            
-            var hDiv = document.createElement('div');
-            hDiv.className = 'header';
-            hDiv.innerHTML = '<div class="sub num">' + 'NO. ' + '<span class="val" id="timeTableTrainRouteBoxCountVal_' + ct + '">' + (ct+1) + '</span>' + '</div>' + 
-                '<div class="sub count">' + '轉乘次數: ' + '<span class="val">' + (routeP.routeMap.length-1) + '</span>' + '</div>' + 
-                '<div class="sub totalTime">' + '花費時間: ' + '<span class="val">' + TT.ui.formatMinute2HM(routeP.travelMinute) + '</span>' + '</div>' +
-                '<div class="sub startTime">' + '開始時間: ' + '<span class="val">' + routeP.travelStartTime + '</span>' + '</div>' +
-                '<div class="sub endTime">' + '到達時間: ' + '<span class="val">' + routeP.travelEndTime + '</span>' + '</div>' +
-                '<div class="sub printCanvas" printid="' + id + '">' + '截圖' + '</div>';
-            
-            hDiv.addEventListener('click', function(e){
-                var dom = e.target;
-                if(dom.className.indexOf('printCanvas') != -1){
-                    var pid = e.target.attributes.getNamedItem('printid').value;
-                    var targetBox = $('#' + pid);
-                    if(targetBox[0].offsetTop) TT.ui.centerScroll(targetBox[0].offsetTop-38, true);
-                    TT.html2canvas(targetBox, {
-                        onrendered: function(imgA) {
-                            if(imgA && imgA.toDataURL){
-                                window.open(imgA.toDataURL("image/png"));
-                            }else{
-                                TT.msg.show('截圖失敗，可能是瀏覽器長寬不足截下整張圖片');
-                            }
-                        }
-                    });
-                }
-            }, false);
-            var tDiv = document.createElement('div');
-            tDiv.className = 'timeRouteDiv';
-            var tTD = (function(){
-                var td = '', tbd, tAfter, transInfoHTML = '', tsStyle = '';
-                for(var i=0; i<routeP.routeMap.length; i++){
-                    tbd = routeP.routeMap[i];
-                    tAfter = (i<routeP.routeMap.length-1) ? routeP.routeMap[i+1] : false;
-                    td += '<tr>' +
-                        '<td class="sect">' + (i+1) + '</td>' +
-                        '<td class="time">' + createTimeBox(tbd, tbd.time[0], tbd.time[1]) + '</td>' +
-                        '<td class="station">' + createStationBox(tbd, tbd.takeRange[0], tbd.takeRange[1], tbd.line) + '</td>' +
-                        '<td class="info">' + createInfoBox(tbd, tbd.info, tbd.line) + '</td>' +
-                        '<td class="line">' + createLineBox(tbd, tbd.line) + '</td>' +
-                        '<td class="other">' + '' + '</td>' +
-                    '</tr>';
-                    if(tbd.transStation){
-                    	if(tAfter && tAfter.company==tbd.company && tAfter.info && tbd.info && tAfter.info.Train && tbd.info.Train && tAfter.info.Train==tbd.info.Train){//同一列車
-                    		transInfoHTML = '同一班列車直通無需轉乘';
-                    		tsStyle = ' style="border-bottom: 1px solid transparent;"';
-                    	}else{
-                    		transInfoHTML = createTransStationBox(tbd.transStation, tbd.takeRange[1]);
-                    		tsStyle = '';
-                    	}
-                        td += '<tr>' +
-                            '<td></td>' +
-                            '<td class="time"></td>' +
-                            '<td colspan="3" class="transStation"' + tsStyle + '>' + transInfoHTML + '</td>' +
-                            '<td></td>' +
-                        '</tr>';
-                    }
-                }
-                return td;
-            })();
-            tDiv.innerHTML = '<div class="more btn">&gt;&gt;</div>' +
-            '<table class="table" cellspacing="5" cellpadding="6">' +
-                '<tr>' +
-                    '<th class="sect">' + '區段' + '</td>' +
-                    '<th class="time">' + '列車時刻' + '</td>' +
-                    '<th class="station">' + '車站' + '</td>' +
-                    '<th class="info">' + '列車資訊' + '</td>' +
-                    '<th class="line">' + '路線資訊' + '</td>' +
-                    '<th class="other">' + '其他' + '</td>' +
-                '</tr>' +
-                tTD +
-            '</table>';
-            tDiv.addEventListener('click', function(e){
-                if(e.target.className.indexOf('more btn')!=-1){
-                    e.target.parentNode.className += ' showAll';
-                }
-                if(e.target.className.indexOf('transStationVideoClick')!=-1){
-                    var tsid = e.target.attributes.getNamedItem('tsid').value,
-                        stid = e.target.attributes.getNamedItem('stid').value;
-                    
-                    var tsObj = TT.fn.getRoute_transStationById(tsid);
-                    if(tsObj.video && tsObj.video[stid]){
-                        TT.ui.displayTransVideo(tsObj.video[stid]);
-                    }
-                }else if(e.target.className.indexOf('transStationAdjustWalkTime')!=-1){
-                    TT.ui.transStationWalkTimeWindow.show({justShowInuse: true});
-                }
-            }, false);
-            div.appendChild(hDiv);
-            div.appendChild(tDiv);
-            document.getElementById(renderID).appendChild(div);
-        },
-        createTransStationWalkTimeWindow: function(){
-            var id = 'tt_transStationWalkTimeWindow:';
-            if(!TT.ui.transStationWalkTimeWindow){
-                
-                var nowUsedTransStation = [], showCfg;
-                
-                function inNowUsedTransStation(st){
-                    var flgA = false;
-                    for(var k=0; k<nowUsedTransStation.length; k++){
-                        if(nowUsedTransStation[k]==st){
-                            flgA = true;
+
+            var tpl = Vue.compile('<div class="' + 'groupStationDiv' + '" id="' + cfg.id + '" >' +
+                '<div style="display: inline-block; margin: 5px;">' +
+                    '<div style="float: left; margin-right: 20px;">針對以下車站做停靠模式差異分組，清空將以所有停靠站做群組歸納</div>' +
+                    '<div class="modeFunction" v-on:click="clearSaveAry()">清空</div>' +
+                    '<div class="modeFunction" v-on:click="makeGroup(1)">DEMO 七堵到新竹</div>' +
+                    '<div class="modeFunction" v-on:click="makeGroup(2)">DEMO 台北到高雄</div>' +
+                    '<div class="modeFunction" v-on:click="makeGroup(3)">DEMO 台北到花蓮</div>' +
+                    '<div class="modeFunction" v-on:click="makeGroup(4)">DEMO 松山到台中</div>' +
+                    '<div class="modeFunction" v-on:click="makeGroup(5)">DEMO 高雄到嘉義</div>' +
+                    '<div class="modeFunction" v-on:click="makeGroup(6)">DEMO 彰化到新竹</div>' +
+                    '<div class="modeFunction" v-on:click="makeGroup(7)">DEMO 基北線</div>' +
+                '</div>' +
+                '<div class="big1">' +
+                    '<div style="float:left;margin:8px 0 0 6px;">第一級大站</div>' +
+                    '<div v-for="(st1,aidx) in big1Ary" class="stationBtn bs_no_select" v-bind:class="ckCls(st1)" v-bind:style="getStationBtnStyle(st1)" v-on:click="toggleStation(st1)">{{getName(st1)}}</div>' +
+                '</div>' +
+                '<div class="big2">' +
+                    '<div style="float:left;margin:8px 0 0 6px;">第二級大站</div>' +
+                    '<div v-for="(st2,bidx) in big2Ary" class="stationBtn bs_no_select" v-bind:class="ckCls(st2)" v-bind:style="getStationBtnStyle(st2)" v-on:click="toggleStation(st2)">{{getName(st2)}}</div>' +
+                '</div>' +
+                '<div class="customGoupStation">' +
+                    '<div style="float:left;margin:8px 0 0 6px;">其他車站</div>' +
+                    '<div style="float:left;margin:8px 0 0 6px; color:blue; cursor:pointer;" v-on:click="toggleShowOtherStation">[ + ]</div>' +
+                    '<div v-for="(st3,bidx) in otherStations" class="stationBtn bs_no_select" v-bind:class="ckCls(st3)" v-show="flagShowOtherStation" v-on:click="toggleStation(st3)">{{getName(st3)}}</div>' +
+                '</div>' +
+                '<div class="minGroupCountDiv">'+
+                    '<span>模式化成形最少列次數：</span>' +
+                    '<span><select v-model="minGroupCount">' +
+                        '<option v-for="optline in groupNumbers" v-bind:value="optline">{{ optline }}</option>' +
+                    '</select></span>' +
+                '</div>' +
+	        '</div>');
+            var vm = new Vue({
+    		    el: '#' + cfg.id,
+    		    render: tpl.render,
+    		    staticRenderFns: tpl.staticRenderFns,
+    		    data: {
+                    flagGo: false,
+                    flagShowOtherStation: false,
+                    minGroupCount: TT.minGroupCount,
+                    groupNumbers: [1,2,3,4,5,6,7,8,9],
+                    big1Ary: TT.stationBig1.slice(),
+                    big2Ary: TT.stationBig2.slice(),
+                    otherStations: otherStations,
+                    saveAry: TT.stationGroupAry.slice()
+                },
+                methods: {
+                    ckCls: function(st){
+                        return (this.saveAry.indexOf(st)>=0) ? ' checked' : '';
+                    },
+                    clearSaveAry: function(){
+                        this.saveAry = [];
+                    },
+                    getName: function(st){
+                        return TT.fn.getTRA_stationDataOfID(st).name;
+                    },
+                    getStationBtnStyle: function(st){
+                        
+                        return '';
+                    },
+                    makeGroup: function(intM){
+                        var selector = TT.ui.center.timeTable.controlDiv.stationSelectDiv;//.fnSetStart
+                        switch(intM){
+                            case 1:
+                                selector.fnSetStart('tra_1003');selector.fnSetEnd('tra_1025');
+                                this.saveAry = ["tra_1008", "tra_1011", "tra_1032", "tra_1015", "tra_1016", "tra_1017", "tra_1019", "tra_1025", "tra_1005"];
+                                this.minGroupCount = 1;
+                            break;
+                            case 2:
+                                selector.fnSetStart('tra_1008');selector.fnSetEnd('tra_1238');
+                                this.saveAry = ["tra_1008", "tra_1011", "tra_1017", "tra_1305", "tra_1317", "tra_1319", "tra_1203", "tra_1028", "tra_1019"];
+                                this.minGroupCount = 1;
+                            break;
+                            case 3:
+                                selector.fnSetStart('tra_1008');selector.fnSetEnd('tra_1715');
+                                this.saveAry = ["tra_1008", "tra_1804", "tra_1824", "tra_1816", "tra_1810", "tra_1820", "tra_1715"];
+                                this.minGroupCount = 1;
+                            break;
+                            case 4:
+                                selector.fnSetStart('tra_1007');selector.fnSetEnd('tra_1319');
+                                this.saveAry = ["tra_1007", "tra_1120", "tra_1319", "tra_1032", "tra_1016", "tra_1019", "tra_1028", "tra_1017", "tra_1025"];
+                                this.minGroupCount = 1;
+                            break;
+                            case 5:
+                                selector.fnSetStart('tra_1238');selector.fnSetEnd('tra_1215');
+                                this.saveAry = ["tra_1215", "tra_1238", "tra_1236", "tra_1233", "tra_1242", "tra_1225"];
+                                this.minGroupCount = 1;
+                            break;
+                            case 6:
+                                selector.fnSetStart('tra_1120');selector.fnSetEnd('tra_1025');
+                                this.saveAry = ["tra_1305", "tra_1319", "tra_1317", "tra_1314", "tra_1120", "tra_1318", "tra_1028"];
+                                this.minGroupCount = 1;
+                            break;
+                            case 7:
+                                selector.fnSetStart('tra_1001');selector.fnSetEnd('tra_1008');
+                                this.saveAry = [];
+                                this.minGroupCount = 1;
                             break;
                         }
-                    }
-                    return flgA;
-                }
-                function getNowUsedTransStation(){
-                    nowUsedTransStation = [];
-                    if(TT.now && TT.now.totalRoute){
-                        var route = TT.now.totalRoute;
-                        for(var i=0; i<route.length; i++){
-                            if(route[i]){
-                            for(var j=0; j<route[i].length; j++){
-                                if(route[i][j] && route[i][j].transStationID && !inNowUsedTransStation(route[i][j].transStationID)){
-                                    nowUsedTransStation.push(route[i][j].transStationID);
-                                }
-                            }
-                            }
-                        }
-                    } 
-                }
-                
-                function updateCDiv(){
-                    var justShowInuse = (showCfg && showCfg.justShowInuse) ? true : false;
-                    var aryT = TT.data.transStation, ht='', mt='', st='', st1='', st2='', optStyle = '', inputID='', flgInUsed = false;
-                    for(var i=0; i<aryT.length; i++){
-                        mt = '在<span class="stationName">{st}</span>往返{st1}與{st2}間的步行時間';
-                        st = aryT[i].name;
-                        flgInUsed = inNowUsedTransStation(aryT[i].id);
-                        st1 = TT.fn.getCommon_lineName(aryT[i]["changeLine"][0]);
-                        st2 = TT.fn.getCommon_lineName(aryT[i]["changeLine"][1]);
-                        mt = mt.replace('{st}',st).replace('{st1}',st1).replace('{st2}',st2);
-                        optStyle = (justShowInuse && !flgInUsed) ? ' style="display:none;"' : '';
-                        ht += '<div' + optStyle + '><input class="minute" type="text" id="' + id + aryT[i].id + '" value="' + aryT[i].walkMinute + '"><span>' + '分鐘' + ' , ' + mt + '</span></div>';
-                    }
-                    cDiv.innerHTML = ht;
-                }
-                
-                function updateData(){
-                    var aryT = TT.data.transStation, stid='', domA;
-                    for(var i=0; i<aryT.length; i++){
-                        stid = aryT[i].id;
-                        domA = document.getElementById(id + stid);
-                        if(domA){
-                            aryT[i].walkMinute = parseInt(domA.value, 10);
+                        setTimeout(function(){TT.ui.findBeforeTrain();},500);
+                    },
+                    toggleShowOtherStation: function(){
+                    	this.flagShowOtherStation = !this.flagShowOtherStation;
+                    },
+                    toggleStation: function(st){
+                        if(this.saveAry.indexOf(st)==-1){
+                            this.saveAry.push(st);
+                        }else{
+                            this.saveAry.splice(this.saveAry.indexOf(st),1);
                         }
                     }
-                }
+                },
+                watch: {
+                    saveAry: function(){
+                        TT.stationGroupAry = this.saveAry.slice();
+                    },
+                    minGroupCount: function(){
+                        TT.minGroupCount = this.minGroupCount;
+                    }
+                },
+                mounted: function(){
                 
-                var cDiv = TT.ui.createDiv(id + 'c', 'contentBox');
-                var bDiv = TT.ui.createDiv(id + 'b', 'buttonBox');
-                bDiv.innerHTML = '<span><button id="' + id + 'save">' + '儲存' + '</button></span>' +
-                    '<span><button id="' + id + 'cancel">' + '取消' + '</button></span>';
-                bDiv.addEventListener('click', function(e){
-                    var bid= e.target.id.replace(id,'');
-                    if(bid=='save'){
-                        updateData();
-                        win.close();
-                    }
-                    if(bid=='cancel'){
-                        win.close();
-                    }
-                },false);
-                var win = new TT.lib.classWindow({
-                    id: id,
-                    items: [cDiv, bDiv],
-                    mask: true,
-                    cls: 'transStationWalkTimeWindow',
-                    onShow: function(thisA){
-                        showCfg = thisA.showCfg;
-                        getNowUsedTransStation();
-                        TT.ui.centerTimeTableDisplayDivClear();
-                        updateCDiv();
-                        thisA.resetPosition();
-                    }
-                });
-                TT.ui.transStationWalkTimeWindow = win;
-            }
-        },
-        displayTransVideo: function(cfg){
-            cfg = cfg || {};
-            cfg.width = (cfg.width) ? cfg.width : 640;
-            cfg.height = (cfg.height) ? cfg.height : 480;
-            function renderInner(ww){
-                        var ifm = '<iframe width="' + ww.vcfg.width + '" height="' + ww.vcfg.height + '" src="' + ww.vcfg.src + '" frameborder="0" allowfullscreen></iframe>';
-                        ww.inner.innerHTML = ifm;
-            }
-            if(!this.win){
-                this.win = new TT.lib.classWindow({
-                    mask: true,
-                    onShow: function(ww){
-                        renderInner(ww);
-                    }
-                });
-            }
-            
-            var win = this.win;
-            win.el.style.width = (cfg.width + 30) + 'px';
-            win.el.style.height = (cfg.height + 60) + 'px';
-            win.vcfg = cfg;
-            win.show();
-            
-            
+                }
+            });
+            return vm;
         },
         findBeforeTrain: function(cbFn){
             TT.ui.findTrain(cbFn);
@@ -2343,34 +1807,42 @@ var TT = (function(){
             function fnAfterCheck(){
                 
                 var controlDiv = TT.ui.center.timeTable.controlDiv;
-                var startTime = controlDiv.timeSelectDiv.fnGetStartTime();
-                var endTime = controlDiv.timeSelectDiv.fnGetEndTime();
-                var flagAD = controlDiv.depArrDiv.fnGetValue();
                 var a = controlDiv.stationSelectDiv.fnGetStart();
                 var b = controlDiv.stationSelectDiv.fnGetEnd();
                 //var w = controlDiv.weekSelectDiv.fnGetDay();
+                if(!/^tra/.test(a) || !/^tra/.test(b)){
+                    alert('目前只有台鐵車站可以被加入模式化歸類');
+                    return false;
+                }
+                var aryTime = TT.fn.getTRA_allTimeByFromTo(a,b,w);
+                var aryGPT = groupTrain(aryTime, a, b, {});
+                var aryRoute = getLinkRoute(a, b);
+                TT.now = {
+                    allTrain: aryTime,
+                    train: aryGPT,
+                    route: aryRoute,
+                    from: a,
+                    to: b
+                }
                 
-                var aryRoute = TT.fn.getCommon_timeRangeBestByFromTo(a,b,startTime,endTime,flagAD,w);
-                TT.ui.printStatus('尋找列車班次完成');TT.msg.show('尋找完成',200);
-                TT.ui.printTrain(aryRoute,'', cbFn);
+                //var aryRoute = TT.fn.getCommon_timeRangeBestByFromTo(a,b,startTime,endTime,flagAD,w);
+                TT.ui.printStatus('整理列車模式完成');TT.msg.show('整理完成',200);
+                TT.ui.printRoute();
+                TT.ui.printTrain();
+                
                 
                 localDataFn.setItem('defaultFromStation', a);
                 localDataFn.setItem('defaultToStation', b);
-                localDataFn.setItem('defaultStartTime', startTime);
-                localDataFn.setItem('defaultEndTime', endTime);
-                
                 //rewrite url Get param
                 var sObj = {
                     a: a,
                     b: b,
-                    w: w,
-                    startTime: startTime,
-                    endTime: endTime
+                    w: w
                 }
-                var sParam = '?a=' + a + '&b=' + b + '&w=' + w + //'&findTrain=1' +
-                     '&startTime=' + encodeURIComponent(startTime) +
-                     '&endTime=' + encodeURIComponent(endTime);
-                if(window.history) history.pushState(sObj,'',sParam);
+                //var sParam = '?a=' + a + '&b=' + b + '&w=' + w + //'&findTrain=1' +
+                     //'&startTime=' + encodeURIComponent(startTime) +
+                     //'&endTime=' + encodeURIComponent(endTime);
+                //if(window.history) history.pushState(sObj,'',sParam);
             }
             
             function fnCheck(){
@@ -2379,16 +1851,16 @@ var TT = (function(){
                     TT.fn.getTRA_TimeTable2Data(w, fnCheck);
                     return false;
                 }
-                var a2 = TT.fn.checkTRTC_rnwTimeTableIsLoaded();
-                if(!a2){
-                    TT.fn.getTRTC_timeTable2Data(fnCheck);
-                    return false;
-                }
-                var a3 = TT.fn.tymetro.check_timeTableIsLoaded();
-                if(!a3){
-                    TT.fn.tymetro.get_timeTable2Data(fnCheck);
-                    return false;
-                }
+                //var a2 = TT.fn.checkTRTC_rnwTimeTableIsLoaded();
+                //if(!a2){
+                    //TT.fn.getTRTC_timeTable2Data(fnCheck);
+                    //return false;
+                //}
+                //var a3 = TT.fn.tymetro.check_timeTableIsLoaded();
+                //if(!a3){
+                    //TT.fn.tymetro.get_timeTable2Data(fnCheck);
+                    //return false;
+                //}
                 fnAfterCheck();
             }
             fnCheck();
@@ -2478,32 +1950,213 @@ var TT = (function(){
         printStatus: function(str){
             TT.ui.statusBar.innerHTML = str;
         },
-        printTrain: function(aryRoute, sortBy, cbFn){
+        printRoute: function(){
+        
+            TT.ui.center.timeTable.displayDiv.routeDiv.selIndex = 0;
+            var tmpAF = JSON.parse(JSON.stringify(TT.now.route));
+            tmpAF = tmpAF.map(function(rr,idx){
+                rr.displayRoute = TT.now.route[idx].displayRoute;
+                rr.lineAry = TT.now.route[idx].lineAry;
+                return rr;
+            });
+            TT.ui.center.timeTable.displayDiv.routeDiv.aryRoute = tmpAF;
+        },
+        printTrain: function(){
             var controlDiv = TT.ui.center.timeTable.controlDiv;
-            var startTime = controlDiv.timeSelectDiv.fnGetStartTime();
-            var endTime = controlDiv.timeSelectDiv.fnGetEndTime();
-            var flagAD = controlDiv.depArrDiv.fnGetValue();
             var a = controlDiv.stationSelectDiv.fnGetStart();
             var b = controlDiv.stationSelectDiv.fnGetEnd();
-            
-            //sortBy: '', 'travelMinute'
-            var fRouteAry = TT.fn.mixAllRoute(aryRoute, flagAD, sortBy);
-            TT.now = {
-                totalRoute: aryRoute,
-                sortRoute: fRouteAry,
-                sortBy: sortBy
-            }
-            
-            var tDiv;
+            var routeIndex = TT.ui.center.timeTable.displayDiv.routeDiv.selIndex;
+            var allStation = TT.now.route[routeIndex].allStation;
+            var stationOnUse = {};
+            var anyStopStation = TT.now.train.anyStopStation;
+            var allStopStation = [];
+            var tmpA;
+            allStation.forEach(function(c){
+                tmpA = !(anyStopStation.indexOf(c)==-1);
+                stationOnUse[c] = tmpA;
+                if(tmpA) allStopStation.push(c);
+            });
+            //●▲◎⊙○〢●◎⊕⊙
             //Clear Old
-            document.getElementById(TT.ui.center.timeTable.displayDiv.routeDiv.id).innerHTML = '';
             document.getElementById(TT.ui.center.timeTable.displayDiv.trainDiv.id).innerHTML = '';
-            TT.ui.createTrainRouteSelectBox(aryRoute);
-            for(var i=0; i<fRouteAry.length; i++){
-                tDiv = TT.ui.createTrainRouteTimeBox(fRouteAry[i], i);
+            
+            //整理需要顯示的車站
+            var html = '';
+            var train = TT.now.train;
+            var storeMode = [], storeOther = [], storeNormal = [];
+            train.forEach(function(c){
+                c.stopList = c.id.split(',');
+                if(c.id=='none') c.stopList = [];
+                if(c.list.length >= TT.minGroupCount && c.stopList.length>0){
+                    storeMode.push(c);
+                }else{
+                    storeOther.push(c);
+                }
+            });
+            storeMode.sort(function(a , b){
+                return (a.stationStopAry.length > b.stationStopAry.length) ? 1 : -1;
+            });
+            storeOther.sort(function(a , b){
+                return (a.list.length > b.list.length) ? -1 : 1;
+            });
+            var modeNumber = TT.now.train.length + 2;
+            var modeCount = 0;
+            var tmpStr = '', tLen = 0, intA = 0;
+            
+            var displayHead = function(store){
+                return store.map(function(c){
+					modeCount++;
+					var color = (c.classObj.color) ? c.classObj.color : '#47A';
+					var cas = '<span style="color:' + color + ';" >' + c.classObj.name + '</span>';
+                    var clickFn = ' onclick="TT.ui.clickTrainInfo(\'' + c.id + '\')"';
+					return '<td class="head"' + clickFn + ' data-tid="' + c.id + '">' + '模式' + modeCount + '<br>' + cas + '<br>共' +c.trainNumber.length + '列</td>';
+				}).join('');
             }
-            if(fRouteAry.length==0) TT.msg.show('糟糕，系統找不到這個時間內的列車！');
-            if(TT.fn.checkIsFunction(cbFn)) cbFn();
+            var displayInside = function(store, st){
+                return store.map(function(c){
+                    //tmpStr = (c.stationStopCount[st]) ? c.stationStopCount[st] : '';
+					var color = (c.classObj.color) ? c.classObj.color : '#47A';
+					color = ' color:' + color + ';';
+                    intA = (c.stationStopCount[st]) ? parseInt(c.stationStopCount[st]) : 0;
+                    tLen = c.trainNumber.length;
+                    var msdg = intA/tLen;
+                    if(msdg == 1){
+                        tmpStr = '<span style="font-size: 24px;' + color + '">●</span>';
+                    }else if(msdg>0.8){
+                        tmpStr = '<span style="font-size: 16px;' + color + '">▲</span><span style="' + color + '">(' + intA + ')</span>';
+                    }else if(msdg>0.49){
+                        tmpStr = '<span style="' + color + '">◎(' + intA + ')</span>';
+                    }else if(msdg>0.3){
+                        tmpStr = '<span style="' + color + '">⊙(' + intA + ')</span>';
+                    }else if(msdg>0.001){
+                        tmpStr = '<span style="font-size: 24px;' + color + '">○</span><span style="' + color + '">(' + intA + ')</span>';
+                    }else{
+                        tmpStr = '';
+                    }
+                    return '<td>' + tmpStr + '</td>';
+                }).join('');
+            }
+            //var firstTR = '<tr><td></td><td>' + storeMode.map(function(c){return c.trainNumber.join('<br>');}).join('') + '</td><td>未分類區隔</td><td>' + storeOther.map(function(c){return c.trainNumber.join('<br>');}).join('') + '</td></tr>';
+            var firstTR = '<tr><td></td>' +
+                 displayHead(storeMode) +
+                '<td>其他模式</td>' +
+                displayHead(storeOther) + '</tr>';
+            var nextTR = allStopStation.map(function(st){
+                var stObj = TT.fn.getTRA_stationDataOfID(st);
+                var clsTR = (stObj.big) ? ' bigStation' : '';
+                var rt = '<tr class="' + clsTR + '"><td class="stationName">' + stObj.name + '</td>';
+                rt += displayInside(storeMode,st);
+                rt += '<td></td>';
+                rt += displayInside(storeOther,st);
+                rt += '</tr>';
+                return rt;
+            }).join('');
+            html = '<table class="resultTable" cellpadding="0" cellspacing="0">' + firstTR + nextTR + '</table>';
+            TT.now.allStopStation = allStopStation;
+            
+            var domA = document.getElementById(TT.ui.center.timeTable.displayDiv.trainDiv.id);
+            domA.innerHTML = html;
+            
+            if(TT.now.train.length==0) TT.msg.show('糟糕，系統整理不出資料！');
+        },
+        clickTrainInfo: function(id){
+            var mode = (function(){
+                for(var i=0; i<TT.now.train.length; i++){
+                    if(id==TT.now.train[i].id) return TT.now.train[i];
+                }
+            })();
+            
+            var stationStopAry = [];
+			if(TT.now.route.length==1){
+				stationStopAry = TT.now.allStopStation.filter(function(ast){
+					return !!(mode.stationStopAry.indexOf(ast)!=-1);
+				});
+			}else{
+				stationStopAry = mode.stationStopAry.sort(function(a,b){
+					return (TT.now.allStopStation.indexOf(a) > TT.now.allStopStation.indexOf(b)) ? 1 : -1;
+				});
+				if(stationStopAry[0] != TT.now.from || stationStopAry[stationStopAry.length -1] != TT.now.to){
+					var otherStation = [], tmpCBS;//存放不在預設路徑的車站
+					stationStopAry = stationStopAry.filter(function(c){
+						tmpCBS = !!(TT.now.allStopStation.indexOf(c)!=-1);
+						if(!tmpCBS) otherStation.push(c);
+						return tmpCBS;
+					});
+					
+					var flagDiff = false, flagReSame = false, resameIdx = 0;
+					TT.now.route.forEach(function(trt){//將其他路由車站塞回 stationStopAry 正確位置
+						var allST = trt.allStation;
+						var tmpAry = [];
+						flagDiff = false, flagReSame = false;
+						allST.forEach(function(c, idx){
+							if(!flagDiff && stationStopAry.indexOf(c)==-1) flagDiff = true;
+							if(stationStopAry.indexOf(c)==-1 && otherStation.indexOf(c)!=-1) tmpAry.push(c);
+							if(flagDiff && stationStopAry.indexOf(c)!=-1){
+								resameIdx = stationStopAry.indexOf(c);
+								flagDiff = false;
+								tmpAry.forEach(function(d){
+									stationStopAry.splice(resameIdx, 0, d);
+									resameIdx++;
+								});
+								tmpAry = [];
+							}
+						});
+					});
+				}
+				
+			}
+            var list = mode.list.sort(function(a,b){
+                return (a.sortTime > b.sortTime) ? 1 : -1;
+            });
+            
+            var html = '<table class="trainTimeTable" border="1">';
+            var displayHead = function(store){
+                return store.map(function(c){
+                    var classObj = getTrainClass(c.CarClass);
+					var color = (classObj.color) ? classObj.color : '#47A';
+					var cas = '<span style="color:' + color + ';" >' + classObj.name + '</span>';
+                    var trainNum = '<span style="color:' + color + ';" >' + c.Train + '</span>';
+                    var fromStr = TT.fn.getTRA_stationDataOfID('tra_'+c.TimeInfo[0].Station).name;
+                    var toStr = TT.fn.getTRA_stationDataOfID('tra_'+c.TimeInfo[c.TimeInfo.length-1].Station).name;
+					return '<td class="head">' + cas + '<br>' + trainNum + '<br>' + fromStr + '<br>' + '~' + '<br>' + toStr + '</td>';
+				}).join('');
+            }
+            
+            var displayInside = function(store, st){
+                return store.map(function(c){
+                    var classObj = getTrainClass(c.CarClass);
+					var color = (classObj.color) ? classObj.color : '#47A';
+					color = ' color:' + color + ';';
+					st = TT.fn.getTRA_stationID(st);
+					var timeStr = '', tmpB;
+					for(var i=0; i<c.TimeInfo.length; i++){
+						tmpB = c.TimeInfo[i];
+						if(tmpB.Station==st){
+							timeStr = tmpB.DepTime.substr(0,5);
+							break;
+						}
+					};
+					tmpStr = '<span style="' + color + '">' + timeStr + '</span>';
+                    return '<td>' + tmpStr + '</td>';
+                }).join('');
+            }
+            
+            var tmpSTOBJ = '';
+            var stationTimeAry = stationStopAry.map(function(st){
+            	tmpSTOBJ = TT.fn.getTRA_stationDataOfID(st);
+            	return '<tr><td>' + tmpSTOBJ.name + '</td>' + displayInside(list, st) + '</tr>';
+            });
+            
+            var firstTR = '<tr><td></td>' + displayHead(list) + '</tr>';
+            var nextTR = stationTimeAry.join('');
+            
+            html += firstTR + nextTR + '</table>';
+            
+            var win = new classWindow({
+                html: html,
+                mask: true
+            });
+            win.show();
         },
         resizeFn: function(e){
             var h = TT.fn.getDocumentHeight();
@@ -2523,15 +2176,14 @@ var TT = (function(){
         },
         updateCenter: function(cmd){
             if(!cmd || /home/g.test(cmd)){
-                var aryCkWeekLoaded = $('.center .home .frameA.tra div.ckWeekLoaded').hide();
+                //var aryCkWeekLoaded = $('.center .home .frameA.tra div.ckWeekLoaded').hide();
                 if(TT.data.tra.timeTable){
                     for(var i=0; i<TT.data.tra.timeTable.length; i++){
                         if(TT.fn.checkTRA_dayTimeIsLoaded(i)){
-                            document.getElementById('tt_home_tra_ckWeekLoaded_' + i).style.display = '';
+                            //document.getElementById('tt_home_tra_ckWeekLoaded_' + i).style.display = '';
                         }
                     }
                 }
-                TT.data.tra.timeTable
             }
         }
     }
@@ -2547,6 +2199,10 @@ var TT = (function(){
         
         //產生動態計算之固定路由資料
         TT.fn.createTRA_routeFile();
+        //產生大站陣列
+        var aryBig1 = TT.fn.getTRA_runningByID('wZi').mustStop.concat(TT.fn.getTRA_runningByID('eZi').mustStop).filter(function(c,idx,arr){ return !!(arr.indexOf(c)==idx) });
+        var aryBig2 = TT.fn.getTRA_runningByID('wZi').maybeStop.concat(TT.fn.getTRA_runningByID('eJv').mustStop).concat(TT.fn.getTRA_runningByID('eTemu').maybeStop).filter(function(c,idx,arr){ return !!(arr.indexOf(c)==idx) && aryBig1.indexOf(c)==-1 });
+        TT.stationBigAll = aryBig1.concat(aryBig2); TT.stationBig1 = aryBig1; TT.stationBig2 = aryBig2;
         
         //產生 UI
         TT.ui.createBaseDiv();
@@ -2555,7 +2211,6 @@ var TT = (function(){
         
         TT.ui.createHome();
         TT.ui.createTimeTable();
-        TT.ui.createTool();
         TT.ui.setCenterActive('timeTable');//home
         TT.ui.updateCenter();
         TT.msg.show('歡迎使用接軌時刻 Web APP。',2000);
@@ -2576,23 +2231,10 @@ var TT = (function(){
 </script>
 <script type="text/javascript" src="canvasTaiwanRailwayMap.js"></script>
 <script type="text/javascript" src="html2canvas.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <!-- -->
 <!-- -->
 </head>
 <body onload="TT.initFn()">
-    <!--
-    <div id="pre_g_text">
-        <p>接軌時刻，台灣的鐵路、火車、捷運 等運行之 時刻表以及路線轉乘查詢系統 </p>
-        <p>Taiwan Railway MRT Timetable Search System</p>
-        <p>提供您查詢[台鐵]轉[捷運]或[MRT]轉[火車]等多種需求</p>
-        <ul>
-            <li>淡水線、信義線、淡水信義線</li>
-            <li>新店線、松山線、松山新店線</li>
-            <li>中和線、新莊線、蘆洲線、中和新蘆線</li>
-            <li>板橋線、南港線、板南線</li>
-            <li>火車、台鐵、台灣鐵路局西部幹線縱貫線</li>
-        </ul>
-    </div>
-    -->
 </body>
 </html>
