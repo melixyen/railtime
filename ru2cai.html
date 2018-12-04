@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width; initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<title>伯儒采璇婚禮速查</title>
+<title>伯儒采璇婚禮導遊</title>
 <style type="text/css">
 @charset "utf-8";
 
@@ -166,7 +166,9 @@ var TT = {
         document.getElementById('popupIn').innerHTML = html;
         document.querySelector('#popupArea .title').innerHTML = title;
         TT.popup.style.display = '';
-    }
+        document.documentElement.scrollTop = 0;
+    },
+    historyStartIndex: history.length
 };
 
 function showMinSu(){
@@ -379,7 +381,7 @@ function initFn(){
     }
     
     TT.popup.addEventListener('click', function(e){
-        //clickMinSuMap
+
         var css = e.target.className;
         if(/clickMinSuMap/.test(css)){
             window.open('https://www.google.com/maps/place/%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E7%94%B0%E9%96%93%E9%A4%90%E5%BB%B3%2F%E6%B0%91%E5%AE%BF%2F%E9%9C%B2%E7%87%9F/@24.8075674,121.1316597,17z/data=!4m5!3m4!1s0x3468390ce7272225:0xcdc717d0328923be!8m2!3d24.806389!4d121.133387');
@@ -388,9 +390,9 @@ function initFn(){
         }else if(/clickChruchMap/.test(css)){
             window.open('https://www.google.com/maps/place/%E9%97%9C%E8%A5%BF%E5%9D%AA%E6%9E%97%E5%A4%A9%E4%B8%BB%E5%A0%82/@24.8049512,121.1327673,17.75z/data=!4m5!3m4!1s0x0:0x5ec8ff3cefa771a2!8m2!3d24.8034319!4d121.1331162');
         }else if(/clickTravleBusStop1Map/.test(css)){
-            window.open('https://www.google.com/maps/dir//25.0646493,121.6587429/@25.0646226,121.6581046,19z/data=!4m2!4m1!3e2');
+            window.open('https://www.google.com/maps/dir/25.0626971,121.6602128/25.0646493,121.6587429/@25.0647878,121.6584023,19z/data=!4m2!4m1!3e2');
         }else if(/clickTravleBusStop2Map/.test(css)){
-            window.open('https://www.google.com/maps/dir//25.0620863,121.5484027/@25.0622203,121.5481068,19.5z/data=!4m2!4m1!3e2');
+            window.open('https://www.google.com/maps/dir/25.0624966,121.5486635/25.0621146,121.5483938/@25.0622203,121.5481068,19z/data=!4m2!4m1!3e2');
         }else if(/clickTHSR/.test(css)){
             window.open('http://www.thsrc.com.tw/tw/TimeTable/SearchResult');
         }else if(/clickRoadFromTHSR/.test(css)){
@@ -432,9 +434,8 @@ function initFn(){
         if(!event.state){
             TT.popup.style.display = 'none';
             TT.main.style.display = '';
-        }else if(event.state.foo){
-            window[event.state.foo]();
         }
+        document.documentElement.scrollTop = 0;
     }
 }
 </script>
