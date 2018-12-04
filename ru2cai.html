@@ -1,0 +1,449 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title>伯儒采璇婚禮速查</title>
+<style type="text/css">
+@charset "utf-8";
+
+body {
+	/*font-family:'細明體', "PMingLiU";*/
+	margin: 0px;
+    overflow: auto;
+    background:#fff url('ru2cai.jpg') center top no-repeat;
+    background-size: cover;
+}
+.bs_no_select{
+   -o-user-select:none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   -webkit-user-select: none;
+   user-select: none;
+}
+
+#mainAreaRenderDiv{
+    min-height: 200vw;
+    display: inline-block;
+    width: 100%;
+    background:#fff url('ru2cai.jpg') center top no-repeat;
+    background-size: cover;
+    margin-top: 3vh;
+}
+
+.mapOut{
+    overflow: hidden;
+}
+.mapOut, .mapFrame{
+    width: 90vw;
+    height: 90vw;
+    max-width: 500px;
+    max-height: 500px;
+    min-width: 200px;
+    min-height: 200px;
+}
+
+.baseButton{
+    font-size: X-Large;
+    width: 90%;
+    margin: 1%;
+    border: 1vw solid #ACF;
+    padding: 3% 1%;
+    text-align: center;
+    border-radius: 3vw;
+    display:inline-block;
+    float:left;
+    cursor: pointer;
+    background-color: rgba(255,235,245,0.85);
+    max-height: 15vh;
+    overflow: hidden;
+}
+
+.btn1{
+    width: 40%;
+}
+.btn3{
+    width: 26%;
+    border-color: #6E9;
+    overflow: hidden;
+    max-height: 10vh;
+}
+
+.popupArea{
+    display: inline-block;
+    width: 100%;
+    min-height: 200vw;
+    position: relative;
+    background:#fff url('ru2cai.jpg') center top no-repeat;
+    background-size: cover;
+}
+.popupArea .close{
+    font-size: 6vh;
+    max-height: 6vh;
+    cursor: pointer;
+    position: absolute;
+    right: 3vw;
+    top: 1vh;
+    color: #888;
+    background-color: #EEE;
+    border-radius: 2vw;
+}
+.popupArea .title{
+    min-width: 50%;
+    max-height: 6vh;
+    text-align: center;
+    font-size: 5vh;
+    position: absolute;
+    overflow: hidden;
+    color: #242;
+    top: 1vh;
+    left: 1vw;
+    background-color: #DCF;
+    border-radius: 2vw;
+}
+.popupIn{
+    font-size: Large;
+    display: inline-block;
+    width: 94%;
+    margin: 1vw;
+    margin-top: 7vh;
+    padding: 1% 1% 5% 1%;
+    border: 1vw solid #DCF;
+    border-radius: 2vw;
+    background-color: rgba(255,255,255,0.9);
+}
+.popupIn .des1{
+    font-size: 5vh;
+    line-height: 6vh;
+    color: #2AE;
+    margin: 2vh 2vw;
+}
+.popupIn .des2{
+    font-size: 4vh;
+    line-height: 5vh;
+    color: #73D;
+    margin: 2vh 2vw;
+}
+.btnInPop{
+    font-size: X-Large;
+    width: 80%;
+    margin: 1%;
+    border: 1vw solid #EA4;
+    padding: 1%;
+    text-align: center;
+    border-radius: 3vw;
+    display:inline-block;
+    float:left;
+    cursor: pointer;
+    background-color: rgba(255,255,255,0.8);
+    max-height: 15vh;
+    overflow: hidden;
+    color: #228;
+}
+.btnInPop.sm1{
+    font-size: Large;
+    max-height: 12vh;
+}
+
+.trainTableOut{
+    font-size: small;
+}
+.trainTableOut td{
+    padding: 0.5vh 1vw;
+}
+.trainTableOut td.car{
+    color: rgb(220,81,7);
+}
+
+</style>
+
+<script type="text/javascript">
+var TT = {
+    pop: function(html, title){
+        TT.main.style.display = 'none';
+        document.getElementById('popupIn').innerHTML = html;
+        document.querySelector('#popupArea .title').innerHTML = title;
+        TT.popup.style.display = '';
+    }
+};
+
+function showMinSu(){
+    var html = '<div class="pop1">';
+    html += '' +
+        '<div class="btnInPop clickMinSuMap">Google Map</div>' +
+        '<div class="btnInPop clickMinSuFacebook">Facebook</div>' +
+        '<div style="clear: left"></div>' +
+        '<div class="des1">地址：306新竹縣關西鎮上林里15鄰坪林56-12號</div>' +
+        '<div class="des1">電話：03-5868628</div>' +
+        '<div class="mapOut">' +
+            '<iframe class="mapFrame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3045.4332067724454!2d121.132848614048!3d24.807406913565536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3468390ce7272225%3A0xcdc717d0328923be!2z5omY5pav5Y2h5bC855Sw6ZaT6aSQ5buzL-awkeWuvy_pnLLnh58!5e0!3m2!1szh-TW!2stw!4v1543906922523" frameborder="0" style="border:0" allowfullscreen></iframe>' +
+        '</div>';
+    html += '</div>';
+    TT.pop(html,'餐廳位置');
+}
+function showChurch(){
+    var html = '<div class="pop1">';
+    html += '' +
+        '<div class="btnInPop clickChruchMap">Google Map</div>' +
+        '<div style="clear: left"></div>' +
+        '<div class="des1">地址：306新竹縣關西鎮上林里15鄰坪林61號</div>' +
+        '<div class="mapOut">' +
+            '<iframe class="mapFrame" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2153.489131398692!2d121.13276728011958!3d24.80495123561485!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x5ec8ff3cefa771a2!2z6Zec6KW_5Z2q5p6X5aSp5Li75aCC!5e0!3m2!1szh-TW!2stw!4v1543907634290" frameborder="0" style="border:0" allowfullscreen></iframe>' +
+        '</div>';
+    html += '</div>';
+    TT.pop(html,'教堂位置');
+}
+function showTravelBus(){
+    var html = '<div class="pop1">';
+    html += '' +
+        '<div class="des2">汐止區發車時間：2018/12/08 早上 8:00</div>' +
+        '<div class="des2">遊覽車聯絡人：魏桂馨 (0928851152)</div>' +
+        '<div class="des2">遊覽車聯絡人：顏建昌 (0935191225)</div>' +
+        '<div class="btnInPop sm1 clickTravleBusStop1Map">汐止區乘車點</div>' +
+        '<div style="clear: left"></div>' +
+        '<div class="des1">汐止運動公園旗桿前，汐止區公所正對面</div>' +
+        '<div class="mapOut">' +
+            '<iframe class="mapFrame" src="https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d759.7696079020204!2d121.65848325903622!3d25.06481332254022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e2!4m0!4m3!3m2!1d25.0646493!2d121.6587429!5e0!3m2!1szh-TW!2stw!4v1543909257601" frameborder="0" style="border:0" allowfullscreen></iframe>' +
+        '</div>' +
+        '<div style="height: 20px;"></div>' +
+        '<div class="btnInPop sm1 clickTravleBusStop2Map">松山區乘車點</div>' +
+        '<div style="clear: left"></div>' +
+        '<div class="des1">105台北市松山區民權東路三段181號前</div>' +
+        '<div class="mapOut">' +
+            '<iframe class="mapFrame" src="https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d638.9010615596465!2d121.54810682163202!3d25.062220328174355!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e2!4m0!4m3!3m2!1d25.062086299999997!2d121.5484027!5e0!3m2!1szh-TW!2stw!4v1543909482634" frameborder="0" style="border:0" allowfullscreen></iframe>' +
+        '</div>';
+    html += '</div>';
+    TT.pop(html,'遊覽車');
+}
+function showTHSR(){
+    var html = '<div class="pop1">';
+    html += '' +
+        '<div class="des2">搭乘至高鐵新竹站，轉計程車至婚禮會場約 30 分鐘。</div>' +
+        '<div class="btnInPop clickTHSR">高鐵車次查詢</div>' +
+        '<div class="btnInPop clickRoadFromTHSR">高鐵新竹站至民宿路線</div>' +
+        '<div style="clear: left"></div>' +
+        '<div class="des1">高鐵時刻 (12/08 早)</div>' +
+        '<div class="trainTableOut">' +
+            '<table>' +
+                '<tr><td class="car">車次</td><td>南港</td><td>台北</td><td>板橋</td><td>新竹</td></tr>' + 
+                '<tr><td class="car">0803</td><td>06:15</td><td>06:26</td><td>06:34</td><td>07:00</td></tr>' + 
+                '<tr><td class="car">0603</td><td>06:40</td><td>06:51</td><td>07:00</td><td>07:27</td></tr>' + 
+                '<tr><td class="car">0805</td><td>07:00</td><td>07:11</td><td>07:19</td><td>07:45</td></tr>' + 
+                '<tr><td class="car">1607</td><td>07:10</td><td>07:21</td><td>07:29</td><td>07:53</td></tr>' + 
+                '<tr><td class="car">1505</td><td>07:25</td><td>07:36</td><td>07:46</td><td>08:11</td></tr>' + 
+                '<tr><td class="car">0609</td><td>07:35</td><td>07:46</td><td>07:55</td><td>08:22</td></tr>' + 
+                '<tr><td class="car">0809</td><td>08:00</td><td>08:11</td><td>08:19</td><td>08:45</td></tr>' + 
+                '<tr><td class="car">0613</td><td>08:10</td><td>08:21</td><td>08:29</td><td>08:53</td></tr>' + 
+            '</table>' +
+        '</div>' +
+        '<div class="des1">高鐵時刻 (12/07 晚)</div>' +
+        '<div class="trainTableOut">' +
+            '<table>' +
+                '<tr><td class="car">車次</td><td>南港</td><td>台北</td><td>板橋</td><td>新竹</td></tr>' + 
+                '<tr><td class="car">0693</td><td>21:30</td><td>21:41</td><td>21:50</td><td>22:16</td></tr>' + 
+                '<tr><td class="car">1563</td><td>21:55</td><td>22:05</td><td>22:14</td><td>22:37</td></tr>' + 
+                '<tr><td class="car">0565</td><td>22:15</td><td>22:26</td><td>22:35</td><td>22:58</td></tr>' + 
+                '<tr><td class="car">0567</td><td>22:50</td><td>23:00</td><td>23:08</td><td>23:30</td></tr>' + 
+            '</table>' +
+        '</div>' +
+        '';
+    html += '</div>';
+    TT.pop(html,'高鐵');
+}
+function showTRA(){
+    var html = '<div class="pop1">';
+    html += '' +
+        '<div class="des2">搭乘至台鐵竹北站，轉計程車至婚禮會場約 30 分鐘。</div>' +
+        '<div class="btnInPop clickTRA">台鐵車次查詢</div>' +
+        '<div class="btnInPop clickRoadFromTRA">台鐵竹北站至民宿路線</div>' +
+        '<div style="clear: left"></div>' +
+        '<div class="des1">台鐵時刻 (12/08 早)</div>' +
+        '<div class="trainTableOut">' +
+            '<table>' +
+                '<tr><td class="car">車次</td><td>汐止</td><td>台北</td><td>竹北</td></tr>' + 
+                '<tr><td class="car">2011</td><td>05:09</td><td>05:27</td><td>06:37</td></tr>' + 
+                '<tr><td class="car">1111</td><td>05:15</td><td>05:36</td><td>06:58</td></tr>' + 
+                '<tr><td class="car">2133</td><td>05:36</td><td>05:57</td><td>07:28</td></tr>' + 
+                '<tr><td class="car">1117</td><td>05:58</td><td>06:18</td><td>07:50</td></tr>' + 
+                '<tr><td class="car">1121</td><td>06:22</td><td>06:43</td><td>08:12</td></tr>' + 
+                '<tr><td class="car">2143</td><td>06:43</td><td>07:04</td><td>08:26</td></tr>' + 
+                '<tr><td class="car"> 507</td><td>06:50</td><td>07:14</td><td>08:37</td></tr>' + 
+                '<tr><td class="car">1127</td><td>07:04</td><td>07:25</td><td>08:53</td></tr>' + 
+            '</table>' +
+        '</div>' +
+        '';
+    html += '</div>';
+    TT.pop(html,'台鐵');
+}
+function showFastBus(){
+    var html = '<div class="pop1">';
+    html += '' +
+        '<div class="des2">搭乘國光客運 1820 <span style="color:red;">經關西班次</span>至關西站，轉計程車至婚禮會場約 10 分鐘，或轉乘客運 5619 / 5620 至上石崗站下車。</div>' +
+        '<div class="btnInPop click1820A">國光客運 1820 時刻</div>' +
+        '<div class="btnInPop clickRoadFromGuanXiIC">關西站至民宿路線</div>' +
+        '<div style="clear: left"></div>' +
+        '<div class="des1">國光客運 1820 經關西時刻 (12/08 早)</div>' +
+        '<div class="trainTableOut">' +
+            '<table>' +
+                '<tr><td>台北轉運站發車時間</td></tr>' + 
+                '<tr><td class="car">05:50</td></tr>' + 
+                '<tr><td class="car">06:35</td></tr>' + 
+                '<tr><td class="car">07:00</td></tr>' + 
+            '</table>' +
+        '</div>' +
+        '<div class="des1">國光客運 1820 經關西時刻 (12/07 晚)</div>' +
+        '<div class="trainTableOut">' +
+            '<table>' +
+                '<tr><td>台北轉運站發車時間</td></tr>' + 
+                '<tr><td class="car">20:30</td></tr>' + 
+                '<tr><td class="car">21:35</td></tr>' + 
+                '<tr><td class="car">22:15</td></tr>' + 
+            '</table>' +
+        '</div>' +
+        '';
+    html += '</div>';
+    TT.pop(html,'國光客運');
+}
+function showLocalBus(){
+    var html = '<div class="pop1">';
+    html += '' +
+        '<div class="des2">搭乘新竹客運 5619 / 5620 至上石崗站下車步行至婚禮會場約 15 分鐘。</div>' +
+        '<div class="des2">由新竹車站前搭車、竹北車站於附近天后宮站搭車、國光客運關西站於店子岡站搭車、中壢車站前搭車(5620)。</div>' +
+        '<div class="btnInPop click5619">新竹客運 5619 (新竹 - 關西) 路線資訊</div>' +
+        '<div class="btnInPop click5620">新竹客運 5620 (新竹 - 中壢) 路線資訊</div>' +
+        '<div class="btnInPop clickRoadFromSSG">上石崗至民宿路線</div>' +
+        '<div class="btnInPop clickRoadToChruchFromSSG">上石崗至天主堂路線</div>' +
+        '<div style="clear: left"></div>' +
+        '';
+    html += '</div>';
+    TT.pop(html,'新竹客運');
+}
+function showFromGunaXiIC(){
+    var html = '<div class="pop1">';
+    html += '' +
+        '<div class="des2">下交流道後沿縣道 118 石岡子路直行過 7-11 石光門市後左轉竹 21 鄉道，於托斯卡尼藍色招牌處左轉上行至停車場。</div>' +
+        '<div class="btnInPop clickRoadCarFromGuanXiIC">下關西交流道後路線資訊</div>' +
+        '<div style="clear: left"></div>' +
+        '<div class="des1">過 7-11 後於此路口左轉</div>' +
+        '<div class="mapOut">' +
+            '<iframe class="mapFrame" src="https://www.google.com/maps/embed?pb=!4v1543918047463!6m8!1m7!1s1GRIG4ql8ei5cFqmHMtQbg!2m2!1d24.81238588530892!2d121.1305222658049!3f295.0995487083001!4f2.6401982308951233!5f0.7820865974627469" frameborder="0" style="border:0" allowfullscreen></iframe>' +
+        '</div>' +
+        '<div style="height: 20px;"></div>' +
+        '<div class="des1">看見此招牌時左轉</div>' +
+        '<div class="mapOut">' +
+            '<iframe class="mapFrame" src="https://www.google.com/maps/embed?pb=!4v1543918179237!6m8!1m7!1sl3i0Dlg-dSOoq2saz-akyw!2m2!1d24.80502280858683!2d121.1333334775944!3f165.89853885441605!4f4.7150040927085115!5f1.5406505846263108" frameborder="0" style="border:0" allowfullscreen></iframe>' +
+        '</div>'+
+        
+        '';
+    html += '</div>';
+    TT.pop(html,'下關西交流道後');
+}
+function showMinSu2Chruch(){
+    var html = '<div class="pop1">';
+    html += '' +
+        '<div class="btnInPop clickMinSu2Chruch">Google Map</div>' +
+        '<div style="clear: left"></div>' +
+        '<div class="des1">走回竹 21 鄉道路口後左轉</div>' +
+        '<div class="mapOut">' +
+            '<iframe class="mapFrame" src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d1810.863098353649!2d121.13245865822704!3d24.804827496020085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e2!4m3!3m2!1d24.8064535!2d121.1333458!4m5!1s0x3468390c307c177f%3A0x5ec8ff3cefa771a2!2z6Zec6KW_5Z2q5p6X5aSp5Li75aCC!3m2!1d24.8034319!2d121.13311619999999!5e0!3m2!1szh-TW!2stw!4v1543918860213" frameborder="0" style="border:0" allowfullscreen></iframe>' +
+        '</div>'+
+        
+        '';
+    html += '</div>';
+    TT.pop(html,'民宿至天主堂');
+}
+
+function createButton(cfg){
+    var div = document.createElement('div');
+    div.innerHTML = cfg.text;
+    div.className = 'baseButton ' + cfg.css;
+    div.id = cfg.id;
+    div.hashData = cfg.id;
+    var clickFn = function(){
+        var stateObj = { foo: cfg.id };
+        history.pushState(stateObj, "page 2", "ru2cai.html");
+        cfg.clickFn();
+    }
+    div.addEventListener('click', clickFn, false);
+    TT.main.appendChild(div);
+    return div;
+}
+
+function initFn(){
+    TT.main = document.getElementById('mainAreaRenderDiv');
+    TT.popup = document.getElementById('popupArea');
+    TT.popup.close = function(){
+        window.history.back();
+    }
+    
+    TT.popup.addEventListener('click', function(e){
+        //clickMinSuMap
+        var css = e.target.className;
+        if(/clickMinSuMap/.test(css)){
+            window.open('https://www.google.com/maps/place/%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E7%94%B0%E9%96%93%E9%A4%90%E5%BB%B3%2F%E6%B0%91%E5%AE%BF%2F%E9%9C%B2%E7%87%9F/@24.8075674,121.1316597,17z/data=!4m5!3m4!1s0x3468390ce7272225:0xcdc717d0328923be!8m2!3d24.806389!4d121.133387');
+        }else if(/clickMinSuFacebook/.test(css)){
+            window.open('https://www.facebook.com/Tuscanyfarmcafe');
+        }else if(/clickChruchMap/.test(css)){
+            window.open('https://www.google.com/maps/place/%E9%97%9C%E8%A5%BF%E5%9D%AA%E6%9E%97%E5%A4%A9%E4%B8%BB%E5%A0%82/@24.8049512,121.1327673,17.75z/data=!4m5!3m4!1s0x0:0x5ec8ff3cefa771a2!8m2!3d24.8034319!4d121.1331162');
+        }else if(/clickTravleBusStop1Map/.test(css)){
+            window.open('https://www.google.com/maps/dir//25.0646493,121.6587429/@25.0646226,121.6581046,19z/data=!4m2!4m1!3e2');
+        }else if(/clickTravleBusStop2Map/.test(css)){
+            window.open('https://www.google.com/maps/dir//25.0620863,121.5484027/@25.0622203,121.5481068,19.5z/data=!4m2!4m1!3e2');
+        }else if(/clickTHSR/.test(css)){
+            window.open('http://www.thsrc.com.tw/tw/TimeTable/SearchResult');
+        }else if(/clickRoadFromTHSR/.test(css)){
+            window.open('https://www.google.com/maps/dir/%E6%96%B0%E7%AB%B9/306%E6%96%B0%E7%AB%B9%E7%B8%A3%E9%97%9C%E8%A5%BF%E9%8E%AE%E4%B8%8A%E6%9E%97%E9%87%8C%E5%9D%AA%E6%9E%9756-12%E8%99%9F%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E7%94%B0%E9%96%93%E9%A4%90%E5%BB%B3%2F%E6%B0%91%E5%AE%BF%2F%E9%9C%B2%E7%87%9F/@24.8013158,121.0639802,14z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x346837075f185ca5:0xf379bf8f5529d143!2m2!1d121.0402254!2d24.808192!1m5!1m1!1s0x3468390ce7272225:0xcdc717d0328923be!2m2!1d121.133387!2d24.806389!3e0');
+        }else if(/clickTRA/.test(css)){
+            window.open('http://twtraffic.tra.gov.tw/twrail/TW_QuickSearch.aspx');
+        }else if(/clickRoadFromTRA/.test(css)){
+            window.open('https://www.google.com/maps/dir/%E7%AB%B9%E5%8C%97%E8%BB%8A%E7%AB%99/306%E6%96%B0%E7%AB%B9%E7%B8%A3%E9%97%9C%E8%A5%BF%E9%8E%AE%E4%B8%8A%E6%9E%97%E9%87%8C%E5%9D%AA%E6%9E%9756-12%E8%99%9F%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E7%94%B0%E9%96%93%E9%A4%90%E5%BB%B3%2F%E6%B0%91%E5%AE%BF%2F%E9%9C%B2%E7%87%9F/@24.8314884,121.048024,13.75z/data=!4m14!4m13!1m5!1m1!1s0x346839948656feed:0x4bce103339c3afc9!2m2!1d121.0091874!2d24.8390713!1m5!1m1!1s0x3468390ce7272225:0xcdc717d0328923be!2m2!1d121.133387!2d24.806389!3e0');
+        }else if(/click1820A/.test(css)){
+            window.open('http://www.kingbus.com.tw/ticketPriceResult.php?sid=123');
+        }else if(/clickRoadFromGuanXiIC/.test(css)){
+            window.open('https://www.google.com/maps/dir/%E9%97%9C%E8%A5%BF/306%E6%96%B0%E7%AB%B9%E7%B8%A3%E9%97%9C%E8%A5%BF%E9%8E%AE%E4%B8%8A%E6%9E%97%E9%87%8C%E5%9D%AA%E6%9E%9756-12%E8%99%9F%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E7%94%B0%E9%96%93%E9%A4%90%E5%BB%B3%2F%E6%B0%91%E5%AE%BF%2F%E9%9C%B2%E7%87%9F/@24.8066072,121.1444458,15.5z/data=!4m14!4m13!1m5!1m1!1s0x3468394a648b758b:0x4bc7fcb6c95aa29d!2m2!1d121.16761!2d24.800859!1m5!1m1!1s0x3468390ce7272225:0xcdc717d0328923be!2m2!1d121.133387!2d24.806389!3e0');
+        }else if(/click5619/.test(css)){
+            window.open('http://ibus.hsinchu.gov.tw/Public/Mobile/MRouteQueryDetail.aspx?city_route_no=5619&branch=0');
+        }else if(/click5620/.test(css)){
+            window.open('http://ibus.hsinchu.gov.tw/Public/Mobile/MRouteQueryDetail.aspx?city_route_no=5620&branch=0');
+        }else if(/clickRoadFromSSG/.test(css)){
+            window.open('https://www.google.com/maps/dir/%E4%B8%8A%E7%9F%B3%E5%B4%97/306%E6%96%B0%E7%AB%B9%E7%B8%A3%E9%97%9C%E8%A5%BF%E9%8E%AE%E4%B8%8A%E6%9E%97%E9%87%8C%E5%9D%AA%E6%9E%9756-12%E8%99%9F%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E7%94%B0%E9%96%93%E9%A4%90%E5%BB%B3%2F%E6%B0%91%E5%AE%BF%2F%E9%9C%B2%E7%87%9F/@24.8112309,121.1324996,17.5z/data=!4m14!4m13!1m5!1m1!1s0x346839738e0a96db:0x14c0d88afebbb616!2m2!1d121.131576!2d24.81195!1m5!1m1!1s0x3468390ce7272225:0xcdc717d0328923be!2m2!1d121.133387!2d24.806389!3e0');
+        }else if(/clickRoadToChruchFromSSG/.test(css)){
+            window.open('https://www.google.com/maps/dir/%E4%B8%8A%E7%9F%B3%E5%B4%97/%E9%97%9C%E8%A5%BF%E5%9D%AA%E6%9E%97%E5%A4%A9%E4%B8%BB%E5%A0%82/@24.805346,121.1321725,17.5z/data=!4m14!4m13!1m5!1m1!1s0x346839738e0a96db:0x14c0d88afebbb616!2m2!1d121.131576!2d24.81195!1m5!1m1!1s0x3468390c307c177f:0x5ec8ff3cefa771a2!2m2!1d121.1331162!2d24.8034319!3e0');
+        }else if(/clickRoadCarFromGuanXiIC/.test(css)){
+            window.open('https://www.google.com/maps/dir/24.7998751,121.1662992/306%E6%96%B0%E7%AB%B9%E5%8E%BF%E5%85%B3%E8%A5%BF%E9%95%87%E4%B8%8A%E6%9E%97%E9%87%8C%E5%9D%AA%E6%9E%9756-12%E8%99%9F%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E7%94%B0%E9%96%93%E9%A4%90%E5%BB%B3%2F%E6%B0%91%E5%AE%BF%2F%E9%9C%B2%E7%87%9F/@24.8066386,121.14338,15.5z/data=!4m9!4m8!1m0!1m5!1m1!1s0x3468390ce7272225:0xcdc717d0328923be!2m2!1d121.133387!2d24.806389!3e0');
+        }else if(/clickMinSu2Chruch/.test(css)){
+            window.open('https://www.google.com/maps/dir/24.8064535,121.1333458/%E9%97%9C%E8%A5%BF%E5%9D%AA%E6%9E%97%E5%A4%A9%E4%B8%BB%E5%A0%82/@24.8048275,121.1324587,18z/data=!3m1!4b1!4m9!4m8!1m0!1m5!1m1!1s0x3468390c307c177f:0x5ec8ff3cefa771a2!2m2!1d121.1331162!2d24.8034319!3e2');
+        }
+        
+    });
+    createButton({text: '托斯卡尼田間餐廳位置', css: 'btn1', id: 'showMinSu', clickFn: showMinSu});
+    createButton({text: '坪林天主堂位置　　　', css: 'btn1', id: 'showChurch', clickFn: showChurch});
+    createButton({text: '遊覽車', css: 'btn3', id: 'showTravelBus', clickFn: showTravelBus});
+    createButton({text: '高鐵', css: 'btn3', id: 'showTHSR', clickFn: showTHSR});
+    createButton({text: '台鐵', css: 'btn3', id: 'showTRA', clickFn: showTRA});
+    createButton({text: '國光客運', css: 'btn1', id: 'showFastBus', clickFn: showFastBus});
+    createButton({text: '新竹客運', css: 'btn1', id: 'showLocalBus', clickFn: showLocalBus});
+    createButton({text: '下關西交流道後開車提示', css: '', id: 'showFromGunaXiIC', clickFn: showFromGunaXiIC});
+    createButton({text: '民宿步行至天主堂提示', css: '', id: 'showMinSu2Chruch', clickFn: showMinSu2Chruch});
+    
+    window.onpopstate = function(event) {
+        if(!event.state){
+            TT.popup.style.display = 'none';
+            TT.main.style.display = '';
+        }else if(event.state.foo){
+            window[event.state.foo]();
+        }
+    }
+}
+</script>
+<!-- -->
+<!-- -->
+</head>
+<body onload="initFn()">
+	<div id="mainAreaRenderDiv"></div>
+	<div id="popupArea" class="popupArea" style="display:none;"><div id="popupIn" class="popupIn"></div><div class="title"></div><div class="close" onclick="TT.popup.close()">X</div></div>
+    <div id="maskArea" style="display:none;" class="mask"><div id="maskMsg"></div></div>
+</body>
+</html>
