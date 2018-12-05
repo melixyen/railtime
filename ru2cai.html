@@ -59,6 +59,11 @@ body {
     background-color: rgba(255,235,245,0.85);
     max-height: 15vh;
     overflow: hidden;
+    -o-user-select:none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .btn1{
@@ -69,6 +74,66 @@ body {
     border-color: #6E9;
     overflow: hidden;
     max-height: 10vh;
+}
+
+.collArea{
+    width: 98%;
+    height: 5vh;
+    display: inline-block;
+    float:left;
+    position: relative;
+}
+.collArea .arrow{
+    font-size: 4vh;
+    color: #922;
+    text-align: center;
+    width: 8%;
+    left: 46%;
+    position: absolute;
+    cursor: pointer;
+    border: 2px solid #922;
+    border-radius: 10vw;
+}
+.collArea.expand .hideOnExpand{
+    display: none;
+    font-size: X-Large;
+}
+.collAreaLeftBtn, .collAreaRightBtn{
+    display: inline-block;
+    font-size: 4vh;
+    margin: 1%;
+    border: 1vw solid #922;
+    color: #922;
+    border-radius: 3vw;
+    padding: 3% 4%;
+    text-align: center;
+    position: absolute;
+    top: -1vh;
+    cursor: pointer;
+    background-color: rgba(255,235,245,0.85);
+    
+}
+.collAreaRightBtn{
+    right: 0;
+}
+.collAreaLeftBtn{
+    left: 1vw;
+}
+
+
+.btnAlertMsg{
+    border-color: #F2A6A3;
+    background-color: rgba(255,231,220,0.95);
+    color: #B2D;
+    font-size: medium;
+    max-height: 35vh;
+}
+
+.transform90{
+    display: inline-block;
+    padding: 0 5px;
+    transform: rotate(-90deg);
+    color: #222;
 }
 
 .popupArea{
@@ -126,6 +191,13 @@ body {
     color: #73D;
     margin: 2vh 2vw;
 }
+.popupIn .des3{
+    font-size: 3vh;
+    line-height: 4vh;
+    color: #25B;
+    margin: 2vh 2vw;
+    background-color: #DFD;
+}
 .btnInPop{
     font-size: X-Large;
     width: 80%;
@@ -141,6 +213,11 @@ body {
     max-height: 15vh;
     overflow: hidden;
     color: #228;
+    -o-user-select:none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 .btnInPop.sm1{
     font-size: Large;
@@ -157,6 +234,52 @@ body {
     color: rgb(220,81,7);
 }
 
+.gotoChruchImg{
+    width: 96%;
+    cursor: pointer;
+}
+
+.shareAppQR{
+    width: 100%;
+    height: 200px;
+    display: inline-block;
+    margin: 20vh 0 0 0;
+    background-image: url('data:image/png;base64,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');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #FFF;
+}
+
+.nameCard{
+    position: absolute;
+    bottom: 10%;
+    left: 0;
+    height: 40%;
+    width: 96%;
+    background-color: #FFF;
+    border: 1vw solid #ECF;
+    border-radius: 5vw;
+}
+.nameCard .tx1{
+    font-size: 4vh;
+    line-height: 5vh;
+    color: #73D;
+    margin: 2vh 2vw;
+}
+.nameCard .tx2{
+    font-size: 3vh;
+    line-height: 4vh;
+    color: #2AE;
+    margin: 2vh 2vw;
+}
+.nameInfo{
+    position: absolute;
+    bottom: 0;
+    background-color: #ba4a4a;
+    color: #2EF;
+    font-size: 12px;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -168,14 +291,36 @@ var TT = {
         TT.popup.style.display = '';
         document.documentElement.scrollTop = 0;
     },
+    funcBtnAry: [],
+    inWebViewString: '',
+    checkIsWebViewTime: localStorage.getItem('r2cInAppTime') || 0,
+    flagInWebView: false,
+    flagDisplayFuncBtn: true,
     historyStartIndex: history.length
 };
+(function() {
+    var u = navigator.userAgent,
+        ua = navigator.userAgent.toLowerCase(),
+        isLineApp = u.indexOf("Line") > -1, // Line 內建瀏覽器
+        isFbApp = u.indexOf("FBAV") > -1, // FB App 內建瀏覽器
+        isWeixinApp = ua.match(/MicroMessenger/i) == "micromessenger"; // 微信內建瀏覽器
+
+    if (isLineApp) {// 如果是 Line 內建瀏覽器
+        TT.inWebViewString = '我們發現您可能使用 Line 開啟此 Web App，部分地圖功能若無法正常運作，可以點選右上角的<div class="transform90">…</div>並選擇 <span style="color:#222;">[以其他應用程式開啟]</span> 以獲得更好的體驗。';
+        TT.flagInWebView = true;
+    }
+    if (isFbApp) {// 如果是 FB App 內建瀏覽器
+    }
+    if (isWeixinApp) {// 如果是 微信內建瀏覽器
+    }
+})();
 
 function showMinSu(){
     var html = '<div class="pop1">';
     html += '' +
         '<div class="btnInPop clickMinSuMap">Google Map</div>' +
         '<div class="btnInPop clickMinSuFacebook">Facebook</div>' +
+        '<div class="btnInPop clickMinSuBlog">Blog</div>' +
         '<div style="clear: left"></div>' +
         '<div class="des1">地址：306新竹縣關西鎮上林里15鄰坪林56-12號</div>' +
         '<div class="des1">電話：03-5868628</div>' +
@@ -332,10 +477,15 @@ function showFromGunaXiIC(){
         '<div class="mapOut">' +
             '<iframe class="mapFrame" src="https://www.google.com/maps/embed?pb=!4v1543918047463!6m8!1m7!1s1GRIG4ql8ei5cFqmHMtQbg!2m2!1d24.81238588530892!2d121.1305222658049!3f295.0995487083001!4f2.6401982308951233!5f0.7820865974627469" frameborder="0" style="border:0" allowfullscreen></iframe>' +
         '</div>' +
-        '<div style="height: 20px;"></div>' +
+        '<div style="height: 40px;"></div>' +
         '<div class="des1">看見此招牌時左轉</div>' +
         '<div class="mapOut">' +
             '<iframe class="mapFrame" src="https://www.google.com/maps/embed?pb=!4v1543918179237!6m8!1m7!1sl3i0Dlg-dSOoq2saz-akyw!2m2!1d24.80502280858683!2d121.1333334775944!3f165.89853885441605!4f4.7150040927085115!5f1.5406505846263108" frameborder="0" style="border:0" allowfullscreen></iframe>' +
+        '</div>'+
+        '<div style="height: 40px;"></div>' +
+        '<div class="des1">留意此招牌並左轉</div>' +
+        '<div class="mapOut">' +
+            '<iframe class="mapFrame" src="https://www.google.com/maps/embed?pb=!4v1543980292141!6m8!1m7!1sp43ZSolgmh3YGs3-L_htFQ!2m2!1d24.80536212463258!2d121.1341899491163!3f3.4881326015791365!4f-7.325109858213679!5f1.5487371788672628" frameborder="0" style="border:0" allowfullscreen></iframe>' +
         '</div>'+
         
         '';
@@ -347,7 +497,29 @@ function showMinSu2Chruch(){
     html += '' +
         '<div class="btnInPop clickMinSu2Chruch">Google Map</div>' +
         '<div style="clear: left"></div>' +
-        '<div class="des1">走回竹 21 鄉道路口後左轉</div>' +
+        //'<div class="des1">走回竹 21 鄉道路口後左轉</div>' +
+        '<div style="height: 10px;"></div>' +
+        '<div class="des3">從民宿走出來後看見池塘與竹林時向右轉</div>' +
+        '<div>' +
+            '<a target="_blank" href="https://www.google.com/maps/@24.8054046,121.134219,3a,75y,216.37h,90.3t/data=!3m6!1e1!3m4!1sanGyAgOfKtapMTbmyJFgJQ!2e0!7i13312!8i6656">' +
+            '<img class="gotoChruchImg" src="ru2caiM1.png"></img>' +
+            '</a>' +
+        '</div>'+
+        '<div style="height: 20px;"></div>' +
+        '<div class="des3">走回竹 21 鄉道路口後左轉</div>' +
+        '<div>' +
+            '<a target="_blank" href="https://www.google.com/maps/@24.8050043,121.1334621,3a,75y,186.38h,91.25t/data=!3m7!1e1!3m5!1sos2U9CPM5OOSWQyF0wJYug!2e0!6s%2F%2Fgeo3.ggpht.com%2Fcbk%3Fpanoid%3Dos2U9CPM5OOSWQyF0wJYug%26output%3Dthumbnail%26cb_client%3Dmaps_sv.tactile.gps%26thumb%3D2%26w%3D203%26h%3D100%26yaw%3D133.4053%26pitch%3D0%26thumbfov%3D100!7i13312!8i6656">' +
+            '<img class="gotoChruchImg" src="ru2caiM2.png"></img>' +
+            '</a>' +
+        '</div>'+
+        '<div style="height: 20px;"></div>' +
+        '<div class="des3">於此路口前右轉進入教堂</div>' +
+        '<div>' +
+            '<a target="_blank" href="https://www.google.com/maps/@24.8033971,121.1336008,3a,75y,238.99h,88.15t/data=!3m6!1e1!3m4!1s919MzuPFVxUITE9wSDAbYQ!2e0!7i13312!8i6656">' +
+            '<img class="gotoChruchImg" src="ru2caiM3.png"></img>' +
+            '</a>' +
+        '</div>'+
+        '<div style="height: 20px;"></div>' +
         '<div class="mapOut">' +
             '<iframe class="mapFrame" src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d1810.863098353649!2d121.13245865822704!3d24.804827496020085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e2!4m3!3m2!1d24.8064535!2d121.1333458!4m5!1s0x3468390c307c177f%3A0x5ec8ff3cefa771a2!2z6Zec6KW_5Z2q5p6X5aSp5Li75aCC!3m2!1d24.8034319!2d121.13311619999999!5e0!3m2!1szh-TW!2stw!4v1543918860213" frameborder="0" style="border:0" allowfullscreen></iframe>' +
         '</div>'+
@@ -364,16 +536,106 @@ function createButton(cfg){
     div.id = cfg.id;
     div.hashData = cfg.id;
     var clickFn = function(){
-        var stateObj = { foo: cfg.id };
-        history.pushState(stateObj, "page 2", "ru2cai.html");
+        if(cfg.id!='alertWebViewInApp'){
+            var stateObj = { foo: cfg.id };
+            history.pushState(stateObj, "page 2", "ru2cai.html");
+        }
         cfg.clickFn();
     }
     div.addEventListener('click', clickFn, false);
     TT.main.appendChild(div);
     return div;
 }
+function makeCollArea(){
+    var div = document.createElement('div');
+    div.className = 'collArea expand';
+    div.id = 'collArea';
+    div.innerHTML = '' +
+        '<div class="arrow" id="collArrow" style="margin-top: 1vh;">▲</div>' +
+        '<div class="arrow hideOnExpand" id="expandArrow">▼</div>' +
+        '<div class="collAreaLeftBtn bs_no_select hideOnExpand" id="schBtn">祝福</div>' +
+        '<div class="collAreaRightBtn bs_no_select hideOnExpand" id="shareBtn">分享碼</div>' +
+        '<div class="shareAppQR hideOnExpand" id="qrDiv" style="display:none;"></div>' +
+    '';
+    div.addEventListener('click', function(e){
+        switch(e.target.id){
+            case 'collArrow':
+                showHideFuncBtn(2);
+            break;
+            case 'expandArrow':
+                showHideFuncBtn(1);
+            break;
+            case 'shareBtn':
+                var domQR = document.getElementById('qrDiv');
+                domQR.style.display = (domQR.style.display=='none') ? '' : 'none';
+            break;
+            case 'schBtn':
+                history.pushState({ foo: 'schBtn' }, "page 2", "ru2cai.html");
+                var cName = localStorage.getItem('r2cName') || '';
+                var cPhone = localStorage.getItem('r2cPhone') || '';
+                var cTalk = localStorage.getItem('r2cTalk') || '';
+                var html = '<div class="pop1">' +
+                    '<div class="des1">證婚儀式（天主堂）</div>' +
+                    '<div class="des2">進場：10:00</div>' +
+                    '<div class="des2">開始：10:30</div>' +
+                    '<div class="des1">用餐（餐廳）</div>' +
+                    '<div class="des2">開始：12:00</div>' +
+                    '<div style="height: 20px;"></div>' +
+                    '<div class="des1">祝福名片</div>' +
+                    '<div class="des2">姓名</div>' +
+                    '<input id="cName" type="text" maxlength="8" style="width:80%;font-size:4vh;height:5vh;padding-left:3vw;margin-left:2%;" value="' + cName + '">' +
+                    '<div class="des2">電話</div>' +
+                    '<input id="cPhone" type="tel" maxlength="13" style="width:80%;font-size:4vh;height:5vh;padding-left:3vw;margin-left:2%;" value="' + cPhone + '">' +
+                    '<div class="des2">想說的話</div>' +
+                    '<textarea id="cTalk" maxlength="255" style="width:90%;height:100px;margin-left:2%;" >' + cTalk + '</textarea>' +
+                    '<div class="btnInPop clickMakeTalkQR">產生 QR Code</div>' +
+                    '<div style="clear:left; height: 20px;"></div>' +
+                    '<div id="talkURL" style="display:block; margin:2vh 2vw;"></div>' +
+                    '<div id="talkQR" style="display:block;"></div>' +
+                    '<div class="des3">產生 QR Code 以便與其他賓客掃碼交換名片並收集祝福，請對方使用掃瞄 QR CODE 之 APP 掃完後開啟網址即可。此功能由雲端產生，若網路異常時將無法產生 QR Code，敬請見諒。</div>' +
+                '</div>';
+                TT.pop(html,'祝福');
+            break;
+        }
+    }, false);
+    TT.main.appendChild(div);
+}
+function showHideFuncBtn(takeNum){
+    var flg = !TT.flagDisplayFuncBtn;
+    if(takeNum==1){flg = true;}else if(takeNum==2){flg = false;}
+    document.getElementById('collArea').className = document.getElementById('collArea').className.replace(' expand','');
+    if(flg){
+        document.getElementById('collArrow').style.display = '';
+        document.getElementById('collArea').className = document.getElementById('collArea').className + ' expand';
+        TT.funcBtnAry.map(function(c, idx){
+            setTimeout(function(){c.style.display = '';}, idx*50);
+        });
+    }else{
+        document.getElementById('collArrow').style.display = 'none';
+        TT.funcBtnAry.map(function(c, idx, arr){
+            setTimeout(function(){c.style.display = 'none';}, (arr.length-idx)*50);
+        });
+    }
+    TT.flagDisplayFuncBtn = flg;
+}
+function makeTalkQR(){
+    var b = encodeURIComponent(document.getElementById('cName').value),
+        c = encodeURIComponent(document.getElementById('cPhone').value),
+        d = encodeURIComponent(document.getElementById('cTalk').value);
+    
+    var path = location.href.replace(location.search,'').replace('?','');
+    var url = path + '?a=name&b=' + b + '&c=' + c + '&d=' + d;
+    var imgS = "http://chart.apis.google.com/chart?cht=qr&chl="+ encodeURIComponent(url) +"&chs=240x240";
+    var html = '<img src="' + imgS + '"></img>';
+    document.getElementById('talkQR').innerHTML = html;
+    document.getElementById('talkURL').innerHTML = '<a target="_blank" href="' + url + '">預覽祝福名片</a>';
+    
+    localStorage.setItem('r2cName', document.getElementById('cName').value);
+    localStorage.setItem('r2cPhone', document.getElementById('cPhone').value);
+    localStorage.setItem('r2cTalk', document.getElementById('cTalk').value);
+}
 
-function initFn(){
+function appFn(){
     TT.main = document.getElementById('mainAreaRenderDiv');
     TT.popup = document.getElementById('popupArea');
     TT.popup.close = function(){
@@ -387,6 +649,8 @@ function initFn(){
             window.open('https://www.google.com/maps/place/%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E7%94%B0%E9%96%93%E9%A4%90%E5%BB%B3%2F%E6%B0%91%E5%AE%BF%2F%E9%9C%B2%E7%87%9F/@24.8075674,121.1316597,17z/data=!4m5!3m4!1s0x3468390ce7272225:0xcdc717d0328923be!8m2!3d24.806389!4d121.133387');
         }else if(/clickMinSuFacebook/.test(css)){
             window.open('https://www.facebook.com/Tuscanyfarmcafe');
+        }else if(/clickMinSuBlog/.test(css)){
+            window.open('https://blog.xuite.net/soup.garden/littlefarmer');
         }else if(/clickChruchMap/.test(css)){
             window.open('https://www.google.com/maps/place/%E9%97%9C%E8%A5%BF%E5%9D%AA%E6%9E%97%E5%A4%A9%E4%B8%BB%E5%A0%82/@24.8049512,121.1327673,17.75z/data=!4m5!3m4!1s0x0:0x5ec8ff3cefa771a2!8m2!3d24.8034319!4d121.1331162');
         }else if(/clickTravleBusStop1Map/.test(css)){
@@ -417,25 +681,78 @@ function initFn(){
             window.open('https://www.google.com/maps/dir/24.7998751,121.1662992/306%E6%96%B0%E7%AB%B9%E5%8E%BF%E5%85%B3%E8%A5%BF%E9%95%87%E4%B8%8A%E6%9E%97%E9%87%8C%E5%9D%AA%E6%9E%9756-12%E8%99%9F%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E7%94%B0%E9%96%93%E9%A4%90%E5%BB%B3%2F%E6%B0%91%E5%AE%BF%2F%E9%9C%B2%E7%87%9F/@24.8066386,121.14338,15.5z/data=!4m9!4m8!1m0!1m5!1m1!1s0x3468390ce7272225:0xcdc717d0328923be!2m2!1d121.133387!2d24.806389!3e0');
         }else if(/clickMinSu2Chruch/.test(css)){
             window.open('https://www.google.com/maps/dir/24.8064535,121.1333458/%E9%97%9C%E8%A5%BF%E5%9D%AA%E6%9E%97%E5%A4%A9%E4%B8%BB%E5%A0%82/@24.8048275,121.1324587,18z/data=!3m1!4b1!4m9!4m8!1m0!1m5!1m1!1s0x3468390c307c177f:0x5ec8ff3cefa771a2!2m2!1d121.1331162!2d24.8034319!3e2');
+        }else if(/clickMakeTalkQR/.test(css)){
+            makeTalkQR();
         }
         
     });
-    createButton({text: '托斯卡尼田間餐廳位置', css: 'btn1', id: 'showMinSu', clickFn: showMinSu});
-    createButton({text: '坪林天主堂位置　　　', css: 'btn1', id: 'showChurch', clickFn: showChurch});
-    createButton({text: '遊覽車', css: 'btn3', id: 'showTravelBus', clickFn: showTravelBus});
-    createButton({text: '高鐵', css: 'btn3', id: 'showTHSR', clickFn: showTHSR});
-    createButton({text: '台鐵', css: 'btn3', id: 'showTRA', clickFn: showTRA});
-    createButton({text: '國光客運', css: 'btn1', id: 'showFastBus', clickFn: showFastBus});
-    createButton({text: '新竹客運', css: 'btn1', id: 'showLocalBus', clickFn: showLocalBus});
-    createButton({text: '下關西交流道後開車提示', css: '', id: 'showFromGunaXiIC', clickFn: showFromGunaXiIC});
-    createButton({text: '民宿步行至天主堂提示', css: '', id: 'showMinSu2Chruch', clickFn: showMinSu2Chruch});
+    TT.funcBtnAry.push(createButton({text: '托斯卡尼田間餐廳位置', css: 'btn1', id: 'showMinSu', clickFn: showMinSu}));
+    TT.funcBtnAry.push(createButton({text: '坪林天主堂位置　　　', css: 'btn1', id: 'showChurch', clickFn: showChurch}));
+    TT.funcBtnAry.push(createButton({text: '遊覽車', css: 'btn3', id: 'showTravelBus', clickFn: showTravelBus}));
+    TT.funcBtnAry.push(createButton({text: '高鐵', css: 'btn3', id: 'showTHSR', clickFn: showTHSR}));
+    TT.funcBtnAry.push(createButton({text: '台鐵', css: 'btn3', id: 'showTRA', clickFn: showTRA}));
+    TT.funcBtnAry.push(createButton({text: '國光客運', css: 'btn1', id: 'showFastBus', clickFn: showFastBus}));
+    TT.funcBtnAry.push(createButton({text: '新竹客運', css: 'btn1', id: 'showLocalBus', clickFn: showLocalBus}));
+    TT.funcBtnAry.push(createButton({text: '下關西交流道後開車提示', css: '', id: 'showFromGunaXiIC', clickFn: showFromGunaXiIC}));
+    TT.funcBtnAry.push(createButton({text: '民宿步行至天主堂提示', css: '', id: 'showMinSu2Chruch', clickFn: showMinSu2Chruch}));
     
+    makeCollArea();
+    
+    if(TT.inWebViewString != ''){
+        var nowTime = new Date().getTime();
+        if(nowTime - TT.checkIsWebViewTime>600000){
+            localStorage.setItem('r2cInAppTime', nowTime);
+            createButton({text: TT.inWebViewString + '按一下關閉提示', css: 'btnAlertMsg', id: 'alertWebViewInApp', clickFn: function(){
+                document.getElementById('alertWebViewInApp').remove();
+            }});
+        }
+    }
+
     window.onpopstate = function(event) {
         if(!event.state){
             TT.popup.style.display = 'none';
             TT.main.style.display = '';
         }
         document.documentElement.scrollTop = 0;
+    }
+}
+
+function nameFn(sr){
+    TT.main = document.getElementById('mainAreaRenderDiv');
+    TT.main.style.position = 'relative';
+    var div = document.createElement('div');
+    div.className = 'nameCard';
+    var name = decodeURIComponent(sr.b || ''), tel = decodeURIComponent(sr.c || ''), tx = decodeURIComponent(sr.d || '');
+    div.innerHTML = '<div style="margin: 2vh 4vw;" style="border: none;">' +
+        '<div class="tx1">姓名：' + name + '</div>' +
+        '<div class="tx1">電話：' + tel + '</div>' +
+        '<div class="tx2">' + tx + '</div>' +
+    '</div>';
+    TT.main.appendChild(div);
+    
+    var nameInfo = document.createElement('div');
+    nameInfo.className = "nameInfo";
+    nameInfo.innerHTML = '請將螢幕截圖以便儲存';
+    TT.main.appendChild(nameInfo);
+}
+
+function initFn(){
+    var sr = (function(){
+            var s = location.search, aryParam, tmpParam, rt;
+            if(s.indexOf('?')!=-1){
+                rt = {};
+                aryParam = s.split('?')[1].split('&');
+                aryParam.map(function(tmpA){
+                    tmpParam = tmpA.split('=');
+                    rt[tmpParam[0]] = tmpParam[1];
+                });
+            }
+            return rt;
+    })()
+    if(sr && sr.a=='name'){
+        nameFn(sr);
+    }else{
+        appFn();
     }
 }
 </script>
