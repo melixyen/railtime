@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width; initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<title>伯儒采璇婚禮導遊</title>
+<title>伯儒采璇婚禮導航</title>
 <style type="text/css">
 @charset "utf-8";
 
@@ -252,13 +252,17 @@ body {
 
 .nameCard{
     position: absolute;
-    bottom: 10%;
+    top: 50%;
     left: 0;
-    height: 40%;
+    min-height: 40%;
     width: 96%;
     background-color: #FFF;
     border: 1vw solid #ECF;
     border-radius: 5vw;
+    word-wrap: break-word;
+	word-break: break-all;
+	overflow: auto;
+	z-index: 4;
 }
 .nameCard .tx1{
     font-size: 4vh;
@@ -267,8 +271,7 @@ body {
     margin: 2vh 2vw;
 }
 .nameCard .tx2{
-    font-size: 3vh;
-    line-height: 4vh;
+    font-size: 4vh;
     color: #2AE;
     margin: 2vh 2vw;
 }
@@ -278,6 +281,27 @@ body {
     background-color: #ba4a4a;
     color: #2EF;
     font-size: 12px;
+}
+
+
+@media screen and (orientation: landscape) {
+	#mainAreaRenderDiv{
+		width: 60%;
+		left: 20%;
+		position: relative;
+		background: none;
+	}
+	
+	.popupArea{
+    	width: 60%;
+    	left: 20%;
+    	background: none;
+	}
+	
+	.mapOut, .mapFrame{
+		width: 90vh;
+		height: 90vh;
+	}
 }
 
 </style>
@@ -619,14 +643,14 @@ function showHideFuncBtn(takeNum){
     TT.flagDisplayFuncBtn = flg;
 }
 function makeTalkQR(){
-    var b = encodeURIComponent(document.getElementById('cName').value),
-        c = encodeURIComponent(document.getElementById('cPhone').value),
-        d = encodeURIComponent(document.getElementById('cTalk').value);
-    
+    var b = document.getElementById('cName').value,
+        c = document.getElementById('cPhone').value,
+        d = document.getElementById('cTalk').value;
+
     var path = location.href.replace(location.search,'').replace('?','');
-    var url = path + '?a=name&b=' + b + '&c=' + c + '&d=' + d;
+    var url = path + '?a=name&b=' + encodeURIComponent(b) + '&c=' + encodeURIComponent(c) + '&d=' + encodeURIComponent(d);
     var imgS = "http://chart.apis.google.com/chart?cht=qr&chl="+ encodeURIComponent(url) +"&chs=240x240";
-    var html = '<img src="' + imgS + '"></img>';
+    var html = '<img id="imgNameQR" src="' + imgS + '"></img>';
     document.getElementById('talkQR').innerHTML = html;
     document.getElementById('talkURL').innerHTML = '<a target="_blank" href="' + url + '">預覽祝福名片</a>';
     
@@ -687,7 +711,7 @@ function appFn(){
         
     });
     TT.funcBtnAry.push(createButton({text: '托斯卡尼田間餐廳位置', css: 'btn1', id: 'showMinSu', clickFn: showMinSu}));
-    TT.funcBtnAry.push(createButton({text: '坪林天主堂位置　　　', css: 'btn1', id: 'showChurch', clickFn: showChurch}));
+    TT.funcBtnAry.push(createButton({text: '坪林天主堂位置　　', css: 'btn1', id: 'showChurch', clickFn: showChurch}));
     TT.funcBtnAry.push(createButton({text: '遊覽車', css: 'btn3', id: 'showTravelBus', clickFn: showTravelBus}));
     TT.funcBtnAry.push(createButton({text: '高鐵', css: 'btn3', id: 'showTHSR', clickFn: showTHSR}));
     TT.funcBtnAry.push(createButton({text: '台鐵', css: 'btn3', id: 'showTRA', clickFn: showTRA}));
@@ -761,7 +785,7 @@ function initFn(){
 </head>
 <body onload="initFn()">
 	<div id="mainAreaRenderDiv"></div>
-	<div id="popupArea" class="popupArea" style="display:none;"><div id="popupIn" class="popupIn"></div><div class="title"></div><div class="close" onclick="TT.popup.close()">X</div></div>
+	<div id="popupArea" class="popupArea" style="display:none;"><div id="popupIn" class="popupIn"></div><div class="title bs_no_select"></div><div class="close bs_no_select" onclick="TT.popup.close()">X</div></div>
     <div id="maskArea" style="display:none;" class="mask"><div id="maskMsg"></div></div>
 </body>
 </html>
