@@ -250,6 +250,13 @@ body {
     background-color: #FFF;
 }
 
+.cccText{
+	width:80%;font-size:6vw;height:7vw;padding-left:3vw;margin-left:2%;
+}
+.cccTextArea{
+	font-size: 18px;
+}
+
 .nameCard{
     position: absolute;
     top: 50%;
@@ -293,8 +300,6 @@ body {
 	}
 	
 	.popupArea{
-    	width: 60%;
-    	left: 20%;
     	background: none;
 	}
 	
@@ -372,6 +377,8 @@ function showTravelBus(){
         '<div class="des2">汐止區發車時間：2018/12/08 早上 8:00</div>' +
         '<div class="des2">遊覽車聯絡人：魏桂馨 (0928851152)</div>' +
         '<div class="des2">遊覽車聯絡人：顏建昌 (0935191225)</div>' +
+        '<div class="des2">車號：KAH-230 </div>' +
+        '<div class="des3">三大遊覽車，司機林先生，備有礦泉水</div>' +
         '<div class="btnInPop sm1 clickTravleBusStop1Map">汐止區乘車點</div>' +
         '<div style="clear: left"></div>' +
         '<div class="des1">汐止運動公園旗桿前，汐止區公所正對面</div>' +
@@ -607,11 +614,11 @@ function makeCollArea(){
                     '<div style="height: 20px;"></div>' +
                     '<div class="des1">祝福名片</div>' +
                     '<div class="des2">姓名</div>' +
-                    '<input id="cName" type="text" maxlength="8" style="width:80%;font-size:4vh;height:5vh;padding-left:3vw;margin-left:2%;" value="' + cName + '">' +
+                    '<input id="cName" class="cccText" type="text" maxlength="8" value="' + cName + '">' +
                     '<div class="des2">電話</div>' +
-                    '<input id="cPhone" type="tel" maxlength="13" style="width:80%;font-size:4vh;height:5vh;padding-left:3vw;margin-left:2%;" value="' + cPhone + '">' +
+                    '<input id="cPhone" class="cccText" type="tel" maxlength="13" value="' + cPhone + '">' +
                     '<div class="des2">想說的話</div>' +
-                    '<textarea id="cTalk" maxlength="255" style="width:90%;height:100px;margin-left:2%;" >' + cTalk + '</textarea>' +
+                    '<textarea id="cTalk" class="cccTextArea" maxlength="255" style="width:90%;height:100px;margin-left:2%;" >' + cTalk + '</textarea>' +
                     '<div class="btnInPop clickMakeTalkQR">產生 QR Code</div>' +
                     '<div style="clear:left; height: 20px;"></div>' +
                     '<div id="talkURL" style="display:block; margin:2vh 2vw;"></div>' +
