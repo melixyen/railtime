@@ -502,6 +502,7 @@ function showFromGunaXiIC(){
     var html = '<div class="pop1">';
     html += '' +
         '<div class="des2">下交流道後沿縣道 118 石岡子路直行過 7-11 石光門市後左轉竹 21 鄉道，於托斯卡尼藍色招牌處左轉上行至停車場。</div>' +
+        '<div class="btnInPop clickRoadCarBackGuanXiIC">回關西交流道路線導航</div>' +
         '<div class="btnInPop clickRoadCarFromGuanXiIC">下關西交流道後路線資訊</div>' +
         '<div style="clear: left"></div>' +
         '<div class="des1">過 7-11 後於此路口左轉</div>' +
@@ -521,7 +522,7 @@ function showFromGunaXiIC(){
         
         '';
     html += '</div>';
-    TT.pop(html,'下關西交流道後');
+    TT.pop(html,'關西交流道後');
 }
 function showMinSu2Chruch(){
     var html = '<div class="pop1">';
@@ -704,6 +705,8 @@ function appFn(){
             window.open('https://www.google.com/maps/dir/%E4%B8%8A%E7%9F%B3%E5%B4%97/%E9%97%9C%E8%A5%BF%E5%9D%AA%E6%9E%97%E5%A4%A9%E4%B8%BB%E5%A0%82/@24.805346,121.1321725,17.5z/data=!4m14!4m13!1m5!1m1!1s0x346839738e0a96db:0x14c0d88afebbb616!2m2!1d121.131576!2d24.81195!1m5!1m1!1s0x3468390c307c177f:0x5ec8ff3cefa771a2!2m2!1d121.1331162!2d24.8034319!3e0');
         }else if(/clickRoadCarFromGuanXiIC/.test(css)){
             window.open('https://www.google.com/maps/dir/24.7998751,121.1662992/306%E6%96%B0%E7%AB%B9%E5%8E%BF%E5%85%B3%E8%A5%BF%E9%95%87%E4%B8%8A%E6%9E%97%E9%87%8C%E5%9D%AA%E6%9E%9756-12%E8%99%9F%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E7%94%B0%E9%96%93%E9%A4%90%E5%BB%B3%2F%E6%B0%91%E5%AE%BF%2F%E9%9C%B2%E7%87%9F/@24.8066386,121.14338,15.5z/data=!4m9!4m8!1m0!1m5!1m1!1s0x3468390ce7272225:0xcdc717d0328923be!2m2!1d121.133387!2d24.806389!3e0');
+        }else if(/clickRoadCarBackGuanXiIC/.test(css)){
+            window.open('https://www.google.com/maps/dir/306%E6%96%B0%E7%AB%B9%E5%8E%BF%E5%85%B3%E8%A5%BF%E9%95%87%E4%B8%8A%E6%9E%97%E9%87%8C%E5%9D%AA%E6%9E%9756-12%E8%99%9F%E6%89%98%E6%96%AF%E5%8D%A1%E5%B0%BC%E7%94%B0%E9%96%93%E9%A4%90%E5%BB%B3%2F%E6%B0%91%E5%AE%BF%2F%E9%9C%B2%E7%87%9F/24.8003666,121.1691426/@24.8056942,121.1317959,16.01z/data=!4m9!4m8!1m5!1m1!1s0x3468390ce7272225:0xcdc717d0328923be!2m2!1d121.133387!2d24.806389!1m0!3e0');
         }else if(/clickMinSu2Chruch/.test(css)){
             window.open('https://www.google.com/maps/dir/24.8064535,121.1333458/%E9%97%9C%E8%A5%BF%E5%9D%AA%E6%9E%97%E5%A4%A9%E4%B8%BB%E5%A0%82/@24.8048275,121.1324587,18z/data=!3m1!4b1!4m9!4m8!1m0!1m5!1m1!1s0x3468390c307c177f:0x5ec8ff3cefa771a2!2m2!1d121.1331162!2d24.8034319!3e2');
         }else if(/clickMakeTalkQR/.test(css)){
@@ -718,7 +721,7 @@ function appFn(){
     TT.funcBtnAry.push(createButton({text: '台鐵', css: 'btn3', id: 'showTRA', clickFn: showTRA}));
     TT.funcBtnAry.push(createButton({text: '國光客運', css: 'btn1', id: 'showFastBus', clickFn: showFastBus}));
     TT.funcBtnAry.push(createButton({text: '新竹客運', css: 'btn1', id: 'showLocalBus', clickFn: showLocalBus}));
-    TT.funcBtnAry.push(createButton({text: '下關西交流道後開車提示', css: '', id: 'showFromGunaXiIC', clickFn: showFromGunaXiIC}));
+    TT.funcBtnAry.push(createButton({text: '往返關西交流道導航', css: '', id: 'showFromGunaXiIC', clickFn: showFromGunaXiIC}));
     TT.funcBtnAry.push(createButton({text: '民宿步行至天主堂提示', css: '', id: 'showMinSu2Chruch', clickFn: showMinSu2Chruch}));
     
     makeCollArea();
