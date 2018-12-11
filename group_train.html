@@ -596,10 +596,11 @@ var TT = (function(){
             "程式名稱": "列車行駛模式群組化系統",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.1.1",
-            "產生日期": "2018/11/29"
+            "版本": "Beta 0.1.2",
+            "產生日期": "2018/12/11"
     };
     TT.defined.programUpdateInfo = [
+                    'Beta 0.1.2: 新增製圖功能。',
                     'Beta 0.1.1: 新增路由選擇。',
                     'Beta 0.1: 新增車站選擇器。'
     ];
@@ -1232,11 +1233,17 @@ var TT = (function(){
             btn.innerHTML = cfg.text;
             btn.addEventListener('click', cfg.clickFn);
             
+            var btnMakeImg = document.createElement('button');
+            btnMakeImg.className = cfg.btnCls + ' makeButton';
+            btnMakeImg.innerHTML = '製圖';
+            btnMakeImg.addEventListener('click', TT.ui.trainToSVG);
+            
             var div = document.createElement('div');
             div.className = cfg.cls + ' findButtonDiv';
             div.id = cfg.id+'_div';
             
             div.appendChild(btn);
+            div.appendChild(btnMakeImg);
             
             if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
             return div;
@@ -2009,7 +2016,7 @@ var TT = (function(){
 					var color = (c.classObj.color) ? c.classObj.color : '#47A';
 					var cas = '<span style="color:' + color + ';" >' + c.classObj.name + '</span>';
                     var clickFn = ' onclick="TT.ui.clickTrainInfo(\'' + c.id + '\')"';
-					return '<td class="head"' + clickFn + ' data-tid="' + c.id + '">' + '模式' + modeCount + '<br>' + cas + '<br>共' +c.trainNumber.length + '列</td>';
+					return '<td class="head"' + clickFn + ' data-tid="' + c.id + '">' + '模式' + modeCount + '<div></div>' + cas + '<div></div>共' +c.trainNumber.length + '列</td>';
 				}).join('');
             }
             var displayInside = function(store, st){
@@ -2044,7 +2051,8 @@ var TT = (function(){
             var nextTR = allStopStation.map(function(st){
                 var stObj = TT.fn.getTRA_stationDataOfID(st);
                 var clsTR = (stObj.big) ? ' bigStation' : '';
-                var rt = '<tr class="' + clsTR + '"><td class="stationName">' + stObj.name + '</td>';
+                var stBigStyle = (stObj.big) ? 'font-weight: 700;' : '';
+                var rt = '<tr class="' + clsTR + '"><td class="stationName" style="' + stBigStyle + '">' + stObj.name + '</td>';
                 rt += displayInside(storeMode,st);
                 rt += '<td></td>';
                 rt += displayInside(storeOther,st);
@@ -2118,7 +2126,7 @@ var TT = (function(){
                     var trainNum = '<span style="color:' + color + ';" >' + c.Train + '</span>';
                     var fromStr = TT.fn.getTRA_stationDataOfID('tra_'+c.TimeInfo[0].Station).name;
                     var toStr = TT.fn.getTRA_stationDataOfID('tra_'+c.TimeInfo[c.TimeInfo.length-1].Station).name;
-					return '<td class="head">' + cas + '<br>' + trainNum + '<br>' + fromStr + '<br>' + '~' + '<br>' + toStr + '</td>';
+					return '<td class="head">' + cas + '<br></br>' + trainNum + '<br></br>' + fromStr + '<br></br>' + '~' + '<br></br>' + toStr + '</td>';
 				}).join('');
             }
             
@@ -2168,6 +2176,50 @@ var TT = (function(){
             }else{
                 TT.ui.centerDiv.style.height = ch + 'px';
             }
+        },
+        trainToSVG: function(){
+            var domA = document.getElementById(TT.ui.center.timeTable.displayDiv.trainDiv.id);
+            var str = domA.querySelector('table').innerHTML.toString();
+            if(str==''){
+                alert('必需先尋找列車停靠模式表後才能製圖');
+                return false;
+            }
+            str = str.replace(/\<td class\=\"head\"/gi, '<td style="padding:3px 6px;" ').replace(/\<td\>/gi, '<td style="padding:2px 10px;">');
+            str = str.replace(/\<tr class\=\"\ bigStation\"\>/gi, '<tr style="background-color:#F3F3F3;">');
+            var rect = domA.querySelector('table').getBoundingClientRect();
+            var canvas = document.createElement('canvas');
+            canvas.style.width = rect.width + 'px'; canvas.style.height = rect.height + 'px';
+            canvas.width = rect.width; canvas.height = rect.height;
+            var ctx = canvas.getContext('2d');
+            var data  = '<svg xmlns="http://www.w3.org/2000/svg" width="' + rect.width + '" height="' + rect.height + '">' +
+                '<foreignObject width="100%" height="100%">' +
+                    '<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:14px; background-color:#FFF;">' +
+                        str +
+                        '<p style="font-size:10px;color:#111;">本圖片由<span style="color:#2244CC;">接軌時刻-列車行駛模式群組化系統</span>自動產生</p>' +
+                    '</div>' +
+                '</foreignObject>' +
+            '</svg>';
+            var DOMURL = window.URL || window.webkitURL || window;
+            var img = new Image();
+            var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+            var url = DOMURL.createObjectURL(svg);
+            
+            var flgMake = false;
+            img.onload = function () {
+                if(flgMake) return false;
+                flgMake = true;
+                ctx.drawImage(img, 0, 0);
+                DOMURL.revokeObjectURL(url);
+                window.open(canvas.toDataURL());
+                img.src = canvas.toDataURL();
+            }
+            
+            img.src = url;
+            domA.innerHTML += '<p>下方為產生的圖</p>';
+            domA.appendChild(img);
+            TT.msg.show('已產生圖檔，若無法自動開啟新視窗請注意封鎖彈出視窗');
+            
+            return canvas;
         },
         transWeekToString: function(w){
             w = parseInt(w,10);
