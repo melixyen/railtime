@@ -107,6 +107,11 @@ body {
     background-color: #f5eabc;
     cursor: pointer;
 }
+#displayArea div.stationBtn.dirBtn{
+    border-color: #e34256;
+    background-color: #fdbaba;
+    cursor: pointer;
+}
 
 #timepage{
     margin: 0 auto;
@@ -336,6 +341,9 @@ var LANG = {
     sptr027: '備註',
     sptr028: '最近幾班有停靠{stname}站的列車時間',
     sptr029: '誤點 {min} 分',
+    sptr030: '順行列車',
+    sptr031: '逆行列車',
+    sptr032: '實際開車',
     zx: ''
 }
 var TT = {
@@ -1282,6 +1290,81 @@ TT.makeMainAreaRenderDiv = function(){
         return TT.goingData.findResult;
     }
     
+    function findTrainOnStation(aObj, dir, liveInfo){
+        var aTime = [],
+            delayTrain = {},
+            canTakeTime = [],
+            stationTodayTime = JSON.parse(JSON.stringify(TT.goingData.stationTodayTime)),
+            nowTime = TT.fn.getNowTimeObj().num;
+        //1.依照 liveInfo 內容判斷最近列車是否有誤點
+        liveInfo.map(function(c){
+            if(c.DelayTime >= 0 && c.Direction==dir){
+                delayTrain["t"+c.TrainNo] = c.DelayTime;
+            }
+        });
+        stationTodayTime.map(function(c){
+            c.delayTime = 0;
+            c.trueDepartureTime = c.DepartureTime;
+            if(delayTrain["t"+c.TrainNo]){
+                c.sortMin = c.sortMin + delayTrain["t"+c.TrainNo]*60;
+                c.delayTime = delayTrain["t"+c.TrainNo];
+                c.trueDepartureTime = TT.fn.transTime2HM(c.sortMin);
+            }
+            if(c.sortMin < (4*60*60) && nowTime>(12*60*60)) c.sortMin = c.sortMin + 86400;
+        });
+        stationTodayTime.sort(function(a,b){
+        	return (a.sortMin > b.sortMin) ? 1 : -1;
+        });
+        //2.取出目前時間之後的班車
+        stationTodayTime.map(function(c){
+            if(c.sortMin > nowTime && c.Direction==dir && 'tra_'+c.EndingStationID!=TT.goingData.stationID){
+                aTime.push(c);
+            }
+        });
+        return aTime;
+    }
+    
+    Vue.component('timetablenowtationlist', {
+        template: '<div>' +
+        '<table class="nearTimeTableList" v-bind:style="tableStyle()">' +
+            '<tr>' +
+                '<th>' + LANG.sptr022 + '</th><th>' + LANG.sptr024 + '</th><th>' + LANG.sptr023 + '</th><th>' + LANG.sptr025 + '</th><th>' + LANG.sptr032 + '</th><th>' + LANG.sptr027 + '</th>' +
+            '</tr>' +
+            '<tr v-for="(train,idx) in trainTimeAry">' +
+                '<td>{{train.EndingStationName}}</td>' +
+                '<td>{{train.TrainNo}}</td>' +
+                '<td v-html="getCarClass(train)"></td>' +
+                '<td>{{train.DepartureTime}}</td>' +
+                '<td>{{train.trueDepartureTime}}</td>' +
+                '<td>{{getOtherInfo(train)}}</td>' +
+            '</tr>' +
+        '</table></div>',
+        props: ['cslist'],
+        data: function() {
+            return {
+                trainTimeAry: false,
+                tableStyle: function(){
+                    return 'font-size:' + TT.ui.stationBtnSize + 'px;';
+                },
+                getCarClass: function(train){
+                    var car = TT.fn.getTRA_carClassName(train.TrainTypeID);
+                    if(!car || car=='') car = train.TrainTypeName.Zh_tw;
+                    return car;
+                },
+                getOtherInfo: function(train){
+                    var rt = '';
+                    if(train.delayTime){
+                        rt = LANG.sptr029.replace('{min}',train.delayTime);
+                    }
+                    return rt;
+                }
+            }
+        },
+        mounted: function(){
+            this.trainTimeAry = this.cslist;
+        }
+    });
+    
     Vue.component('timetablelist', {
         template: '<div>' +
         //'<div>{{targetStationName()}}</div>' + 
@@ -1339,11 +1422,14 @@ TT.makeMainAreaRenderDiv = function(){
                 '<div class="returnBtn" v-on:click="returnSearch()" v-bind:style="timeshowBtnStyle()">' + LANG.sptr011 + '</div>' +
             '</div>' +
         '</div>',
-        props: ['ctlist', 'tsid'],
+        props: ['ctlist', 'tsid', 'cslist', 'shmn'],
         data: function() {
             return {
                 LANG: window.LANG,
                 printInfo: function(){
+                    if(this.shmn==2){
+                        return this.printList();
+                    }
                     var rt = '',
                         targetStationObj = TT.fn.getStationByID(this.tsid),
                         ctlist = this.ctlist,
@@ -1392,6 +1478,10 @@ TT.makeMainAreaRenderDiv = function(){
                     }
                     return rt;
                 },
+                printList: function(){
+                    console.info(this.cslist);
+                    return '123';
+                },
                 listSearch: function(){
                     var rtb = '<div id="listSearchMain"><timetablelist></timetablelist></div>';
                     TT.popupArea.pop(rtb);
@@ -1400,7 +1490,8 @@ TT.makeMainAreaRenderDiv = function(){
                     });
                 },
                 timeshowBtnStyle: function(){
-                    return 'font-size:' + TT.ui.stationBtnSize + 'px;margin:' + TT.ui.stationBtnMargin + 'px;';
+                    var hide = (this.shmn!=1) ? ' display:none;' : ''; 
+                    return 'font-size:' + TT.ui.stationBtnSize + 'px;margin:' + TT.ui.stationBtnMargin + 'px;' + hide;
                 },
                 returnSearch: function(){
                     vm.switchStation();
@@ -1517,14 +1608,16 @@ TT.makeMainAreaRenderDiv = function(){
         '<div id="displayArea">' +
             '<div id="mapArea" v-show="flagShowMap">' +
                 '<div id="mapDir0">' +
+                    '<div class="stationBtn dirBtn bs_no_select" v-on:click="findDirList(0)">' + LANG.sptr030 + '</div>' +
                     '<div v-for="(st0,aidx) in dir0StationAry" class="stationBtn bs_no_select" v-bind:style="getStationBtnStyle(st0)" v-on:click="findStation(st0, 0)">{{st0.name}}</div>' +
                 '</div>' +
                 '<div id="mapDir1">' +
+                    '<div class="stationBtn dirBtn bs_no_select" v-on:click="findDirList(1)">' + LANG.sptr031 + '</div>' +
                     '<div v-for="(st1,bidx) in dir1StationAry" class="stationBtn bs_no_select" v-bind:style="getStationBtnStyle(st1)" v-on:click="findStation(st1, 1)">{{st1.name}}</div>' +
                 '</div>' +
             '</div>' + 
             '<div id="timeArea" v-show="flagShowTime">' +
-                '<timeshowout :ctlist="canTakeTrainList" :tsid="targetStationID"></timeshowout>' +
+                '<timeshowout :ctlist="canTakeTrainList" :tsid="targetStationID" :cslist="canShowList" :shmn="showMethondNum"></timeshowout>' +
             '</div>' + 
             '<div id="setArea" v-show="flagShowSet">' +
                 '<setpageout></setpageout>' +
@@ -1547,6 +1640,8 @@ TT.makeMainAreaRenderDiv = function(){
             dir1StationAry: [],
             stationStyleData: [],
             canTakeTrainList: false,
+            canShowList: false,
+            showMethondNum: 1,
             targetStationID: '',
             menuTextStr: ''
 		},
@@ -1567,6 +1662,27 @@ TT.makeMainAreaRenderDiv = function(){
                     this.switchStation();
                 }
             },
+            findDirList: function(dir){
+                var me = this;
+                TT.ui.mask(LANG.sptr006);
+                TT.pubData.getStationLiveInfo(me.stationID, function(info){
+                        if(info=='fail'){
+                            TT.ui.showPTXAjaxFail();
+                            return false;
+                        }
+                        TT.ui.unmask();
+                        var canAry = findTrainOnStation(TT.fn.getStationByID(me.stationID), dir, info);
+                        me.canShowList = JSON.parse(JSON.stringify(canAry));
+                    var rtb = '<div id="listStationMain"><timetablenowtationlist :cslist="cslist"></timetablenowtationlist></div>';
+                    TT.popupArea.pop(rtb);
+                    var lsm = new Vue({
+                        data: {
+                            cslist: JSON.parse(JSON.stringify(canAry))
+                        },
+                        el: '#listStationMain'
+                    });
+                });
+            },
             findStation: function(stObj, dir){
                 //alert(stObj.name + ',' + dir);
                 var me = this;
@@ -1586,7 +1702,7 @@ TT.makeMainAreaRenderDiv = function(){
                         TT.ui.unmask();
                         var canAry = findTrainByAB(TT.fn.getStationByID(me.stationID), stObj, dir, info);
                         me.canTakeTrainList = JSON.parse(JSON.stringify(canAry));
-                        me.switchTime();
+                        me.switchTime(1);
                     });
                 });
             },
@@ -1749,7 +1865,8 @@ TT.makeMainAreaRenderDiv = function(){
                     this.flagShowMap = true;
                 }
             },
-            switchTime: function(){
+            switchTime: function(num){
+                if(num) this.showMethondNum = num;
                 if(!this.flagShowTime){
                     this.hideAllPanel();
                     this.flagShowTime = true;
