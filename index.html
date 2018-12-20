@@ -17,6 +17,10 @@ body {
     margin: 0px;
 }
 
+.floatLeftStyle{
+	float: left;
+}
+
 .headerBar{
     position: fixed;
     height: 40px;
@@ -87,6 +91,11 @@ body {
 .centerPage .selectWeekOut .selectWeekIn,
 .centerPage .selectTimeOut .selectTimeIn{
     padding: 5px;
+}
+
+.centerPage .findButtonDiv{
+	display: inline-block;
+	width: 90%;
 }
 
 .centerPage .selectTimeOut .selectTimeIn .setNow{
@@ -757,6 +766,7 @@ body {
 <script type="text/javascript" src="ttlib/data.js"></script>
 <script type="text/javascript" src="ttlib/fn.js"></script>
 <script type="text/javascript" src="ttlib/fn_tymetro.js"></script>
+<script type="text/javascript" src="ttlib/ptx.js"></script>
 <script type="text/javascript">
 //進度: 完成 getTRA_timeRangeByFromTo，可尋找某一時段間往來兩站的班次
 //      完成 getTRA_timeRangeByFromTo 資料加上 getFromToTime , 接下來製作 TRTC 兩站時間查詢
@@ -791,10 +801,11 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.5.9",
-            "產生日期": "2018/11/01"
+            "版本": "Beta 0.6.0",
+            "產生日期": "2018/12/20"
     };
     TT.defined.programUpdateInfo = [
+                    'Beta 0.6.0: 新增公共交通整合平台 PTX API 呼叫 lib，有讀回時刻表則用該時刻表。',
                     'Beta 0.5.9: 新增台鐵補償式自動化搜尋連結處理屏東線及海線和集集線。',
                     'Beta 0.5.8: 新增台鐵捷運化 2018 年啟用之台中及高雄通勤站。',
                     'Beta 0.5.7: 新增台鐵速查系統連結及屏東線內部潮州轉乘。',
@@ -831,6 +842,7 @@ var TT = (function(){
 
     __createLibTT.fn(TT);
 	__createLibTT.fn_tymetro(TT);
+    __createLibTT.ptx(TT);
     
     function classWindow(ucfg){
         ucfg = ucfg || {};
@@ -1442,7 +1454,7 @@ var TT = (function(){
             
             var btn = document.createElement('button');
             btn.id = cfg.id;
-            btn.className = cfg.btnCls + ' findButton';
+            btn.className = cfg.btnCls + ' findButton floatLeftStyle';
             btn.innerHTML = cfg.text;
             btn.addEventListener('click', cfg.clickFn);
             
@@ -1450,7 +1462,17 @@ var TT = (function(){
             div.className = cfg.cls + ' findButtonDiv';
             div.id = cfg.id+'_div';
             
+            var iptID = cfg.id + '_ckpt';
+            var ckUsePTXDiv = document.createElement('div');
+            var ckDefaultValue = (TT.defined.usePTX) ? ' checked="true"' : '';
+            ckUsePTXDiv.innerHTML = '<span><input id="' + iptID + '" type="checkbox" ' + ckDefaultValue + ' onclick="TT.ui.fnCheckUsePTX_boolean()" onchange="TT.ui.fnCheckUsePTX_boolean()">允許時用公共交通資訊即時 API 查找時刻，資料正確但速度較慢</span>';
+            TT.ui.fnCheckUsePTX_boolean = function(){
+            	var dom = ckUsePTXDiv.querySelector('#' + iptID);
+            	TT.defined.usePTX = !!(dom.checked);
+            }
+            
             div.appendChild(btn);
+            div.appendChild(ckUsePTXDiv);
             
             if(cfg.renderID && cfg.renderID!=''){document.getElementById(cfg.renderID).appendChild(div);}
             return div;
@@ -2350,27 +2372,30 @@ var TT = (function(){
                 var b = controlDiv.stationSelectDiv.fnGetEnd();
                 //var w = controlDiv.weekSelectDiv.fnGetDay();
                 
-                var aryRoute = TT.fn.getCommon_timeRangeBestByFromTo(a,b,startTime,endTime,flagAD,w);
-                TT.ui.printStatus('尋找列車班次完成');TT.msg.show('尋找完成',200);
-                TT.ui.printTrain(aryRoute,'', cbFn);
                 
-                localDataFn.setItem('defaultFromStation', a);
-                localDataFn.setItem('defaultToStation', b);
-                localDataFn.setItem('defaultStartTime', startTime);
-                localDataFn.setItem('defaultEndTime', endTime);
+                function endOfFind(aryRoute){
+                	TT.ui.printStatus('尋找列車班次完成');TT.msg.show('尋找完成',200);
+                	TT.ui.printTrain(aryRoute,'', cbFn);
                 
-                //rewrite url Get param
-                var sObj = {
-                    a: a,
-                    b: b,
-                    w: w,
-                    startTime: startTime,
-                    endTime: endTime
+                	localDataFn.setItem('defaultFromStation', a);
+                	localDataFn.setItem('defaultToStation', b);
+                	localDataFn.setItem('defaultStartTime', startTime);
+                	localDataFn.setItem('defaultEndTime', endTime);
+                
+                	//rewrite url Get param
+                	var sObj = {
+                    	a: a,
+                    	b: b,
+                    	w: w,
+                    	startTime: startTime,
+                    	endTime: endTime
+                	}
+                	var sParam = '?a=' + a + '&b=' + b + '&w=' + w + //'&findTrain=1' +
+                    	'&startTime=' + encodeURIComponent(startTime) +
+                    	'&endTime=' + encodeURIComponent(endTime);
+                	if(window.history) history.pushState(sObj,'',sParam);
                 }
-                var sParam = '?a=' + a + '&b=' + b + '&w=' + w + //'&findTrain=1' +
-                     '&startTime=' + encodeURIComponent(startTime) +
-                     '&endTime=' + encodeURIComponent(endTime);
-                if(window.history) history.pushState(sObj,'',sParam);
+                TT.fn.getCommon_timeRangeBestByFromTo(a,b,startTime,endTime,flagAD,w,endOfFind);
             }
             
             function fnCheck(){

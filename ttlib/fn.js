@@ -338,9 +338,8 @@ __createLibTT.fn = function(TT){
             if(routeT.length==0) routeT = TT.fn.getRoute_searchAutoSplitRoute(a, b, routeT);
             return routeT;
         },
-        getCommon_timeRangeBestByFromTo: function(a, b, startTime, endTime, flagAD, w){
+        getCommon_timeRangeBestByFromTo: function(a, b, startTime, endTime, flagAD, w, cbFn){
             if(flagAD===undefined) flagAD = true;
-            var aryRouteAll = TT.fn.getCommon_timeTakeByFromTo(a, b, startTime, endTime, flagAD, w);
             var aryP = new Array(), rt = new Array();
             
             function getBest(routeA){
@@ -440,15 +439,19 @@ __createLibTT.fn = function(TT){
                 return routeA;
             }
             
-            for(var i=0; i<aryRouteAll.length; i++){
-                aryP[i] = getLink(aryRouteAll[i], getBest(aryRouteAll[i]));
-                aryRouteAll[i] = matchBestTrain(aryRouteAll[i], aryP[i]);
-            }
+            function endOfFind(aryRouteAll){
+            	for(var i=0; i<aryRouteAll.length; i++){
+                	aryP[i] = getLink(aryRouteAll[i], getBest(aryRouteAll[i]));
+                	aryRouteAll[i] = matchBestTrain(aryRouteAll[i], aryP[i]);
+            	}
             
-            return aryRouteAll;
+            	//return aryRouteAll;
+            	cbFn(aryRouteAll);
+            }
+            var aryRouteAll = TT.fn.getCommon_timeTakeByFromTo(a, b, startTime, endTime, flagAD, w, endOfFind);
             //return rt;
         },
-        getCommon_timeTakeByFromTo: function(a, b, startTime, endTime, flagAD, w){
+        getCommon_timeTakeByFromTo: function(a, b, startTime, endTime, flagAD, w, cbFn){
             if(flagAD===undefined) flagAD = true;
             if(!startTime) startTime = TT.defined.defaultCrossDayTime;
             if(!endTime) endTime = TT.fn.getDefaultDayLastTime();
@@ -458,7 +461,6 @@ __createLibTT.fn = function(TT){
             }else{
                 sendStartTime = TT.defined.defaultCrossDayTime;
             }
-            var aryRouteAll = TT.fn.getCommon_timeRangeByFromTo(a, b, sendStartTime, sendEndTime, flagAD, w);
             //Use TT.fn.checkOnTimeRange to get which train on time range 
             
             function giveOnTimeRange(routeA){
@@ -481,13 +483,17 @@ __createLibTT.fn = function(TT){
                 return routeA;
             }
             
-            for(var i=0; i<aryRouteAll.length; i++){
-                aryRouteAll[i] = giveOnTimeRange(aryRouteAll[i]);
+            function endOfFind(aryRouteAll){
+            	for(var i=0; i<aryRouteAll.length; i++){
+                	aryRouteAll[i] = giveOnTimeRange(aryRouteAll[i]);
+            	}
+            	cbFn(aryRouteAll);
             }
             
-            return aryRouteAll;
+            TT.fn.getCommon_timeRangeByFromTo(a, b, sendStartTime, sendEndTime, flagAD, w, endOfFind);
+            //return aryRouteAll;
         },
-        getCommon_timeRangeByFromTo: function(a, b, startTime, endTime, flagAD, w){
+        getCommon_timeRangeByFromTo: function(a, b, startTime, endTime, flagAD, w, cbFn){
             if(flagAD===undefined) flagAD = true;
             var routeAry = TT.fn.getCommon_theTransRouteByFromTo(a,b);
             var tmpRouteTime, rt = new Array();
@@ -632,13 +638,35 @@ __createLibTT.fn = function(TT){
                 return routeA;
             }
             
-            for(var i=0; i<routeAry.length; i++){
-                tmpRouteTime = getRouteTime(routeAry[i]);
-                tmpRouteTime = getNextPointer(tmpRouteTime);
-                rt.push(tmpRouteTime);
+            function endOfFind(routeAry){
+            	for(var i=0; i<routeAry.length; i++){
+                	tmpRouteTime = getRouteTime(routeAry[i]);
+                	tmpRouteTime = getNextPointer(tmpRouteTime);
+                	rt.push(tmpRouteTime);
+            	}
+            
+            	cbFn(rt);//return rt;
             }
             
-            return rt;
+            function checkRouteAryTime(routeAry){
+            	//在此檢查所有需要的時刻表是否已備齊，有的話才進行接下來的動作
+				if(TT.defined.usePTX){
+					var mrtPTXAry = [];
+					routeAry.forEach(function(ary){
+						ary.forEach(function(c){
+							if(c.company=='trtc'){
+								mrtPTXAry.push({company: c.company, line: c.line, takeRange: c.takeRange});
+							}
+						});
+					});
+					TT.ptx.getTakeMRTTimeTable(mrtPTXAry, w, function(){
+						endOfFind(routeAry)
+					});
+				}else{
+					endOfFind(routeAry);
+				}
+            }
+            checkRouteAryTime(routeAry);
         },
         getCommon_stationDataOfID: function(stid){
             var cmp = TT.fn.getCompanyOfStation(stid);
@@ -2991,6 +3019,11 @@ __createLibTT.fn = function(TT){
             return rt;
         },
         getTRTC_stationTime: function(stationID, line, dir, w){
+        	var ptxTime = TT.fn.getTRTC_ptx_stationTime(stationID, line, dir, w);
+            if(ptxTime!=false){
+                return ptxTime;
+            }
+            //若上面抓的到 ptx time table 則優先回應
             var rnwTime = TT.fn.getTRTC_rnw_stationTime(stationID, line, dir, w);
             if(rnwTime!=false){
                 return rnwTime;
@@ -3132,6 +3165,10 @@ __createLibTT.fn = function(TT){
                 }
             }
             return rt;
+        },
+        getTRTC_ptx_stationTime: function(stationID, line, dir, w){
+        	if(!TT.defined.usePTX) return false;
+        	return TT.ptx.trtc.getFormatStationTime(stationID, line, dir, w);
         },
         getTRTC_timeTable2Data: function(cbFn){
             function doBack(json){

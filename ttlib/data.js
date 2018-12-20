@@ -691,16 +691,16 @@ __createLibTT.data = function(TT){
                     id: "trtc_4",
                     name: "中和新蘆線(4)",
                     color: "#ffa300",
-                    dir: "1",
+                    dir: "0",
                     splitStation: ['trtc_128'],
                     outArea: [{
-                        dir: "1",
+                        dir: "0",
                         station: "trtc_127~trtc_179",
                         transAt: "trtc_128",
                         isSubLine: true,
                         waitingNextMinute: 4
                     }, {
-                        dir: "1",
+                        dir: "0",
                         station: "trtc_178~trtc_174",
                         transAt: "trtc_128",
                         isSubLine: true,

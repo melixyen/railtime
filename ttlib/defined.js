@@ -53,6 +53,7 @@ __createLibTT.defined = function(TT){
             }
             return rt;
         })(),
+        usePTX: false,
         zxcv: 1
     }
 }
