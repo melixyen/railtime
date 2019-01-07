@@ -790,12 +790,7 @@ body {
 //		新增 getTRA_linkRouteV1 及 getTRA_linkMap 做自動化路由搜尋
 var TT = (function(){
 
-    var TT = {//name space TT for TimeTable
-        data: {},
-        os: {}
-    }
-    
-    __createLibTT.defined(TT);
+    var TT = $trainTaiwanLib;
     
     TT.defined.programAbout = {
             "程式名稱": "接軌時刻",
@@ -838,282 +833,8 @@ var TT = (function(){
                     'Beta 0.3: 新增路網圖選擇器提供北台灣軌道運輸路網站點選擇。'
     ];
     
-    __createLibTT.data(TT);
-
-    __createLibTT.fn(TT);
-	__createLibTT.fn_tymetro(TT);
-    __createLibTT.ptx(TT);
     
-    function classWindow(ucfg){
-        ucfg = ucfg || {};
-        var defaultCfg = {
-            mask: false,
-            height: 'auto',
-            width: 'auto',
-            baseClass: ' ttWindow',
-            cls: '',
-            id: TT.ui.genRandomId(),
-            div: '',
-            items: [],
-            html: '',
-            renderTo: 'body',
-            onShow: function(){},
-            zIndex: '120'
-        }
-        var cfg = $.extend(defaultCfg, ucfg);
-        if(typeof(cfg.width)=='number') cfg.width = cfg.width + 'px';
-        if(typeof(cfg.height)=='number') cfg.height = cfg.height + 'px';
-        var me = this;
-        
-        me.el = document.createElement('div');
-        me.el.className = cfg.baseClass + ' ' + cfg.cls;
-        me.el.id = cfg.id;
-        me.el.style.zIndex = cfg.zIndex;
-        me.el.style.width = cfg.width;
-        me.el.style.height = cfg.height;
-        me.el.innerHTML = '<div class="inner" id="' + cfg.id + '_inner"></div><div class=" ttWindowClose" closeID="' + cfg.id + '">X</div>';
-        
-        me.getInner = function(){
-            return document.getElementById(cfg.id + '_inner');
-        }
-        me.setInnerHTML = function(html){
-            document.getElementById(cfg.id + '_inner').innerHTML = html;
-        }
-        
-        me.init = function(){
-            if(!document.getElementById(cfg.id)){
-                if(cfg.renderTo=='body'){
-                    document.body.appendChild(me.el);
-                }else{
-                    document.getElementById(cfg.renderTo).appendChild(me.el);
-                }
-                me.inner = me.getInner();
-                if(typeof(cfg.div)=='string'){
-                    me.inner.innerHTML = cfg.div;
-                }else{
-                    me.inner.appendChild(cfg.div);
-                }
-                
-                if(cfg.html != ''){me.inner.innerHTML = cfg.html;}
-                for(var i=0; i<cfg.items.length; i++){
-                    me.inner.appendChild(cfg.items[i]);
-                }
-            }
-            me.el.style.display = 'none';
-        }
-        
-        me.addClass = function(cls){
-            var ary = me.el.className.split(' ');
-            for(var i=0; i<ary.length; i++){
-                if(ary[i]==cls) return me.el.className;
-            }
-            me.el.className = me.el.className + ' ' + cls;
-            return me.el.className;
-        }
-        me.removeClass = function(cls){
-            var ary = me.el.className.split(' '), rt = '';;
-            for(var i=0; i<ary.length; i++){
-                if(ary[i]!=cls){
-                    rt += ' ' + ary[i];
-                }
-            }
-            me.el.className = rt;
-            return rt;
-        }
-        
-        me.resetPosition = function(){
-            var dh = TT.fn.getDocumentHeight(), dw = TT.fn.getDocumentWidth();
-            var wh = me.el.clientHeight, ww = me.el.clientWidth;
-            
-            var top = Math.ceil((dh-wh)/2);
-            var left = Math.ceil((dw-ww)/2);
-            
-            if(top < 0) top = 0;
-            if(left < 0) left = 0;
-            
-            me.setPosition(top, left);
-        }
-        me.setPosition = function(top,left){
-            me.el.style.top = top + 'px';
-            me.el.style.left = left + 'px';
-        }
-        
-        me.show = function(objShow){
-            objShow = objShow || {};
-            if(me.isShow) return false;
-            me.isShow = true;
-            me.init();
-            me.el.style.display = '';
-            me.resetPosition();
-            if(cfg.mask){
-                TT.ui.mask(' ');
-            }
-            me.showCfg = objShow;
-            cfg.onShow(me);
-        }
-        
-        me.close = function(){
-            me.el.style.display = 'none';
-            TT.ui.unmask();
-            me.isShow = false;
-        }
-        me.clickFn = function(e){
-            if(e.target.className.indexOf('ttWindowClose')>=0){
-                var id = e.target.attributes.getNamedItem('closeID');
-                me.close();
-            }
-        }
-        me.el.addEventListener('click', me.clickFn, false);
-    }
-    function classMapSelector(ucfg){
-        ucfg = ucfg || {};
-        var defaultCfg = {
-            mask: false,
-            height: 'auto',
-            width: 'auto',
-            autoScroll: false,
-            baseClass: ' ttMapSelector',
-            cls: '',
-            id: TT.ui.genRandomId(),
-            items: [],
-            html: '',
-            isRendered: false,
-            onShow: function(){},
-            zIndex: '132'
-        }
-        var cfg = $.extend(defaultCfg, ucfg);
-        if(typeof(cfg.width)=='number') cfg.width = cfg.width + 'px';
-        if(typeof(cfg.height)=='number') cfg.height = cfg.height + 'px';
-        var me = this;
-        
-        me.el = document.createElement('div');
-        me.el.className = cfg.baseClass + ' ' + cfg.cls;
-        me.el.id = cfg.id;
-        me.el.style.zIndex = cfg.zIndex;
-        me.el.style.width = cfg.width;
-        me.el.style.height = cfg.height;
-        if(cfg.overflowStyle) me.el.style.overflow = cfg.overflowStyle;
-        me.el.innerHTML = '<div class="header" id="' + cfg.id + '_header"></div>' + 
-            '<div class="main" id="' + cfg.id + '_main"></div><div class=" ttWindowClose" closeID="' + cfg.id + '">X</div>';
-        
-        me.init = function(){
-            if(!document.getElementById(cfg.id)){
-                document.body.appendChild(me.el);
-                me.isRendered = true;
-                var tmpD;
-                for(var i=0; i<cfg.items.length; i++){
-                    tmpD = '<div class="tabName">' + cfg.items[i].headerText + '</div>';
-                    document.getElementById(cfg.id+ '_header').innerHTML += tmpD;
-                    document.getElementById(cfg.id+ '_main').appendChild(cfg.items[i]);
-                }
-                me.itemSwitch(cfg.items[0].headerText);
-            }
-            me.el.style.display = 'none';
-        }
-        
-        me.itemSwitch = function(val){
-            var dm = document.getElementById(cfg.id + '_header');
-            for(var i=0; i<dm.childNodes.length; i++){
-                dm.childNodes[i].className = dm.childNodes[i].className.replace(' onUse','');
-                cfg.items[i].style.zIndex = '2';
-                cfg.items[i].style.opacity = '0.2';
-                if(val==dm.childNodes[i].innerHTML){
-                    dm.childNodes[i].className = dm.childNodes[i].className + ' onUse';
-                    cfg.items[i].style.opacity = '1';
-                    cfg.items[i].style.zIndex = '5';
-                    me.itemActiveString = val;
-                }
-            }
-        }
-        
-        me.addClass = function(cls){
-            var ary = me.el.className.split(' ');
-            for(var i=0; i<ary.length; i++){
-                if(ary[i]==cls) return me.el.className;
-            }
-            me.el.className = me.el.className + ' ' + cls;
-            return me.el.className;
-        }
-        me.removeClass = function(cls){
-            var ary = me.el.className.split(' '), rt = '';;
-            for(var i=0; i<ary.length; i++){
-                if(ary[i]!=cls){
-                    rt += ' ' + ary[i];
-                }
-            }
-            me.el.className = rt;
-            return rt;
-        }
-        
-        me.resetPosition = function(){
-            var dh = TT.fn.getDocumentHeight(), dw = TT.fn.getDocumentWidth();
-            var wh = me.el.clientHeight, ww = me.el.clientWidth;
-            
-            var top = 0;
-            var left = 0;//Math.ceil((dw*0.025));
-            
-            me.setPosition(top, left);
-            //resize window
-            if(cfg.autoScroll){
-                me.el.style.width = (dw-20) + 'px';
-                me.el.style.height = (dh-20) + 'px';
-                var domMain = document.getElementById(cfg.id + '_main');
-                domMain.style.width = me.el.style.width;
-                domMain.style.height = (dh-50) + 'px';
-                domMain.style.overflow = 'auto';
-            }
-        }
-        me.setPosition = function(top,left){
-            me.el.style.top = top + 'px';
-            me.el.style.left = left + 'px';
-        }
-        
-        me.show = function(scfg){
-            if(me.isShow) return false;
-            if(typeof(domA)=='string') domA = document.getElementById(domA);
-            TT.ui.bodyScroll(0);
-            me.isShow = true;
-            me.init();
-            me.el.style.display = '';
-            me.resetPosition();
-            TT.ui.mask(' ');
-            cfg.onShow(me, cfg, scfg);
-        }
-        
-        me.close = function(){
-            me.el.style.display = 'none';
-            TT.ui.unmask();
-            me.isShow = false;
-        }
-        me.clickFn = function(e){
-            if(e.target.className.indexOf('ttWindowClose')>=0){
-                var id = e.target.attributes.getNamedItem('closeID');
-                me.close();
-            }
-            if(e.target.className.indexOf('tabName')!=-1){
-                me.itemSwitch(e.target.innerHTML);
-            }
-        }
-        me.el.addEventListener('click', me.clickFn, false);
-    }
-    TT.lib = {
-        classWindow: classWindow,
-        classMapSelector: classMapSelector
-    }
-    
-    TT.ui = {
-        randomIdNum: 0,
-        bodyScroll: function(val){
-            var sysTop;
-            if(document.documentElement && document.documentElement.scrollTop>0){
-                if(val || val===0) document.documentElement.scrollTop = val;
-                sysTop = document.documentElement.scrollTop;
-            }else if(document.body && document.body.scrollTop>0){
-                if(val || val===0) document.body.scrollTop = val;
-                sysTop = document.body.scrollTop;
-            }
-            return sysTop;
-        },
+    TT.ui = TT.lib.apply(TT.ui, {
         centerScroll: function(val, isDirect){
             var sysTop;
             if(val || val===0){
@@ -1130,20 +851,6 @@ var TT = (function(){
             TT.ui.center.timeTable.displayDiv.trainDiv.innerHTML = '';
             TT.ui.center.timeTable.displayDiv.routeDiv.innerHTML = '';
             TT.now = false;
-        },
-        createDiv: function(id, cls, appendT){
-            var dom = document.createElement('div');
-            if(id && id=='_gen') id = TT.ui.genRandomId();
-            if(id) dom.id = id;
-            if(cls) dom.className = cls;
-            if(appendT){
-                if(appendT == 'body'){
-                    document.body.appendChild(dom);
-                }else{
-                    document.getElementById(appendT).appendChild(dom);
-                }
-            }
-            return dom;
         },
         createBaseDiv: function(){
             TT.ui.maskDiv = TT.ui.createDiv('tt_mask', 'mask', 'body');
@@ -2418,20 +2125,6 @@ var TT = (function(){
             }
             fnCheck();
         },
-        formatMinute2HM: function(mi){
-            if(typeof(mi)=='string' && mi.indexOf(':') > 0){
-                mi = Math.ceil(TT.fn.transTime2Sec(mi)/60)
-            }
-            
-            if(mi<60){
-                return mi + ' 分';
-            }else{
-                return Math.floor(mi/60) + ' 小時 ' + (mi % 60) + ' 分';
-            }
-        },
-        genRandomId: function(){
-            return 'ttGenID_' + TT.ui.randomIdNum++;;
-        },
         getCenterPage: function(str){
             for(var k in TT.ui.center){
                 if(TT.ui.center[k].id == 'tt_' + str){
@@ -2471,35 +2164,6 @@ var TT = (function(){
         unmask: function(){
             TT.ui.maskDiv.className = TT.ui.maskDiv.className.replace(' show','');
         },
-        msg: (function(){
-            var rt = {};
-            rt.show = function(str, delay){
-                delay = (delay) ? delay : 3000;
-                var div = TT.ui.createDiv('_gen', 'msg show', 'body');
-                div.innerHTML = str;
-                var divWidth = div.offsetWidth, divHeight = div.offsetHeight;
-                var dw = TT.fn.getDocumentWidth(), dh = TT.fn.getDocumentHeight();
-                div.style.top = (dh - divHeight) / 2 + 'px';
-                div.style.left = (dw - divWidth) / 2 + 'px';
-                var time1 = setTimeout(function(){
-                    div.className += ' afterEffect';
-                },delay);
-                var time2 = setTimeout(function(){
-                    document.body.removeChild(div);
-                },delay+1000);
-                div.addEventListener('click', function(e){
-                    clearTimeout(time1);
-                    clearTimeout(time2);
-                    document.body.removeChild(div);
-                }, false);
-                return div;
-            }
-            rt.alert = function(st){
-                alert(st);
-            }
-            
-            return rt;
-        })(),
         printStatus: function(str){
             TT.ui.statusBar.innerHTML = str;
         },
@@ -2541,11 +2205,6 @@ var TT = (function(){
                 TT.ui.centerDiv.style.height = ch + 'px';
             }
         },
-        transWeekToString: function(w){
-            w = parseInt(w,10);
-            var ary = ['日','一','二','三','四','五','六'];
-            return '星期' + ary[w];
-        },
         updateCenter: function(cmd){
             if(!cmd || /home/g.test(cmd)){
                 var aryCkWeekLoaded = $('.center .home .frameA.tra div.ckWeekLoaded').hide();
@@ -2559,9 +2218,8 @@ var TT = (function(){
                 TT.data.tra.timeTable
             }
         }
-    }
+    });
     
-    TT.msg = TT.ui.msg;
     TT.initFn = function(){
         //Remove HTML Element
         //var msff = document.getElementById(new Array('pre','_g','_text').join(''));

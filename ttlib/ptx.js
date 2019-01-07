@@ -1,7 +1,7 @@
 (function(){
-if(!window.__createLibTT) window.__createLibTT = {};
+if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 
-__createLibTT.ptx = function(TT){
+(function(TT){
 	var v2url = 'https://ptx.transportdata.tw/MOTC/v2';
 	var ptxURL = v2url;
 	var metroURL = ptxURL + '/Rail/Metro';
@@ -421,7 +421,7 @@ __createLibTT.ptx = function(TT){
 	
 	
 	TT.ptx = ptx;
-}
+})($trainTaiwanLib);
 })();
 
 

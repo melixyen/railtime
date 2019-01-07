@@ -1,7 +1,7 @@
 (function(){
-if(!window.__createLibTT) window.__createLibTT = {};
+if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 
-__createLibTT.data = function(TT){
+(function(TT){
 	TT.data = {
         tra: {
         	defined: {
@@ -2732,5 +2732,5 @@ __createLibTT.data = function(TT){
             }
         ]
     }
-}
+})($trainTaiwanLib);
 })();

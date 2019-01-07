@@ -1,7 +1,7 @@
 (function(){
-if(!window.__createLibTT) window.__createLibTT = {};
+if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 
-__createLibTT.fn_tymetro = function(TT){
+(function(TT){
 	    
     //+++++TYMETRO function start+++++
     TT.fn.tymetro = {
@@ -326,5 +326,5 @@ __createLibTT.fn_tymetro = function(TT){
         }
     }
     //+++++TYMETRO function end+++++
-}
+})($trainTaiwanLib);
 })();

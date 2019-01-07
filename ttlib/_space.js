@@ -1,7 +1,7 @@
 (function(){
-if(!window.__createLibTT) window.__createLibTT = {};
+if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 
-__createLibTT.ffffyyyy = function(TT){
+(function(TT){
 	
-}
+})($trainTaiwanLib);
 })();

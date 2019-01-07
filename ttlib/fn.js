@@ -1,7 +1,7 @@
 (function(){
-if(!window.__createLibTT) window.__createLibTT = {};
+if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 
-__createLibTT.fn = function(TT){
+(function(TT){
 	TT.fn = {
         checkEquaArrayStartEnd: function(ary1, ary2){
         	if(typeof(ary2[0])=='string' && typeof(ary2[1])=='string'){
@@ -3685,5 +3685,5 @@ __createLibTT.fn = function(TT){
             }
         }
     }
-}
+})($trainTaiwanLib);
 })();
