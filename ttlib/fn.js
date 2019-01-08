@@ -659,7 +659,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 							}
 						});
 					});
-					TT.ptx.getTakeMRTTimeTable(mrtPTXAry, w, function(){
+					TT.ptx.getTakeMRTTimeTable(mrtPTXAry, w, function(status, data){
 						endOfFind(routeAry)
 					});
 				}else{

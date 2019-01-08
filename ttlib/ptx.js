@@ -2,6 +2,8 @@
 if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 
 (function(TT){
+	var CONST_PTX_API_SUCCESS = 'success',
+		CONST_PTX_API_FAIL = 'fail';
 	var v2url = 'https://ptx.transportdata.tw/MOTC/v2';
 	var ptxURL = v2url;
 	var metroURL = ptxURL + '/Rail/Metro';
@@ -9,6 +11,32 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 	var ptxMRTWeekStr = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 	
 	var pData = {
+		bus: {
+			city: [
+				{name:'臺北市', City:'Taipei', CityCode:'TPE'},
+				{name:'新北市', City:'NewTaipei', CityCode:'NWT'},
+				{name:'桃園市', City:'Taoyuan', CityCode:'TAO'},
+				{name:'臺中市', City:'Taichung', CityCode:'TXG'},
+				{name:'臺南市', City:'Tainan', CityCode:'TNN'},
+				{name:'高雄市', City:'Kaohsiung', CityCode:'KHH'},
+				{name:'基隆市', City:'Keelung', CityCode:'KEE'},
+				{name:'新竹市', City:'Hsinchu', CityCode:'HSZ'},
+				{name:'新竹縣', City:'HsinchuCounty', CityCode:'HSQ'},
+				{name:'苗栗縣', City:'MiaoliCounty', CityCode:'MIA'},
+				{name:'彰化縣', City:'ChanghuaCounty', CityCode:'CHA'},
+				{name:'南投縣', City:'NantouCounty', CityCode:'NAN'},
+				{name:'雲林縣', City:'YunlinCounty', CityCode:'YUN'},
+				{name:'嘉義縣', City:'ChiayiCounty', CityCode:'CYQ'},
+				{name:'嘉義市', City:'Chiayi', CityCode:'CYI'},
+				{name:'屏東縣', City:'PingtungCounty', CityCode:'PIF'},
+				{name:'宜蘭縣', City:'YilanCounty', CityCode:'ILA'},
+				{name:'花蓮縣', City:'HualienCounty', CityCode:'HUA'},
+				{name:'臺東縣', City:'TaitungCounty', CityCode:'TTT'},
+				{name:'金門縣', City:'KinmenCounty', CityCode:'KIN'},
+				{name:'澎湖縣', City:'PenghuCounty', CityCode:'PEN'},
+				{name:'連江縣', City:'LienchiangCounty', CityCode:'LIE'}
+			]
+		},
 		trtc: {
 			station_ary: [
                 //Bannan Line
@@ -165,6 +193,20 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			}]
 		}
 	}
+
+	var fnBUS = {
+		getCityData: function(str){
+			var ary = pData.bus.city;
+			var rt = false;
+			for(var i=0; i<ary.length; i++){
+				if(ary[i].name==str || ary[i].City==str || ary[i].CityCode==str){
+					rt = ary[i];
+					break;
+				}
+			}
+			return rt;
+		}
+	}
 	
 	var fnTRTC = {
 		checkRouteIdOnUse: function(RouteID, LineID){
@@ -262,6 +304,10 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			ptx.tempTimeTable.trtc[LineID][StationID][w] = [[],[]];//Direction 0 and 1
 			//抓時刻表
 			ptx.getURL(url, function(json){
+				if(json==CONST_PTX_API_FAIL){
+					cbFn(json);
+					return false;
+				}
 				json.forEach(function(routeA){
 					var tmpAry = ptx.tempTimeTable.trtc[LineID][StationID][w];
 					var tmpTimeAry = routeA.Timetables.map(function(timeObj){
@@ -288,7 +334,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 				workAry[1] = workAry[1].sort(ptx.sortByTTSortTime);
 				workAry[1] = workAry[1].map(timeMakeFn);
 				
-				cbFn();
+				cbFn(json);
 			});
 		},
 		getFormatStationTime: function(stID, line, dir, w){
@@ -320,6 +366,10 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 		printStatus: function(){
 			if(TT && TT.ui && TT.ui.printStatus){ TT.ui.printStatus.apply(TT.ui, arguments); }
 		},
+		msg: {
+			show: function(){if(TT && TT.ui && TT.ui.msg && TT.ui.msg.show){ TT.ui.msg.show.apply(TT.ui, arguments); }},
+			alert: function(){if(TT && TT.ui && TT.ui.msg && TT.ui.msg.alert){ TT.ui.msg.alert.apply(TT.ui, arguments); }}
+		},
 		mask: function(){
 			if(TT && TT.ui && TT.ui.mask){ TT.ui.mask.apply(TT.ui, arguments); }
 		},
@@ -331,10 +381,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 	var ptx = {
 		data: pData,
 		trtc: fnTRTC,
+		bus: fnBUS,
 		tempTimeTable: {},
 	    GetAuthorizationHeader: function(){
-	        var AppID = 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF';
-	        var AppKey = 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF';
+	        var AppID = TT.ptx.AppID || 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF';
+	        var AppKey = TT.ptx.AppKey || 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF';
 	
 	        var GMTString = new Date().toGMTString();
 	        var ShaObj = new jsSHA('SHA-1', 'TEXT');
@@ -355,23 +406,37 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 	                cbFn(JSON.stringify(data));
 	            },
 	            error: function(){
-	                cbFn('fail');
+	                cbFn(CONST_PTX_API_FAIL);
 	            }
 	        });
 	    },
 	    getTakeMRTTimeTable: function(mrtPTXAry, w, cbFn){
-	    	pui.mask('使用雲端公共交通資訊整合平台 API 讀取相關捷運站時刻表');
+			pui.mask('使用雲端公共交通資訊整合平台 API 讀取相關捷運站時刻表');
+			var rtStatus = [];
 	    	function runGet(arr){
 	    		if(arr.length==0){
 	    			pui.unmask();
-	    			cbFn();
+	    			cbFn(rtStatus, ptx.tempTimeTable);
 	    		}else{
 	    			var obj = arr.shift();
 	    			if(obj.company=='trtc'){
 	    				var LineID = fnTRTC.getLineID(obj.line),
 	    					StationID = fnTRTC.getStationID(obj.takeRange[0], obj.line),
 							targetID = fnTRTC.getStationID(obj.takeRange[1], obj.line);
-	    				fnTRTC.getStationTime(LineID, [StationID,targetID], parseInt(w), function(){runGet(arr);});
+	    				fnTRTC.getStationTime(LineID, [StationID,targetID], parseInt(w), function(json){
+							var rts = {LineID:LineID, StationID: StationID, targetID: targetID};
+							if(json==CONST_PTX_API_FAIL){
+								pui.unmask();
+								pui.printStatus('通訊失敗，PTX 無法取回資料。');
+								rts.status = CONST_PTX_API_FAIL;
+								rtStatus.push(rts);
+								runGet(arr);
+							}else{
+								rts.status = CONST_PTX_API_SUCCESS;
+								rtStatus.push(rts);
+								runGet(arr);
+							}
+						});
 	    			}
 	    		}
 	    	}
@@ -382,7 +447,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 	            if(xhr.target.readyState==4 && xhr.target.status==200){
 	                cbFn(JSON.parse(xhr.target.response));
 	            }else{
-	                cbFn('fail');
+	                cbFn(CONST_PTX_API_FAIL, xhr.target.response);
 	            }
 	        }
 	        var fm = new XMLHttpRequest();
@@ -391,7 +456,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 	        fm.addEventListener("abort", reqListener);
 	        fm.addEventListener("timeout", reqListener);
 	        fm.open('GET', url);
-	        fm.timeout = 6000;
+	        fm.timeout = 30000;
 	        var headerObj = this.GetAuthorizationHeader();
 	        for(var k in headerObj){
 	            fm.setRequestHeader(k, headerObj[k]);
