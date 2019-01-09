@@ -8,6 +8,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 	var v2url = 'https://ptx.transportdata.tw/MOTC/v2';
 	var ptxURL = v2url;
 	var metroURL = ptxURL + '/Rail/Metro';
+	var busURL = ptxURL + '/Bus'
 	var traURL = '/Rail/TRA';
 	var ptxMRTWeekStr = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 	
@@ -195,7 +196,24 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 		}
 	}
 
+	/*
+		Function Callback 回應模式格式
+		cbFn(json, event);
+		event = {
+			status: CONST_PTX_API_SUCCESS || CONST_PTX_API_FAIL,
+			xhr: if with xhr,
+			data: if with xhr.target.response
+		}
+	*/
+
 	var fnBUS = {
+		setDefaultCfg: function(cfg){
+			cfg = cfg || {};
+			cfg.manageBy = cfg.manageBy || 'City';//City , InterCity
+			cfg.cbFn = cfg.cbFn || function(data,e){console.info(data);};
+			cfg.top = 3000;
+			return cfg;
+		},
 		getCityData: function(str){
 			var ary = pData.bus.city;
 			var rt = false;
@@ -206,6 +224,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 				}
 			}
 			return rt;
+		},
+		getBusStation: function(StationID, city, cfg){
+			cfg = this.setDefaultCfg(cfg);
+			var myURL = busURL + '/Station/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
+			myURL += ptx.filterFn(ptx.filterParam('StationID','==',StationID.toString())) + '&' + ptx.topFn();
+			ptx.getURL(myURL, cfg.cbFn);
 		}
 	}
 	
@@ -385,6 +409,42 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 		bus: fnBUS,
 		timeout: 30000,
 		tempTimeTable: {},
+		throwError: function(str){ throw str;},
+		filterParam: function(field, op, value, andOr){
+			//field 及 value可為陣列，其中一者為陣列時將用 andOr 連接，但當兩者皆為陣列時必需長度一致以便配對連接
+			//TT.ptx.filterParam(['fdfsd/fdfd','fdfd/gfg','fgf'],'<',[325,'ggg',996],'AND')
+			andOr = andOr || 'or'; andOr = andOr.toLowerCase();
+			var opMap = {
+				'=': 'eq', '==': 'eq', '===': 'eq',
+				'!=': 'ne', '!==': 'ne',
+				'!': 'not',
+				'>': 'gt', '>=': 'ge', '<': 'lt', '<=': 'le'
+			}
+			var op2 = opMap[op] || op;
+			if(typeof(field)=='object' && typeof(value)=='object' && field.length != value.length){
+				ptx.throwError('Not equal length of filterParam filed and value;');
+				return false;
+			}
+			if(typeof(field)!='object'){field = [field];}
+			if(typeof(value)!='object'){value = [value];}
+			var cnt = (field.length > value.length) ? field.length : value.length;
+			var tmpField, tmpValue, stringAry = [];
+			for(var i=0; i<cnt; i++){
+				tmpField = field[i] || field[0];
+				tmpValue = value[i] || value[0];
+				if(typeof(tmpValue)=='string') tmpValue = "'" + tmpValue + "'";
+				stringAry.push(tmpField + ' ' + op2 + ' ' + tmpValue);
+			}
+			return stringAry.join(' ' + andOr + ' ');
+		},
+		filterFn: function(param){
+			return encodeURI('$filter=' + param);
+		},
+		topFn: function(top, formatStr){
+			top = top || 3000;
+			formatStr = formatStr || 'JSON';
+			return '$top=' + top + '&formant=' + formatStr;
+		},
 	    GetAuthorizationHeader: function(){
 	        var AppID = TT.ptx.AppID || 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF';
 	        var AppKey = TT.ptx.AppKey || 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF';
