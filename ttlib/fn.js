@@ -658,9 +658,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 								mrtPTXAry.push({company: c.company, line: c.line, takeRange: c.takeRange});
 							}
 						});
-					});
+                    });
+                    TT.ui.mask('使用雲端公共交通資訊整合平台 API 讀取相關捷運站時刻表');
 					TT.ptx.getTakeMRTTimeTable(mrtPTXAry, w, function(status, data){
-						endOfFind(routeAry)
+                        endOfFind(routeAry);
+                        TT.ui.unmask();
 					});
 				}else{
 					endOfFind(routeAry);

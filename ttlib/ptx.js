@@ -3,7 +3,8 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 
 (function(TT){
 	var CONST_PTX_API_SUCCESS = 'success',
-		CONST_PTX_API_FAIL = 'fail';
+		CONST_PTX_API_FAIL = 'fail',
+		CONST_PTX_API_MSG_COMM_FAILED = '通訊失敗，PTX 無法取回資料。';
 	var v2url = 'https://ptx.transportdata.tw/MOTC/v2';
 	var ptxURL = v2url;
 	var metroURL = ptxURL + '/Rail/Metro';
@@ -296,15 +297,15 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			var mtStr = "$filter=LineID eq '" + LineID + "' and StationID eq '" + StationID + "'";
 			if(Week) mtStr += ' and ServiceDays/' + Week + ' eq true';
 			var url = metroURL + '/StationTimeTable/TRTC?' + encodeURI(mtStr) + '&$top=3000&$format=JSON';
-			if(pui.printStatus) pui.printStatus('線上尋找捷運 ' + StationID + ' 站時刻表');
+			pui.printStatus('線上尋找捷運 ' + StationID + ' 站時刻表');
 			//產生暫存時刻表空間
 			if(!ptx.tempTimeTable.trtc) ptx.tempTimeTable.trtc = {};
 			if(!ptx.tempTimeTable.trtc[LineID]) ptx.tempTimeTable.trtc[LineID] = [];
 			if(!ptx.tempTimeTable.trtc[LineID][StationID]) ptx.tempTimeTable.trtc[LineID][StationID] = [];
 			ptx.tempTimeTable.trtc[LineID][StationID][w] = [[],[]];//Direction 0 and 1
 			//抓時刻表
-			ptx.getURL(url, function(json){
-				if(json==CONST_PTX_API_FAIL){
+			ptx.getURL(url, function(json, e){
+				if(e.status==CONST_PTX_API_FAIL){
 					cbFn(json);
 					return false;
 				}
@@ -382,6 +383,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 		data: pData,
 		trtc: fnTRTC,
 		bus: fnBUS,
+		timeout: 30000,
 		tempTimeTable: {},
 	    GetAuthorizationHeader: function(){
 	        var AppID = TT.ptx.AppID || 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF';
@@ -396,26 +398,10 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 	
 	        return { 'Authorization': Authorization, 'X-Date': GMTString};
 	    },
-	    getJSONP: function(url, cbFn){
-	        $.ajax({
-	            type: 'GET',
-	            url: url, //欲呼叫之API網址
-	            dataType: 'jsonp', //跨網域必需設為 JSONP
-	            headers: this.GetAuthorizationHeader(),
-	            success: function (data) {
-	                cbFn(JSON.stringify(data));
-	            },
-	            error: function(){
-	                cbFn(CONST_PTX_API_FAIL);
-	            }
-	        });
-	    },
 	    getTakeMRTTimeTable: function(mrtPTXAry, w, cbFn){
-			pui.mask('使用雲端公共交通資訊整合平台 API 讀取相關捷運站時刻表');
 			var rtStatus = [];
 	    	function runGet(arr){
 	    		if(arr.length==0){
-	    			pui.unmask();
 	    			cbFn(rtStatus, ptx.tempTimeTable);
 	    		}else{
 	    			var obj = arr.shift();
@@ -426,9 +412,8 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 	    				fnTRTC.getStationTime(LineID, [StationID,targetID], parseInt(w), function(json){
 							var rts = {LineID:LineID, StationID: StationID, targetID: targetID};
 							if(json==CONST_PTX_API_FAIL){
-								pui.unmask();
-								pui.printStatus('通訊失敗，PTX 無法取回資料。');
 								rts.status = CONST_PTX_API_FAIL;
+								rts.message = CONST_PTX_API_MSG_COMM_FAILED;
 								rtStatus.push(rts);
 								runGet(arr);
 							}else{
@@ -444,10 +429,16 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 	    },
 	    getURL: function(url, cbFn){
 	        function reqListener(xhr){
+				var event = {
+					xhr: xhr,
+					data: xhr.target.response
+				}
 	            if(xhr.target.readyState==4 && xhr.target.status==200){
-	                cbFn(JSON.parse(xhr.target.response));
+					event.status = CONST_PTX_API_SUCCESS;
+	                cbFn(JSON.parse(xhr.target.response), event);
 	            }else{
-	                cbFn(CONST_PTX_API_FAIL, xhr.target.response);
+					event.status = CONST_PTX_API_FAIL;
+	                cbFn(xhr.target.response, event);
 	            }
 	        }
 	        var fm = new XMLHttpRequest();
@@ -456,7 +447,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 	        fm.addEventListener("abort", reqListener);
 	        fm.addEventListener("timeout", reqListener);
 	        fm.open('GET', url);
-	        fm.timeout = 30000;
+	        fm.timeout = ptx.timeout;
 	        var headerObj = this.GetAuthorizationHeader();
 	        for(var k in headerObj){
 	            fm.setRequestHeader(k, headerObj[k]);
