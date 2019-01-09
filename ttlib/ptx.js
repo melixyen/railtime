@@ -230,6 +230,25 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			var myURL = busURL + '/Station/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
 			myURL += ptx.filterFn(ptx.filterParam('StationID','==',StationID.toString())) + '&' + ptx.topFn();
 			ptx.getURL(myURL, cfg.cbFn);
+		},
+		getBusStopRoute: function(RouteUID, city, cfg){
+			cfg = this.setDefaultCfg(cfg);
+			var myURL = busURL + '/StopOfRoute/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
+			myURL += ptx.filterFn(ptx.filterParam('RouteUID','==',RouteUID.toString())) + '&';
+			myURL += ptx.orderByFn('SubRouteName/Zh_tw', 'asc') + '&' + ptx.topFn();
+			ptx.getURL(myURL, cfg.cbFn);
+		},
+		getBusStopRouteByNumber: function(busNumber, city, cfg){
+			cfg = this.setDefaultCfg(cfg);
+			var myURL = busURL + '/StopOfRoute/' + cfg.manageBy + '/' + this.getCityData(city).City + '/' + encodeURI(busNumber) + '?';
+			myURL += ptx.orderByFn('SubRouteName/Zh_tw', 'asc') + '&' + ptx.topFn();
+			ptx.getURL(myURL, cfg.cbFn);
+		},
+		searchBusByNumber:function(busNumber, city, cfg){
+			cfg = this.setDefaultCfg(cfg);
+			var myURL = busURL + '/Route/' + cfg.manageBy + '/' + this.getCityData(city).City + '/' + encodeURI(busNumber) + '?';
+			myURL += ptx.orderByFn('SubRouteName/Zh_tw', 'asc') + '&' + ptx.topFn();
+			ptx.getURL(myURL, cfg.cbFn);
 		}
 	}
 	
@@ -439,6 +458,10 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 		},
 		filterFn: function(param){
 			return encodeURI('$filter=' + param);
+		},
+		orderByFn: function(field, dir){
+			var a = arguments;
+			return encodeURI('$orderby=' + arguments[0] + ' ' + arguments[1].toLowerCase());
 		},
 		topFn: function(top, formatStr){
 			top = top || 3000;
