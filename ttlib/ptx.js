@@ -215,6 +215,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			cfg = cfg || {};
 			cfg.manageBy = cfg.manageBy || 'City';//City , InterCity
 			cfg.cbFn = cfg.cbFn || function(data,e){console.info(data);};
+			cfg.selectField = (cfg.selectField) ? ptx.selectFieldFn(cfg.selectField) : '';
 			cfg.top = 3000;
 			return cfg;
 		},
@@ -233,6 +234,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			cfg = this.setDefaultCfg(cfg);
 			var myURL = busURL + '/Station/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
 			myURL += ptx.filterFn(ptx.filterParam('StationID','==',StationID.toString())) + '&' + ptx.topFn();
+			if(cfg.selectField) myURL += '&' + cfg.selectField;
 			ptx.getURL(myURL, cfg.cbFn);
 		},
 		getBusStopRoute: function(RouteUID, city, cfg){
@@ -240,18 +242,21 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			var myURL = busURL + '/StopOfRoute/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
 			myURL += ptx.filterFn(ptx.filterParam('RouteUID','==',RouteUID.toString())) + '&';
 			myURL += ptx.orderByFn('SubRouteName/Zh_tw', 'asc') + '&' + ptx.topFn();
+			if(cfg.selectField) myURL += '&' + cfg.selectField;
 			ptx.getURL(myURL, cfg.cbFn);
 		},
 		getBusStopRouteByNumber: function(busNumber, city, cfg){
 			cfg = this.setDefaultCfg(cfg);
 			var myURL = busURL + '/StopOfRoute/' + cfg.manageBy + '/' + this.getCityData(city).City + '/' + encodeURI(busNumber) + '?';
 			myURL += ptx.orderByFn('SubRouteName/Zh_tw', 'asc') + '&' + ptx.topFn();
+			if(cfg.selectField) myURL += '&' + cfg.selectField;
 			ptx.getURL(myURL, cfg.cbFn);
 		},
 		searchBusByNumber:function(busNumber, city, cfg){
 			cfg = this.setDefaultCfg(cfg);
 			var myURL = busURL + '/Route/' + cfg.manageBy + '/' + this.getCityData(city).City + '/' + encodeURI(busNumber) + '?';
-			myURL += ptx.orderByFn('SubRouteName/Zh_tw', 'asc') + '&' + ptx.topFn();
+			myURL += ptx.orderByFn('RouteName/Zh_tw', 'asc') + '&' + ptx.topFn();
+			if(cfg.selectField) myURL += '&' + cfg.selectField;
 			ptx.getURL(myURL, cfg.cbFn);
 		}
 	}
@@ -472,6 +477,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			top = top || 3000;
 			formatStr = formatStr || 'JSON';
 			return '$top=' + top + '&formant=' + formatStr;
+		},
+		selectFieldFn: function(str){
+			if(typeof(str)=='object' && str.length){
+				str = str.join(',');
+			}
+			return encodeURI('$select=' + str);
 		},
 	    GetAuthorizationHeader: function(){
 	        var AppID = TT.ptx.AppID || 'FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF';
