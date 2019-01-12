@@ -2,8 +2,12 @@
 if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 
 (function(TT){
-	var CONST_PTX_API_SUCCESS = 'success',
-		CONST_PTX_API_FAIL = 'fail',
+	var statusCode = {
+		SUCCESS: 'success',
+		FAIL: 'fail'
+	}
+	var CONST_PTX_API_SUCCESS = statusCode.SUCCESS,
+		CONST_PTX_API_FAIL = statusCode.FAIL,
 		CONST_PTX_API_MSG_COMM_FAILED = '通訊失敗，PTX 無法取回資料。';
 	var v2url = 'https://ptx.transportdata.tw/MOTC/v2';
 	var ptxURL = v2url;
@@ -426,6 +430,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 		data: pData,
 		trtc: fnTRTC,
 		bus: fnBUS,
+		statusCode: statusCode,
 		timeout: 30000,
 		tempTimeTable: {},
 		throwError: function(str){ throw str;},
