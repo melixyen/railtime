@@ -230,6 +230,14 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			}
 			return rt;
 		},
+		getBusArriveTime: function(StopUID, city, cfg){
+			cfg = this.setDefaultCfg(cfg);
+			var myURL = busURL + '/EstimatedTimeOfArrival/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
+			myURL += ptx.filterFn(ptx.filterParam('StopUID','==',StopUID,'or')) + '&' + ptx.topFn();
+			if(cfg.selectField) myURL += '&' + cfg.selectField;
+			ptx.getURL(myURL, cfg.cbFn);
+
+		},
 		getBusStation: function(StationID, city, cfg){
 			cfg = this.setDefaultCfg(cfg);
 			var myURL = busURL + '/Station/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
