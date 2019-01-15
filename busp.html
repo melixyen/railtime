@@ -83,9 +83,15 @@ body {
 	opacity: 0.6;
 }
 .stepControlArea{
-	margin: 30px 5px;
+	padding: 30px 5px 10px;
 	width: calc(100% - 20px);
 	display: inline-block;
+	position: fixed;
+	z-index: 4;
+	bottom: 0px;
+	left: 0px;
+	border-top: 1px solid #BAE;
+	background-color: rgb(192, 244, 247);
 }
 .bs_no_select{
    -o-user-select:none;
@@ -94,6 +100,11 @@ body {
    -webkit-user-select: none;
    user-select: none;
 }
+
+.divTable{ display:table; }
+.divTableRowGroup{ display:table-row-group; }
+.divTableRow{ display:table-row; }
+.divTableCell{ display:table-cell; }
 
 /* Common CSS Area End*/
 
@@ -128,6 +139,11 @@ body {
 
 #makeArea{
 	padding: 10px;
+}
+
+#makeArea .makeContent{
+	width: 100%;
+	margin-bottom: 105px;
 }
 
 #makeArea .busFindRouteCSSInput{
@@ -262,12 +278,45 @@ body {
 	text-align: center;
 	float: right;
 }
+#makeArea #busArriveTime .StopNameFrame{
+	margin: 10px 0;
+	display: inline-block;
+	width: 100%;
+}
+#makeArea #busArriveTime .StopNameFrame > div.item{
+	padding-right: 5px;
+	line-height: 46px;
+	height: 46px;
+	display: inline;
+}
+#makeArea #busArriveTime .StopNameFrame > div.item, #makeArea #busArriveTime .StopNameFrame > div.item > select, #makeArea #busArriveTime .StopNameFrame > div.item > select > option{
+	font-size: 24px;
+}
+#makeArea .busArriveTimeFrame{
+	width: auto;
+}
+#makeArea .busArriveTimeFrame .name, #makeArea .busArriveTimeFrame .info{
+	padding: 5px calc(1vw + 4px);
+	border-bottom: 1px solid #99e;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+.busDisplayArriveMinute{
+	color: #1020EF;
+}
+.busDisplayMayArrive{
+	background-color:#DB0F20; color:#EEE; padding: 2px 5px;
+}
+.busDusplayOtherStatus{
+	color:#cc9a0f;
+}
 
 
 
 @media screen and (max-width: 679px) {
 	body {
-		font-size: 12px;
+		font-size: 14px;
 	}
     .menuBtn1, .btn1 {
 		font-size: 14px;
@@ -288,6 +337,13 @@ body {
 	}
 	#makeArea .busFindResultListBox .stop .stopOK{
 		margin: 5px 3px 5px 5px;
+	}
+	
+	#makeArea #busArriveTime .StopNameFrame > div.item input{
+		width: 100%;
+	}
+	#makeArea .busArriveTimeFrame .name, #makeArea .busArriveTimeFrame .info{
+		min-width: 38vw;
 	}
 }
 @media screen and (min-width: 680px) and (max-width: 909px) {
@@ -405,12 +461,27 @@ var _LANG = (function(){
 			STR025: '抱歉，找不到任何路線。',
 			STR026: '清除',
 			STR027: '修正',
+			STR028: '正常',
+			STR029: '尚未發車',
+			STR030: '交管不停靠',
+			STR031: '末班車已過',
+			STR032: '今日未營運',
+			STR033: '即將抵達',
+			STR034: '沒有資訊',
+			STR035: '分鐘後抵達',
+			STR036: '將為此站路線製作雲端看板站牌，你可輸入或選用一個站名。',
+			STR037: '建議：',
+			STR038: '請輸入站牌名稱',
+			STR039: '現在您可以分享此站牌的雲端看板',
+			STR040: '您亦可加入收藏夾，之後合併多支站牌於一個雲端看板內顯示',
+			STR041: '載入中...',
 			zxx: 'none'
 		}
 	}
 })();
 
 var BB = (function(TT){
+	var _DEFINE_PARAM_BUS_STATION = 'busStation';
 	var define_cityArea = [
 		{area:'KEE', name:'基隆市公車', aryCityCode: ['KEE'], noStationID: true},
 		{area:'TPE', name:'台北市、新北市公車', aryCityCode: ['TPE','NWT']},
@@ -452,6 +523,36 @@ var BB = (function(TT){
 	function getDirString(dir){
 		return (dir==1) ? _LANG.STR017 : _LANG.STR016;
 	}
+	function getStopDisplayName(objA, flagWithMultiLang){
+		var nameObj = objA.StopName || objA.StationName;
+		var rt = nameObj.Zh_tw || nameObj.Zh_tw;
+		var en = '';
+		if(flagWithMultiLang){
+			en = nameObj.En || nameObj.En;
+			en = (en) ? ' [ ' + en + ' ]' : '';
+		}
+		return rt + en;
+	}
+	function getStopDisplayInfo(stop){
+		var rt = _LANG.STR034;
+		//STR028: '正常', STR029: '尚未發車', STR030: '交管不停靠', STR031: '末班車已過', STR032: '今日未營運',
+		var aryStopStatusStr = [_LANG.STR028,_LANG.STR029,_LANG.STR030,_LANG.STR031,_LANG.STR032];
+		var needSec = stop.EstimateTime || -1;
+		if(stop.EstimateTime>=0){//有秒數者優先顯示抵達時間多久
+			var min = Math.floor(stop.EstimateTime/60);
+			rt = (min>0) ? '<span class="busDisplayArriveMinute">' + min + '</span> ' + _LANG.STR035 : '<span class="busDisplayMayArrive">' + _LANG.STR033 + '</span>';
+		}else if(stop.StopStatus>=0){
+			if(aryStopStatusStr[stop.StopStatus]) rt = '<span class="busDusplayOtherStatus">' + aryStopStatusStr[stop.StopStatus] + '</span>';
+		}
+		return rt;
+	}
+	function makeShowURL(ary, id, cities){
+		if(typeof(ary)=='string' && typeof(id)=='string') ary = [{name: ary, id: id, cities: cities}];
+		var url = location.href.toString().replace(location.search,'').replace(location.hash,'');
+		var jstr = JSON.stringify(ary);
+		url += '?' + _DEFINE_PARAM_BUS_STATION + '=' + encodeURIComponent(jstr) + '#/show';
+		return url;
+	}
 	function procCityWithStation(ary, returnType){
 		var rt = {};
 		ary.forEach(function(c){
@@ -472,6 +573,7 @@ var BB = (function(TT){
 	var BB = {
 		mode: (TT.defined.GetP && TT.defined.GetP.a) ? TT.defined.GetP.a : 'make',//make , show , 
 		cityArea: define_cityArea,
+		reloadInterval: 20000,
 		now: {
 			busCitySelArea: ['TPE'],
 			busFindRouteInput: '605'
@@ -626,6 +728,7 @@ var BB = (function(TT){
 				}
 				var cities = BB.now.cities.slice();
 				var res = [];
+				var StationStopName = '', aryStationListStopName = [];
 				var listCityStops = [];
 				var aryArriveTime = [];
 				var maskString = (function(){
@@ -646,14 +749,19 @@ var BB = (function(TT){
 									c.CityCode = city;
 									c.City = cityStr;
 									c.StationID = StationID;
+									var stName = getStopDisplayName(c);
+									if(aryStationListStopName.indexOf(stName)==-1) aryStationListStopName.push(stName);
 									return c;
 								});
+								StationStopName = getStopDisplayName(data[0]);
 								res = res.concat(ary);
 							}
 							getStationStop();
 						}})
 					}else{
 						BB.now.stopList = res;
+						BB.now.StationStopName = StationStopName;
+						BB.now.aryStationListStopName = aryStationListStopName;
 						listCityStops = procCityWithStation(res, 'array');
 						getStopArriveTime();
 					}
@@ -699,20 +807,62 @@ var BB = (function(TT){
 
 	var busArriveTime = {
 		template: '<div id="busArriveTime" class="makeSub1">' +
-			'<div class="textA">' + '請確認以下是資訊是否正確' + '</div>' +
+			'<div class="textA">' + _LANG.STR036 + '</div>' +
+			'<div class="StopNameFrame">' +
+				'<div class="item">' +
+					'<input type="text" maxLengrh="10" class="busFindRouteCSSInput" placeholder="' + _LANG.STR038 + '" v-model="StationStopName" />' +
+				'</div>' +
+				'<div class="item">' +
+					'<span>' + _LANG.STR037 + '</span>' +
+					'<select v-model="StationNameListText"><option v-for="n1 in aryStationListStopName" v-bind:value="n1">{{n1}}</option></select>' +
+				'</div>' +
+			'</div>' +
 			'<div class="busArriveTimeFrame frame1">' +
-				'<div v-for="(bus,idx) in aryArriveTime">' +
-					'<div v-html="getBusData(bus)"></div>' +
+				'<div class="divTable">' +
+					'<div v-for="(bus,idx) in aryArriveTime" class="divTableRow">' +
+						'<div v-html="getBusDataName(bus)" class="divTableCell name"></div>' +
+						'<div v-html="getBusDataInfo(bus)" class="divTableCell info"></div>' +
+					'</div>' +
 				'</div>' +
 			'</div>' +
 		'</div>',
 		data: function(){return{
-			aryArriveTime: BB.now.aryArriveTime
+			aryArriveTime: BB.now.aryArriveTime,
+			StationStopName: BB.now.StationStopName,
+			StationNameListText: '',
+			aryStationListStopName: BB.now.aryStationListStopName || []
 		}},
 		methods: {
 			getBusData: function(bus){
-				var info = (bus.EstimateTime) ? '還要' + Math.floor(bus.EstimateTime / 60) + '分' : '暫無資訊';
+				var info = getStopDisplayInfo(bus);
 				return '<span style="padding: 0 10px">' + bus.RouteName.Zh_tw + '</span><span style="color:blue;padding: 0 10px;">' + info + '</span>';
+			},
+			getBusDataName: function(bus){
+				return getBusDisplayString(bus);
+			},
+			getBusDataInfo: function(bus){
+				return info = getStopDisplayInfo(bus);
+			}
+		},
+		watch: {
+			StationNameListText: function(){ this.StationStopName = this.StationNameListText; },
+			StationStopName: function(){ BB.now.StationStopName = this.StationStopName; }
+		}
+	}
+	
+	var busMakeURL = {
+		template: '<div id="busMakeURL" class="makeSub1">' +
+			'<div class="textA">' + _LANG.STR039 + '</div>' +
+			'<div class="hyperlinkShow" v-html="makeURL()"></div>' +
+		'</div>',
+		data: function(){return{
+			StationStopName: BB.now.StationStopName,
+			StationID: BB.now.StationID
+		}},
+		methods: {
+			makeURL: function(){
+				var url = makeShowURL(this.StationStopName, this.StationID, BB.now.cities);
+				return '<a href="' + url + '" target="_blank">' + url + '</a>';
 			}
 		},
 		watch: {
@@ -725,9 +875,11 @@ var BB = (function(TT){
 	var makeArea = {
 		template: '<div id="makeArea">' + 
 			//'<transition :name="transitionName">' +
+			'<div class="makeContent">' +
 			'<transition name="fade">' +
 				'<router-view></router-view>' +
 			'</transition>' +
+			'</div>' +
 			'<div class="stepControlArea bs_no_select" v-show="flagShowStepControl">' +
 				'<div class="btnStep" v-bind:class="getControlCSS(\'prev\')" v-on:click="goPrev()">' + _LANG.STR007 + '</div>' +
 				'<div class="btnStep" v-bind:class="getControlCSS(\'next\')" v-on:click="goNext()">' + _LANG.STR008 + '</div>' +
@@ -893,13 +1045,167 @@ var BB = (function(TT){
 				var pageStep = (pathAry[1]) ? pathAry[1] : '';
 				this.flagShowStepControl = !!(pathAry.length>1);
 				this.flagDisablePrev = !!(pageStep=='buscity');
-				this.flagDisableNext = !(/buscity|busfindroute/.test(pageStep));
+				this.flagDisableNext = !(/buscity|busfindroute|busarrivetime/.test(pageStep));
 				this.pageStep = pageStep;
 				BB.makeArea = this;
 			}
 		}
 	};
-	var showArea = { template: '<div>I am show</div>'};
+	var showArea = {
+		template: '<div id="showArea">' +
+			//'<div v-html="tet()"></div>' +
+			'<div class="allOute">' +
+				'<div class="allIn" v-for="(station, stIdx) in aryArriveTime">' +
+					'<div v-html="tet2(station)"></div>' +
+					'<div class="list">' +
+						'<div v-for="(bus, bidx) in station.time" v-html="getBusData(bus)"></div>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+		'</div>',
+		data: function(){return{
+			showBusStation: BB.now.showBusStation || [],
+			aryStation: [],
+			aryArriveTime: [],
+			onReload: false,
+		}},
+		methods: {
+			tet2: function(station){
+				return '<div style="font-size:30px;text-align:center;">' + station.StationName + '</div>';
+			},
+			getBusData: function(bus){
+				var info = getStopDisplayInfo(bus);
+				return '<span style="padding: 0 10px">' + bus.RouteName.Zh_tw + '</span><span style="color:blue;padding: 0 10px;">' + info + '</span>';
+			},
+			getBusDataName: function(bus){
+				return getBusDisplayString(bus);
+			},
+			getBusDataInfo: function(bus){
+				return info = getStopDisplayInfo(bus);
+			},
+			readAllStation: function(cbFn){
+				var arySBS = JSON.parse(JSON.stringify(this.showBusStation));
+				var stAryCities = [];
+				var stRes = [];
+				var lastResult = [];
+				var tmpStatioinID = '';
+				function goReadStation(){
+					if(arySBS.length>0){
+						var stObj = arySBS.shift();
+						stAryCities = stObj.cities.map(function(c){
+							return {city: c, StationID: stObj.id};
+						});
+						stRes = [];
+						tmpStatioinID = stObj.id;
+						getAllCityStation();
+					}else{
+						cbFn(lastResult);
+					}
+				}
+				function getAllCityStation(){
+					if(stAryCities.length>0){
+						var stCity = stAryCities.shift();
+						TT.ptx.bus.getBusStation(stCity.StationID, stCity.city, {
+							cbFn: function(data,e){
+								if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0 && data[0].Stops.length>0){
+									var ary = data[0].Stops.map(function(c){
+										c.CityCode = stCity.city;
+										c.StationID = stCity.StationID;
+										return c;
+									});
+									stRes = stRes.concat(ary);
+									getAllCityStation();
+								}else{
+									getAllCityStation();
+								}
+							},
+							selectField: ['Stops','StationUID']
+						});
+					}else{
+						lastResult.push({
+							StationID: tmpStatioinID,
+							data: stRes
+						});
+						goReadStation();
+					}
+				}
+				goReadStation();
+			},
+			readAllTime: function(cbFn){
+				cbFn = cbFn || function(){};
+				var aryStation = JSON.parse(JSON.stringify(this.aryStation));
+				var listCityStops = [];
+				var aryArriveTime = [];
+				var tmpStationID = '';
+				var allStationArriveTime = [];
+				var showBusStation = this.showBusStation;
+				function getTargetStation(){
+					if(aryStation.length>0){
+						var stObj = aryStation.shift();
+						tmpStationID = stObj.StationID;
+						listCityStops = procCityWithStation(stObj.data, 'array');
+						aryArriveTime = [];
+						getStopArriveTime();
+					}else{
+						cbFn(allStationArriveTime);
+					}
+				}
+				function getStopArriveTime(){
+					if(listCityStops.length>0){
+						var city = listCityStops.shift();
+						var cityCode = city.CityCode, aryStopUID = city.StopUID;
+
+						TT.ptx.bus.getBusArriveTime(aryStopUID, cityCode, {cbFn: function(data,e){
+							if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0){
+								aryArriveTime = aryArriveTime.concat(data);
+							}
+							getStopArriveTime();
+						}})
+					}else{
+						var stName = (function(){
+							for(var i=0; i<showBusStation.length; i++){
+								if(showBusStation[i].id==tmpStationID){
+									return showBusStation[i].name;
+								}
+							}
+						})();;
+						allStationArriveTime.push({
+							StationID: tmpStationID,
+							StationName: stName,
+							time: JSON.parse(JSON.stringify(aryArriveTime))
+						});
+						getTargetStation();
+					}
+				}
+				getTargetStation();
+			},
+			reloadPage: function(){
+				var reloadInterval = BB.reloadInterval;
+				var me = this;
+				me.onReload = true;
+				this.readAllTime(function(data){
+					me.onReload = false;
+					me.aryArriveTime = data;
+					//setTimeout(me.reloadPage, reloadInterval);
+				})
+
+			}
+		},
+		mounted: function(){
+			var me = this;
+			BB.mask(_LANG.STR041);
+			this.readAllStation(function(data){
+				me.aryStation = data;
+				me.reloadPage();
+				BB.unmask();
+			});
+			return true;
+		},
+		watch: {
+			//StationNameListText: function(){ this.StationStopName = this.StationNameListText; },
+			//StationStopName: function(){ BB.now.StationStopName = this.StationStopName; }
+		}
+	};
 	var aboutArea = {
 		template: '<div v-html="getAboutInfo()"></div>', 
 		data: function(){return {
@@ -925,7 +1231,8 @@ var BB = (function(TT){
 				{path: 'buscity', component: busCity},
 				{path: 'busfindroute', component: busFindRoute},
 				{path: 'busfindlist', component: busFindList},
-				{path: 'busarrivetime', component: busArriveTime}
+				{path: 'busarrivetime', component: busArriveTime},
+				{path: 'busmakeurl', component: busMakeURL}
 			]
 		},
 		//{path: '/bus2city', name: 'bus2city', component: busCity},
@@ -955,6 +1262,14 @@ var BB = (function(TT){
 	});
 
 	BB.initFn = function(){
+		var GetP = TT.defined.GetP;
+		if(GetP && GetP[_DEFINE_PARAM_BUS_STATION]){
+			try {
+				BB.now.showBusStation = JSON.parse(decodeURIComponent(GetP[_DEFINE_PARAM_BUS_STATION]));
+			}catch(e){
+				// Error
+			}
+		}
 		var tpl = Vue.compile('<div id="main">' + 
 			'<vcmp_menu_bar id="menuBar"></vcmp_menu_bar>' +
 			'<router-view></router-view>' +
@@ -964,7 +1279,7 @@ var BB = (function(TT){
 			router: BB.mainRoute,
 			render: tpl.render,
 			el: '#main'
-		})
+		});
 	}
 	return BB;
 })(TT);

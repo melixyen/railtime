@@ -484,7 +484,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 		topFn: function(top, formatStr){
 			top = top || 3000;
 			formatStr = formatStr || 'JSON';
-			return '$top=' + top + '&formant=' + formatStr;
+			return '$top=' + top + '&format=' + formatStr;
 		},
 		selectFieldFn: function(str){
 			if(typeof(str)=='object' && str.length){
