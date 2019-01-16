@@ -145,6 +145,13 @@ body {
 	width: 100%;
 	margin-bottom: 105px;
 }
+#makeArea .aloneLineRouteLinkA > a{
+	display: inline-block;
+	margin: 10px;
+}
+#makeArea .aloneLineRouteLinkA > a > .btn1{
+	margin: 0;
+}
 
 #makeArea .busFindRouteCSSInput{
 	width: 500px;
@@ -302,6 +309,31 @@ body {
 	word-break: break-all;
 }
 
+
+#showArea .stationDisplayName{
+	font-size:30px;
+	text-align:center;
+	background-color: #217;
+	color: #99F0ba;
+}
+#showArea .allIn .list{
+	padding:8px;
+	margin-bottom: 12px;
+	border: 2px solid #217;
+	border-top: none;
+}
+#showArea .allIn .list .item{
+	padding-right: 3vw;
+	line-height: 32px;
+	font-size: 20px;
+	max-width: 48%;
+	border-bottom: 1px solid #8CE;
+}
+#showArea .allIn .list .item:last-child{
+	padding-right: 0;
+}
+#showArea .allIn .list .item.number{ color:#217;}
+
 .busDisplayArriveMinute{
 	color: #1020EF;
 }
@@ -345,6 +377,9 @@ body {
 	#makeArea .busArriveTimeFrame .name, #makeArea .busArriveTimeFrame .info{
 		min-width: 38vw;
 	}
+	#showArea .allIn .list{
+		width: calc(100% - 24px);
+	}
 }
 @media screen and (min-width: 680px) and (max-width: 909px) {
 	body {
@@ -378,6 +413,39 @@ body {
 .mask.show{
     display: -webkit-flex;
     display: flex;
+}
+
+.pop{
+	width: 100vw; height: 100vh;
+	position: fixed;
+	top: 0px; left: 0px;
+	background-color: #EEE;
+    z-index: 103;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+.pop.show{
+    display: block;
+}
+#showBusRoutePop{
+	position: absolute;
+	height: auto;
+	min-height: 100%;
+	width: 100%;
+}
+#showBusRoutePop .content .row {
+	font-size: 20px;
+	height: 26px;
+	line-height: 26px;
+}
+#showBusRoutePop .content .row.now {
+	background-color: #2cd;
+}
+#showBusRoutePop .content .index {
+	padding: 0 20px 0 10px;
+	text-align: right;
 }
 
 /* Vue CSS Start */
@@ -468,7 +536,7 @@ var _LANG = (function(){
 			STR032: '今日未營運',
 			STR033: '即將抵達',
 			STR034: '沒有資訊',
-			STR035: '分鐘後抵達',
+			STR035: '分鐘',
 			STR036: '將為此站路線製作雲端看板站牌，你可輸入或選用一個站名。',
 			STR037: '建議：',
 			STR038: '請輸入站牌名稱',
@@ -870,7 +938,9 @@ var BB = (function(TT){
 	}
 
 	var makeIndex = {
-		template: '<router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">' + _LANG.STR003 + '</div>' + '</router-link>'
+		template: '' +
+				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">' + _LANG.STR003 + '</div>' + '</router-link></div>' +
+			''
 	}
 	var makeArea = {
 		template: '<div id="makeArea">' + 
@@ -1051,14 +1121,17 @@ var BB = (function(TT){
 			}
 		}
 	};
+
 	var showArea = {
 		template: '<div id="showArea">' +
-			//'<div v-html="tet()"></div>' +
 			'<div class="allOute">' +
 				'<div class="allIn" v-for="(station, stIdx) in aryArriveTime">' +
 					'<div v-html="tet2(station)"></div>' +
-					'<div class="list">' +
-						'<div v-for="(bus, bidx) in station.time" v-html="getBusData(bus)"></div>' +
+					'<div class="list divTable">' +
+						'<div v-for="(bus, bidx) in station.time" class="divTableRow">' +
+							'<div class="divTableCell item number" style="cursor:pointer;" v-html="getBusDataName(bus)" v-on:click="popBus(bus)"></div>' +
+							'<div class="divTableCell item" v-html="getBusDataInfo(bus)"></div>' +
+						'</div>' +
 					'</div>' +
 				'</div>' +
 			'</div>' +
@@ -1067,21 +1140,23 @@ var BB = (function(TT){
 			showBusStation: BB.now.showBusStation || [],
 			aryStation: [],
 			aryArriveTime: [],
-			onReload: false,
+			onReload: false
 		}},
 		methods: {
 			tet2: function(station){
-				return '<div style="font-size:30px;text-align:center;">' + station.StationName + '</div>';
-			},
-			getBusData: function(bus){
-				var info = getStopDisplayInfo(bus);
-				return '<span style="padding: 0 10px">' + bus.RouteName.Zh_tw + '</span><span style="color:blue;padding: 0 10px;">' + info + '</span>';
+				return '<div class="stationDisplayName">' + station.StationName + '</div>';
 			},
 			getBusDataName: function(bus){
 				return getBusDisplayString(bus);
 			},
 			getBusDataInfo: function(bus){
-				return info = getStopDisplayInfo(bus);
+				return getStopDisplayInfo(bus);
+			},
+			popBus: function(bus){
+				BB.showBusRoutePop.RouteUID = bus.RouteUID;
+				BB.showBusRoutePop.StopUID = bus.StopUID;
+				BB.showBusRoutePop.busNO = this.getBusDataName(bus);
+				location.hash = '/show/line';
 			},
 			readAllStation: function(cbFn){
 				var arySBS = JSON.parse(JSON.stringify(this.showBusStation));
@@ -1168,7 +1243,11 @@ var BB = (function(TT){
 									return showBusStation[i].name;
 								}
 							}
-						})();;
+						})();
+						//排序完再丟回去
+						aryArriveTime = aryArriveTime.sort(function(a,b){
+							return (a.RouteName.Zh_tw > b.RouteName.Zh_tw) ? 1: -1;
+						})
 						allStationArriveTime.push({
 							StationID: tmpStationID,
 							StationName: stName,
@@ -1193,19 +1272,27 @@ var BB = (function(TT){
 		},
 		mounted: function(){
 			var me = this;
-			BB.mask(_LANG.STR041);
-			this.readAllStation(function(data){
+			function afterGetStationData(data){
 				me.aryStation = data;
+				BB.now.showUseStationData = data;
 				me.reloadPage();
 				BB.unmask();
-			});
+			}
+			BB.mask(_LANG.STR041);
+			if(BB.now.showUseStationData){
+				afterGetStationData(BB.now.showUseStationData);
+			}else{
+				this.readAllStation(afterGetStationData);
+			}
 			return true;
 		},
 		watch: {
-			//StationNameListText: function(){ this.StationStopName = this.StationNameListText; },
-			//StationStopName: function(){ BB.now.StationStopName = this.StationStopName; }
+			'$route': function(vroute){
+				BB.showBusRoutePop.flagShowBase = !!(vroute.path=='/show/line');
+			}
 		}
 	};
+	
 	var aboutArea = {
 		template: '<div v-html="getAboutInfo()"></div>', 
 		data: function(){return {
@@ -1223,8 +1310,94 @@ var BB = (function(TT){
 		}
 	};
 
+	var makeShowBusRoutePop = function(){
+	var showBusRoutePopTpl = Vue.compile('<div id="showBusRoutePop" class="pop" v-if="flagShowBase">' + 
+			'<div class="topBar" style="height:40px;border:5px solid #28B; font-size:36px; background-color: #8AC2E4;">' +
+				'<div class="back" v-on:click="back()" style="display:inline-block; height:40px; cursor:pointer; text-align:center; line-height:40px; width:40px; overflow:hidden;">&lt;</div>' +
+				'<div class="busNO" style="overflow:hidden; display:inline-block; width:calc(98vw - 70px); font-size:30px; height:40px; line-height:40px; border-left:5px solid #28B; text-align:center;">{{ busNO }}</div>' +
+			'</div>' +
+			'<div class="content" style="width:100%; background-color:#E0E9F3; padding: 20px 0px; box-sizing:border-box;">' +
+				'<div class="divTable" style="width:100%;">' +
+					'<div class="divTableRow row" v-bind:class="getRowCSS(stop)" v-for="(stop, rix) in aryRoute">' +
+						'<div class="index divTableCell" v-html="busIndex(stop)"></div>' +
+						'<div class="stop divTableCell" v-html="busStop(stop)"></div>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+		'</div>');
+	BB.showBusRoutePop = new Vue({
+		staticRenderFns: showBusRoutePopTpl.staticRenderFns,
+		render: showBusRoutePopTpl.render,
+		el: '#showBusRoutePop',
+		data: {
+			flagShowBase: false,
+			busNO: '',
+			RouteUID: '',
+			StopUID: '',
+			aryRoute: [],
+			busInfo: false,
+			baseCSS: ''
+		},
+		methods: {
+			back: function(){
+				history.back();
+				this.flagShowBase = false;
+			},
+			busIndex: function(stop){
+				return stop.StopSequence;
+			},
+			busStop: function(stop){
+				return getStopDisplayName(stop);
+			},
+			getBaseCSS: function(){
+				return (this.flagShowBase) ? 'show' : '';
+			},
+			getRowCSS: function(stop){
+				return (stop.StopUID==this.StopUID) ? 'now' : '';
+			},
+			getBusRoute: function(){
+				var city = this.RouteUID.substr(0,3);
+				var me = this;
+				TT.ptx.bus.getBusStopRoute(this.RouteUID, city, {cbFn: function(data,e){
+					if(e.status==TT.ptx.statusCode.SUCCESS){
+						var tmpA, fmp = false;
+						for(var i=0; i<data.length; i++){
+							tmpA = data[i].Stops;
+							for(var j=0; j<tmpA.length; j++){
+								if(tmpA[j].StopUID==me.StopUID){
+									fmp = data[i];
+									break;
+								}
+							}
+							if(fmp) break;
+						}
+						me.aryRoute = fmp.Stops;
+						me.busInfo = fmp;
+					}
+				}});
+			}
+		},
+		watch: {
+			flagShowBase: function(){
+				if(this.flagShowBase){
+					this.getBusRoute();
+					if(document.documentElement.scrollTop) document.documentElement.scrollTop = 0;
+					if(document.body.scrollTop) document.body.scrollTop = 0;
+				}else{
+					this.aryRoute = [];
+					this.busInfo = false;
+				}
+			}
+		}
+	});
+	}
+
 	var siteMap = [
-		{path: '/show', name: 'show', component: showArea},
+		{path: '/show', name: 'show', component: showArea,
+			children: [
+				{path: 'line'}
+			]
+		},
 		{path: '/make', component: makeArea, 
 			children: [
 				{path: '/', component: makeIndex},
@@ -1273,6 +1446,7 @@ var BB = (function(TT){
 		var tpl = Vue.compile('<div id="main">' + 
 			'<vcmp_menu_bar id="menuBar"></vcmp_menu_bar>' +
 			'<router-view></router-view>' +
+			'<div id="showBusRoutePop" class="pop"></div>' +
 			'<div id="statusBar"></div>' +
 		'</div>');
 		BB.main = new Vue({
@@ -1280,6 +1454,7 @@ var BB = (function(TT){
 			render: tpl.render,
 			el: '#main'
 		});
+		makeShowBusRoutePop();
 	}
 	return BB;
 })(TT);
