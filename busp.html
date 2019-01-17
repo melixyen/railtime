@@ -55,9 +55,8 @@ body {
 	cursor: pointer;
 	overflow: hidden;
 }
-.btn1.btnBgRed{
-	border-color: #A46;
-	background-color: #F8CCD3;
+.btn1.btnNoSupport{
+	color: #920D39;
 }
 .btn1.selected{
 	color: #fcfcfc;
@@ -83,7 +82,7 @@ body {
 	opacity: 0.6;
 }
 .stepControlArea{
-	padding: 30px 5px 10px;
+	padding: 9px 5px 5px;
 	width: calc(100% - 20px);
 	display: inline-block;
 	position: fixed;
@@ -309,6 +308,23 @@ body {
 	word-break: break-all;
 }
 
+#busBookmark {
+	font-size: 16px;
+}
+#busBookmark .bookmarkList .idx{
+	width: 30px;
+	text-align: right;
+}
+#busBookmark .bookmarkList .name{
+	max-width: 50%;
+	padding:0 10px;
+}
+#busBookmark .bookmarkList .func{
+	padding: 0 5px;
+	color: #24e;
+	cursor: pointer;
+}
+
 
 #showArea .stationDisplayName{
 	font-size:30px;
@@ -502,6 +518,7 @@ var _LANG = (function(){
 			CM01: '、',
 			CM_OK: '確定',
 			CM_CANCEL: '取消',
+			CM_REMOVE: '刪除',
 			STR001: '製作雲端站牌',
 			STR002: '關於',
 			STR003: '點我開始進行公車站牌雲端看板製作',
@@ -543,6 +560,13 @@ var _LANG = (function(){
 			STR039: '現在您可以分享此站牌的雲端看板',
 			STR040: '您亦可加入收藏夾，之後合併多支站牌於一個雲端看板內顯示',
 			STR041: '載入中...',
+			STR042: '可點選 QR Code 圖片將之匯出',
+			STR043: '加入站牌收藏夾 (暫存在瀏覽器內)',
+			STR044: '加入收藏夾失敗',
+			STR045: '成功加入收藏夾',
+			STR046: '管理站牌收藏夾',
+			STR047: '刪除',
+			STR048: '重製',
 			zxx: 'none'
 		}
 	}
@@ -573,6 +597,66 @@ var BB = (function(TT){
 		{area:'LIE', name:'連江縣公車', aryCityCode: ['LIE'], noStationID: true}
 	]
 
+	var bookmark = (function(){
+		var BUSP_DIM = 'busp_busSaveStation';
+		var bmAry = [];
+		function fnRead(){
+			var tmpA = localStorage.getItem(BUSP_DIM);
+			if(tmpA){
+				bmAry = JSON.parse(tmpA);
+			}
+			return bmAry;
+		}
+		function fnWrite(){
+			localStorage.setItem(BUSP_DIM, JSON.stringify(bmAry));
+		}
+		function fnAdd(name, StationID, cities){
+			if(!name && !StationID && !cities){
+				return false;
+			}
+			fnRead();
+			bmAry.push({name:name, StationID:StationID, cities:cities, id: new Date().getTime()});
+			fnWrite();
+			return true;
+		}
+		function fnRemove(id){
+			fnRead();
+			if(!id) return false;
+			bmAry = bmAry.filter(function(c){
+				return (c.id==id) ? false : true;
+			})
+			fnWrite();
+			return fnRead();
+		}
+		return {
+			add: fnAdd,
+			read: fnRead,
+			remove: fnRemove
+		}
+	})();
+	function genQR(url){
+        return "http://chart.apis.google.com/chart?cht=qr&chl="+ encodeURIComponent(url) +"&chs=240x240";
+	}
+	function genStationQR(url, name, cbFn){
+		var pw = 300, ph = 300;
+		name = name || 'QR Code BUS Stop Information';
+		var canvas = document.createElement('canvas');
+		var ctx = canvas.getContext('2d'),
+			image = new Image();
+		image.crossOrigin = "anonymous";
+		
+		image.onload = function(){
+			canvas.width = pw;
+    		canvas.height = ph;
+			ctx.font="20px Arial";
+    		ctx.drawImage(this, 30, 0, 240, 240);
+			var txWidth = ctx.measureText(name).width;
+			var txX = (txWidth > pw) ? 0 : Math.ceil((pw-txWidth)/2);
+    		ctx.fillText(name, txX, 270);
+			cbFn(canvas);
+		}
+		image.src = genQR(url);
+	}
 	function getCityAreaData(val, byField){
 		byField = byField || 'area';
 		if(byField=='area' || byField=='name'){
@@ -690,7 +774,7 @@ var BB = (function(TT){
 				}
 			},
 			getBtnClickCSS: function(item){
-				var rt = (item.noStationID) ? ' btnBgRed' : '';
+				var rt = (item.noStationID) ? ' btnNoSupport' : '';
 				rt += (this.selArea.indexOf(item.area) != -1) ? ' selected' : '';
 				return rt;
 			},
@@ -720,8 +804,8 @@ var BB = (function(TT){
 				'<div>' +
 					'<input type="text" maxLengrh="10" class="busFindRouteCSSInput" placeholder="' + _LANG.STR013 + '" v-model="busFindRouteInput" />' +
 				'</div>' +
-				'<div class="clearFrame"><div v-on:click="inputClear()">' + _LANG.STR026 + '</div><div v-on:click="inputBackSpace()">' + _LANG.STR027 + '</div>' + '</div>' +
-				'<div class="keyboardFrame">' +
+				'<div class="clearFrame bs_no_select"><div v-on:click="inputClear()">' + _LANG.STR026 + '</div><div v-on:click="inputBackSpace()">' + _LANG.STR027 + '</div>' + '</div>' +
+				'<div class="keyboardFrame bs_no_select">' +
 					'<div class="keyboardGroup number">' +
 						'<div v-for="(num, idx) in keyNumberAry" v-on:click="ck(num)">{{ num }}</div>' +
 					'</div>' +
@@ -732,7 +816,7 @@ var BB = (function(TT){
 			'</div>' +
 		'</div>',
 		data: function(){return{
-			keyNumberAry: ['藍','9','8','7','紅','6','5','4','綠','3','2','1','橘','棕','0','副'],
+			keyNumberAry: ['藍','7','8','9','紅','4','5','6','綠','1','2','3','橘','棕','0','副'],
 			keyEngAry: ['F','A','B','C','幹線','通勤','專車','快','快速','市民','懷恩','接駁'],
 			busFindRouteInput: this.$parent.busFindRouteInput
 		}},
@@ -921,16 +1005,85 @@ var BB = (function(TT){
 	var busMakeURL = {
 		template: '<div id="busMakeURL" class="makeSub1">' +
 			'<div class="textA">' + _LANG.STR039 + '</div>' +
+			'<div style="height:20px;"></div>' +
 			'<div class="hyperlinkShow" v-html="makeURL()"></div>' +
+			'<div style="height:20px;"></div>' +
+			'<div class="QRPanel" v-show="!flagDisplayQRImage"><div class="btn1" v-on:click="genStationQR()">(產生) gen QR Code</div></div>' +
+			'<div v-if="flagDisplayQRImage"><div class="textB">' + _LANG.STR042 + '</div></div>' +
+			'<div v-if="flagDisplayQRImage">' +
+				'<div class="QRShow" v-html="getImage()" style="cursor:pointer;display:inline-block;" v-on:click="openSaveQR()"></div>' +
+			'</div>' +
+			'<div class="addToBookmark" v-show="flagDisplayBtnAddToBookmark"><div class="btn1" v-on:click="addToBookmark">' + _LANG.STR043 + '</div></div>' +
+			'<div class="textA" v-if="!flagDisplayBtnAddToBookmark">' + _LANG.STR045  + '</div>' +
 		'</div>',
 		data: function(){return{
+			link: '',
 			StationStopName: BB.now.StationStopName,
+			flagDisplayQRImage: false,
+			flagDisplayBtnAddToBookmark: true,
+			dataURL: '',
 			StationID: BB.now.StationID
 		}},
 		methods: {
+			addToBookmark: function(){
+				var ret = bookmark.add(this.StationStopName, this.StationID, BB.now.cities);
+				if(!ret){
+					BB.alert(_LANG.STR044);
+				}else{
+					this.flagDisplayBtnAddToBookmark = false;
+				}
+			},
 			makeURL: function(){
 				var url = makeShowURL(this.StationStopName, this.StationID, BB.now.cities);
+				this.link = url;
 				return '<a href="' + url + '" target="_blank">' + url + '</a>';
+			},
+			genStationQR: function(){
+				var me = this;
+				genStationQR(this.link, this.StationStopName, function(canvas){
+					me.dataURL = canvas.toDataURL();
+					me.flagDisplayQRImage = true;
+				})
+			},
+			getImage: function(){
+				return '<img src="' + this.dataURL + '" width="300" height="300"></img>';
+			},
+			openSaveQR: function(){
+				window.open(this.dataURL, "_new");
+			}
+		},
+		watch: {
+		}
+	}
+
+	//========收藏夾==========
+	var busBookmark = {
+		template: '<div id="busBookmark" class="makeSub1">' +
+			'<div class="textA">' + _LANG.STR046 + '</div>' +
+			'<div class="bookmarkOut">' +
+				'<div class="bookmarkList divTable">' +
+					'<div class="divTableRow" v-for="(bm, idx) in store">' +
+						'<div class="divTableCell idx">{{ idx+1 }}</div>' +
+						'<div class="divTableCell name">{{ bm.name }}</div>' +
+						'<div class="divTableCell func" v-on:click="removeID(bm.id)">[' + _LANG.STR047 + ']</div>' +
+						'<div class="divTableCell func" v-on:click="make(bm)">[' + _LANG.STR048 + ']</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+		'</div>',
+		data: function(){return{
+			store: bookmark.read()
+		}},
+		methods: {
+			removeID: function(id){
+				var rt = bookmark.remove(id);
+				if(rt) this.store = rt;
+			},
+			make: function(bm){
+				BB.now.cities = bm.cities;
+				BB.now.StationID = bm.StationID;
+				BB.now.StationStopName = bm.name;
+				location.hash = '/make/busmakeurl';
 			}
 		},
 		watch: {
@@ -938,9 +1091,10 @@ var BB = (function(TT){
 	}
 
 	var makeIndex = {
-		template: '' +
+		template: '<div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">' + _LANG.STR003 + '</div>' + '</router-link></div>' +
-			''
+				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1">' + _LANG.STR046 + '</div>' + '</router-link></div>' +
+			'</div>'
 	}
 	var makeArea = {
 		template: '<div id="makeArea">' + 
@@ -1113,10 +1267,12 @@ var BB = (function(TT){
 			'$route': function(vroute){
 				var pathAry = vroute.path.replace('/','').split('/');
 				var pageStep = (pathAry[1]) ? pathAry[1] : '';
-				this.flagShowStepControl = !!(pathAry.length>1);
-				this.flagDisablePrev = !!(pageStep=='buscity');
+				this.flagShowStepControl = !!(pathAry.length>1) && !(/busmakeurl|busbookmark/.test(pageStep));
+				this.flagDisablePrev = !!(/buscity|busbookmark|busbooklink/.test(pageStep));
 				this.flagDisableNext = !(/buscity|busfindroute|busarrivetime/.test(pageStep));
 				this.pageStep = pageStep;
+				if(document.documentElement.scrollTop) document.documentElement.scrollTop = 0;
+				if(document.body.scrollTop) document.body.scrollTop = 0;
 				BB.makeArea = this;
 			}
 		}
@@ -1405,7 +1561,8 @@ var BB = (function(TT){
 				{path: 'busfindroute', component: busFindRoute},
 				{path: 'busfindlist', component: busFindList},
 				{path: 'busarrivetime', component: busArriveTime},
-				{path: 'busmakeurl', component: busMakeURL}
+				{path: 'busmakeurl', component: busMakeURL},
+				{path: 'busbookmark', component: busBookmark}
 			]
 		},
 		//{path: '/bus2city', name: 'bus2city', component: busCity},
