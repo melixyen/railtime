@@ -311,6 +311,10 @@ body {
 #busBookmark {
 	font-size: 16px;
 }
+#busBookmark .divTableRow{
+	height: 28px;
+	line-height: 28px;
+}
 #busBookmark .bookmarkList .idx{
 	width: 30px;
 	text-align: right;
@@ -318,6 +322,11 @@ body {
 #busBookmark .bookmarkList .name{
 	max-width: 50%;
 	padding:0 10px;
+	color: #229;
+	text-decoration: underline;
+}
+#busBookmark .bookmarkList .name > span{
+	cursor: pointer;
 }
 #busBookmark .bookmarkList .func{
 	padding: 0 5px;
@@ -349,6 +358,19 @@ body {
 	padding-right: 0;
 }
 #showArea .allIn .list .item.number{ color:#217;}
+#showArea .allIn .list .item.number .str{
+	position:relative;
+	padding-right: 22px;
+	display: inline-block;
+}
+#showArea .allIn .list .item.number .str .dir{
+	display: inline-block;
+	font-size: 12px;
+	height: 14px; line-height: 14px;
+	padding-left: 5px;
+}
+#showArea .allIn .list .item.number .str .dir0{ color:green; }
+#showArea .allIn .list .item.number .str .dir1{ color:red; }
 
 .busDisplayArriveMinute{
 	color: #1020EF;
@@ -456,6 +478,11 @@ body {
 	height: 26px;
 	line-height: 26px;
 }
+#showBusRoutePop .content .row.link .stop > span{
+	color: #229;
+	text-decoration: underline;
+	cursor: pointer;
+}
 #showBusRoutePop .content .row.now {
 	background-color: #2cd;
 }
@@ -519,6 +546,7 @@ var _LANG = (function(){
 			CM_OK: '確定',
 			CM_CANCEL: '取消',
 			CM_REMOVE: '刪除',
+			CM_TITLE: '公車運輸 QR CODE 雲端看板',
 			STR001: '製作雲端站牌',
 			STR002: '關於',
 			STR003: '點我開始進行公車站牌雲端看板製作',
@@ -547,7 +575,7 @@ var _LANG = (function(){
 			STR026: '清除',
 			STR027: '修正',
 			STR028: '正常',
-			STR029: '尚未發車',
+			STR029: '未發車',
 			STR030: '交管不停靠',
 			STR031: '末班車已過',
 			STR032: '今日未營運',
@@ -566,7 +594,15 @@ var _LANG = (function(){
 			STR045: '成功加入收藏夾',
 			STR046: '管理站牌收藏夾',
 			STR047: '刪除',
-			STR048: '重製',
+			STR048: '分享',
+			STR049: '歡迎使用{title}系統，您現在可以點選{btnA}進行新站牌的製作，或者從中管理過去製作的站牌。',
+			STR050: '合併為群組站牌',
+			STR051: '群組站牌會將勾選的站牌合併為一個查詢連結，產生一個 QR CODE 後可以一次檢視多支站牌的動態資訊。請注意，順序會依據您勾選的順序顯示。',
+			STR052: '產生 QR CODE',
+			STR053: '請輸入群組名稱',
+			STR054: '已產生於下方',
+			STR055: '去',
+			STR056: '返',
 			zxx: 'none'
 		}
 	}
@@ -962,7 +998,7 @@ var BB = (function(TT){
 			'<div class="textA">' + _LANG.STR036 + '</div>' +
 			'<div class="StopNameFrame">' +
 				'<div class="item">' +
-					'<input type="text" maxLengrh="10" class="busFindRouteCSSInput" placeholder="' + _LANG.STR038 + '" v-model="StationStopName" />' +
+					'<input type="text" maxLengrh="30" class="busFindRouteCSSInput" placeholder="' + _LANG.STR038 + '" v-model="StationStopName" />' +
 				'</div>' +
 				'<div class="item">' +
 					'<span>' + _LANG.STR037 + '</span>' +
@@ -1008,7 +1044,7 @@ var BB = (function(TT){
 			'<div style="height:20px;"></div>' +
 			'<div class="hyperlinkShow" v-html="makeURL()"></div>' +
 			'<div style="height:20px;"></div>' +
-			'<div class="QRPanel" v-show="!flagDisplayQRImage"><div class="btn1" v-on:click="genStationQR()">(產生) gen QR Code</div></div>' +
+			'<div class="QRPanel" v-show="!flagDisplayQRImage"><div class="btn1" v-on:click="genStationQR()">' + _LANG.STR052 + '</div></div>' +
 			'<div v-if="flagDisplayQRImage"><div class="textB">' + _LANG.STR042 + '</div></div>' +
 			'<div v-if="flagDisplayQRImage">' +
 				'<div class="QRShow" v-html="getImage()" style="cursor:pointer;display:inline-block;" v-on:click="openSaveQR()"></div>' +
@@ -1063,30 +1099,95 @@ var BB = (function(TT){
 			'<div class="bookmarkOut">' +
 				'<div class="bookmarkList divTable">' +
 					'<div class="divTableRow" v-for="(bm, idx) in store">' +
-						'<div class="divTableCell idx">{{ idx+1 }}</div>' +
-						'<div class="divTableCell name">{{ bm.name }}</div>' +
+						'<div class="divTableCell idx">' +
+							'<input type="checkbox" v-bind:value="bm.id" v-model="checkStID" />' +
+						'</div>' +
+						'<div class="divTableCell name"><span v-on:click="link(bm)">{{ bm.name }}</span></div>' +
 						'<div class="divTableCell func" v-on:click="removeID(bm.id)">[' + _LANG.STR047 + ']</div>' +
 						'<div class="divTableCell func" v-on:click="make(bm)">[' + _LANG.STR048 + ']</div>' +
 					'</div>' +
 				'</div>' +
 			'</div>' +
+			'<div style="margin:20px 0 10px 0;">' +
+				'<div class="item">' +
+					'<input type="text" maxLengrh="30" class="busFindRouteCSSInput" placeholder="' + _LANG.STR038 + '" v-model="GroupStopName" />' +
+				'</div>' +
+				'<div class="btn1" v-on:click="groupStop">' + _LANG.STR050 + '</div>' +
+				'<div class="textB" v-if="flagShowCreated">' + _LANG.STR054 + '</div>' +
+				'<div v-if="flagShowGroupLink">' +
+					'<div v-html="getImage()" v-on:click="openSaveQR()" style="display:inline-block;"></div>' +
+					'<div v-html="printURL()"></div>' +
+				'</div>' +
+				'<div class="textB" v-show="!flagShowGroupLink">' + _LANG.STR051 + '</div>' +
+			'</div>' +
 		'</div>',
 		data: function(){return{
-			store: bookmark.read()
+			store: bookmark.read(),
+			dataURL: '',
+			flagShowCreated: false,
+			flagShowGroupLink: false,
+			GroupStopName: '',
+			url: '',
+			checkStID: []
 		}},
 		methods: {
 			removeID: function(id){
 				var rt = bookmark.remove(id);
-				if(rt) this.store = rt;
+				if(rt){
+					this.store = rt;
+					this.checkStID = [];
+				}
+			},
+			getStoreByID: function(id){
+				for(var i=0; i<this.store.length; i++){
+					if(this.store[i].id==id) return this.store[i];
+				}
+				return undefined;
+			},
+			groupStop: function(){
+				var me = this;
+				if(this.checkStID.length==0) return false;
+				var ary = this.checkStID.map(function(id){
+					var data = me.getStoreByID(id);
+					return {name:data.name, id:data.StationID, cities:data.cities}
+				});
+				var url = makeShowURL(ary);
+				this.url = url;
+				this.genStationQR();
+				this.flagShowGroupLink = true;
+				this.flagShowCreated = true; setTimeout(function(){me.flagShowCreated=false;},2000);
+			},
+			link: function(bm){
+				var url = makeShowURL(bm.name, bm.StationID, bm.cities);
+				window.open(url, "_blank");
 			},
 			make: function(bm){
 				BB.now.cities = bm.cities;
 				BB.now.StationID = bm.StationID;
 				BB.now.StationStopName = bm.name;
 				location.hash = '/make/busmakeurl';
+			},
+			printURL: function(){
+				return '<a href="' + this.url + '" target="_blank">' + this.url + '</a>';
+			},
+			genStationQR: function(){
+				var me = this;
+				var name = (this.GroupStopName) ? this.GroupStopName : 'Group Bus Stop';
+				genStationQR(this.url, name, function(canvas){
+					me.dataURL = canvas.toDataURL();
+				})
+			},
+			getImage: function(){
+				return '<img src="' + this.dataURL + '" width="300" height="300"></img>';
+			},
+			openSaveQR: function(){
+				window.open(this.dataURL, "_new");
 			}
 		},
 		watch: {
+			checkStID: function(ary){
+				if(this.GroupStopName=='' && ary.length>0) this.GroupStopName = this.getStoreByID(ary[0]).name;
+			}
 		}
 	}
 
@@ -1285,7 +1386,7 @@ var BB = (function(TT){
 					'<div v-html="tet2(station)"></div>' +
 					'<div class="list divTable">' +
 						'<div v-for="(bus, bidx) in station.time" class="divTableRow">' +
-							'<div class="divTableCell item number" style="cursor:pointer;" v-html="getBusDataName(bus)" v-on:click="popBus(bus)"></div>' +
+							'<div class="divTableCell item number"><span style="cursor:pointer;" v-html="getBusDataName(bus)" v-on:click="popBus(bus, station)"></span></div>' +
 							'<div class="divTableCell item" v-html="getBusDataInfo(bus)"></div>' +
 						'</div>' +
 					'</div>' +
@@ -1303,15 +1404,20 @@ var BB = (function(TT){
 				return '<div class="stationDisplayName">' + station.StationName + '</div>';
 			},
 			getBusDataName: function(bus){
-				return getBusDisplayString(bus);
+				var dir = '';
+				if(bus.Direction===0) dir = '<span class="dir0">' + '(' + _LANG.STR055 + ')';
+				if(bus.Direction===1) dir = '<span class="dir1">' + '(' + _LANG.STR056 + ')';
+				return '<div class="str">' + getBusDisplayString(bus) + '<div class="dir">' + dir + '</div></div>';
 			},
 			getBusDataInfo: function(bus){
 				return getStopDisplayInfo(bus);
 			},
-			popBus: function(bus){
+			popBus: function(bus, station){
 				BB.showBusRoutePop.RouteUID = bus.RouteUID;
 				BB.showBusRoutePop.StopUID = bus.StopUID;
-				BB.showBusRoutePop.busNO = this.getBusDataName(bus);
+				BB.showBusRoutePop.busNO = getBusDisplayString(bus);
+				BB.showBusRoutePop.StationID = station.StationID;
+				BB.showBusRoutePop.cities = station.cities;
 				location.hash = '/show/line';
 			},
 			readAllStation: function(cbFn){
@@ -1319,7 +1425,7 @@ var BB = (function(TT){
 				var stAryCities = [];
 				var stRes = [];
 				var lastResult = [];
-				var tmpStatioinID = '';
+				var tmpStatioinID = '', tmpCitiesAry = [];
 				function goReadStation(){
 					if(arySBS.length>0){
 						var stObj = arySBS.shift();
@@ -1328,6 +1434,7 @@ var BB = (function(TT){
 						});
 						stRes = [];
 						tmpStatioinID = stObj.id;
+						tmpCitiesAry = stObj.cities.slice();
 						getAllCityStation();
 					}else{
 						cbFn(lastResult);
@@ -1355,6 +1462,7 @@ var BB = (function(TT){
 					}else{
 						lastResult.push({
 							StationID: tmpStatioinID,
+							cities: tmpCitiesAry,
 							data: stRes
 						});
 						goReadStation();
@@ -1368,12 +1476,14 @@ var BB = (function(TT){
 				var listCityStops = [];
 				var aryArriveTime = [];
 				var tmpStationID = '';
+				var tmpCities = [];
 				var allStationArriveTime = [];
 				var showBusStation = this.showBusStation;
 				function getTargetStation(){
 					if(aryStation.length>0){
 						var stObj = aryStation.shift();
 						tmpStationID = stObj.StationID;
+						tmpCities = stObj.cities.slice();
 						listCityStops = procCityWithStation(stObj.data, 'array');
 						aryArriveTime = [];
 						getStopArriveTime();
@@ -1407,6 +1517,7 @@ var BB = (function(TT){
 						allStationArriveTime.push({
 							StationID: tmpStationID,
 							StationName: stName,
+							cities: tmpCities,
 							time: JSON.parse(JSON.stringify(aryArriveTime))
 						});
 						getTargetStation();
@@ -1476,7 +1587,7 @@ var BB = (function(TT){
 				'<div class="divTable" style="width:100%;">' +
 					'<div class="divTableRow row" v-bind:class="getRowCSS(stop)" v-for="(stop, rix) in aryRoute">' +
 						'<div class="index divTableCell" v-html="busIndex(stop)"></div>' +
-						'<div class="stop divTableCell" v-html="busStop(stop)"></div>' +
+						'<div class="stop divTableCell"><span v-html="busStop(stop)" v-on:click="openStop(stop)"></span></div>' +
 					'</div>' +
 				'</div>' +
 			'</div>' +
@@ -1490,7 +1601,9 @@ var BB = (function(TT){
 			busNO: '',
 			RouteUID: '',
 			StopUID: '',
+			StationID: '',
 			aryRoute: [],
+			cities: [],
 			busInfo: false,
 			baseCSS: ''
 		},
@@ -1509,7 +1622,7 @@ var BB = (function(TT){
 				return (this.flagShowBase) ? 'show' : '';
 			},
 			getRowCSS: function(stop){
-				return (stop.StopUID==this.StopUID) ? 'now' : '';
+				return (stop.StopUID==this.StopUID) ? 'now' : 'link';
 			},
 			getBusRoute: function(){
 				var city = this.RouteUID.substr(0,3);
@@ -1531,6 +1644,13 @@ var BB = (function(TT){
 						me.busInfo = fmp;
 					}
 				}});
+			},
+			openStop: function(stop){
+				if(stop.StationID && stop.StationID != this.StationID){
+					this.back();
+					var url = makeShowURL(getStopDisplayName(stop), stop.StationID, this.cities);
+					location.href = url;
+				}
 			}
 		},
 		watch: {
@@ -1548,7 +1668,17 @@ var BB = (function(TT){
 	});
 	}
 
+	var indexArea = {
+		template: '<div>' +
+			'<div class="textA">' + _LANG.STR049.replace('{title}',_LANG.CM_TITLE).replace('{btnA}',_LANG.STR001) + '</div>' +
+		'</div>', 
+		data: function(){return {
+		}},
+		methods: {
+		}
+	};
 	var siteMap = [
+		{path: '/', component: indexArea},
 		{path: '/show', name: 'show', component: showArea,
 			children: [
 				{path: 'line'}
