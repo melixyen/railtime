@@ -12,7 +12,7 @@
 @charset "utf-8";
 
 body {
-	/*font-family:'細明體', "PMingLiU";*/
+	font-family: "Arial", "Microsoft JhengHei";
 	font-size: large;
 	margin: 0px;
 	background-color: rgb(192, 244, 247);
@@ -254,6 +254,7 @@ body {
 #makeArea .busFindResultListBox .stop .stopName{
 	padding: 0 12px;
 	min-width: 30%;
+	max-width: calc(100% - 150px);
 }
 #makeArea .busFindResultListBox .stopOpenMap{
 	float: right;
@@ -301,7 +302,7 @@ body {
 #makeArea .busArriveTimeFrame{
 	width: auto;
 }
-#makeArea .busArriveTimeFrame .name, #makeArea .busArriveTimeFrame .info{
+#makeArea .busArriveTimeFrame .name, #makeArea .busArriveTimeFrame .info, #makeArea .busArriveTimeFrame .stopUID{
 	padding: 5px calc(1vw + 4px);
 	border-bottom: 1px solid #99e;
 	word-wrap: break-word;
@@ -329,9 +330,10 @@ body {
 	cursor: pointer;
 }
 #busBookmark .bookmarkList .func{
-	padding: 0 5px;
+	padding: 0 3px;
 	color: #24e;
 	cursor: pointer;
+	min-width: 50px;
 }
 
 
@@ -340,6 +342,7 @@ body {
 	text-align:center;
 	background-color: #217;
 	color: #99F0ba;
+	height:34px; line-height:34px;
 }
 #showArea .allIn .list{
 	padding:8px;
@@ -415,6 +418,7 @@ body {
 	#makeArea .busArriveTimeFrame .name, #makeArea .busArriveTimeFrame .info{
 		min-width: 38vw;
 	}
+	#makeArea .busArriveTimeFrame .stopUID{display:none;}
 	#showArea .allIn .list{
 		width: calc(100% - 24px);
 	}
@@ -478,6 +482,11 @@ body {
 	height: 26px;
 	line-height: 26px;
 }
+#showBusRoutePop .content .row .index{
+	font-size: 12px;
+	padding: 0 10px 0 5px;
+	text-align: right;
+}
 #showBusRoutePop .content .row.link .stop > span{
 	color: #229;
 	text-decoration: underline;
@@ -486,9 +495,12 @@ body {
 #showBusRoutePop .content .row.now {
 	background-color: #2cd;
 }
-#showBusRoutePop .content .index {
-	padding: 0 20px 0 10px;
-	text-align: right;
+#showBusRoutePop .content .row .status {
+	width: 46px;
+	font-size: 12px;
+	background-color: #F02030;
+	color: #F3F3F3;
+	display: inline;
 }
 
 /* Vue CSS Start */
@@ -549,7 +561,7 @@ var _LANG = (function(){
 			CM_TITLE: '公車運輸 QR CODE 雲端看板',
 			STR001: '製作雲端站牌',
 			STR002: '關於',
-			STR003: '點我開始進行公車站牌雲端看板製作',
+			STR003: '由經過路線製作公車站牌雲端看板',
 			STR004: '請選擇此站位停靠的公車所有可能隸屬的主管機關縣市。',
 			STR005: '例如林口的站牌可能同時有新北市公車及桃園市公車，則勾選 [台北市、新北市公車] 和 [桃園市公車]。',
 			STR006: '您選擇的站牌公車業者主管機關包含：',
@@ -570,7 +582,7 @@ var _LANG = (function(){
 			STR021: '新巴士',
 			STR022: '正在尋找這個站牌的公車路線...',
 			STR023: '抱歉，此路線的主管機關未提供站牌 StationID，無法繼續執行。',
-			STR024: '目前所知仍有部分縣市（紅底按鈕）未提供 StationID 資料無法執行，您可嘗試但不保證在主管機關更新資料前能夠成功製作出雲端公車站牌。',
+			STR024: '目前所知仍有部分縣市（紅字按鈕）未提供 StationID 資料無法執行，您可嘗試但不保證在主管機關更新資料前能夠成功製作出雲端公車站牌。',
 			STR025: '抱歉，找不到任何路線。',
 			STR026: '清除',
 			STR027: '修正',
@@ -603,6 +615,7 @@ var _LANG = (function(){
 			STR054: '已產生於下方',
 			STR055: '去',
 			STR056: '返',
+			STR057: '未出現資訊可能是公車動態資訊伺服器無回應，請稍後再使用。',
 			zxx: 'none'
 		}
 	}
@@ -763,8 +776,8 @@ var BB = (function(TT){
 		cityArea: define_cityArea,
 		reloadInterval: 20000,
 		now: {
-			busCitySelArea: ['TPE'],
-			busFindRouteInput: '605'
+			busCitySelArea: [],
+			busFindRouteInput: ''
 		},
 		ver: 0.1
 	};
@@ -939,6 +952,8 @@ var BB = (function(TT){
 									c.StationID = StationID;
 									var stName = getStopDisplayName(c);
 									if(aryStationListStopName.indexOf(stName)==-1) aryStationListStopName.push(stName);
+									var ename = c.StopName.En;
+									if(ename && aryStationListStopName.indexOf(ename)==-1) aryStationListStopName.push(ename);
 									return c;
 								});
 								StationStopName = getStopDisplayName(data[0]);
@@ -975,9 +990,12 @@ var BB = (function(TT){
 			},
 			head: function(bus){
 				var busTypeString = _LANG.STR018;
+				var linkFT = '-';
+				if(bus.Direction==0) linkFT = '=&gt;';
+				if(bus.Direction==1) linkFT = '&lt;=';
 				if(bus.CityCode=='NWT' && /^F\d/.test(bus.RouteName.Zh_tw)){ busTypeString = '<span style="color:#BABB24;">' + _LANG.STR021 + '</span>' }
 				return '<div class="busNO">' + getBusDisplayString(bus) + '</div>' +
-					'<div class="fromTo">' + bus.DepartureStopNameZh + ' <span class="dash1">-</span> ' + bus.DestinationStopNameZh + '</div>' +
+					'<div class="fromTo">' + bus.DepartureStopNameZh + ' <span class="dash1">' + linkFT + '</span> ' + bus.DestinationStopNameZh + '</div>' +
 					'<div class="dir"> ( ' + getDirString(bus.Direction) + ' )</div>' +
 					'<div class="manageBy">' + TT.ptx.bus.getCityData(bus.CityCode).name + ' ' + busTypeString + '</div>';
 			},
@@ -1010,8 +1028,10 @@ var BB = (function(TT){
 					'<div v-for="(bus,idx) in aryArriveTime" class="divTableRow">' +
 						'<div v-html="getBusDataName(bus)" class="divTableCell name"></div>' +
 						'<div v-html="getBusDataInfo(bus)" class="divTableCell info"></div>' +
+						'<div v-html="DisplayBusStopUID(bus)" class="divTableCell stopUID"></div>' +
 					'</div>' +
 				'</div>' +
+				'<div class="textA" v-if="(aryArriveTime.length==0)">' + _LANG.STR057 + '</div>' +
 			'</div>' +
 		'</div>',
 		data: function(){return{
@@ -1030,6 +1050,9 @@ var BB = (function(TT){
 			},
 			getBusDataInfo: function(bus){
 				return info = getStopDisplayInfo(bus);
+			},
+			DisplayBusStopUID: function(bus){
+				return bus.StopUID;
 			}
 		},
 		watch: {
@@ -1391,12 +1414,14 @@ var BB = (function(TT){
 						'</div>' +
 					'</div>' +
 				'</div>' +
+				'<div v-if="(aryArriveTime.length==0)" class="textA">' + _LANG.STR057 + '</div>' +
 			'</div>' +
 		'</div>',
 		data: function(){return{
 			showBusStation: BB.now.showBusStation || [],
 			aryStation: [],
 			aryArriveTime: [],
+			reloadTimer: 0,
 			onReload: false
 		}},
 		methods: {
@@ -1415,6 +1440,7 @@ var BB = (function(TT){
 			popBus: function(bus, station){
 				BB.showBusRoutePop.RouteUID = bus.RouteUID;
 				BB.showBusRoutePop.StopUID = bus.StopUID;
+				BB.showBusRoutePop.Direction = bus.Direction;
 				BB.showBusRoutePop.busNO = getBusDisplayString(bus);
 				BB.showBusRoutePop.StationID = station.StationID;
 				BB.showBusRoutePop.cities = station.cities;
@@ -1529,10 +1555,11 @@ var BB = (function(TT){
 				var reloadInterval = BB.reloadInterval;
 				var me = this;
 				me.onReload = true;
+				clearTimeout(this.reloadTimer);
 				this.readAllTime(function(data){
 					me.onReload = false;
 					me.aryArriveTime = data;
-					//setTimeout(me.reloadPage, reloadInterval);
+					me.reloadTimer = setTimeout(me.reloadPage, reloadInterval);
 				})
 
 			}
@@ -1553,6 +1580,9 @@ var BB = (function(TT){
 			}
 			return true;
 		},
+		destroyed: function(){
+			clearTimeout(this.reloadTimer);
+		},
 		watch: {
 			'$route': function(vroute){
 				BB.showBusRoutePop.flagShowBase = !!(vroute.path=='/show/line');
@@ -1572,6 +1602,25 @@ var BB = (function(TT){
 					rt += '<div>' + k + ': ' + BB.programAbout[k] + '</div>';
 				}
 				rt += '</div>';
+				// HELP Document
+				rt += '<div style="margin: 20px 4px;">' +
+					'<div>本程式可由通過欲查詢之站牌的路線自動連結該站牌上的所有公車動態顯示，類似智慧型站牌將所有通過路線的公車動態都顯示出來。製作成 QR CODE 後，可貼在任何位置方便持有智慧型手機的人快速掃碼查詢動態。</div>' +
+					'<div style="margin-top: 20px; color:#2c5dba;">製作公車站牌 QR Code 圖檔的方式</div>' +
+					'<ol>' +
+						'<li>從製作雲端站牌選擇經由路線製作。</li>' +
+						'<li>選擇此站牌路線的公車主管機關單位，本地站牌公車可能隸屬其他縣市管理。</li>' +
+						'<li>輸入公車編號或名稱，會從所選主管機關內查詢，因此請勿一次選全部縣市，雖不會遺漏但未來會耗費時間查詢所有縣市。</li>' +
+						'<li>從查詢結果中選擇通過此站牌的路線，打開該路線所有站牌列表，找到要製作的站牌後按確定。<span style="color:red">請注意公車有分往程與返程</span>，需確認路線行駛方向和要製作的站牌是相同的。</li>' +
+						'<li>程式會列出自動尋找出來在同站牌下的路線，輸入名稱或選擇一個建議名稱當作雲端站牌名稱。</li>' +
+						'<li>製作完成後會產生一個網址連結，該連結即為雲端站牌 URL。下方按鈕可產生 QR CODE 圖檔，亦可存入收藏夾內作為製作群組站牌之用</li>' +
+					'</ol>' +
+					'<div style="margin-top: 20px; color:#2c5dba;">製作群組的方式</div>' +
+					'<ol>' +
+						'<li>從製作雲端站牌選擇管理站牌收藏夾。</li>' +
+						'<li>勾選要合併為群組的站牌，<span style="color:red">請注意這裡的勾選順序會決定群組站牌顯示時的順序</span>，並在下方修改群組站牌名稱。</li>' +
+						'<li>按下合併為群組站牌後即會產生 QR CODE 圖檔與查詢之 URL 連結。</li>' +
+					'</ol>' +
+				'</div>';
 				return rt;
 			}
 		}
@@ -1584,10 +1633,11 @@ var BB = (function(TT){
 				'<div class="busNO" style="overflow:hidden; display:inline-block; width:calc(98vw - 70px); font-size:30px; height:40px; line-height:40px; border-left:5px solid #28B; text-align:center;">{{ busNO }}</div>' +
 			'</div>' +
 			'<div class="content" style="width:100%; background-color:#E0E9F3; padding: 20px 0px; box-sizing:border-box;">' +
-				'<div class="divTable" style="width:100%;">' +
+				'<div class="divTable" style="">' +
 					'<div class="divTableRow row" v-bind:class="getRowCSS(stop)" v-for="(stop, rix) in aryRoute">' +
 						'<div class="index divTableCell" v-html="busIndex(stop)"></div>' +
 						'<div class="stop divTableCell"><span v-html="busStop(stop)" v-on:click="openStop(stop)"></span></div>' +
+						'<div class="status divTableCell" v-html="stopStatus(stop)"></div>' +
 					'</div>' +
 				'</div>' +
 			'</div>' +
@@ -1602,8 +1652,10 @@ var BB = (function(TT){
 			RouteUID: '',
 			StopUID: '',
 			StationID: '',
+			Direction: 0,
 			aryRoute: [],
 			cities: [],
+			nearStatusData: [],
 			busInfo: false,
 			baseCSS: ''
 		},
@@ -1642,8 +1694,17 @@ var BB = (function(TT){
 						}
 						me.aryRoute = fmp.Stops;
 						me.busInfo = fmp;
+						me.getBusNearStop();
 					}
 				}});
+			},
+			getBusNearStop: function(){
+				var me = this;
+				TT.ptx.bus.getBusRealtimeNearStop(this.RouteUID, this.Direction, {cbFn: function(data,e){
+					if(e.status==TT.ptx.statusCode.SUCCESS){
+						me.nearStatusData = data;
+					}
+				}})
 			},
 			openStop: function(stop){
 				if(stop.StationID && stop.StationID != this.StationID){
@@ -1651,6 +1712,14 @@ var BB = (function(TT){
 					var url = makeShowURL(getStopDisplayName(stop), stop.StationID, this.cities);
 					location.href = url;
 				}
+			},
+			stopStatus: function(stop){
+				//dsd
+				var rt = '';
+				this.nearStatusData.forEach(function(c){
+					if(c.StopUID==stop.StopUID) rt = c.PlateNumb;
+				});
+				return rt;
 			}
 		},
 		watch: {

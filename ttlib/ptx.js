@@ -238,6 +238,15 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			ptx.getURL(myURL, cfg.cbFn);
 
 		},
+		getBusRealtimeNearStop: function(RouteUID, dir, cfg){
+			cfg = this.setDefaultCfg(cfg);
+			var city = RouteUID.substr(0,3);
+			dir = dir.toString();
+			var myURL = busURL + '/RealTimeNearStop/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
+			myURL += ptx.filterFn(ptx.filterParam(['RouteUID', 'Direction'],'==',[RouteUID, dir],'and')) + '&' + ptx.topFn();
+			if(cfg.selectField) myURL += '&' + cfg.selectField;
+			ptx.getURL(myURL, cfg.cbFn);
+		},
 		getBusStation: function(StationID, city, cfg){
 			cfg = this.setDefaultCfg(cfg);
 			var myURL = busURL + '/Station/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
