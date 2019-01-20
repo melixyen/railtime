@@ -247,6 +247,17 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			if(cfg.selectField) myURL += '&' + cfg.selectField;
 			ptx.getURL(myURL, cfg.cbFn);
 		},
+		getBusRoute: function(RouteUID, cfg, city){
+			cfg = this.setDefaultCfg(cfg);
+			if(!city){
+				if(typeof(RouteUID)=='string'){city = RouteUID.substr(0,3);}
+				else{city = RouteUID[0].substr(0,3);}
+			}
+			var myURL = busURL + '/Route/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
+			myURL += ptx.filterFn(ptx.filterParam('RouteUID','==',RouteUID),'or') + '&' + ptx.topFn();
+			if(cfg.selectField) myURL += '&' + cfg.selectField;
+			ptx.getURL(myURL, cfg.cbFn);
+		},
 		getBusStation: function(StationID, city, cfg){
 			cfg = this.setDefaultCfg(cfg);
 			var myURL = busURL + '/Station/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';

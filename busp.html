@@ -372,9 +372,11 @@ body {
 	font-size: 12px;
 	height: 14px; line-height: 14px;
 	padding-left: 5px;
+	max-width: 100px;
 }
 #showArea .allIn .list .item.number .str .dir0{ color:green; }
 #showArea .allIn .list .item.number .str .dir1{ color:red; }
+#showArea .allIn .list .item.timeState { min-width: 100px; }
 
 .busDisplayArriveMinute{
 	color: #1020EF;
@@ -1412,7 +1414,7 @@ var BB = (function(TT){
 					'<div class="list divTable">' +
 						'<div v-for="(bus, bidx) in station.time" class="divTableRow">' +
 							'<div class="divTableCell item number"><span style="cursor:pointer;" v-html="getBusDataName(bus)" v-on:click="popBus(bus, station)"></span></div>' +
-							'<div class="divTableCell item" v-html="getBusDataInfo(bus)"></div>' +
+							'<div class="divTableCell item timeState" v-html="getBusDataInfo(bus)"></div>' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
@@ -1430,10 +1432,22 @@ var BB = (function(TT){
 			tet2: function(station){
 				return '<div class="stationDisplayName">' + station.StationName + '</div>';
 			},
+			getBusMoreInfo: function(bus){
+				var ary = this.aryStation;
+				for(var i=0; i<ary.length; i++){
+					for(var j=0; j<ary[i].data.length; j++){
+						if(ary[i].data[j].RouteUID == bus.RouteUID) return ary[i].data[j];
+					}
+				}
+				return false;
+			},
 			getBusDataName: function(bus){
 				var dir = '';
-				if(bus.Direction===0) dir = '<span class="dir0">' + '(' + _LANG.STR055 + ')';
-				if(bus.Direction===1) dir = '<span class="dir1">' + '(' + _LANG.STR056 + ')';
+				var busRouteInfo = this.getBusMoreInfo(bus);
+				var fromStName = busRouteInfo.DepartureStopNameZh || '',
+					toStName = busRouteInfo.DestinationStopNameZh || '';
+				if(bus.Direction===0) dir = '<span class="dir0">' + _LANG.STR055 + ' ' + toStName;
+				if(bus.Direction===1) dir = '<span class="dir1">' + _LANG.STR056 + ' ' + fromStName;
 				return '<div class="str">' + getBusDisplayString(bus) + '<div class="dir">' + dir + '</div></div>';
 			},
 			getBusDataInfo: function(bus){
@@ -1474,13 +1488,31 @@ var BB = (function(TT){
 						TT.ptx.bus.getBusStation(stCity.StationID, stCity.city, {
 							cbFn: function(data,e){
 								if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0 && data[0].Stops.length>0){
+									var aryRouteUID = [];
 									var ary = data[0].Stops.map(function(c){
 										c.CityCode = stCity.city;
 										c.StationID = stCity.StationID;
+										aryRouteUID.push(c.RouteUID);
 										return c;
 									});
-									stRes = stRes.concat(ary);
-									getAllCityStation();
+									//二次工作，取得 Bus Route Data 合併進去
+									TT.ptx.bus.getBusRoute(aryRouteUID, {cbFn: function(rData, re){
+										if(e.status==TT.ptx.statusCode.SUCCESS){
+											if(rData.find){
+												ary = ary.map(function(rot){
+													var tmpA = rData.find(function(el){return !!(el.RouteUID==rot.RouteUID)});
+													if(tmpA){//有相同的 RouteUID 則合併資料
+														for(var k in tmpA){
+															if(!rot[k]) rot[k] = tmpA[k];
+														}
+													}
+													return rot;
+												})
+											}
+										}
+										stRes = stRes.concat(ary);
+										getAllCityStation();
+									}})
 								}else{
 									getAllCityStation();
 								}
@@ -1573,6 +1605,8 @@ var BB = (function(TT){
 				BB.now.showUseStationData = data;
 				me.reloadPage();
 				BB.unmask();
+				//Extends Route Data
+
 			}
 			BB.mask(_LANG.STR041);
 			if(BB.now.showUseStationData){
