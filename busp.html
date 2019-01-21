@@ -27,6 +27,10 @@ body {
 	font-size: 16px;
 	color: #8c10a9;
 }
+.textR1 {
+	font-size: 20px;
+	color: #EF2020;
+}
 .floatLeft, .floatLeftInnerDiv > div{
 	float: left;
 }
@@ -92,7 +96,7 @@ body {
 	border-top: 1px solid #BAE;
 	background-color: rgb(192, 244, 247);
 }
-.textA, .textB, .btn1, .btnStep,
+.textA, .textB, .textR1, .btn1, .btnStep, .bookmarkOut,
 .bs_no_select{
    -o-user-select:none;
    -moz-user-select: none;
@@ -105,6 +109,8 @@ body {
 .divTableRowGroup{ display:table-row-group; }
 .divTableRow{ display:table-row; }
 .divTableCell{ display:table-cell; }
+
+.divDPIB {display:inline-block;}
 
 /* Common CSS Area End*/
 
@@ -256,6 +262,7 @@ body {
 	padding: 0 12px;
 	min-width: 30%;
 	max-width: calc(100% - 150px);
+	cursor: pointer;
 }
 #makeArea .busFindResultListBox .stop .stopName.onSelect{
 	background-color: rgb(68, 17, 26);
@@ -325,27 +332,27 @@ body {
 	word-break: break-all;
 }
 
-#busBookmark {
+.bookmark {
 	font-size: 16px;
 }
-#busBookmark .divTableRow{
+.bookmark .divTableRow{
 	height: 28px;
 	line-height: 28px;
 }
-#busBookmark .bookmarkList .idx{
+.bookmark .bookmarkList .idx{
 	width: 30px;
 	text-align: right;
 }
-#busBookmark .bookmarkList .name{
+.bookmark .bookmarkList .name{
 	max-width: 50%;
 	padding:0 10px;
 	color: #229;
 	text-decoration: underline;
 }
-#busBookmark .bookmarkList .name > span{
+.bookmark .bookmarkList .name > span{
 	cursor: pointer;
 }
-#busBookmark .bookmarkList .func{
+.bookmark .bookmarkList .func{
 	padding: 0 3px;
 	color: #24e;
 	cursor: pointer;
@@ -598,7 +605,7 @@ var _LANG = (function(){
 			STR016: '往程',
 			STR017: '返程',
 			STR018: '公車',
-			STR019: '請從下方選擇要製作的站牌後按右邊的[確定]進行下一步，可用[地圖]開地圖視窗確認位置。',
+			STR019: '確認要製作的站牌後按右邊的[確定]進行下一步，可用[地圖]開地圖視窗確認位置，<span style="color:red;">也可點選起迄站名來過濾只有經過這兩站的路線</span>。',
 			STR020: '地圖',
 			STR021: '新巴士',
 			STR022: '正在尋找這個站牌的公車路線...',
@@ -637,6 +644,9 @@ var _LANG = (function(){
 			STR055: '去',
 			STR056: '返',
 			STR057: '未出現資訊可能是公車動態資訊伺服器無回應，請稍後再使用。',
+			STR058: '管理群組站牌收藏夾',
+			STR059: '加入群組收藏夾',
+			STR060: '已成功加入群組收藏夾',
 			zxx: 'none'
 		}
 	}
@@ -669,7 +679,8 @@ var BB = (function(TT){
 
 	var bookmark = (function(){
 		var BUSP_DIM = 'busp_busSaveStation';
-		var bmAry = [];
+		var BUSP_GROUP_DIM = 'busp_busGroupSaveStation';
+		var bmAry = [], bgAry = [];
 		function fnRead(){
 			var tmpA = localStorage.getItem(BUSP_DIM);
 			if(tmpA){
@@ -700,10 +711,41 @@ var BB = (function(TT){
 			fnWrite();
 			return fnRead();
 		}
+		//  Control Group
+		function fnGroupRead(){
+			var tmpA = localStorage.getItem(BUSP_GROUP_DIM);
+			if(tmpA) bgAry = JSON.parse(tmpA);
+			return bgAry;
+		}
+		function fnGroupWrite(){
+			localStorage.setItem(BUSP_GROUP_DIM, JSON.stringify(bgAry));
+		}
+		function fnGroupAdd(name, StationArray){
+			if(!name || !StationArray || StationArray.length==0){
+				return false;
+			}
+			fnGroupRead();
+			var objD = {name:name, StationArray:StationArray, id: new Date().getTime()};
+			bgAry.push(objD);
+			fnGroupWrite();
+			return true;
+		}
+		function fnGroupRemove(id){
+			fnGroupRead();
+			if(!id) return false;
+			bgAry = bgAry.filter(function(c){
+				return (c.id==id) ? false : true;
+			})
+			fnGroupWrite();
+			return fnGroupRead();
+		}
 		return {
 			add: fnAdd,
 			read: fnRead,
-			remove: fnRemove
+			remove: fnRemove,
+			groupAdd: fnGroupAdd,
+			groupRead: fnGroupRead,
+			groupRemove: fnGroupRemove
 		}
 	})();
 	function genQR(url){
@@ -793,6 +835,10 @@ var BB = (function(TT){
 			})();
 		}
 		return rt;
+	}
+	function scrollToTop(){
+					if(document.documentElement.scrollTop) document.documentElement.scrollTop = 0;
+					if(document.body.scrollTop) document.body.scrollTop = 0;
 	}
 	var BB = {
 		mode: (TT.defined.GetP && TT.defined.GetP.a) ? TT.defined.GetP.a : 'make',//make , show , 
@@ -942,19 +988,22 @@ var BB = (function(TT){
 		'</div>',
 		data: function(){return{
 			busFindRouteResult: (BB.now.busFindRouteResult) ? JSON.parse(JSON.stringify(BB.now.busFindRouteResult)) : [],
-			selectStop: []
+			selectStop: [],
+			selectStopIndex: [],
+			selectStopRouteUID: ''
 		}},
 		methods: {
 			nameCSS: function(row, stop, sidx){
-				var selectStopIdx = this.selectStop.map(function(c){return c.index;});
+				if(this.selectStopRouteUID != row.RouteUID) return '';
+				var selectStopIdx = this.selectStopIndex;
 				if(selectStopIdx.indexOf(sidx)!=-1) return 'onSelect';
 				if(sidx>selectStopIdx[0] && sidx<selectStopIdx[1]) return 'overSelect';
 				return '';
 			},
 			stopNameClick: function(row, stop, sidx){
 				var selectStop = this.selectStop;
-				var stObj = {stop:stop, index:sidx, RouteUID: stop.RouteUID, StationID: stop.StationID}
-				if(selectStop[0] && selectStop[0].RouteUID!=stop.RouteUID){
+				var stObj = {stop:stop, index:sidx, RouteUID: row.RouteUID, StationID: stop.StationID}
+				if(selectStop[0] && selectStop[0].RouteUID!=row.RouteUID){
 					selectStop = [];
 				}
 				if(selectStop.length==2){
@@ -1119,6 +1168,10 @@ var BB = (function(TT){
 			}
 		},
 		watch: {
+			selectStop: function(){
+				this.selectStopIndex = this.selectStop.map(function(c){return c.index;});
+				this.selectStopRouteUID = (this.selectStop.length>0) ? this.selectStop[0].RouteUID : '';
+			}
 		},
 		mounted: function(){
 			this.selectStop = [];
@@ -1235,7 +1288,7 @@ var BB = (function(TT){
 
 	//========收藏夾==========
 	var busBookmark = {
-		template: '<div id="busBookmark" class="makeSub1">' +
+		template: '<div id="busBookmark" class="bookmark makeSub1">' +
 			'<div class="textA">' + _LANG.STR046 + '</div>' +
 			'<div class="bookmarkOut">' +
 				'<div class="bookmarkList divTable">' +
@@ -1254,8 +1307,12 @@ var BB = (function(TT){
 					'<input type="text" maxLengrh="30" class="busFindRouteCSSInput" placeholder="' + _LANG.STR038 + '" v-model="GroupStopName" />' +
 				'</div>' +
 				'<div class="btn1" v-on:click="groupStop">' + _LANG.STR050 + '</div>' +
-				'<div class="textB" v-if="flagShowCreated">' + _LANG.STR054 + '</div>' +
+				'<div class="textB divDPIB" v-if="flagShowCreated">' + _LANG.STR054 + '</div>' +
 				'<div v-if="flagShowGroupLink">' +
+					'<div>' +
+						'<div class="btn1" v-on:click="addToGroupBookmark()">' + _LANG.STR059 + '</div>' +
+						'<div class="textR1 divDPIB" v-show="flagShowGroupSuccess">' + _LANG.STR060 + '</div>' +
+					'</div>' +
 					'<div v-html="getImage()" v-on:click="openSaveQR()" style="display:inline-block;"></div>' +
 					'<div v-html="printURL()" style="word-break:break-all;"></div>' +
 				'</div>' +
@@ -1267,11 +1324,21 @@ var BB = (function(TT){
 			dataURL: '',
 			flagShowCreated: false,
 			flagShowGroupLink: false,
+			flagShowGroupSuccess: false,
 			GroupStopName: '',
+			GroupData: [],
 			url: '',
 			checkStID: []
 		}},
 		methods: {
+			addToGroupBookmark: function(){
+				var flg = bookmark.groupAdd(this.GroupStopName,this.GroupData);
+				var me = this;
+				if(flg){
+					this.flagShowGroupSuccess = true;
+					setTimeout(function(){me.flagShowGroupSuccess = false;}, 2000);
+				}
+			},
 			removeID: function(id){
 				var rt = bookmark.remove(id);
 				if(rt){
@@ -1294,6 +1361,7 @@ var BB = (function(TT){
 					if(data.StationTargetID) rt.ts = data.StationTargetID;
 					return rt;
 				});
+				this.GroupData = ary;
 				var url = makeShowURL(ary);
 				this.url = url;
 				this.genStationQR();
@@ -1331,6 +1399,70 @@ var BB = (function(TT){
 		watch: {
 			checkStID: function(ary){
 				if(this.GroupStopName=='' && ary.length>0) this.GroupStopName = this.getStoreByID(ary[0]).name;
+				this.flagShowGroupLink = false;
+			}
+		}
+	}
+	// Group Bookmark
+	var busGroupBookmark = {
+		template: '<div id="busGroupBookmark" class="bookmark makeSub1">' +
+			'<div v-if="!!dataURL" v-html="getImage()" v-on:click="openSaveQR()"></div>' +
+			'<div class="textA">' + _LANG.STR046 + '</div>' +
+			'<div class="bookmarkOut">' +
+				'<div class="bookmarkList divTable">' +
+					'<div class="divTableRow" v-for="(bm, idx) in store">' +
+						'<div class="divTableCell idx">{{ idx+1 }}</div>' +
+						'<div class="divTableCell name"><span v-on:click="link(bm)">{{ bm.name }}</span></div>' +
+						'<div class="divTableCell func" v-on:click="removeID(bm.id)">[' + _LANG.STR047 + ']</div>' +
+						'<div class="divTableCell func" v-on:click="make(bm)">[' + _LANG.STR048 + ']</div>' +
+					'</div>' +
+				'</div>' +
+			'</div>' +
+		'</div>',
+		data: function(){return{
+			store: bookmark.groupRead(),
+			dataURL: '',
+			flagShowCreated: false,
+			flagShowGroupLink: false,
+			GroupStopName: '',
+			url: ''
+		}},
+		methods: {
+			removeID: function(id){
+				var rt = bookmark.groupRemove(id);
+				if(rt){
+					this.store = rt;
+					this.checkStID = [];
+				}
+			},
+			getStoreByID: function(id){
+				for(var i=0; i<this.store.length; i++){
+					if(this.store[i].id==id) return this.store[i];
+				}
+				return undefined;
+			},
+			link: function(bm){
+				var url = makeShowURL(bm.StationArray);
+				window.open(url, "_blank");
+			},
+			make: function(bm){
+				this.url = makeShowURL(bm.StationArray);
+				this.GroupStopName = bm.name;
+				this.genStationQR();
+			},
+			genStationQR: function(){
+				var me = this;
+				var name = (this.GroupStopName) ? this.GroupStopName : 'Group Bus Stop';
+				genStationQR(this.url, name, function(canvas){
+					me.dataURL = canvas.toDataURL();
+					scrollToTop();
+				})
+			},
+			getImage: function(){
+				return '<img src="' + this.dataURL + '" width="300" height="300"></img>';
+			},
+			openSaveQR: function(){
+				window.open(this.dataURL, "_new");
 			}
 		}
 	}
@@ -1339,6 +1471,7 @@ var BB = (function(TT){
 		template: '<div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">' + _LANG.STR003 + '</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1">' + _LANG.STR046 + '</div>' + '</router-link></div>' +
+				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1">' + _LANG.STR058 + '</div>' + '</router-link></div>' +
 			'</div>'
 	}
 	var makeArea = {
@@ -1516,8 +1649,7 @@ var BB = (function(TT){
 				this.flagDisablePrev = !!(/buscity|busbookmark|busbooklink/.test(pageStep));
 				this.flagDisableNext = !(/buscity|busfindroute|busarrivetime/.test(pageStep));
 				this.pageStep = pageStep;
-				if(document.documentElement.scrollTop) document.documentElement.scrollTop = 0;
-				if(document.body.scrollTop) document.body.scrollTop = 0;
+				scrollToTop();
 				BB.makeArea = this;
 			}
 		}
@@ -1904,8 +2036,7 @@ var BB = (function(TT){
 			flagShowBase: function(){
 				if(this.flagShowBase){
 					this.getBusRoute();
-					if(document.documentElement.scrollTop) document.documentElement.scrollTop = 0;
-					if(document.body.scrollTop) document.body.scrollTop = 0;
+					scrollToTop();
 				}else{
 					this.aryRoute = [];
 					this.busInfo = false;
@@ -1939,7 +2070,8 @@ var BB = (function(TT){
 				{path: 'busfindlist', component: busFindList},
 				{path: 'busarrivetime', component: busArriveTime},
 				{path: 'busmakeurl', component: busMakeURL},
-				{path: 'busbookmark', component: busBookmark}
+				{path: 'busbookmark', component: busBookmark},
+				{path: 'busgroupbookmark', component: busGroupBookmark}
 			]
 		},
 		//{path: '/bus2city', name: 'bus2city', component: busCity},
