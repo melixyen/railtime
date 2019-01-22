@@ -1143,7 +1143,7 @@ var BB = (function(TT){
 					}else{
 						BB.unmask();
 						BB.now.aryArriveTime = aryArriveTime;
-						me.$parent.goNext(true);
+						me.$parent.gotoNextStep();
 					}
 				}
 				getStationStop();
@@ -1171,10 +1171,13 @@ var BB = (function(TT){
 			selectStop: function(){
 				this.selectStopIndex = this.selectStop.map(function(c){return c.index;});
 				this.selectStopRouteUID = (this.selectStop.length>0) ? this.selectStop[0].RouteUID : '';
+				var flgNext = !(this.selectStop.length>1);
+				this.$parent.flagDisableNext = flgNext;
 			}
 		},
 		mounted: function(){
 			this.selectStop = [];
+			BB.busFindList = this;
 		}
 	}
 
@@ -1514,6 +1517,10 @@ var BB = (function(TT){
 						}
 						this.findBusRoute();
 						return true;//需要進行 read 故一律中斷
+					break;
+					case 'busfindlist':
+						BB.busFindList.getStation(BB.busFindList.selectStop[0]);
+						return true;
 					break;
 				}
 				this.gotoNextStep();
