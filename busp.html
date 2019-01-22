@@ -1652,8 +1652,8 @@ var BB = (function(TT){
 			'$route': function(vroute){
 				var pathAry = vroute.path.replace('/','').split('/');
 				var pageStep = (pathAry[1]) ? pathAry[1] : '';
-				this.flagShowStepControl = !!(pathAry.length>1) && !(/busmakeurl|busbookmark/.test(pageStep));
-				this.flagDisablePrev = !!(/buscity|busbookmark|busbooklink/.test(pageStep));
+				this.flagShowStepControl = !!(pathAry.length>1) && !(/busmakeurl|busbookmark|busgroupbookmark/.test(pageStep));
+				this.flagDisablePrev = !!(/buscity|busbookmark|busgroupbookmark|busbooklink/.test(pageStep));
 				this.flagDisableNext = !(/buscity|busfindroute|busarrivetime/.test(pageStep));
 				this.pageStep = pageStep;
 				scrollToTop();
