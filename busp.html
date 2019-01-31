@@ -1002,7 +1002,7 @@ var BB = (function(TT){
 			},
 			stopNameClick: function(row, stop, sidx){
 				var selectStop = this.selectStop;
-				var stObj = {stop:stop, index:sidx, RouteUID: row.RouteUID, StationID: stop.StationID}
+				var stObj = {stop:stop, index:sidx, RouteUID: row.RouteUID, StationID: stop.StationID, Direction: row.Direction}
 				if(selectStop[0] && selectStop[0].RouteUID!=row.RouteUID){
 					selectStop = [];
 				}
@@ -1031,6 +1031,7 @@ var BB = (function(TT){
 					}
 				}
 				selectStop.sort(function(a,b){
+					if(a.Direction != b.Direction) return (a.Direction > b.Direction) ? 1 : -1;
 					return (a.index > b.index) ? 1 : -1;
 				})
 				this.selectStop = selectStop;
