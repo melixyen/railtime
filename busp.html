@@ -552,6 +552,7 @@ body {
 
 <script type="text/javascript" src="./libs/vue.js"></script>
 <script type="text/javascript" src="./libs/vue-router.js"></script>
+<script type="text/javascript" src="./libs/QRious.js"></script>
 
 <script type="text/javascript" src="ttlib/defined.js"></script>
 <script type="text/javascript" src="ttlib/data.js"></script>
@@ -751,7 +752,7 @@ var BB = (function(TT){
 	function genQR(url){
         return "http://chart.apis.google.com/chart?cht=qr&chl="+ encodeURIComponent(url) +"&chs=240x240";
 	}
-	function genStationQR(url, name, cbFn){
+	function genStationQRByGoogle(url, name, cbFn){
 		var pw = 300, ph = 300;
 		name = name || 'QR Code BUS Stop Information';
 		var canvas = document.createElement('canvas');
@@ -770,6 +771,23 @@ var BB = (function(TT){
 			cbFn(canvas);
 		}
 		image.src = genQR(url);
+	}
+	function genStationQR(url, name, cbFn){
+		var pw = 300, ph = 300;
+		name = name || 'QR Code BUS Stop Information';
+		var canvas = document.createElement('canvas');
+		var ctx = canvas.getContext('2d'),
+			qrcDrawDOM = document.createElement('canvas');
+
+		var qr = new QRious({element:qrcDrawDOM, value:url, size:240});
+		canvas.width = pw;
+		canvas.height = ph;
+		ctx.font="20px Arial";
+		ctx.drawImage(qrcDrawDOM, 30, 0, 240, 240);
+		var txWidth = ctx.measureText(name).width;
+		var txX = (txWidth > pw) ? 0 : Math.ceil((pw-txWidth)/2);
+		ctx.fillText(name, txX, 270);
+		cbFn(canvas);
 	}
 	function getCityAreaData(val, byField){
 		byField = byField || 'area';
