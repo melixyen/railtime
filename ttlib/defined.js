@@ -1,5 +1,12 @@
 (function(){
 if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
+//Loading polyfill from cdn , for old browser support 
+if(!window.Promise || !window.fetch){
+    var pol = document.createElement('script');
+    pol.src = 'https://cdn.polyfill.io/v2/polyfill.min.js';
+    pol.type='text/javascript';
+    document.getElementsByTagName('head')[0].appendChild(pol);
+}
 	
 (function(TT){
 	TT.os = (function(){
