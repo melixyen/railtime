@@ -86,7 +86,7 @@ body {
 	opacity: 0.6;
 }
 .stepControlArea{
-	padding: 9px 5px 5px;
+	padding: 0px 5px;
 	width: calc(100% - 20px);
 	display: inline-block;
 	position: fixed;
@@ -638,7 +638,7 @@ var _LANG = (function(){
 			STR048: '分享',
 			STR049: '歡迎使用{title}系統，您現在可以點選{btnA}進行新站牌的製作，或者從中管理過去製作的站牌。',
 			STR050: '合併為群組站牌',
-			STR051: '群組站牌會將勾選的站牌合併為一個查詢連結，產生一個 QR CODE 後可以一次檢視多支站牌的動態資訊。請注意，順序會依據您勾選的順序顯示。',
+			STR051: '群組站牌會將勾選的站牌合併為一個查詢連結，產生一個 QR CODE 後可以一次檢視多支站牌的動態資訊。請注意，會依據您勾選的順序顯示站牌。',
 			STR052: '產生 QR CODE',
 			STR053: '請輸入群組名稱',
 			STR054: '已產生於下方',
@@ -1090,7 +1090,7 @@ var BB = (function(TT){
 				}
 				if(this.nextPage){//有定義下一頁的方向時不使用預設的製作頁
 					var stnObj = stop;
-					if(!stnObj.stopName){
+					if(!stnObj.StopName){
 						stnObj = this.selectStop[0].stop;
 					}
 					switch(this.nextPage){
@@ -1515,7 +1515,10 @@ var BB = (function(TT){
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">' + _LANG.STR003 + '</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1">' + _LANG.STR046 + '</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1">' + _LANG.STR058 + '</div>' + '</router-link></div>' +
-			'</div>'
+			'</div>',
+		mounted: function(){
+			BB.now.busFindRouteInput = ''; this.$parent.busFindRouteInput = '';
+		}
 	}
 	var makeArea = {
 		template: '<div id="makeArea">' + 
