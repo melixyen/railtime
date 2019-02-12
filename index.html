@@ -797,7 +797,8 @@ var TT = (function(){
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本": "Beta 0.6.0",
-            "產生日期": "2018/12/20"
+            "產生日期": "2018/12/20",
+            "資料源": "離線資料由台鐵及捷運公開資料轉換取得，線上資料介接交通部PTX服務平臺"
     };
     TT.defined.programUpdateInfo = [
                     'Beta 0.6.0: 新增公共交通整合平台 PTX API 呼叫 lib，有讀回時刻表則用該時刻表。',
@@ -1172,7 +1173,7 @@ var TT = (function(){
             var iptID = cfg.id + '_ckpt';
             var ckUsePTXDiv = document.createElement('div');
             var ckDefaultValue = (TT.defined.usePTX) ? ' checked="true"' : '';
-            ckUsePTXDiv.innerHTML = '<span><input id="' + iptID + '" type="checkbox" ' + ckDefaultValue + ' onclick="TT.ui.fnCheckUsePTX_boolean()" onchange="TT.ui.fnCheckUsePTX_boolean()">允許時用公共交通資訊即時 API 查找時刻，資料正確但速度較慢</span>';
+            ckUsePTXDiv.innerHTML = '<span><input id="' + iptID + '" type="checkbox" ' + ckDefaultValue + ' onclick="TT.ui.fnCheckUsePTX_boolean()" onchange="TT.ui.fnCheckUsePTX_boolean()">允許時用交通部 PTX 服務平臺 API 查找時刻，資料正確但速度較慢</span>';
             TT.ui.fnCheckUsePTX_boolean = function(){
             	var dom = ckUsePTXDiv.querySelector('#' + iptID);
             	TT.defined.usePTX = !!(dom.checked);

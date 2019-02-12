@@ -588,7 +588,7 @@ var _LANG = (function(){
 			CM_CANCEL: '取消',
 			CM_REMOVE: '刪除',
 			CM_TITLE: '公車運輸 QR CODE 雲端看板',
-			STR001: '製作雲端站牌',
+			STR001: '功能',
 			STR002: '關於',
 			STR003: '由經過路線製作公車站牌雲端看板',
 			STR004: '請選擇此站位停靠的公車所有可能隸屬的主管機關縣市。',
@@ -648,6 +648,7 @@ var _LANG = (function(){
 			STR058: '管理群組站牌收藏夾',
 			STR059: '加入群組收藏夾',
 			STR060: '已成功加入群組收藏夾',
+			STR061: '直接查詢站牌動態',
 			zxx: 'none'
 		}
 	}
@@ -866,15 +867,16 @@ var BB = (function(TT){
 			busCitySelArea: [],
 			busFindRouteInput: ''
 		},
-		ver: 0.2
+		ver: 0.3
 	};
 	BB.programAbout = {
             "程式名稱": "公車運輸 QR CODE 雲端看板",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本": "Beta " + BB.ver,
-            "產生日期": "2019/1/21",
-			"函式庫": '<a href="http://melixyen.github.io/railtime/" target="_blank" style="color:#2233EE;">接軌時刻 </a><a href="https://github.com/melixyen/railtime/blob/gh-pages/ttlib/ptx.js" target="_blank" style="color:#2233EE;">公共交通動態查詢 PTX Javascript Library</a>'
+            "產生日期": "2019/2/12",
+			"函式庫": '<a href="http://melixyen.github.io/railtime/" target="_blank" style="color:#2233EE;">接軌時刻 </a><a href="https://github.com/melixyen/railtime/blob/gh-pages/ttlib/ptx.js" target="_blank" style="color:#2233EE;">公共交通動態查詢 PTX Javascript Library</a>',
+			"資料源": '資料介接交通部PTX服務平臺'
     };
 	BB.alert = function(str){alert(str);}
 	BB.mask = function(str){
@@ -1006,6 +1008,7 @@ var BB = (function(TT){
 		'</div>',
 		data: function(){return{
 			busFindRouteResult: (BB.now.busFindRouteResult) ? JSON.parse(JSON.stringify(BB.now.busFindRouteResult)) : [],
+			nextPage: false,
 			selectStop: [],
 			selectStopIndex: [],
 			selectStopRouteUID: ''
@@ -1083,6 +1086,22 @@ var BB = (function(TT){
 				BB.now.StationTargetID = StationTargetID;
 				if(!StationID){
 					BB.alert(_LANG.STR023);
+					return false;
+				}
+				if(this.nextPage){//有定義下一頁的方向時不使用預設的製作頁
+					var stnObj = stop;
+					if(!stnObj.stopName){
+						stnObj = this.selectStop[0].stop;
+					}
+					switch(this.nextPage){
+						case 'direct':
+							var url = makeShowURL(getStopDisplayName(stnObj), StationID, BB.now.cities);
+							if(StationTargetID){
+								url = makeShowURL([{name:getStopDisplayName(stnObj), id:StationID, cities:BB.now.cities, ts:StationTargetID}]);
+							}
+							location.href = url;
+						break;
+					}
 					return false;
 				}
 				var cities = BB.now.cities.slice();
@@ -1197,6 +1216,7 @@ var BB = (function(TT){
 		mounted: function(){
 			this.selectStop = [];
 			BB.busFindList = this;
+			this.nextPage = (this.$route.query && this.$route.query.as) ? this.$route.query.as : false;
 		}
 	}
 
@@ -1491,6 +1511,7 @@ var BB = (function(TT){
 
 	var makeIndex = {
 		template: '<div>' +
+				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity?as=direct\'}">' + '<div class="btn1">' + _LANG.STR061 + '</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">' + _LANG.STR003 + '</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1">' + _LANG.STR046 + '</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1">' + _LANG.STR058 + '</div>' + '</router-link></div>' +
@@ -1678,6 +1699,9 @@ var BB = (function(TT){
 				scrollToTop();
 				BB.makeArea = this;
 			}
+		},
+		mounted: function(){
+			if(location.search!='') location.search = '';
 		}
 	};
 
@@ -1943,7 +1967,7 @@ var BB = (function(TT){
 					'<div>本程式可由通過欲查詢之站牌的路線自動連結該站牌上的所有公車動態顯示，類似智慧型站牌將所有通過路線的公車動態都顯示出來。製作成 QR CODE 後，可貼在任何位置方便持有智慧型手機的人快速掃碼查詢動態。</div>' +
 					'<div style="margin-top: 20px; color:#2c5dba;">製作公車站牌 QR Code 圖檔的方式</div>' +
 					'<ol>' +
-						'<li>從製作雲端站牌選擇經由路線製作。</li>' +
+						'<li>從[功能]選擇經由路線製作。</li>' +
 						'<li>選擇此站牌路線的公車主管機關單位，本地站牌公車可能隸屬其他縣市管理，必要時請選擇多個縣市。共同生活圈如雙北、新竹縣市預設即為一起。</li>' +
 						'<li>輸入公車編號或名稱，會從所選主管機關內查詢，因此請勿一次選全部縣市，雖不會遺漏但未來會耗費時間查詢所有縣市。</li>' +
 						'<li>從查詢結果中選擇通過此站牌的路線，打開該路線所有站牌列表，找到要製作的站牌後按確定。<span style="color:red">請注意公車有分往程與返程</span>，需確認路線行駛方向和要製作的站牌是相同的。</li>' +
@@ -1952,7 +1976,7 @@ var BB = (function(TT){
 					'</ol>' +
 					'<div style="margin-top: 20px; color:#2c5dba;">製作群組的方式</div>' +
 					'<ol>' +
-						'<li>從製作雲端站牌選擇管理站牌收藏夾。</li>' +
+						'<li>從[功能]選擇管理站牌收藏夾。</li>' +
 						'<li>勾選要合併為群組的站牌，<span style="color:red">請注意這裡的勾選順序會決定群組站牌顯示時的順序</span>，並在下方修改群組站牌名稱。</li>' +
 						'<li>按下合併為群組站牌後即會產生 QR CODE 圖檔與查詢之 URL 連結。</li>' +
 					'</ol>' +
