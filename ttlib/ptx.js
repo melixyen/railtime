@@ -231,12 +231,13 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			return rt;
 		},
 		getBusArriveTime: function(StopUID, city, cfg){
-			cfg = this.setDefaultCfg(cfg);
-			var myURL = busURL + '/EstimatedTimeOfArrival/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
-			myURL += ptx.filterFn(ptx.filterParam('StopUID','==',StopUID,'or')) + '&' + ptx.topFn();
-			if(cfg.selectField) myURL += '&' + cfg.selectField;
-			ptx.getURL(myURL, cfg.cbFn);
-
+			var filterStr = ptx.filterFn(ptx.filterParam('StopUID','==',StopUID,'or'));
+			this.getEstimatedTimeOfArrival(filterStr, city, cfg);
+		},
+		getBusRouteArriveTime: function(RouteUID, cfg){
+			var city = RouteUID.substr(0,3);
+			var filterStr = ptx.filterFn(ptx.filterParam('RouteUID','==',RouteUID,'or'));
+			this.getEstimatedTimeOfArrival(filterStr, city, cfg);
 		},
 		getBusRealtimeNearStop: function(RouteUID, dir, cfg){
 			cfg = this.setDefaultCfg(cfg);
@@ -277,6 +278,14 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			cfg = this.setDefaultCfg(cfg);
 			var myURL = busURL + '/StopOfRoute/' + cfg.manageBy + '/' + this.getCityData(city).City + '/' + encodeURI(busNumber) + '?';
 			myURL += ptx.orderByFn('SubRouteName/Zh_tw', 'asc') + '&' + ptx.topFn();
+			if(cfg.selectField) myURL += '&' + cfg.selectField;
+			ptx.getURL(myURL, cfg.cbFn);
+		},
+		getEstimatedTimeOfArrival: function(filterStr, city, cfg){
+			filterStr = (filterStr) ? filterStr + '&' : '';
+			cfg = this.setDefaultCfg(cfg);
+			var myURL = busURL + '/EstimatedTimeOfArrival/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
+			myURL += filterStr + ptx.topFn();
 			if(cfg.selectField) myURL += '&' + cfg.selectField;
 			ptx.getURL(myURL, cfg.cbFn);
 		},

@@ -523,12 +523,31 @@ body {
 #showBusRoutePop .content .row.now {
 	background-color: #2cd;
 }
-#showBusRoutePop .content .row .status {
-	width: 46px;
+#showBusRoutePop .content .row .status{
 	font-size: 12px;
-	background-color: #F02030;
-	color: #F3F3F3;
 	display: inline;
+}
+#showBusRoutePop .content .row .status .carp{
+	background-color: #388D13;
+	color: #F3F3F3;
+	display: inline-block;
+	padding: 1px 3px;
+	height: 14px; line-height: 14px;
+	margin-left: 5px;
+}
+#showBusRoutePop .content .row .status .busDisplayArriveMinute, #showBusRoutePop .content .row .status .busDusplayOtherStatus{
+	padding-left: 5px;
+}
+@media screen and (max-width: 679px) {
+	#showBusRoutePop .content .row .index{
+		font-size: 10px;
+		padding: 0 3px 0 1px;
+	}
+	#showBusRoutePop .content .row .status{
+		font-size: 12px;
+		display: block;
+		min-width: 70px;
+	}
 }
 
 /* Vue CSS Start */
@@ -1921,6 +1940,9 @@ var BB = (function(TT){
 					me.onReload = false;
 					me.aryArriveTime = data;
 					me.reloadTimer = setTimeout(me.reloadPage, reloadInterval);
+					if(BB.showBusRoutePop.flagShowBase){
+						BB.showBusRoutePop.getBusDynamicData();
+					}
 				})
 
 			}
@@ -2057,15 +2079,31 @@ var BB = (function(TT){
 						}
 						me.aryRoute = fmp.Stops;
 						me.busInfo = fmp;
-						me.getBusNearStop();
+						me.getBusDynamicData();
 					}
 				}});
 			},
-			getBusNearStop: function(){
+			getBusDynamicData: function(){
 				var me = this;
 				TT.ptx.bus.getBusRealtimeNearStop(this.RouteUID, this.Direction, {cbFn: function(data,e){
 					if(e.status==TT.ptx.statusCode.SUCCESS){
-						me.nearStatusData = data;
+						var nearData = data;
+						TT.ptx.bus.getBusRouteArriveTime(me.RouteUID, {cbFn: function(data,e){
+							if(e.status==TT.ptx.statusCode.SUCCESS){
+								var ary = data.map(function(c){
+									var nearStopData = nearData.find(function(nearStop){
+										return !!(nearStop.StopUID==c.StopUID);
+									});
+									if(nearStopData){
+										c.isNearStop = true;
+										c.nearData = nearStopData;
+										c.PlateNumb = nearStopData.PlateNumb;
+									}
+									return c;
+								})
+								me.nearStatusData = ary;
+							}
+						}})
 					}
 				}})
 			},
@@ -2080,9 +2118,14 @@ var BB = (function(TT){
 				//dsd
 				var rt = '';
 				this.nearStatusData.forEach(function(c){
-					if(c.StopUID==stop.StopUID) rt = c.PlateNumb;
+					if(c.StopUID==stop.StopUID){
+						rt = getStopDisplayInfo(c);
+						if(c.isNearStop){
+							rt += '<div class="carp">' + c.PlateNumb + '</div>';
+						}
+					}
 				});
-				return rt;
+				return '<div class="statusInner">' + rt + '</div>';
 			}
 		},
 		watch: {
