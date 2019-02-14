@@ -505,6 +505,36 @@ body {
 	min-height: 100%;
 	width: 100%;
 }
+#showBusRoutePop .guideBar{padding: 1px 5px 6px; border-bottom: 1px solid #aa9;}
+#showBusRoutePop .guideBarFlex{
+	display: inline-flex;
+	width: 100%;
+}
+#showBusRoutePop .guideBarFlex .btnItem{
+	flex: 1;
+	height: 22px; line-height: 22px;
+	padding: 8px;
+	margin: 3px;
+	border: 2px solid #867;
+	cursor: pointer;
+	text-align: center;
+	font-size:20px;
+}
+#showBusRoutePop .guideBar .info{
+	height: 130px;
+	overflow: auto;
+	font-size: 16px;
+}
+#showBusRoutePop .guideBar .info .panel{
+	padding: 5px 10px;
+}
+#showBusRoutePop .guideBar .info .panel > div{
+	padding:3px 0;
+	line-height: 18px;
+}
+#showBusRoutePop .guideBarFlex .btnItem.open{
+	background-color: #79C;
+}
 #showBusRoutePop .content .row {
 	font-size: 20px;
 	height: 26px;
@@ -559,6 +589,16 @@ body {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.expandBox-leave-active, .expandBox-enter{
+	height: 0px !important;
+}
+.expandBox-enter-active, .expandBox-leave-active {
+	transition: all .6s ease;
+}
+.expandBox-enter-active, .expandBox-leave{
+	/* Just give target height and do not set height here */
 }
 /* Vue CSS End */
 
@@ -668,6 +708,7 @@ var _LANG = (function(){
 			STR059: '加入群組收藏夾',
 			STR060: '已成功加入群組收藏夾',
 			STR061: '直接查詢站牌動態',
+			STR062: '資訊',
 			zxx: 'none'
 		}
 	}
@@ -2017,6 +2058,16 @@ var BB = (function(TT){
 				'<div class="back" v-on:click="back()" style="display:inline-block; height:40px; cursor:pointer; text-align:center; line-height:40px; width:40px; overflow:hidden;">&lt;</div>' +
 				'<div class="busNO" style="overflow:hidden; display:inline-block; width:calc(98vw - 70px); font-size:30px; height:40px; line-height:40px; border-left:5px solid #28B; text-align:center;">{{ busNO }}</div>' +
 			'</div>' +
+			'<div class="guideBar">' +
+				'<div class="guideBarFlex bs_no_select">' +
+					'<div class="btnItem" v-bind:class="getInfoBtnCSS()" v-on:click="toggleFlag(\'flagExpandInfo\')">' + _LANG.STR062 + '</div>' +
+					//'<div class="btnItem">Go</div>' +
+					//'<div class="btnItem">Back</div>' +
+				'</div>' +
+				'<transition name="expandBox">' +
+					'<div class="info" v-show="flagExpandInfo" v-html="printBusInfo()"></div>' +
+				'</transition>' +
+			'</div>' +
 			'<div class="content" style="width:100%; background-color:#E0E9F3; padding: 20px 0px; box-sizing:border-box;">' +
 				'<div class="divTable" style="">' +
 					'<div class="divTableRow row" v-bind:class="getRowCSS(stop)" v-for="(stop, rix) in aryRoute">' +
@@ -2033,6 +2084,7 @@ var BB = (function(TT){
 		el: '#showBusRoutePop',
 		data: {
 			flagShowBase: false,
+			flagExpandInfo: false,
 			busNO: '',
 			RouteUID: '',
 			StopUID: '',
@@ -2058,6 +2110,9 @@ var BB = (function(TT){
 			getBaseCSS: function(){
 				return (this.flagShowBase) ? 'show' : '';
 			},
+			getInfoBtnCSS: function(){
+				return (this.flagExpandInfo) ? 'open' : '';
+			},
 			getRowCSS: function(stop){
 				return (stop.StopUID==this.StopUID) ? 'now' : 'link';
 			},
@@ -2078,7 +2133,11 @@ var BB = (function(TT){
 							if(fmp) break;
 						}
 						me.aryRoute = fmp.Stops;
-						me.busInfo = fmp;
+						TT.ptx.bus.getBusRouteInfo(me.RouteUID, {cbFn: function(data,e){
+							if(e.status==TT.ptx.statusCode.SUCCESS && data[0] && data[0].RouteUID){
+								me.busInfo = data[0];
+							}
+						}});
 						me.getBusDynamicData();
 					}
 				}});
@@ -2114,6 +2173,30 @@ var BB = (function(TT){
 					location.href = url;
 				}
 			},
+			printBusInfo: function(){
+				var b = this.busInfo;
+				var sub = (b.SubRoutes && b.SubRoutes[0]) ? b.SubRoutes[0] : {};
+				if(sub && sub.HolidayFirstBusTime && !sub.HolidayLastBusTime && b.SubRoutes[1] && b.SubRoutes[1].HolidayLastBusTime) sub.HolidayLastBusTime = b.SubRoutes[1].HolidayLastBusTime;
+				function procTimeStr(str){return str.substr(0,2) + ':' + str.substr(2,2);}
+
+				return '<div class="busInfo">' +
+					'<div class="panel zh">' +
+						'<div class="fromTo">' + b.DepartureStopNameZh + ' &nbsp;-&nbsp; ' + b.DestinationStopNameZh + '</div>' +
+						'<div>' + b.TicketPriceDescriptionZh + '</div>' +
+						((b.FareBufferZoneDescriptionZh) ? '<div class="fareBufferZone">分段點：' + b.FareBufferZoneDescriptionZh + '</div>' : '') +
+						'<div>平日：' + ((sub.FirstBusTime) ? procTimeStr(sub.FirstBusTime) + ' ~ ' + procTimeStr(sub.LastBusTime) : '停駛') + '</div>' +
+						'<div>假日：' + ((sub.HolidayFirstBusTime) ? procTimeStr(sub.HolidayFirstBusTime) + ' ~ ' + procTimeStr(sub.HolidayLastBusTime) : '停駛') + '</div>' +
+					'</div>' +
+					'<div class="panel en">' +
+						'<div class="fromTo">' + b.DepartureStopNameEn + ' &nbsp;-&nbsp; ' + b.DestinationStopNameEn + '</div>' +
+						'<div>' + b.TicketPriceDescriptionEn + '</div>' +
+						((b.FareBufferZoneDescriptionEn) ? '<div class="fareBufferZone">Fare buffer zone：' + b.FareBufferZoneDescriptionEn + '</div>' : '') +
+						'<div>Weekday: ' + ((sub.FirstBusTime) ? procTimeStr(sub.FirstBusTime) + ' ~ ' + procTimeStr(sub.LastBusTime) : 'No Service') + '</div>' +
+						'<div>Weekend: ' + ((sub.HolidayFirstBusTime) ? procTimeStr(sub.HolidayFirstBusTime) + ' ~ ' + procTimeStr(sub.HolidayLastBusTime) : 'No Service') + '</div>' +
+					'</div>' +
+				'</div>';
+			},
+			toggleFlag: function(flg){this[flg] = !this[flg];},
 			stopStatus: function(stop){
 				//dsd
 				var rt = '';

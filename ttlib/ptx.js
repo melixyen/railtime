@@ -239,6 +239,14 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 			var filterStr = ptx.filterFn(ptx.filterParam('RouteUID','==',RouteUID,'or'));
 			this.getEstimatedTimeOfArrival(filterStr, city, cfg);
 		},
+		getBusRouteInfo: function(RouteUID, cfg){
+			cfg = this.setDefaultCfg(cfg);
+			var city = RouteUID.substr(0,3);
+			var myURL = busURL + '/Route/' + cfg.manageBy + '/' + this.getCityData(city).City + '?';
+			myURL += ptx.filterFn(ptx.filterParam('RouteUID','==',RouteUID) + '&' + ptx.topFn());
+			if(cfg.selectField) myURL += '&' + cfg.selectField;
+			ptx.getURL(myURL, cfg.cbFn);
+		},
 		getBusRealtimeNearStop: function(RouteUID, dir, cfg){
 			cfg = this.setDefaultCfg(cfg);
 			var city = RouteUID.substr(0,3);
