@@ -360,12 +360,30 @@ body {
 }
 
 
-#showArea .stationDisplayName{
-	font-size:30px;
-	text-align:center;
+#showArea .stationDisplayTitle{
 	background-color: #217;
+	position: relative;
+}
+#showArea .stationDisplayMore{
+	display: inline-block;
+	width: 28px;
+	height: 28px;
+	background-color: #ABE;
+	position: absolute;
+	z-index: 3;
+	cursor: pointer;
+	top: 2px;
+	left: 2px;
+	border-radius: 14px;
+}
+#showArea .stationDisplayName{
+	font-size:24px;
+	text-align:center;
 	color: #99F0ba;
-	height:34px; line-height:34px;
+	height:32px; line-height:32px;
+	display: inline-block;
+	width: calc(100% - 30px);
+	padding-left: 30px;
 }
 #showArea .allIn .list{
 	padding:8px;
@@ -649,6 +667,16 @@ var _LANG = (function(){
 			CM_CANCEL: '取消',
 			CM_REMOVE: '刪除',
 			CM_TITLE: '公車運輸 QR CODE 雲端看板',
+			CM_APP_USE_P: '<p>' +
+				'本程式可協助您查詢或製作公車站牌的公車動態查詢 QR CODE 碼，並且您可選擇過濾所有從 A 站牌開到 B 站牌的才顯示其餘不顯示（例如過濾汐止後火車站到南港展覽館的公車不會顯示直達公館的 907）。' +
+				'列印雲端站牌的 QR CODE 碼可貼在實際站牌上，方便尚未安裝智慧型公車動態顯示器的站牌候車者可直接使用智慧型手機掃瞄後查詢公車動態。' +
+			'</p><p>' +
+				'在民間應用上，由於其可過濾公車路線以及組合不同站牌於一支 QR CODE 內，因此可以自行依據需求製作公車站牌的 QR CODE 並印於廣告、文宣、喜帖、邀請函之類的地方。' +
+				'例如舉行婚禮的地方沒有捷運火車只有公車時，大眾運輸資訊除了印刷公車路線外，還可印上主要車站、市中心抵達婚禮會場的公車動態 QR CODE，賓客掃瞄後即可知道要轉乘之公車站牌和公車路線動態。' +
+			'</p><p>' +
+				'在商業應用上，因為本程式可組成群組站牌，當附近有多支公車站牌例如台北101 週邊有三處站牌分別有不同路線可到松山車站，可合併為一個雲端站牌 QR CODE，並印刷在商場內的地圖上。' +
+				'遊客在商場內看地圖的同時，知道附近不同的站牌位置，可立即掃描 QR CODE 掌握最快前往松山車站的公車以及站牌位置，方便繼續前往五分埔及饒河夜市觀光。' +
+			'</p>',
 			STR001: '功能',
 			STR002: '關於',
 			STR003: '由經過路線製作公車站牌雲端看板',
@@ -936,7 +964,7 @@ var BB = (function(TT){
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本": "Beta " + BB.ver,
-            "產生日期": "2019/2/12",
+            "產生日期": "2019/2/15",
 			"函式庫": '<a href="http://melixyen.github.io/railtime/" target="_blank" style="color:#2233EE;">接軌時刻 </a><a href="https://github.com/melixyen/railtime/blob/gh-pages/ttlib/ptx.js" target="_blank" style="color:#2233EE;">公共交通動態查詢 PTX Javascript Library</a>',
 			"資料源": '資料介接交通部PTX服務平臺'
     };
@@ -1769,12 +1797,19 @@ var BB = (function(TT){
 			if(location.search!='') location.search = '';
 		}
 	};
-
+					
 	var showArea = {
 		template: '<div id="showArea">' +
 			'<div class="allOute">' +
 				'<div class="allIn" v-for="(station, stIdx) in aryArriveTime">' +
-					'<div v-html="tet2(station)"></div>' +
+					'<div class="stationDisplayTitle">' +
+						'<div class="stationDisplayMore" title="' + _LANG.STR020 + '">' +
+							'<a class="stopOpenMap" v-bind:href="hrefMap(station)" target="_new">' +
+							'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAQAAABIkb+zAAADpElEQVR4Ae3aA9DsSBQF4DNa2+ZvZNL3lNa2d0tr24W1bdu2bdu2beO5l8/InX/6JpmqfKdcgz4dA4VCoVAohNQ7mSwrB8k5cjOf4gcyiL/zA3lcbpZzeIAsyxpyrMLV5Ab+Tj+J/C7XcTVUkDcLTCG7yWf0ushnsnvb5MiNqtuZX9I3mC+5A6rIHtfme/QDzHtuTWSqIifSNxc5IbMtgtPLffTNR+7j9EhffW6+TR8ob0XzIF2cTz6nDxf5nPMhPV0z8336wHm/a2akgzU+TW+Qp1M6TvMieqNcBHvcgN4wG8BW2+TyuWUB+dz4FEP2obeN7Gt76PrNvMBvhoc1OZbePnKM2e5TfqVPIb8Y7U5lHf0gZJBc5TaJ43iGvxO7TeQqGUT9t9eBBblKPYR73PwYh5ufd6sLXA0DJf6kHMCRmLCSHE6vyk8oIbR4MeXsHY5JcEfQaxIvhtDcnrqVJ2HuSryHXpG9EJqcr9l0k8/r++ZVbc7nITR5RFHgMijIZYpfegSh8YNQp2Ka00H5EKHxe/qkRJ1QiDoVU/E9QpMR9EnpnBYKndMqlsBwhMY/6JPSNh0U2qajT8wfCI2f0CfF9UDB9SgKfILQ+EKaGzFfQGiqA9AVUOAVqgNiaHK66kC2IBJEC2oOZHI6QpPNdLcJk04ldLcjZTOEVu9Vn4tOAo+i16Tei+DK/KPJ89GSHEavyh8oIzy5o5kLmv6FeI/2+3InLHCrRi8pXT2egdO7uttEruIQenW2MrqlKyPo7SMjemeCDT5An0IegBW3XSoFtoeVaGoZZD18GcSpYEcuNC9wISzFi1oXiBeFLb5tOv/vwppsZlpgM5irykdmBT5GFfbcFlYF3BYwYr8M7OfffjuQzZGaMt8MXuAtlJEet17oAm49pEteClrgFaTNLR/0+LsC0sdrgxW4FlnonSPMU0v5tW92ZIPb257/2yvJ403P/xMoITtRJ4c1VWBY1IlsydFNzf/RyNo8U/KTARf4dJ4pkb14rQHv/ddCPvCKARW4AnnRNh2/aHj4X7RNh/yIl260gFsK+dLYW9RyEvKGNXlOXeB51pA/9bn5nWr437u5kE/x0jI8+RG2WxL5JQcmFjgQuVbmU5Ms8DTKyLe+eeWHic7+j9E8yD+uOOEtQYZzRbQG2W2CBXaDHfsX1OR8tJSKPDnW8J9EBa0lmk2+HjX8r6PZ0Hoo/z8bHkJBa5Kt6ella7QuHsWjYKZQKBQKhb8AaFXSW3c/idsAAAAASUVORK5CYII=" width="28" height="28">' +
+							'</a>' +
+						'</div>' +
+						'<div class="stationDisplayName" v-html="tet2(station)"></div>' +
+					'</div>' +
 					'<div class="list divTable">' +
 						'<div v-for="(bus, bidx) in station.time" class="divTableRow">' +
 							'<div class="divTableCell item number"><span style="cursor:pointer;" v-html="getBusDataName(bus)" v-on:click="popBus(bus, station)"></span></div>' +
@@ -1794,7 +1829,7 @@ var BB = (function(TT){
 		}},
 		methods: {
 			tet2: function(station){
-				return '<div class="stationDisplayName">' + station.StationName + '</div>';
+				return '<div class="">' + station.StationName + '</div>';
 			},
 			getBusMoreInfo: function(bus){
 				var ary = this.aryStation;
@@ -1817,6 +1852,11 @@ var BB = (function(TT){
 			getBusDataInfo: function(bus){
 				return getStopDisplayInfo(bus);
 			},
+			hrefMap: function(station){
+				var pos = station.StationPosition || station.StopPosition;
+				var lat = pos.PositionLat, lon = pos.PositionLon;
+				return 'http://maps.google.com/maps?q=' + lat + ',' + lon;
+			},
 			popBus: function(bus, station){
 				BB.showBusRoutePop.RouteUID = bus.RouteUID;
 				BB.showBusRoutePop.StopUID = bus.StopUID;
@@ -1831,7 +1871,7 @@ var BB = (function(TT){
 				var stAryCities = [];
 				var stRes = [];
 				var lastResult = [];
-				var tmpStatioinID = '', tmpCitiesAry = [];
+				var tmpStatioinID = '', tmpCitiesAry = [], tmpStationPosition = false;
 				function goReadStation(){
 					if(arySBS.length>0){
 						var stObj = arySBS.shift();
@@ -1850,11 +1890,13 @@ var BB = (function(TT){
 					if(stAryCities.length>0){
 						var stCity = stAryCities.shift();
 						function runGetBusStation(aryFilter){
+							tmpStationPosition = false;
 							TT.ptx.bus.getBusStation(stCity.StationID, stCity.city, {
 								cbFn: function(data,e){
 									if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0 && data[0].Stops.length>0){
 										var aryRouteUID = [];
 										var dataStops = data[0].Stops;
+										tmpStationPosition = data[0].StationPosition;
 										if(aryFilter){
 											dataStops = dataStops.filter(function(c){
 												return !!(aryFilter.indexOf(c.RouteUID)!=-1);
@@ -1892,7 +1934,7 @@ var BB = (function(TT){
 										getAllCityStation();
 									}
 								},
-								selectField: ['Stops','StationUID']
+								selectField: ['Stops','StationUID','StationID','StationPosition']
 							});
 						}
 						if(!stCity.StationTargetID){
@@ -1912,6 +1954,7 @@ var BB = (function(TT){
 						lastResult.push({
 							StationID: tmpStatioinID,
 							cities: tmpCitiesAry,
+							StationPosition: tmpStationPosition,
 							data: stRes
 						});
 						goReadStation();
@@ -1926,6 +1969,7 @@ var BB = (function(TT){
 				var aryArriveTime = [];
 				var tmpStationID = '';
 				var tmpCities = [];
+				var tmpStationPosition = [];
 				var allStationArriveTime = [];
 				var showBusStation = this.showBusStation;
 				function getTargetStation(){
@@ -1933,6 +1977,7 @@ var BB = (function(TT){
 						var stObj = aryStation.shift();
 						tmpStationID = stObj.StationID;
 						tmpCities = stObj.cities.slice();
+						tmpStationPosition = stObj.StationPosition;
 						listCityStops = procCityWithStation(stObj.data, 'array');
 						aryArriveTime = [];
 						getStopArriveTime();
@@ -1967,6 +2012,7 @@ var BB = (function(TT){
 							StationID: tmpStationID,
 							StationName: stName,
 							cities: tmpCities,
+							StationPosition: tmpStationPosition,
 							time: JSON.parse(JSON.stringify(aryArriveTime))
 						});
 						getTargetStation();
@@ -2048,6 +2094,8 @@ var BB = (function(TT){
 						'<li>勾選要合併為群組的站牌，<span style="color:red">請注意這裡的勾選順序會決定群組站牌顯示時的順序</span>，並在下方修改群組站牌名稱。</li>' +
 						'<li>按下合併為群組站牌後即會產生 QR CODE 圖檔與查詢之 URL 連結。</li>' +
 					'</ol>' +
+					'<div style="margin-top: 20px; color:#2c5dba;">應用情境</div>' +
+					'<div>' + _LANG.CM_APP_USE_P + '</div>' +
 				'</div>';
 				return rt;
 			}
@@ -2230,6 +2278,7 @@ var BB = (function(TT){
 	var indexArea = {
 		template: '<div>' +
 			'<div class="textA">' + _LANG.STR049.replace('{title}',_LANG.CM_TITLE).replace('{btnA}',_LANG.STR001) + '</div>' +
+			'<div>' + _LANG.CM_APP_USE_P + '</div>' +
 		'</div>', 
 		data: function(){return {
 		}},
