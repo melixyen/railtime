@@ -658,10 +658,16 @@ var TT = $trainTaiwanLib;
 TT.ptx.AppID = atob('M2FhNWNkN2RmMTQwNGU1ZmJhYzA2N2JmMDAzODg3Yjc=');
 TT.ptx.AppKey = atob("TFprbHRGcjhvSkxGenFpUmU1RmdCeUgxYUFZ");
 
-var _LANG = (function(){
-	var busp_lang = localStorage.getItem('busp_lang');
-	if(!busp_lang || /^Zh/.test(busp_lang)){
-		return {
+function _getBuspLang(){return localStorage.getItem('busp_lang');}
+function _setBuspLang(ln){return localStorage.setItem('busp_lang',ln);}
+function _MakeLANG(country){
+	if(country){
+		//localStorage.setItem('busp_lang', country);
+	}
+	var busp_lang = _getBuspLang();
+	if(country){busp_lang=country;}
+	var rt = {};
+	var def = {
 			CM01: '、',
 			CM_OK: '確定',
 			CM_CANCEL: '取消',
@@ -739,10 +745,90 @@ var _LANG = (function(){
 			STR060: '已成功加入群組收藏夾',
 			STR061: '直接查詢站牌動態',
 			STR062: '資訊',
-			zxx: 'none'
-		}
+			zxx: 'Zh'
 	}
-})();
+	function getBaseString(){return JSON.parse(JSON.stringify(def));}
+	if(!busp_lang || /^Zh/.test(busp_lang)){
+		rt = getBaseString();
+	}else if(/^En/.test(busp_lang)){
+		rt = getBaseString();
+		TT.lib.apply(rt, {
+			CM01: ', ',
+			CM_OK: 'OK',
+			CM_CANCEL: 'Cancel',
+			CM_REMOVE: 'Remove',
+			CM_TITLE: 'QR CODE Smart Bus Stop',
+			CM_APP_USE_P: '<p>' + 'Make any bus stop dynamic status with a share link and gen QR CODE, than paste on any documen or card or mail to your friend let take bus easily.' + '</p>',
+			STR001: 'Function',
+			STR002: 'About',
+			STR003: 'Make bus stop smart link by bus route',
+			STR004: 'Please choose any city goverment maybe manage this stop.',
+			STR005: 'Like Keelung bus manage by New Taipei and Keelung, so you need choose Keelung and New Taipei',
+			STR006: 'Manage by: ',
+			STR007: 'Previous',
+			STR008: 'Next',
+			STR009: 'Cancel',
+			STR010: 'Please choose one or more city',
+			STR011: 'Please key-in a bus route of this stop, it must include by the cities.',
+			STR012: 'Searching...',
+			STR013: 'Please input bus number',
+			STR014: 'Please choose a bus route and find the stop',
+			STR015: 'A bus route maybe with go and back subroute, make sure the direction is coorectly.',
+			STR016: 'go',
+			STR017: 'back',
+			STR018: 'Bus',
+			STR019: 'Find the stop than click OK, you can confirm it by map, <span style="color:red;">sure you can select two stops between start and target</span>.',
+			STR020: 'Map',
+			STR021: 'New BUS',
+			STR022: 'Finding bus route...',
+			STR023: 'Sorry, this city no give StationID, so we can not continue.',
+			STR024: 'Some cities (red string) without StationID data so ir can not works.',
+			STR025: 'Sorry! No any bus route.',
+			STR026: 'Clear',
+			STR027: 'Backspace',
+			STR028: 'Normal',
+			STR029: 'No Bus',
+			STR030: 'No Stop',
+			STR031: 'Last over',
+			STR032: 'No Service',
+			STR033: 'Coming',
+			STR034: 'No Info',
+			STR035: 'min',
+			STR036: 'Input or choose a bus stop name.',
+			STR037: 'tip: ',
+			STR038: 'Please input bus stop name',
+			STR039: 'Now you can share the bus stop smart link. ',
+			STR040: 'Sure you can save to bookmark than create group stop by multi bus stops.',
+			STR041: 'Loading...',
+			STR042: 'Click QR Code and expor it',
+			STR043: 'Add to bookmark (In browser storage)',
+			STR044: 'Fail of add to bookmark',
+			STR045: 'Succeess added to bookmark',
+			STR046: 'Manage bookmark',
+			STR047: 'Delete',
+			STR048: 'Share',
+			STR049: 'Welcome to {title}，Now you can press {btnA} to make new smart stop or manage stops.',
+			STR050: 'Make group stop',
+			STR051: 'Group stop will join multi stops to a smart stop, create a QR CODE than you can see many stops dynamic status at once.',
+			STR052: 'Gen QR CODE',
+			STR053: 'Please input group name',
+			STR054: 'Created',
+			STR055: 'Go',
+			STR056: 'Back',
+			STR057: 'No response, please try again later.',
+			STR058: 'Manage group stop bookmark',
+			STR059: 'Add to group stop bookmark',
+			STR060: 'Success added to group stop bookmark',
+			STR061: 'Search stop status',
+			STR062: 'Info',
+			zxx: 'En'
+		});
+	}else{
+		rt = getBaseString();
+	}
+	return rt;
+};
+var _LANG = _MakeLANG();
 
 var BB = (function(TT){
 	var _DEFINE_PARAM_BUS_STATION = 'busStation';
@@ -893,7 +979,7 @@ var BB = (function(TT){
 		}
 	}
 	function getBusDisplayString(objA){
-		return objA.RouteName.Zh_tw;
+		return (_LANG.zxx=='En') ? objA.RouteName.En : objA.RouteName.Zh_tw;
 	}
 	function getDirString(dir){
 		return (dir==1) ? _LANG.STR017 : _LANG.STR016;
@@ -901,6 +987,7 @@ var BB = (function(TT){
 	function getStopDisplayName(objA, flagWithMultiLang){
 		var nameObj = objA.StopName || objA.StationName;
 		var rt = nameObj.Zh_tw || nameObj.Zh_tw;
+		if(_LANG.zxx=='En') rt = nameObj.En || nameObj.En;
 		var en = '';
 		if(flagWithMultiLang){
 			en = nameObj.En || nameObj.En;
@@ -957,7 +1044,7 @@ var BB = (function(TT){
 			busCitySelArea: [],
 			busFindRouteInput: ''
 		},
-		ver: 0.3
+		ver: 0.4
 	};
 	BB.programAbout = {
             "程式名稱": "公車運輸 QR CODE 雲端看板",
@@ -981,8 +1068,8 @@ var BB = (function(TT){
 
 	var busCity = {//選擇主管機關縣市
 		template: '<div id="busCity" class="makeSub1">' +
-			'<div class="textA">' + _LANG.STR004 + '</div>' +
-			'<div class="textB">' + _LANG.STR005  + ' ' + _LANG.STR024 + '</div>' +
+			'<div class="textA">{{_LANG.STR004}}</div>' +
+			'<div class="textB">{{_LANG.STR005}} {{_LANG.STR024}}</div>' +
 			'<div class="busCityCodeForm frame1 floatLeftInnerDiv">' +
 				'<div class="busCityCodeButton btn1" v-for="(cityItem, idx) in cityArea" v-on:click="clickCity(cityItem)" v-bind:class="(getBtnClickCSS(cityItem))">{{ cityItem.name }}</div>' +
 			'</div>' +
@@ -1024,16 +1111,18 @@ var BB = (function(TT){
 				this.$parent.busCitySelArea = this.selArea;
 				BB.now.busCitySelArea = this.selArea;
 			}
-		}
+		},
+		mounted: function(){BB.multiLang.reg('busCity',this);},
+		destroyed: function(){BB.multiLang.unreg('busCity');}
 	}
 	var busFindRoute = {//尋找路線
 		template: '<div id="busFindRoute" class="makeSub1">' +
-			'<div class="textA">' + _LANG.STR011 + '</div>' +
+			'<div class="textA">{{_LANG.STR011}}</div>' +
 			'<div class="busFindRouteFrame frame1">' +
 				'<div>' +
-					'<input type="text" maxLengrh="10" class="busFindRouteCSSInput" placeholder="' + _LANG.STR013 + '" v-model="busFindRouteInput" />' +
+					'<input type="text" maxLengrh="10" class="busFindRouteCSSInput" v-bind:placeholder="_LANG.STR013" v-model="busFindRouteInput" />' +
 				'</div>' +
-				'<div class="clearFrame bs_no_select"><div v-on:click="inputClear()">' + _LANG.STR026 + '</div><div v-on:click="inputBackSpace()">' + _LANG.STR027 + '</div>' + '</div>' +
+				'<div class="clearFrame bs_no_select"><div v-on:click="inputClear()">{{_LANG.STR026}}</div><div v-on:click="inputBackSpace()">{{_LANG.STR027}}</div>' + '</div>' +
 				'<div class="keyboardFrame bs_no_select">' +
 					'<div class="keyboardGroup number">' +
 						'<div v-for="(num, idx) in keyNumberAry" v-on:click="ck(num)">{{ num }}</div>' +
@@ -1067,33 +1156,35 @@ var BB = (function(TT){
 				this.$parent.busFindRouteInput = this.busFindRouteInput;
 				BB.now.busFindRouteInput = this.busFindRouteInput;
 			}
-		}
+		},
+		mounted: function(){BB.multiLang.reg('busFindRoute',this);},
+		destroyed: function(){BB.multiLang.unreg('busFindRoute');}
 	}
 	var busFindList = {//列出尋找到的所有巴士路線
 		template: '<div id="busFindList" class="makeSub1">' +
-			'<div class="textA">' + _LANG.STR014 + '</div>' +
-			'<div class="textB">' + _LANG.STR015 + '</div>' +
+			'<div class="textA">{{_LANG.STR014}}</div>' +
+			'<div class="textB">{{_LANG.STR015}}</div>' +
 			'<div class="busFindListFrame frame1 bs_no_select">' +
 				'<div class="busFindResultListBox" v-for="(row, idx) in busFindRouteResult">' +
 					'<div class="floatLeftInnerDiv head" v-html="head(row)" v-on:click="showHideStop(row)"></div>' +
 					'<div class="stopInfo" v-show="row.displayStop">' +
-						'<div class="slinText">' + _LANG.STR019 + '</div>' +
+						'<div class="slinText" v-html="print19()"></div>' +
 						'<div class="stopList">' +
 							'<div v-for="(stop, sidx) in row.Stops" class="stop floatLeftInnerDiv" >' +
 									'<div class="stopIndex">{{ sidx+1 }}</div>' +
-									'<div class="stopName" title="StopName.Zh_tw" v-bind:class="nameCSS(row, stop, sidx)" v-on:click="stopNameClick(row, stop, sidx)">{{ stop.StopName.Zh_tw }}</div>' +
+									'<div class="stopName" title="StopName.Zh_tw" v-bind:class="nameCSS(row, stop, sidx)" v-on:click="stopNameClick(row, stop, sidx)">{{ printStopName(stop) }}</div>' +
 									'<div class="StopUID" title="StopUID">{{ stop.StopUID }}</div>' +
 									'<div class="StationID" title="StationID">{{ stop.StationID }}</div>' +
 									//以下部分 float right
-									'<div class=" stopOK" v-on:click="getStation(stop)" v-bind:class="getOKCSS(stop,sidx)">' + _LANG.CM_OK + '</div>' +
+									'<div class=" stopOK" v-on:click="getStation(stop)" v-bind:class="getOKCSS(stop,sidx)">{{_LANG.CM_OK}}</div>' +
 									'<a class="stopOpenMap" v-bind:href="hrefMap(stop)" target="_new">' +
-										'<div class="stopMap">' + _LANG.STR020 + '</div>' +
+										'<div class="stopMap">{{_LANG.STR020}}</div>' +
 									'</a>' +
 							'</div>' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
-				'<div v-if="(busFindRouteResult.length==0)">' + _LANG.STR025 + '</div>' +
+				'<div v-if="(busFindRouteResult.length==0)">{{_LANG.STR025}}</div>' +
 			'</div>' +
 		'</div>',
 		data: function(){return{
@@ -1111,6 +1202,8 @@ var BB = (function(TT){
 				if(sidx>selectStopIdx[0] && sidx<selectStopIdx[1]) return 'overSelect';
 				return '';
 			},
+			print19: function(){return _LANG.STR019;},
+			printStopName: getStopDisplayName,
 			stopNameClick: function(row, stop, sidx){
 				var selectStop = this.selectStop;
 				var stObj = {stop:stop, index:sidx, RouteUID: row.RouteUID, StationID: stop.StationID, Direction: row.Direction}
@@ -1282,10 +1375,13 @@ var BB = (function(TT){
 				if(bus.Direction==0) linkFT = '=&gt;';
 				if(bus.Direction==1) linkFT = '&lt;=';
 				if(bus.CityCode=='NWT' && /^F\d/.test(bus.RouteName.Zh_tw)){ busTypeString = '<span style="color:#BABB24;">' + _LANG.STR021 + '</span>' }
+				var dep = (_LANG.zxx=='Zh') ? bus.DepartureStopNameZh : bus.DepartureStopNameEn;
+				var des = (_LANG.zxx=='Zh') ? bus.DestinationStopNameZh : bus.DestinationStopNameEn;
+				var cityStr = (_LANG.zxx=='Zh') ? TT.ptx.bus.getCityData(bus.CityCode).name : TT.ptx.bus.getCityData(bus.CityCode).City;
 				return '<div class="busNO">' + getBusDisplayString(bus) + '</div>' +
-					'<div class="fromTo">' + bus.DepartureStopNameZh + ' <span class="dash1">' + linkFT + '</span> ' + bus.DestinationStopNameZh + '</div>' +
+					'<div class="fromTo">' + dep + ' <span class="dash1">' + linkFT + '</span> ' + des + '</div>' +
 					'<div class="dir"> ( ' + getDirString(bus.Direction) + ' )</div>' +
-					'<div class="manageBy">' + TT.ptx.bus.getCityData(bus.CityCode).name + ' ' + busTypeString + '</div>';
+					'<div class="manageBy">' + cityStr + ' ' + busTypeString + '</div>';
 			},
 			hrefMap: function(stop){
 				var lat = stop.StopPosition.PositionLat, lon = stop.StopPosition.PositionLon;
@@ -1307,18 +1403,20 @@ var BB = (function(TT){
 			this.selectStop = [];
 			BB.busFindList = this;
 			this.nextPage = (this.$route.query && this.$route.query.as) ? this.$route.query.as : false;
-		}
+			BB.multiLang.reg('busFindList',this);
+		},
+		destroyed: function(){BB.multiLang.unreg('busFindList');}
 	}
 
 	var busArriveTime = {
 		template: '<div id="busArriveTime" class="makeSub1">' +
-			'<div class="textA">' + _LANG.STR036 + '</div>' +
+			'<div class="textA">{{_LANG.STR036}}</div>' +
 			'<div class="StopNameFrame">' +
 				'<div class="item">' +
-					'<input type="text" maxLengrh="30" class="busFindRouteCSSInput" placeholder="' + _LANG.STR038 + '" v-model="StationStopName" />' +
+					'<input type="text" maxLengrh="30" class="busFindRouteCSSInput" v-bind:placeholder="_LANG.STR038" v-model="StationStopName" />' +
 				'</div>' +
 				'<div class="item">' +
-					'<span>' + _LANG.STR037 + '</span>' +
+					'<span>{{_LANG.STR037}}</span>' +
 					'<select v-model="StationNameListText"><option v-for="n1 in aryStationListStopName" v-bind:value="n1">{{n1}}</option></select>' +
 				'</div>' +
 			'</div>' +
@@ -1330,7 +1428,7 @@ var BB = (function(TT){
 						'<div v-html="DisplayBusStopUID(bus)" class="divTableCell stopUID"></div>' +
 					'</div>' +
 				'</div>' +
-				'<div class="textA" v-if="(aryArriveTime.length==0)">' + _LANG.STR057 + '</div>' +
+				'<div class="textA" v-if="(aryArriveTime.length==0)">{{_LANG.STR057}}</div>' +
 			'</div>' +
 		'</div>',
 		data: function(){return{
@@ -1357,22 +1455,24 @@ var BB = (function(TT){
 		watch: {
 			StationNameListText: function(){ this.StationStopName = this.StationNameListText; },
 			StationStopName: function(){ BB.now.StationStopName = this.StationStopName; }
-		}
+		},
+		mounted: function(){BB.multiLang.reg('busArriveTime',this);},
+		destroyed: function(){BB.multiLang.unreg('busArriveTime');}
 	}
 	
 	var busMakeURL = {
 		template: '<div id="busMakeURL" class="makeSub1">' +
-			'<div class="textA">' + _LANG.STR039 + '</div>' +
+			'<div class="textA">{{_LANG.STR039}}</div>' +
 			'<div style="height:20px;"></div>' +
 			'<div class="hyperlinkShow" style="word-break:break-all;" v-html="makeURL()"></div>' +
 			'<div style="height:20px;"></div>' +
-			'<div class="QRPanel" v-show="!flagDisplayQRImage"><div class="btn1" v-on:click="genStationQR()">' + _LANG.STR052 + '</div></div>' +
-			'<div v-if="flagDisplayQRImage"><div class="textB">' + _LANG.STR042 + '</div></div>' +
+			'<div class="QRPanel" v-show="!flagDisplayQRImage"><div class="btn1" v-on:click="genStationQR()">{{_LANG.STR052}}</div></div>' +
+			'<div v-if="flagDisplayQRImage"><div class="textB">{{_LANG.STR042}}</div></div>' +
 			'<div v-if="flagDisplayQRImage">' +
 				'<div class="QRShow" v-html="getImage()" style="cursor:pointer;display:inline-block;" v-on:click="openSaveQR()"></div>' +
 			'</div>' +
-			'<div class="addToBookmark" v-show="flagDisplayBtnAddToBookmark"><div class="btn1" v-on:click="addToBookmark">' + _LANG.STR043 + '</div></div>' +
-			'<div class="textA" v-if="!flagDisplayBtnAddToBookmark">' + _LANG.STR045  + '</div>' +
+			'<div class="addToBookmark" v-show="flagDisplayBtnAddToBookmark"><div class="btn1" v-on:click="addToBookmark">{{_LANG.STR043}}</div></div>' +
+			'<div class="textA" v-if="!flagDisplayBtnAddToBookmark">{{_LANG.STR045}}</div>' +
 		'</div>',
 		data: function(){return{
 			link: '',
@@ -1414,14 +1514,14 @@ var BB = (function(TT){
 				window.open(this.dataURL, "_new");
 			}
 		},
-		watch: {
-		}
+		mounted: function(){BB.multiLang.reg('busMakeURL',this);},
+		destroyed: function(){BB.multiLang.unreg('busMakeURL');}
 	}
 
 	//========收藏夾==========
 	var busBookmark = {
 		template: '<div id="busBookmark" class="bookmark makeSub1">' +
-			'<div class="textA">' + _LANG.STR046 + '</div>' +
+			'<div class="textA">{{_LANG.STR046}}</div>' +
 			'<div class="bookmarkOut">' +
 				'<div class="bookmarkList divTable">' +
 					'<div class="divTableRow" v-for="(bm, idx) in store">' +
@@ -1429,26 +1529,26 @@ var BB = (function(TT){
 							'<input type="checkbox" v-bind:value="bm.id" v-model="checkStID" />' +
 						'</div>' +
 						'<div class="divTableCell name"><span v-on:click="link(bm)">{{ bm.name }}</span></div>' +
-						'<div class="divTableCell func" v-on:click="removeID(bm.id)">[' + _LANG.STR047 + ']</div>' +
-						'<div class="divTableCell func" v-on:click="make(bm)">[' + _LANG.STR048 + ']</div>' +
+						'<div class="divTableCell func" v-on:click="removeID(bm.id)">[{{_LANG.STR047}}]</div>' +
+						'<div class="divTableCell func" v-on:click="make(bm)">[{{_LANG.STR048}}]</div>' +
 					'</div>' +
 				'</div>' +
 			'</div>' +
 			'<div style="margin:20px 0 10px 0;">' +
 				'<div class="item">' +
-					'<input type="text" maxLengrh="30" class="busFindRouteCSSInput" placeholder="' + _LANG.STR038 + '" v-model="GroupStopName" />' +
+					'<input type="text" maxLengrh="30" class="busFindRouteCSSInput" v-bind:placeholder="_LANG.STR038" v-model="GroupStopName" />' +
 				'</div>' +
-				'<div class="btn1" v-on:click="groupStop">' + _LANG.STR050 + '</div>' +
-				'<div class="textB divDPIB" v-if="flagShowCreated">' + _LANG.STR054 + '</div>' +
+				'<div class="btn1" v-on:click="groupStop">{{_LANG.STR050}}</div>' +
+				'<div class="textB divDPIB" v-if="flagShowCreated">{{_LANG.STR054}}</div>' +
 				'<div v-if="flagShowGroupLink">' +
 					'<div>' +
-						'<div class="btn1" v-on:click="addToGroupBookmark()">' + _LANG.STR059 + '</div>' +
-						'<div class="textR1 divDPIB" v-show="flagShowGroupSuccess">' + _LANG.STR060 + '</div>' +
+						'<div class="btn1" v-on:click="addToGroupBookmark()">{{_LANG.STR059}}</div>' +
+						'<div class="textR1 divDPIB" v-show="flagShowGroupSuccess">{{_LANG.STR060}}</div>' +
 					'</div>' +
 					'<div v-html="getImage()" v-on:click="openSaveQR()" style="display:inline-block;"></div>' +
 					'<div v-html="printURL()" style="word-break:break-all;"></div>' +
 				'</div>' +
-				'<div class="textB" v-show="!flagShowGroupLink">' + _LANG.STR051 + '</div>' +
+				'<div class="textB" v-show="!flagShowGroupLink">{{_LANG.STR051}}</div>' +
 			'</div>' +
 		'</div>',
 		data: function(){return{
@@ -1533,20 +1633,22 @@ var BB = (function(TT){
 				if(this.GroupStopName=='' && ary.length>0) this.GroupStopName = this.getStoreByID(ary[0]).name;
 				this.flagShowGroupLink = false;
 			}
-		}
+		},
+		mounted: function(){BB.multiLang.reg('busBookmark',this);},
+		destroyed: function(){BB.multiLang.unreg('busBookmark');}
 	}
 	// Group Bookmark
 	var busGroupBookmark = {
 		template: '<div id="busGroupBookmark" class="bookmark makeSub1">' +
 			'<div v-if="!!dataURL" v-html="getImage()" v-on:click="openSaveQR()"></div>' +
-			'<div class="textA">' + _LANG.STR046 + '</div>' +
+			'<div class="textA">{{_LANG.STR058}}</div>' +
 			'<div class="bookmarkOut">' +
 				'<div class="bookmarkList divTable">' +
 					'<div class="divTableRow" v-for="(bm, idx) in store">' +
 						'<div class="divTableCell idx">{{ idx+1 }}</div>' +
 						'<div class="divTableCell name"><span v-on:click="link(bm)">{{ bm.name }}</span></div>' +
-						'<div class="divTableCell func" v-on:click="removeID(bm.id)">[' + _LANG.STR047 + ']</div>' +
-						'<div class="divTableCell func" v-on:click="make(bm)">[' + _LANG.STR048 + ']</div>' +
+						'<div class="divTableCell func" v-on:click="removeID(bm.id)">[{{_LANG.STR047}}]</div>' +
+						'<div class="divTableCell func" v-on:click="make(bm)">[{{_LANG.STR048}}]</div>' +
 					'</div>' +
 				'</div>' +
 			'</div>' +
@@ -1596,19 +1698,23 @@ var BB = (function(TT){
 			openSaveQR: function(){
 				window.open(this.dataURL, "_new");
 			}
-		}
+		},
+		mounted: function(){BB.multiLang.reg('busGroupBookmark',this);},
+		destroyed: function(){BB.multiLang.unreg('busGroupBookmark');}
 	}
 
 	var makeIndex = {
 		template: '<div>' +
-				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity?as=direct\'}">' + '<div class="btn1">' + _LANG.STR061 + '</div>' + '</router-link></div>' +
-				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">' + _LANG.STR003 + '</div>' + '</router-link></div>' +
-				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1">' + _LANG.STR046 + '</div>' + '</router-link></div>' +
-				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1">' + _LANG.STR058 + '</div>' + '</router-link></div>' +
+				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity?as=direct\'}">' + '<div class="btn1">{{_LANG.STR061}}</div>' + '</router-link></div>' +
+				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">{{_LANG.STR003}}</div>' + '</router-link></div>' +
+				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1">{{_LANG.STR046}}</div>' + '</router-link></div>' +
+				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1">{{_LANG.STR058}}</div>' + '</router-link></div>' +
 			'</div>',
 		mounted: function(){
 			BB.now.busFindRouteInput = ''; this.$parent.busFindRouteInput = '';
-		}
+		},
+		mounted: function(){BB.multiLang.reg('makeIndex',this);},
+		destroyed: function(){BB.multiLang.unreg('makeIndex');}
 	}
 	var makeArea = {
 		template: '<div id="makeArea">' + 
@@ -1619,8 +1725,8 @@ var BB = (function(TT){
 			'</transition>' +
 			'</div>' +
 			'<div class="stepControlArea bs_no_select" v-show="flagShowStepControl">' +
-				'<div class="btnStep" v-bind:class="getControlCSS(\'prev\')" v-on:click="goPrev()">' + _LANG.STR007 + '</div>' +
-				'<div class="btnStep" v-bind:class="getControlCSS(\'next\')" v-on:click="goNext()">' + _LANG.STR008 + '</div>' +
+				'<div class="btnStep" v-bind:class="getControlCSS(\'prev\')" v-on:click="goPrev()">{{_LANG.STR007}}</div>' +
+				'<div class="btnStep" v-bind:class="getControlCSS(\'next\')" v-on:click="goNext()">{{_LANG.STR008}}</div>' +
 			'</div>' +
 		'</div>',
 		data: function(){return {
@@ -1795,7 +1901,9 @@ var BB = (function(TT){
 		},
 		mounted: function(){
 			if(location.search!='') location.search = '';
-		}
+			BB.multiLang.reg('makeArea',this);
+		},
+		destroyed: function(){BB.multiLang.unreg('makeArea');}
 	};
 					
 	var showArea = {
@@ -1803,7 +1911,7 @@ var BB = (function(TT){
 			'<div class="allOute">' +
 				'<div class="allIn" v-for="(station, stIdx) in aryArriveTime">' +
 					'<div class="stationDisplayTitle">' +
-						'<div class="stationDisplayMore" title="' + _LANG.STR020 + '">' +
+						'<div class="stationDisplayMore" v-bind:title="_LANG.STR020">' +
 							'<a class="stopOpenMap" v-bind:href="hrefMap(station)" target="_new">' +
 							'<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAQAAABIkb+zAAADpElEQVR4Ae3aA9DsSBQF4DNa2+ZvZNL3lNa2d0tr24W1bdu2bdu2beO5l8/InX/6JpmqfKdcgz4dA4VCoVAohNQ7mSwrB8k5cjOf4gcyiL/zA3lcbpZzeIAsyxpyrMLV5Ab+Tj+J/C7XcTVUkDcLTCG7yWf0ushnsnvb5MiNqtuZX9I3mC+5A6rIHtfme/QDzHtuTWSqIifSNxc5IbMtgtPLffTNR+7j9EhffW6+TR8ob0XzIF2cTz6nDxf5nPMhPV0z8336wHm/a2akgzU+TW+Qp1M6TvMieqNcBHvcgN4wG8BW2+TyuWUB+dz4FEP2obeN7Gt76PrNvMBvhoc1OZbePnKM2e5TfqVPIb8Y7U5lHf0gZJBc5TaJ43iGvxO7TeQqGUT9t9eBBblKPYR73PwYh5ufd6sLXA0DJf6kHMCRmLCSHE6vyk8oIbR4MeXsHY5JcEfQaxIvhtDcnrqVJ2HuSryHXpG9EJqcr9l0k8/r++ZVbc7nITR5RFHgMijIZYpfegSh8YNQp2Ka00H5EKHxe/qkRJ1QiDoVU/E9QpMR9EnpnBYKndMqlsBwhMY/6JPSNh0U2qajT8wfCI2f0CfF9UDB9SgKfILQ+EKaGzFfQGiqA9AVUOAVqgNiaHK66kC2IBJEC2oOZHI6QpPNdLcJk04ldLcjZTOEVu9Vn4tOAo+i16Tei+DK/KPJ89GSHEavyh8oIzy5o5kLmv6FeI/2+3InLHCrRi8pXT2egdO7uttEruIQenW2MrqlKyPo7SMjemeCDT5An0IegBW3XSoFtoeVaGoZZD18GcSpYEcuNC9wISzFi1oXiBeFLb5tOv/vwppsZlpgM5irykdmBT5GFfbcFlYF3BYwYr8M7OfffjuQzZGaMt8MXuAtlJEet17oAm49pEteClrgFaTNLR/0+LsC0sdrgxW4FlnonSPMU0v5tW92ZIPb257/2yvJ403P/xMoITtRJ4c1VWBY1IlsydFNzf/RyNo8U/KTARf4dJ4pkb14rQHv/ddCPvCKARW4AnnRNh2/aHj4X7RNh/yIl260gFsK+dLYW9RyEvKGNXlOXeB51pA/9bn5nWr437u5kE/x0jI8+RG2WxL5JQcmFjgQuVbmU5Ms8DTKyLe+eeWHic7+j9E8yD+uOOEtQYZzRbQG2W2CBXaDHfsX1OR8tJSKPDnW8J9EBa0lmk2+HjX8r6PZ0Hoo/z8bHkJBa5Kt6ella7QuHsWjYKZQKBQKhb8AaFXSW3c/idsAAAAASUVORK5CYII=" width="28" height="28">' +
 							'</a>' +
@@ -1817,7 +1925,7 @@ var BB = (function(TT){
 						'</div>' +
 					'</div>' +
 				'</div>' +
-				'<div v-if="(aryArriveTime.length==0)" class="textA">' + _LANG.STR057 + '</div>' +
+				'<div v-if="(aryArriveTime.length==0)" class="textA">{{_LANG.STR057}}</div>' +
 			'</div>' +
 		'</div>',
 		data: function(){return{
@@ -1845,6 +1953,10 @@ var BB = (function(TT){
 				var busRouteInfo = this.getBusMoreInfo(bus);
 				var fromStName = busRouteInfo.DepartureStopNameZh || '',
 					toStName = busRouteInfo.DestinationStopNameZh || '';
+				if(_LANG.zxx=='En'){
+					fromStName = busRouteInfo.DepartureStopNameEn || '';
+					toStName = busRouteInfo.DestinationStopNameEn || '';
+				}
 				if(bus.Direction===0) dir = '<span class="dir0">' + _LANG.STR055 + ' ' + toStName;
 				if(bus.Direction===1) dir = '<span class="dir1">' + _LANG.STR056 + ' ' + fromStName;
 				return '<div class="str">' + getBusDisplayString(bus) + '<div class="dir">' + dir + '</div></div>';
@@ -1854,6 +1966,7 @@ var BB = (function(TT){
 			},
 			hrefMap: function(station){
 				var pos = station.StationPosition || station.StopPosition;
+				if(!pos) return '';
 				var lat = pos.PositionLat, lon = pos.PositionLon;
 				return 'http://maps.google.com/maps?q=' + lat + ',' + lon;
 			},
@@ -2038,6 +2151,7 @@ var BB = (function(TT){
 		},
 		mounted: function(){
 			var me = this;
+			BB.multiLang.reg('show',this);
 			function afterGetStationData(data){
 				me.aryStation = data;
 				BB.now.showUseStationData = data;
@@ -2056,6 +2170,7 @@ var BB = (function(TT){
 		},
 		destroyed: function(){
 			clearTimeout(this.reloadTimer);
+			BB.multiLang.unreg('show');
 		},
 		watch: {
 			'$route': function(vroute){
@@ -2099,7 +2214,9 @@ var BB = (function(TT){
 				'</div>';
 				return rt;
 			}
-		}
+		},
+		mounted: function(){BB.multiLang.reg('aboutArea',this);},
+		destroyed: function(){BB.multiLang.unreg('aboutArea');}
 	};
 
 	var makeShowBusRoutePop = function(){
@@ -2110,7 +2227,7 @@ var BB = (function(TT){
 			'</div>' +
 			'<div class="guideBar">' +
 				'<div class="guideBarFlex bs_no_select">' +
-					'<div class="btnItem" v-bind:class="getInfoBtnCSS()" v-on:click="toggleFlag(\'flagExpandInfo\')">' + _LANG.STR062 + '</div>' +
+					'<div class="btnItem" v-bind:class="getInfoBtnCSS()" v-on:click="toggleFlag(\'flagExpandInfo\')">{{_LANG.STR062}}</div>' +
 					//'<div class="btnItem">Go</div>' +
 					//'<div class="btnItem">Back</div>' +
 				'</div>' +
@@ -2271,18 +2388,29 @@ var BB = (function(TT){
 					this.busInfo = false;
 				}
 			}
-		}
+		},
+		mounted: function(){BB.multiLang.reg('showBusRoutePop',this);},
+		destroyed: function(){BB.multiLang.unreg('showBusRoutePop');}
 	});
 	}
 
 	var indexArea = {
 		template: '<div>' +
-			'<div class="textA">' + _LANG.STR049.replace('{title}',_LANG.CM_TITLE).replace('{btnA}',_LANG.STR001) + '</div>' +
-			'<div>' + _LANG.CM_APP_USE_P + '</div>' +
+			'<div class="textA" v-html="firstText()">' + '</div>' +
+			'<div>{{_LANG.CM_APP_USE_P}}</div>' +
 		'</div>', 
 		data: function(){return {
 		}},
 		methods: {
+			firstText: function(){
+				return _LANG.STR049.replace('{title}',_LANG.CM_TITLE).replace('{btnA}',_LANG.STR001);
+			}
+		},
+		mounted: function(){
+			BB.multiLang.reg('indexArea',this);
+		},
+		destroyed: function(){
+			BB.multiLang.unreg('indexArea');
 		}
 	};
 	var siteMap = [
@@ -2314,21 +2442,54 @@ var BB = (function(TT){
 
 	var menuBarTpl =  Vue.compile('<div id="menuBar" class="bs_no_select">' +
 			'<router-link :to="{path: \'/make\'}">' +
-				'<div class="menuBtn1">' + _LANG.STR001 + '</div>' +
+				'<div class="menuBtn1">{{_LANG.STR001}}</div>' +
 			'</router-link>' +
 			'<router-link :to="{path: \'/about\'}">' +
-				'<div class="menuBtn1">' + _LANG.STR002 + '</div>' +
+				'<div class="menuBtn1">{{_LANG.STR002}}</div>' +
 			'</router-link>' +
+			'<div class="menuBtn1" v-on:click="changeLang()">Language</div>' +
 	'</div>');
 	BB.menuBar = Vue.component('vcmp_menu_bar', {
 		render: menuBarTpl.render,
 		staticRenderFns: menuBarTpl.staticRenderFns,
 		methods: {
-			goRoute: function(site){
-				return false;
+			changeLang: function(){
+				var ln = _LANG.zxx;
+				if(_LANG.zxx=='Zh'){ln = 'En';}
+				else if(_LANG.zxx=='En'){ln = 'Zh';}
+
+				_LANG = _MakeLANG(ln);
+				_setBuspLang(ln);
+				BB.multiLang.update()
+			}
+		},
+		mounted: function(){BB.multiLang.reg('menuBar',this);},
+		destroyed: function(){BB.multiLang.unreg('menuBar');}
+	});
+
+	BB.multiLang = (function(){
+		var cmps = {};
+		var rt = {
+			reg: function(name, dom){
+				cmps[name] = dom;
+			},
+			unreg: function(name){
+				if(cmps[name]){
+					cmps[name] = false;
+				}
+			},
+			update: function(){
+				var ary = Object.keys(cmps);
+				for(var i=0; i<ary.length; i++){
+					if(cmps[ary[i]]){
+						cmps[ary[i]]._LANG = _LANG;
+						cmps[ary[i]].$forceUpdate();
+					}
+				}
 			}
 		}
-	});
+		return rt;
+	})();
 
 	BB.initFn = function(){
 		var GetP = TT.defined.GetP;
