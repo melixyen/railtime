@@ -327,6 +327,9 @@ if(!window.Promise || !window.fetch){
         		}
         	}
         	return objA;
+        },
+        clone: function(objA){
+            return JSON.parse(JSON.stringify(objA));
         }
     }
     
