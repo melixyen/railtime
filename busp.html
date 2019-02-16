@@ -758,7 +758,7 @@ function _MakeLANG(country){
 			CM_CANCEL: 'Cancel',
 			CM_REMOVE: 'Remove',
 			CM_TITLE: 'QR CODE Smart Bus Stop',
-			CM_APP_USE_P: '<p>' + 'Make any bus stop dynamic status with a share link and gen QR CODE, than paste on any documen or card or mail to your friend let take bus easily.' + '</p>',
+			CM_APP_USE_P: '<p>' + 'Make any bus stop dynamic status with a share link and gen QR CODE, than paste on any document or card or mail to your friend let take bus easily.' + '</p>',
 			STR001: 'Function',
 			STR002: 'About',
 			STR003: 'Make bus stop smart link by bus route',
@@ -2316,7 +2316,16 @@ var BB = (function(TT){
 						var nearData = data;
 						TT.ptx.bus.getBusRouteArriveTime(me.RouteUID, {cbFn: function(data,e){
 							if(e.status==TT.ptx.statusCode.SUCCESS){
-								var ary = data.map(function(c){
+								//部分縣市會出現重複 StopUID 先濾除不同方向
+								var dataFilted = data.filter(function(c){
+									var dirStr = (c.Direction || c.Direction==0) ? c.Direction.toString() : '';
+									var rt = true;
+									if(dirStr){
+										rt = !!(c.Direction==me.Direction);
+									}
+									return rt;
+								})
+								var ary = dataFilted.map(function(c){
 									var nearStopData = nearData.find(function(nearStop){
 										return !!(nearStop.StopUID==c.StopUID);
 									});
