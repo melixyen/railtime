@@ -656,6 +656,7 @@ body {
 
 <script type="text/javascript" src="./libs/vue.js"></script>
 <script type="text/javascript" src="./libs/vue-router.js"></script>
+<script type="text/javascript" src="./libs/vue-duoguo.js"></script>
 <script type="text/javascript" src="./libs/QRious.js"></script>
 
 <script type="text/javascript" src="ttlib/defined.js"></script>
@@ -685,16 +686,8 @@ var TT = $trainTaiwanLib;
 TT.ptx.AppID = atob('M2FhNWNkN2RmMTQwNGU1ZmJhYzA2N2JmMDAzODg3Yjc=');
 TT.ptx.AppKey = atob("TFprbHRGcjhvSkxGenFpUmU1RmdCeUgxYUFZ");
 
-function _getBuspLang(){return localStorage.getItem('busp_lang');}
-function _setBuspLang(ln){return localStorage.setItem('busp_lang',ln);}
-function _MakeLANG(country){
-	if(country){
-		//localStorage.setItem('busp_lang', country);
-	}
-	var busp_lang = _getBuspLang();
-	if(country){busp_lang=country;}
-	var rt = {};
-	var def = {
+var languagePakc = {
+	"Zh": {
 			CM01: '、',
 			CM_OK: '確定',
 			CM_CANCEL: '取消',
@@ -774,13 +767,8 @@ function _MakeLANG(country){
 			STR062: '資訊',
 			STR063: '公車站牌雲端看板連結',
 			zxx: 'Zh'
-	}
-	function getBaseString(){return JSON.parse(JSON.stringify(def));}
-	if(!busp_lang || /^Zh/.test(busp_lang)){
-		rt = getBaseString();
-	}else if(/^En/.test(busp_lang)){
-		rt = getBaseString();
-		TT.lib.apply(rt, {
+	},
+	"En": {
 			CM01: ', ',
 			CM_OK: 'OK',
 			CM_CANCEL: 'Cancel',
@@ -851,13 +839,18 @@ function _MakeLANG(country){
 			STR062: 'Info',
 			STR063: 'Share link of smart stop',
 			zxx: 'En'
-		});
-	}else{
-		rt = getBaseString();
 	}
-	return rt;
-};
-var _LANG = _MakeLANG();
+}
+var _LANG;
+VueDuoGuo.setConfig({
+	//baseLang: 'Zh',
+	//component: "_LANG",
+	autoload: true,
+	lang: 'Zh',
+	localStorage: 'busp_lang',
+	path: languagePakc,
+	global: "_LANG"
+})
 
 var BB = (function(TT){
 	var _DEFINE_PARAM_BUS_STATION = 'busStation';
@@ -1162,9 +1155,7 @@ var BB = (function(TT){
 				this.$parent.busCitySelArea = this.selArea;
 				BB.now.busCitySelArea = this.selArea;
 			}
-		},
-		mounted: function(){BB.multiLang.reg('busCity',this);},
-		destroyed: function(){BB.multiLang.unreg('busCity');}
+		}
 	}
 	var busFindRoute = {//尋找路線
 		template: '<div id="busFindRoute" class="makeSub1">' +
@@ -1207,9 +1198,7 @@ var BB = (function(TT){
 				this.$parent.busFindRouteInput = this.busFindRouteInput;
 				BB.now.busFindRouteInput = this.busFindRouteInput;
 			}
-		},
-		mounted: function(){BB.multiLang.reg('busFindRoute',this);},
-		destroyed: function(){BB.multiLang.unreg('busFindRoute');}
+		}
 	}
 	var busFindList = {//列出尋找到的所有巴士路線
 		template: '<div id="busFindList" class="makeSub1">' +
@@ -1455,9 +1444,7 @@ var BB = (function(TT){
 			this.selectStop = [];
 			BB.busFindList = this;
 			this.nextPage = (this.$route.query && this.$route.query.as) ? this.$route.query.as : false;
-			BB.multiLang.reg('busFindList',this);
-		},
-		destroyed: function(){BB.multiLang.unreg('busFindList');}
+		}
 	}
 
 	var busArriveTime = {
@@ -1507,9 +1494,7 @@ var BB = (function(TT){
 		watch: {
 			StationNameListText: function(){ this.StationStopName = this.StationNameListText; },
 			StationStopName: function(){ BB.now.StationStopName = this.StationStopName; }
-		},
-		mounted: function(){BB.multiLang.reg('busArriveTime',this);},
-		destroyed: function(){BB.multiLang.unreg('busArriveTime');}
+		}
 	}
 	
 	var busMakeURL = {
@@ -1566,9 +1551,7 @@ var BB = (function(TT){
 			openSaveQR: function(){
 				window.open(this.dataURL, "_new");
 			}
-		},
-		mounted: function(){BB.multiLang.reg('busMakeURL',this);},
-		destroyed: function(){BB.multiLang.unreg('busMakeURL');}
+		}
 	}
 
 	//========收藏夾==========
@@ -1686,9 +1669,7 @@ var BB = (function(TT){
 				if(this.GroupStopName=='' && ary.length>0) this.GroupStopName = this.getStoreByID(ary[0]).name;
 				this.flagShowGroupLink = false;
 			}
-		},
-		mounted: function(){BB.multiLang.reg('busBookmark',this);},
-		destroyed: function(){BB.multiLang.unreg('busBookmark');}
+		}
 	}
 	// Group Bookmark
 	var busGroupBookmark = {
@@ -1751,9 +1732,7 @@ var BB = (function(TT){
 			openSaveQR: function(){
 				window.open(this.dataURL, "_new");
 			}
-		},
-		mounted: function(){BB.multiLang.reg('busGroupBookmark',this);},
-		destroyed: function(){BB.multiLang.unreg('busGroupBookmark');}
+		}
 	}
 
 	var makeIndex = {
@@ -1765,9 +1744,7 @@ var BB = (function(TT){
 			'</div>',
 		mounted: function(){
 			BB.now.busFindRouteInput = ''; this.$parent.busFindRouteInput = '';
-		},
-		mounted: function(){BB.multiLang.reg('makeIndex',this);},
-		destroyed: function(){BB.multiLang.unreg('makeIndex');}
+		}
 	}
 	var makeArea = {
 		template: '<div id="makeArea">' + 
@@ -1953,9 +1930,7 @@ var BB = (function(TT){
 		},
 		mounted: function(){
 			if(location.search!='') location.search = '';
-			BB.multiLang.reg('makeArea',this);
-		},
-		destroyed: function(){BB.multiLang.unreg('makeArea');}
+		}
 	};
 					
 	var showArea = {
@@ -2203,7 +2178,6 @@ var BB = (function(TT){
 		},
 		mounted: function(){
 			var me = this;
-			BB.multiLang.reg('show',this);
 			function afterGetStationData(data){
 				me.aryStation = data;
 				BB.now.showUseStationData = data;
@@ -2222,7 +2196,6 @@ var BB = (function(TT){
 		},
 		destroyed: function(){
 			clearTimeout(this.reloadTimer);
-			BB.multiLang.unreg('show');
 		},
 		watch: {
 			'$route': function(vroute){
@@ -2266,9 +2239,7 @@ var BB = (function(TT){
 				'</div>';
 				return rt;
 			}
-		},
-		mounted: function(){BB.multiLang.reg('aboutArea',this);},
-		destroyed: function(){BB.multiLang.unreg('aboutArea');}
+		}
 	};
 
 	var makeShowBusRoutePop = function(){
@@ -2446,9 +2417,7 @@ var BB = (function(TT){
 					this.busInfo = false;
 				}
 			}
-		},
-		mounted: function(){BB.multiLang.reg('showBusRoutePop',this);},
-		destroyed: function(){BB.multiLang.unreg('showBusRoutePop');}
+		}
 	});
 	}
 
@@ -2463,12 +2432,6 @@ var BB = (function(TT){
 			firstText: function(){
 				return _LANG.STR049.replace('{title}',_LANG.CM_TITLE).replace('{btnA}',_LANG.STR001);
 			}
-		},
-		mounted: function(){
-			BB.multiLang.reg('indexArea',this);
-		},
-		destroyed: function(){
-			BB.multiLang.unreg('indexArea');
 		}
 	};
 	var siteMap = [
@@ -2512,42 +2475,14 @@ var BB = (function(TT){
 		staticRenderFns: menuBarTpl.staticRenderFns,
 		methods: {
 			changeLang: function(){
-				var ln = _LANG.zxx;
-				if(_LANG.zxx=='Zh'){ln = 'En';}
-				else if(_LANG.zxx=='En'){ln = 'Zh';}
+				var ln = Vue.duoguo.lang;
+				if(Vue.duoguo.lang=='Zh'){ln = 'En';}
+				else if(Vue.duoguo.lang=='En'){ln = 'Zh';}
 
-				_LANG = _MakeLANG(ln);
-				_setBuspLang(ln);
-				BB.multiLang.update()
-			}
-		},
-		mounted: function(){BB.multiLang.reg('menuBar',this);},
-		destroyed: function(){BB.multiLang.unreg('menuBar');}
-	});
-
-	BB.multiLang = (function(){
-		var cmps = {};
-		var rt = {
-			reg: function(name, dom){
-				cmps[name] = dom;
-			},
-			unreg: function(name){
-				if(cmps[name]){
-					cmps[name] = false;
-				}
-			},
-			update: function(){
-				var ary = Object.keys(cmps);
-				for(var i=0; i<ary.length; i++){
-					if(cmps[ary[i]]){
-						cmps[ary[i]]._LANG = _LANG;
-						cmps[ary[i]].$forceUpdate();
-					}
-				}
+				Vue.duoguo.change(ln);
 			}
 		}
-		return rt;
-	})();
+	});
 
 	BB.initFn = function(){
 		var GetP = TT.defined.GetP;
