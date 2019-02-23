@@ -1208,7 +1208,7 @@ var BB = (function(TT){
 				'<div class="busFindResultListBox" v-for="(row, idx) in busFindRouteResult">' +
 					'<div class="floatLeftInnerDiv head" v-html="head(row)" v-on:click="showHideStop(row)"></div>' +
 					'<div class="stopInfo" v-show="row.displayStop">' +
-						'<div class="slinText" v-html="print19()"></div>' +
+						'<div class="slinText" v-html="_LANG.STR019"></div>' +
 						'<div class="stopList">' +
 							'<div v-for="(stop, sidx) in row.Stops" class="stop floatLeftInnerDiv" >' +
 									'<div class="stopIndex">{{ sidx+1 }}</div>' +
@@ -1242,7 +1242,6 @@ var BB = (function(TT){
 				if(sidx>selectStopIdx[0] && sidx<selectStopIdx[1]) return 'overSelect';
 				return '';
 			},
-			print19: function(){return _LANG.STR019;},
 			printStopName: getStopDisplayName,
 			stopNameClick: function(row, stop, sidx){
 				var selectStop = this.selectStop;
@@ -2373,22 +2372,23 @@ var BB = (function(TT){
 				var b = this.busInfo;
 				var sub = (b.SubRoutes && b.SubRoutes[0]) ? b.SubRoutes[0] : {};
 				if(sub && sub.HolidayFirstBusTime && !sub.HolidayLastBusTime && b.SubRoutes[1] && b.SubRoutes[1].HolidayLastBusTime) sub.HolidayLastBusTime = b.SubRoutes[1].HolidayLastBusTime;
-				function procTimeStr(str){return str.substr(0,2) + ':' + str.substr(2,2);}
+				function procTimeStr(str){return (str) ? str.substr(0,2) + ':' + str.substr(2,2) : '';}
+				var flagHasBusTimeInfo = !!(sub.FirstBusTime) || !!(sub.HolidayFirstBusTime);
 
 				return '<div class="busInfo">' +
 					'<div class="panel zh">' +
 						'<div class="fromTo">' + b.DepartureStopNameZh + ' &nbsp;-&nbsp; ' + b.DestinationStopNameZh + '</div>' +
-						'<div>' + b.TicketPriceDescriptionZh + '</div>' +
+						((b.TicketPriceDescriptionZh) ? '<div>' + b.TicketPriceDescriptionZh + '</div>' : '') +
 						((b.FareBufferZoneDescriptionZh) ? '<div class="fareBufferZone">分段點：' + b.FareBufferZoneDescriptionZh + '</div>' : '') +
-						'<div>平日：' + ((sub.FirstBusTime) ? procTimeStr(sub.FirstBusTime) + ' ~ ' + procTimeStr(sub.LastBusTime) : '停駛') + '</div>' +
-						'<div>假日：' + ((sub.HolidayFirstBusTime) ? procTimeStr(sub.HolidayFirstBusTime) + ' ~ ' + procTimeStr(sub.HolidayLastBusTime) : '停駛') + '</div>' +
+						((flagHasBusTimeInfo) ? '<div>平日：' + ((sub.FirstBusTime) ? procTimeStr(sub.FirstBusTime) + ' ~ ' + procTimeStr(sub.LastBusTime) : '停駛') + '</div>' : '') +
+						((flagHasBusTimeInfo) ? '<div>假日：' + ((sub.HolidayFirstBusTime) ? procTimeStr(sub.HolidayFirstBusTime) + ' ~ ' + procTimeStr(sub.HolidayLastBusTime) : '停駛') + '</div>'  : '') +
 					'</div>' +
 					'<div class="panel en">' +
 						'<div class="fromTo">' + b.DepartureStopNameEn + ' &nbsp;-&nbsp; ' + b.DestinationStopNameEn + '</div>' +
-						'<div>' + b.TicketPriceDescriptionEn + '</div>' +
+						((b.TicketPriceDescriptionZh) ? '<div>' + b.TicketPriceDescriptionEn + '</div>' : '') +
 						((b.FareBufferZoneDescriptionEn) ? '<div class="fareBufferZone">Fare buffer zone：' + b.FareBufferZoneDescriptionEn + '</div>' : '') +
-						'<div>Weekday: ' + ((sub.FirstBusTime) ? procTimeStr(sub.FirstBusTime) + ' ~ ' + procTimeStr(sub.LastBusTime) : 'No Service') + '</div>' +
-						'<div>Weekend: ' + ((sub.HolidayFirstBusTime) ? procTimeStr(sub.HolidayFirstBusTime) + ' ~ ' + procTimeStr(sub.HolidayLastBusTime) : 'No Service') + '</div>' +
+						((flagHasBusTimeInfo) ? '<div>Weekday: ' + ((sub.FirstBusTime) ? procTimeStr(sub.FirstBusTime) + ' ~ ' + procTimeStr(sub.LastBusTime) : 'No Service') + '</div>' : '') +
+						((flagHasBusTimeInfo) ? '<div>Weekend: ' + ((sub.HolidayFirstBusTime) ? procTimeStr(sub.HolidayFirstBusTime) + ' ~ ' + procTimeStr(sub.HolidayLastBusTime) : 'No Service') + '</div>' : '') +
 					'</div>' +
 				'</div>';
 			},

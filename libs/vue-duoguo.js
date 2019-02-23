@@ -95,6 +95,8 @@ var VueDuoGuo = function VueDuoGuo (options) {
 	this.app = null;
 }
 VueDuoGuo.version = version;
+VueDuoGuo.CONST_STATE_SUCCESS = CONST_STATE_SUCCESS;
+VueDuoGuo.CONST_STATE_FAIL = CONST_STATE_FAIL;
 
 var _Vue;
 
