@@ -595,8 +595,17 @@ body {
 	text-decoration: underline;
 	cursor: pointer;
 }
+#showBusRoutePop .content .row.ever .stop,  #showBusRoutePop .content .row.ever .index{
+	opacity: 0.7;
+}
 #showBusRoutePop .content .row.now {
 	background-color: #2cd;
+}
+#showBusRoutePop .content .row.over {
+	background-color: #bff0ee;
+}
+#showBusRoutePop .content .row.target {
+	background-color: #d2b7f0;
 }
 #showBusRoutePop .content .row .status{
 	font-size: 12px;
@@ -2010,6 +2019,7 @@ var BB = (function(TT){
 				BB.showBusRoutePop.Direction = bus.Direction;
 				BB.showBusRoutePop.busNO = getBusDisplayString(bus);
 				BB.showBusRoutePop.StationID = station.StationID;
+				BB.showBusRoutePop.StationTargetID = station.StationTargetID;
 				BB.showBusRoutePop.cities = station.cities;
 				location.hash = '/show/line';
 			},
@@ -2018,7 +2028,7 @@ var BB = (function(TT){
 				var stAryCities = [];
 				var stRes = [];
 				var lastResult = [];
-				var tmpStatioinID = '', tmpCitiesAry = [], tmpStationPosition = false;
+				var tmpStatioinID = '', tmpStationTargetID = false, tmpCitiesAry = [], tmpStationPosition = false;
 				function goReadStation(){
 					if(arySBS.length>0){
 						var stObj = arySBS.shift();
@@ -2027,6 +2037,7 @@ var BB = (function(TT){
 						});
 						stRes = [];
 						tmpStatioinID = stObj.id;
+						if(stObj.ts) tmpStationTargetID = stObj.ts;
 						tmpCitiesAry = stObj.cities.slice();
 						getAllCityStation();
 					}else{
@@ -2052,6 +2063,7 @@ var BB = (function(TT){
 										var ary = dataStops.map(function(c){
 											c.CityCode = stCity.city;
 											c.StationID = stCity.StationID;
+											c.StationTargetID = stCity.StationTargetID;
 											aryRouteUID.push(c.RouteUID);
 											return c;
 										});
@@ -2100,6 +2112,7 @@ var BB = (function(TT){
 					}else{
 						lastResult.push({
 							StationID: tmpStatioinID,
+							StationTargetID: tmpStationTargetID,
 							cities: tmpCitiesAry,
 							StationPosition: tmpStationPosition,
 							data: stRes
@@ -2115,6 +2128,7 @@ var BB = (function(TT){
 				var listCityStops = [];
 				var aryArriveTime = [];
 				var tmpStationID = '';
+				var tmpStationTargetID = false;
 				var tmpCities = [];
 				var tmpStationPosition = [];
 				var allStationArriveTime = [];
@@ -2125,6 +2139,7 @@ var BB = (function(TT){
 						tmpStationID = stObj.StationID;
 						tmpCities = stObj.cities.slice();
 						tmpStationPosition = stObj.StationPosition;
+						tmpStationTargetID = stObj.StationTargetID;
 						listCityStops = procCityWithStation(stObj.data, 'array');
 						aryArriveTime = [];
 						getStopArriveTime();
@@ -2157,9 +2172,10 @@ var BB = (function(TT){
 						})
 						allStationArriveTime.push({
 							StationID: tmpStationID,
+							StationPosition: tmpStationPosition,
 							StationName: stName,
 							cities: tmpCities,
-							StationPosition: tmpStationPosition,
+							StationTargetID: tmpStationTargetID,
 							time: JSON.parse(JSON.stringify(aryArriveTime))
 						});
 						getTargetStation();
@@ -2272,10 +2288,10 @@ var BB = (function(TT){
 			'</div>' +
 			'<div class="content" style="width:100%; background-color:#E0E9F3; padding: 20px 0px; box-sizing:border-box;">' +
 				'<div class="divTable" style="">' +
-					'<div class="divTableRow row" v-show="!flagShowFullRoute" v-bind:class="getRowCSS(stop)" v-for="(stop, rix) in aryRoute">' + 
+					'<div class="divTableRow row" v-show="!flagShowFullRoute" v-bind:class="getRowCSS(stop, rix)" v-for="(stop, rix) in aryRoute">' + 
 						tplBusDynamicRow +
 					'</div>' +
-					'<div class="divTableRow row" v-if="flagShowFullRoute" v-bind:class="getRowCSS(stop)" v-for="(stop, rix) in aryFullRoute">' + 
+					'<div class="divTableRow row" v-if="flagShowFullRoute" v-bind:class="getRowCSS(stop, rix)" v-for="(stop, rix) in aryFullRoute">' + 
 						tplBusDynamicRow +
 					'</div>' +
 				'</div>' +
@@ -2293,6 +2309,7 @@ var BB = (function(TT){
 			RouteUID: '',
 			StopUID: '',
 			StationID: '',
+			StationTargetID: '',
 			Direction: 0,
 			aryRoute: [],
 			aryFullRoute: [],
@@ -2335,6 +2352,12 @@ var BB = (function(TT){
 				return (this.flagExpandInfo) ? 'open' : '';
 			},
 			getRowCSS: function(stop){
+				var rt = '';
+				if(stop.stopMoveStep){//ever, now, over, target
+					rt = stop.stopMoveStep;
+					if(rt != 'now') rt = rt + ' link';
+					return rt;
+				}
 				return (stop.StopUID==this.StopUID) ? 'now' : 'link';
 			},
 			getBusRoute: function(){
@@ -2343,14 +2366,26 @@ var BB = (function(TT){
 				me.aryFullRoute = [];
 				TT.ptx.bus.getBusStopRoute(this.RouteUID, city, {cbFn: function(data,e){
 					if(e.status==TT.ptx.statusCode.SUCCESS){
-						var tmpA, fmp = false, ffmp = false;
+						var tmpA, fmp = false, ffmp = false, stopMoveStep = 'ever';
 						for(var i=0; i<data.length; i++){
 							tmpA = data[i].Stops;
+							stopMoveStep = 'ever';
 							for(var j=0; j<tmpA.length; j++){
 								if(tmpA[j].StopUID==me.StopUID){
 									fmp = data[i];
-									break;
+									stopMoveStep = 'now';
+									//break;
+								}else if(/now|over/.test(stopMoveStep) && tmpA[j].StationID && me.StationTargetID){
+									stopMoveStep = 'over';
+									if(me.StationTargetID==tmpA[j].StationID){
+										stopMoveStep = 'target';
+									}
+								}else if(stopMoveStep=='target'){
+									stopMoveStep = '';
+								}else if(stopMoveStep=='now'){
+									stopMoveStep = '';
 								}
+								tmpA[j].stopMoveStep = stopMoveStep;
 							}
 							if(fmp) break;
 						}
@@ -2467,6 +2502,7 @@ var BB = (function(TT){
 					this.aryFullRoute = [];
 					this.busInfo = false;
 					this.flagShowFullRoute = false;
+					this.StationTargetID = '';
 				}
 			}
 		}
