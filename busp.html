@@ -435,8 +435,8 @@ body {
 	padding-left: 5px;
 	max-width: 100px;
 }
-#showArea .allIn .list .item.number .str .dir0{ color:green; }
-#showArea .allIn .list .item.number .str .dir1{ color:red; }
+.busRouteDir0Color, #showArea .allIn .list .item.number .str .dir0{ color:green; }
+.busRouteDir1Color, #showArea .allIn .list .item.number .str .dir1{ color:red; }
 #showArea .allIn .list .item.timeState { min-width: 100px; }
 
 .busDisplayArriveMinute{
@@ -766,6 +766,8 @@ var languagePakc = {
 			STR061: '直接查詢站牌動態',
 			STR062: '資訊',
 			STR063: '公車站牌雲端看板連結',
+			STR064: '全程站牌',
+			STR065: '單程站牌',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -838,6 +840,8 @@ var languagePakc = {
 			STR061: 'Search stop status',
 			STR062: 'Info',
 			STR063: 'Share link of smart stop',
+			STR064: 'Full route',
+			STR065: 'Single way',
 			zxx: 'En'
 	}
 }
@@ -1083,7 +1087,7 @@ var BB = (function(TT){
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本": "Beta " + BB.ver,
-            "產生日期": "2019/2/17",
+            "產生日期": "2019/2/24",
 			"函式庫": '<a href="http://melixyen.github.io/railtime/" target="_blank" style="color:#2233EE;">接軌時刻 </a><a href="https://github.com/melixyen/railtime/blob/gh-pages/ttlib/ptx.js" target="_blank" style="color:#2233EE;">公共交通動態查詢 PTX Javascript Library</a>',
 			"資料源": '資料介接交通部PTX服務平臺'
     };
@@ -1808,7 +1812,11 @@ var BB = (function(TT){
 					path = '/' + path;
 				}
 				if(path === false) return false;
-				location.hash = location.hash.replace('/' + this.pageStep, path);
+				if(window.history.length>1){
+					window.history.back();
+				}else{
+					location.hash = location.hash.replace('/' + this.pageStep, path);
+				}
 			},
 			getRouteData: function(){
 				var routeList = (function(siteMap){
@@ -2242,6 +2250,11 @@ var BB = (function(TT){
 	};
 
 	var makeShowBusRoutePop = function(){
+	var tplBusDynamicRow = '' +
+						'<div class="index divTableCell" v-html="busIndex(stop)" v-on:click="debugStop(stop)"></div>' +
+						'<div class="stop divTableCell"><span v-html="busStop(stop)" v-on:click="openStop(stop)"></span></div>' +
+						'<div class="status divTableCell" v-html="stopStatus(stop)"></div>';
+	//Define every bus stop display format
 	var showBusRoutePopTpl = Vue.compile('<div id="showBusRoutePop" class="pop" v-if="flagShowBase">' + 
 			'<div class="topBar" style="height:40px;border:5px solid #28B; font-size:36px; background-color: #8AC2E4;">' +
 				'<div class="back" v-on:click="back()" style="display:inline-block; height:40px; cursor:pointer; text-align:center; line-height:40px; width:40px; overflow:hidden;">&lt;</div>' +
@@ -2250,8 +2263,8 @@ var BB = (function(TT){
 			'<div class="guideBar">' +
 				'<div class="guideBarFlex bs_no_select">' +
 					'<div class="btnItem" v-bind:class="getInfoBtnCSS()" v-on:click="toggleFlag(\'flagExpandInfo\')">{{_LANG.STR062}}</div>' +
-					//'<div class="btnItem">Go</div>' +
-					//'<div class="btnItem">Back</div>' +
+					'<div class="btnItem" v-show="!flagShowFullRoute" v-on:click="(flagShowFullRoute=true)">{{ _LANG.STR064 }}</div>' +
+					'<div class="btnItem" v-show="flagShowFullRoute" v-on:click="(flagShowFullRoute=false)">{{ _LANG.STR065 }}</div>' +
 				'</div>' +
 				'<transition name="expandBox">' +
 					'<div class="info" v-show="flagExpandInfo" v-html="printBusInfo()"></div>' +
@@ -2259,10 +2272,11 @@ var BB = (function(TT){
 			'</div>' +
 			'<div class="content" style="width:100%; background-color:#E0E9F3; padding: 20px 0px; box-sizing:border-box;">' +
 				'<div class="divTable" style="">' +
-					'<div class="divTableRow row" v-bind:class="getRowCSS(stop)" v-for="(stop, rix) in aryRoute">' +
-						'<div class="index divTableCell" v-html="busIndex(stop)" v-on:click="debugStop(stop)"></div>' +
-						'<div class="stop divTableCell"><span v-html="busStop(stop)" v-on:click="openStop(stop)"></span></div>' +
-						'<div class="status divTableCell" v-html="stopStatus(stop)"></div>' +
+					'<div class="divTableRow row" v-show="!flagShowFullRoute" v-bind:class="getRowCSS(stop)" v-for="(stop, rix) in aryRoute">' + 
+						tplBusDynamicRow +
+					'</div>' +
+					'<div class="divTableRow row" v-if="flagShowFullRoute" v-bind:class="getRowCSS(stop)" v-for="(stop, rix) in aryFullRoute">' + 
+						tplBusDynamicRow +
 					'</div>' +
 				'</div>' +
 			'</div>' +
@@ -2274,12 +2288,14 @@ var BB = (function(TT){
 		data: {
 			flagShowBase: false,
 			flagExpandInfo: false,
+			flagShowFullRoute: false,
 			busNO: '',
 			RouteUID: '',
 			StopUID: '',
 			StationID: '',
 			Direction: 0,
 			aryRoute: [],
+			aryFullRoute: [],
 			cities: [],
 			nearStatusData: [],
 			busInfo: false,
@@ -2291,6 +2307,16 @@ var BB = (function(TT){
 				this.flagShowBase = false;
 			},
 			busIndex: function(stop){
+				if(this.flagShowFullRoute){
+					switch(stop.Direction){
+						case 0:
+							return '<span class="busRouteDir0Color">' + stop.StopSequence + '</span>';
+						break;
+						case 1:
+							return '<span class="busRouteDir1Color">' + stop.StopSequence + '</span>';
+						break;
+					}
+				}
 				return stop.StopSequence;
 			},
 			busStop: function(stop){
@@ -2314,9 +2340,10 @@ var BB = (function(TT){
 			getBusRoute: function(){
 				var city = this.RouteUID.substr(0,3);
 				var me = this;
+				me.aryFullRoute = [];
 				TT.ptx.bus.getBusStopRoute(this.RouteUID, city, {cbFn: function(data,e){
 					if(e.status==TT.ptx.statusCode.SUCCESS){
-						var tmpA, fmp = false;
+						var tmpA, fmp = false, ffmp = false;
 						for(var i=0; i<data.length; i++){
 							tmpA = data[i].Stops;
 							for(var j=0; j<tmpA.length; j++){
@@ -2328,6 +2355,29 @@ var BB = (function(TT){
 							if(fmp) break;
 						}
 						me.aryRoute = fmp.Stops;
+						ffmp = fmp.Stops.map(function(c){c.Direction=fmp.Direction; return c});
+						switch(fmp.Direction){//屬於去回線的公車
+							case 0:
+								var tmpBack = data.find(function(c){
+									return !!(c.SubRouteUID==fmp.SubRouteUID && c.Direction==1);
+								});
+								
+								if(tmpBack && tmpBack.Stops){
+									tmpBack.Stops = tmpBack.Stops.map(function(c){c.Direction=1; return c;});
+									ffmp = ffmp.concat(tmpBack.Stops);
+								}
+							break;
+							case 1:
+								var tmpGo = data.find(function(c){
+									return !!(c.SubRouteUID==fmp.SubRouteUID && c.Direction==0);
+								});
+								if(tmpGo && tmpGo.Stops){
+									tmpGo.Stops = tmpGo.Stops.map(function(c){c.Direction=0; return c;});
+									ffmp = tmpGo.Stops.concat(ffmp);
+								}
+							break;
+						}
+						me.aryFullRoute = ffmp;
 						TT.ptx.bus.getBusRouteInfo(me.RouteUID, {cbFn: function(data,e){
 							if(e.status==TT.ptx.statusCode.SUCCESS && data[0] && data[0].RouteUID){
 								me.busInfo = data[0];
@@ -2339,7 +2389,7 @@ var BB = (function(TT){
 			},
 			getBusDynamicData: function(){
 				var me = this;
-				TT.ptx.bus.getBusRealtimeNearStop(this.RouteUID, this.Direction, {cbFn: function(data,e){
+				TT.ptx.bus.getBusRealtimeNearStop(this.RouteUID, false, {cbFn: function(data,e){
 					if(e.status==TT.ptx.statusCode.SUCCESS){
 						var nearData = data;
 						TT.ptx.bus.getBusRouteArriveTime(me.RouteUID, {cbFn: function(data,e){
@@ -2414,7 +2464,9 @@ var BB = (function(TT){
 					scrollToTop();
 				}else{
 					this.aryRoute = [];
+					this.aryFullRoute = [];
 					this.busInfo = false;
+					this.flagShowFullRoute = false;
 				}
 			}
 		}
