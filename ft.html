@@ -1555,6 +1555,13 @@ TT.makeMainAreaRenderDiv = function(){
             '<div class="aline">' +
             	'<span style="color:#105498;cursor:pointer;" v-on:click="showNowURLQRCode">{{LANG.sptr020.replace(\'{stname}\',getStationByID(stationID).name)}}</span>' +
             '</div>' +
+            '<div class="aline">' +
+                '<br><div style="color:#922;">關於本程式之應用說明</div>' +
+                '<p>本程式旨在透過簡易的 Web App 查詢目前車站往鄰近其他車站最快一班列車之時刻，方便乘客抵達月台時立即知曉最近一班列車是否可搭乘，消除鐵路捷運化中因火車運行複雜導致乘客搭乘疑慮較一般都會捷運高的問題。' +
+                    '鐵路業者可利用老舊回收的廉價平板電腦置於月台入口，旅客只要一鍵按下欲前往之目的地即可立即查詢最近一班列車是否可搭，若不能搭則下一班列車該是幾點幾分什麼車次。</p>' +
+                    '<p>即使未安裝有平板電腦的車站或無人招呼站，仍舊可利用程式內的 QR CODE 黏貼於牆上或任何顯眼位置，乘客使用本身的智慧型手機掃碼後即可開啟該站的查詢 Web App 知曉列車時刻及誤點情報。' +
+                    '相較月台顯示器，Web App 可提供的資訊更多元，乘客可查詢的資訊更多，不需要等跑馬燈出來才能知道現在進站的對號快車有無停靠自己要前往的目的地，或者對不熟悉路線的旅客而言前往基隆的區間車是否能搭到瑞芳也能直接獲得結果。</p>' +
+            '</div>' +
         '</div>',
         data: function() {
             return {
