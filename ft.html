@@ -13,7 +13,8 @@
 
 body {
 	/*font-family:'細明體', "PMingLiU";*/
-	font-size: 14px;
+    font-family: sans-serif, Arial, 'Microsoft JhengHei', 'PMingLiU', 'STFangsong';
+	font-size: 15px;
 	margin: 0px;
     height: 100%;
     overflow: hidden;
@@ -80,7 +81,7 @@ body {
     width: 100%;
     display: inline-block;
     text-align: center;
-    overflow: hidden;
+    overflow: auto;
     
 }
 #mapArea{
@@ -150,7 +151,7 @@ body {
     margin-left: 10px;
 }
 #setpage .applyBtn, #setpage .fastStationBtn, #timepage .returnBtn{
-    margin: 20px 50px;
+    margin: 5px;
     font-size: 24px;
     padding: 5px 14px;
     border: 4px solid #2FEFEF;
@@ -170,6 +171,16 @@ body {
     height: 40px;
     font-size: 12px;
     text-align: left;
+}
+
+@media screen and (max-width: 679px) {
+    #setpage .applyBtn, #setpage .fastStationBtn, #timepage .returnBtn{
+        font-size: 15px;
+    }
+    #statusBar{
+        margin-top: -2px;
+        line-height: 12px;
+    }
 }
 
 .mask{
@@ -814,7 +825,7 @@ var TT = {
 	descriptionText: [
 		'接軌時刻快查系統，',
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 15px;">' +
-			"更新日期: 2018/09/06</span>",
+			"更新日期: 2019/02/26</span>",
             '<span style="margin:0 20px;">資料介接交通部PTX服務平臺</span>'
 	],
     defined: {
@@ -1017,7 +1028,7 @@ TT.fn = {
         },
         searchJieGueiURL: function(a,b){
             var nowTime = TT.fn.getNowTimeObj().num;
-            var str = 'index.html?a=' + a + '&b=' + b;
+            var str = 'tratrtc.html?a=' + a + '&b=' + b;
             var sTime = Math.floor(nowTime/300) * 300;
             var eTime = sTime + 60*60*2;
             if(eTime >= 86400) eTime = eTime - 86400;
@@ -1078,10 +1089,10 @@ TT.ui = {
             TT.ui.stationBtnBorder = Math.floor(fontBaseBigSize/100);
             stationBtnAll.css('fontSize', TT.ui.stationBtnSize+'px').css('padding', TT.ui.stationBtnPadding+'px').css('margin', TT.ui.stationBtnMargin+'px').css('borderWidth', TT.ui.stationBtnBorder+'px');
             
-            var setApplyBtn = $('#setpage .applyBtn');
-            setApplyBtn.css('fontSize', TT.ui.stationBtnSize+'px').css('padding', TT.ui.stationBtnPadding+'px').css('margin', TT.ui.stationBtnMargin+'px').css('borderWidth', TT.ui.stationBtnBorder+'px');
-            var setFastStationBtn = $('#setpage .fastStationBtn');
-            setFastStationBtn.css('fontSize', TT.ui.stationBtnSize+'px').css('padding', TT.ui.stationBtnPadding+'px').css('margin', TT.ui.stationBtnMargin+'px').css('borderWidth', TT.ui.stationBtnBorder+'px');
+            //var setApplyBtn = $('#setpage .applyBtn');
+            //setApplyBtn.css('fontSize', TT.ui.stationBtnSize+'px').css('padding', TT.ui.stationBtnPadding+'px').css('margin', TT.ui.stationBtnMargin+'px').css('borderWidth', TT.ui.stationBtnBorder+'px');
+            //var setFastStationBtn = $('#setpage .fastStationBtn');
+            //setFastStationBtn.css('fontSize', TT.ui.stationBtnSize+'px').css('padding', TT.ui.stationBtnPadding+'px').css('margin', TT.ui.stationBtnMargin+'px').css('borderWidth', TT.ui.stationBtnBorder+'px');
             
             var timePage = $('#timepage');
             timePage.width(mapWithCubeSize);timePage.css('minHeight',mapCubeSize+'px');//timePage.height(mapCubeSize);
@@ -1270,7 +1281,8 @@ TT.makeMainAreaRenderDiv = function(){
             isCanTakeFirstTrain = false;
         aTime.map(function(c, idx){
             for(var i=startIndex; i<bTime.length; i++){
-                if(c.TrainNo == bTime[i].TrainNo){
+                c.canTakeMe = false;
+                if(c.TrainNo == bTime[i].TrainNo && TT.fn.transTime2Sec(c.DepartureTime) < TT.fn.transTime2Sec(bTime[i].ArrivalTime)){
                     if(delayTrain["t"+c.TrainNo]){
                         c.delayTime = delayTrain["t"+c.TrainNo];
                     }
@@ -1278,10 +1290,12 @@ TT.makeMainAreaRenderDiv = function(){
                     canTakeTime.push(c);
                     startIndex = i+1;
                     if(idx==0) isCanTakeFirstTrain = true;
+                    c.canTakeMe = true;
                     break;
                 }
             }
         });
+
         TT.goingData.findResult = {
             canTakeTrainTime: canTakeTime,
             nearTrain: aTime[0],
@@ -1322,6 +1336,7 @@ TT.makeMainAreaRenderDiv = function(){
                 aTime.push(c);
             }
         });
+
         return aTime;
     }
     
@@ -1329,7 +1344,7 @@ TT.makeMainAreaRenderDiv = function(){
         template: '<div>' +
         '<table class="nearTimeTableList" v-bind:style="tableStyle()">' +
             '<tr>' +
-                '<th>' + LANG.sptr022 + '</th><th>' + LANG.sptr024 + '</th><th>' + LANG.sptr023 + '</th><th>' + LANG.sptr025 + '</th><th>' + LANG.sptr032 + '</th><th>' + LANG.sptr027 + '</th>' +
+                '<th>{{LANG.sptr022}}</th><th>{{LANG.sptr024}}</th><th>{{LANG.sptr023}}</th><th>{{LANG.sptr025}}</th><th>{{LANG.sptr032}}</th><th>{{LANG.sptr027}}</th>' +
             '</tr>' +
             '<tr v-for="(train,idx) in trainTimeAry">' +
                 '<td>{{train.EndingStationName}}</td>' +
@@ -1343,6 +1358,7 @@ TT.makeMainAreaRenderDiv = function(){
         props: ['cslist'],
         data: function() {
             return {
+                LANG: LANG,
                 trainTimeAry: false,
                 tableStyle: function(){
                     return 'font-size:' + TT.ui.stationBtnSize + 'px;';
@@ -1371,7 +1387,7 @@ TT.makeMainAreaRenderDiv = function(){
         //'<div>{{targetStationName()}}</div>' + 
         '<table class="nearTimeTableList" v-bind:style="tableStyle()">' +
             '<tr>' +
-                '<th>' + LANG.sptr022 + '</th><th>' + LANG.sptr024 + '</th><th>' + LANG.sptr023 + '</th><th>' + LANG.sptr025 + '</th><th v-html="targetStationName()">' + LANG.sptr026 + '</th><th>' + LANG.sptr027 + '</th>' +
+                '<th>{{LANG.sptr022}}</th><th>{{LANG.sptr024}}</th><th>{{LANG.sptr023}}</th><th>{{LANG.sptr025}}</th><th v-html="targetStationName()">{{LANG.sptr026}}</th><th>{{LANG.sptr027}}</th>' +
             '</tr>' +
             '<tr v-for="(train,idx) in trainTimeAry">' +
                 '<td>{{train.EndingStationName}}</td>' +
@@ -1384,6 +1400,7 @@ TT.makeMainAreaRenderDiv = function(){
         '</table></div>',
         data: function() {
             return {
+                LANG: LANG,
                 trainTimeAry: false,
                 tableStyle: function(){
                     return 'font-size:' + TT.ui.stationBtnSize + 'px;';
@@ -1419,8 +1436,8 @@ TT.makeMainAreaRenderDiv = function(){
         template: '<div id="timepage">' +
             '<div class="printInfo" v-html="printInfo()"></div>' +
             '<div>' +
-                '<div class="returnBtn" v-on:click="listSearch()" v-bind:style="timeshowBtnStyle()">' + LANG.sptr021 + '</div>' +
-                '<div class="returnBtn" v-on:click="returnSearch()" v-bind:style="timeshowBtnStyle()">' + LANG.sptr011 + '</div>' +
+                '<div class="returnBtn" v-on:click="listSearch()" v-bind:style="timeshowBtnStyle()">{{LANG.sptr021}}</div>' +
+                '<div class="returnBtn" v-on:click="returnSearch()" v-bind:style="timeshowBtnStyle()">{{LANG.sptr011}}</div>' +
             '</div>' +
         '</div>',
         props: ['ctlist', 'tsid', 'cslist', 'shmn'],
@@ -1492,7 +1509,8 @@ TT.makeMainAreaRenderDiv = function(){
                 },
                 timeshowBtnStyle: function(){
                     var hide = (this.shmn!=1) ? ' display:none;' : ''; 
-                    return 'font-size:' + TT.ui.stationBtnSize + 'px;margin:' + TT.ui.stationBtnMargin + 'px;' + hide;
+                    //return 'font-size:' + TT.ui.stationBtnSize + 'px;margin:' + TT.ui.stationBtnMargin + 'px;' + hide;
+                    return 'margin:' + TT.ui.stationBtnMargin + 'px;' + hide;
                 },
                 returnSearch: function(){
                     vm.switchStation();
@@ -1523,14 +1541,14 @@ TT.makeMainAreaRenderDiv = function(){
                 '</span>' +
             '</div>' +
             '<div class="aline">' +
-                '<div v-on:click="updateStationID()" class="applyBtn">' + LANG.sptr005 + '</div>' +
+                '<div v-on:click="updateStationID()" class="applyBtn">{{LANG.sptr005}}</div>' +
             '</div>' +
             '<div class="aline">' +
-                '<hr><div>' + LANG.sptr012 + '</div>' +
+                '<hr><div>{{LANG.sptr012}}</div>' +
             '</div>' +
             '<div class="aline">' +
                 '<div v-for="st in fastStationAry" v-on:click="fastStationChange(st.id)" class="fastStationBtn">{{ st.name }}</div>' +
-                '<div v-if="(fastStationAry.length > 0) " v-on:click="clearFastStation()" class="fastStationBtn clearFastStation">' + LANG.sptr013 + '</div>' +
+                '<div v-if="(fastStationAry.length > 0) " v-on:click="clearFastStation()" class="fastStationBtn clearFastStation">{{LANG.sptr013}}</div>' +
             '</div>' +
             '<div style="height: 50px;">' +
             '</div>' +
