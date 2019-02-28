@@ -44,7 +44,7 @@ body {
 	display: inline-block;
 }
 
-.btn1 {
+.btn1, .btn5{
 	display: inline-block;
 	height: 40px;
 	line-height: 40px;
@@ -65,6 +65,15 @@ body {
 .btn1.selected{
 	color: #fcfcfc;
 	background-color: #550857;
+}
+
+.btn5{
+	font-size: 16px;
+	margin: 8px 10px;
+	padding: 5px 10px;
+	border: 2px solid #de21f7;
+	color: #17041f;
+	background-color: #f5e3f5;
 }
 
 .btnStep{
@@ -456,7 +465,7 @@ body {
 		font-size: 14px;
 	}
 	.textB.fz12mobile{font-size:12px;}
-    .menuBtn1, .btn1 {
+    .menuBtn1, .btn1 , .btn5{
 		font-size: 14px;
 	}
 	.menuBtn1{
@@ -777,6 +786,7 @@ var languagePakc = {
 			STR063: '公車站牌雲端看板連結',
 			STR064: '全程站牌',
 			STR065: '單程站牌',
+			STR066: '範例：查詢台北 101 週圍各站牌至松山的公車路線',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -816,7 +826,7 @@ var languagePakc = {
 			STR028: 'Normal',
 			STR029: 'No Bus',
 			STR030: 'No Stop',
-			STR031: 'Last over',
+			STR031: 'Last Passed',
 			STR032: 'No Service',
 			STR033: 'Coming',
 			STR034: 'No Info',
@@ -851,6 +861,7 @@ var languagePakc = {
 			STR063: 'Share link of smart stop',
 			STR064: 'Full route',
 			STR065: 'Single way',
+			STR066: 'Example : All bus from Taipei 101 to SongShan Station',
 			zxx: 'En'
 	}
 }
@@ -1096,7 +1107,7 @@ var BB = (function(TT){
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本": "Beta " + BB.ver,
-            "產生日期": "2019/2/24",
+            "產生日期": "2019/3/1",
 			"函式庫": '<a href="http://melixyen.github.io/railtime/" target="_blank" style="color:#2233EE;">接軌時刻 </a><a href="https://github.com/melixyen/railtime/blob/gh-pages/ttlib/ptx.js" target="_blank" style="color:#2233EE;">公共交通動態查詢 PTX Javascript Library</a>',
 			"資料源": '資料介接交通部PTX服務平臺'
     };
@@ -1753,7 +1764,13 @@ var BB = (function(TT){
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">{{_LANG.STR003}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1">{{_LANG.STR046}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1">{{_LANG.STR058}}</div>' + '</router-link></div>' +
+				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demo101()">{{_LANG.STR066}}</div>' + '</div>' +
 			'</div>',
+		methods: {
+			demo101: function(){
+				location.href = '?busStation=%5B%7B%22name%22%3A%22101(%E4%BF%A1%E7%BE%A9%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%226928%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2215113%22%7D%2C%7B%22name%22%3A%22101(%E6%9D%BE%E6%99%BA%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%222044%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2215113%22%7D%2C%7B%22name%22%3A%22%E5%B8%82%E6%94%BF%E5%BA%9C(%E6%9D%BE%E5%A3%BD%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%222069%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2215113%22%7D%2C%7B%22name%22%3A%22101(%E5%B8%82%E5%BA%9C%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%222029%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221530%22%7D%5D#/show';
+			}
+		},
 		mounted: function(){
 			BB.now.busFindRouteInput = ''; this.$parent.busFindRouteInput = '';
 		}
@@ -2286,12 +2303,12 @@ var BB = (function(TT){
 					'<div class="info" v-show="flagExpandInfo" v-html="printBusInfo()"></div>' +
 				'</transition>' +
 			'</div>' +
-			'<div class="content" style="width:100%; background-color:#E0E9F3; padding: 20px 0px; box-sizing:border-box;">' +
+			'<div class="content" style="width:100%; background-color:#E0E9F3; padding: 20px 0px; box-sizing:border-box; overflow:auto;" v-bind:style="contentAdjust()">' +
 				'<div class="divTable" style="">' +
-					'<div class="divTableRow row" v-show="!flagShowFullRoute" v-bind:class="getRowCSS(stop, rix)" v-for="(stop, rix) in aryRoute">' + 
+					'<div class="divTableRow row single" v-show="!flagShowFullRoute" v-bind:class="getRowCSS(stop, rix)" v-for="(stop, rix) in aryRoute">' + 
 						tplBusDynamicRow +
 					'</div>' +
-					'<div class="divTableRow row" v-if="flagShowFullRoute" v-bind:class="getRowCSS(stop, rix)" v-for="(stop, rix) in aryFullRoute">' + 
+					'<div class="divTableRow row full" v-if="flagShowFullRoute" v-bind:class="getRowCSS(stop, rix)" v-for="(stop, rix) in aryFullRoute">' + 
 						tplBusDynamicRow +
 					'</div>' +
 				'</div>' +
@@ -2305,6 +2322,7 @@ var BB = (function(TT){
 			flagShowBase: false,
 			flagExpandInfo: false,
 			flagShowFullRoute: false,
+			flagOpenScrollTo: false,
 			busNO: '',
 			RouteUID: '',
 			StopUID: '',
@@ -2339,6 +2357,10 @@ var BB = (function(TT){
 			busStop: function(stop){
 				return getStopDisplayName(stop);
 			},
+			contentAdjust: function(){
+				var h = (this.flagExpandInfo) ? 237 : 107;
+				return 'height:calc(100vh - ' + h + 'px;';
+			},
 			debugStop: function(stop){
 				var b = this.stopStatus(stop);
 				var a = TT.lib.clone(stop);
@@ -2364,20 +2386,17 @@ var BB = (function(TT){
 				var city = this.RouteUID.substr(0,3);
 				var me = this;
 				me.aryFullRoute = [];
-				TT.ptx.bus.getBusStopRoute(this.RouteUID, city, {cbFn: function(data,e){
-					if(e.status==TT.ptx.statusCode.SUCCESS){
-						var tmpA, fmp = false, ffmp = false, stopMoveStep = 'ever';
-						for(var i=0; i<data.length; i++){
-							tmpA = data[i].Stops;
-							stopMoveStep = 'ever';
-							for(var j=0; j<tmpA.length; j++){
-								if(tmpA[j].StopUID==me.StopUID){
-									fmp = data[i];
+
+				function giveStopCSS(ary){//站牌背景上色
+							var stopMoveStep = 'ever';
+							var isNowStop = false;
+							for(var j=0; j<ary.length; j++){
+								if(ary[j].StopUID==me.StopUID){
+									isNowStop = true;
 									stopMoveStep = 'now';
-									//break;
-								}else if(/now|over/.test(stopMoveStep) && tmpA[j].StationID && me.StationTargetID){
+								}else if(/now|over/.test(stopMoveStep) && ary[j].StationID && me.StationTargetID){
 									stopMoveStep = 'over';
-									if(me.StationTargetID==tmpA[j].StationID){
+									if(me.StationTargetID==ary[j].StationID){
 										stopMoveStep = 'target';
 									}
 								}else if(stopMoveStep=='target'){
@@ -2385,8 +2404,19 @@ var BB = (function(TT){
 								}else if(stopMoveStep=='now'){
 									stopMoveStep = '';
 								}
-								tmpA[j].stopMoveStep = stopMoveStep;
+								ary[j].stopMoveStep = stopMoveStep;
 							}
+							ary.isNowStop = isNowStop;
+							return ary;
+				}
+
+				TT.ptx.bus.getBusStopRoute(this.RouteUID, city, {cbFn: function(data,e){
+					if(e.status==TT.ptx.statusCode.SUCCESS){
+						var tmpA, fmp = false, ffmp = false, stopMoveStep = 'ever';
+						for(var i=0; i<data.length; i++){
+							tmpA = giveStopCSS(data[i].Stops);
+							data[i].Stops = tmpA;
+							if(tmpA.isNowStop) fmp = data[i];
 							if(fmp) break;
 						}
 						me.aryRoute = fmp.Stops;
@@ -2412,6 +2442,7 @@ var BB = (function(TT){
 								}
 							break;
 						}
+						ffmp = giveStopCSS(ffmp);
 						me.aryFullRoute = ffmp;
 						TT.ptx.bus.getBusRouteInfo(me.RouteUID, {cbFn: function(data,e){
 							if(e.status==TT.ptx.statusCode.SUCCESS && data[0] && data[0].RouteUID){
@@ -2492,6 +2523,27 @@ var BB = (function(TT){
 				return '<div class="statusInner">' + rt + '</div>';
 			}
 		},
+		updated: function(){
+			var stop = document.querySelector('#showBusRoutePop div.single.now');
+			if(!this.flagOpenScrollTo && stop){
+				this.flagOpenScrollTo = true;
+						var content = document.querySelector('#showBusRoutePop div.content');
+						var stopRect = stop.getBoundingClientRect(),
+							contentRect = content.getBoundingClientRect();
+						var cHeight = contentRect.height;
+						var finalTop = stopRect.top - contentRect.height - 40;
+						var timeAry = [];
+						for(var i=1; i<=10; i++){timeAry.push(i*30);}
+						timeAry.map(function(sec, idx){
+							setTimeout(function(){
+								content.scrollTop = (finalTop / 10) * idx+1;
+							}, sec)
+						})
+					setTimeout(function(){
+						content.scrollTop = finalTop;
+					},330);
+			}
+		},
 		watch: {
 			flagShowBase: function(){
 				if(this.flagShowBase){
@@ -2502,6 +2554,7 @@ var BB = (function(TT){
 					this.aryFullRoute = [];
 					this.busInfo = false;
 					this.flagShowFullRoute = false;
+					this.flagOpenScrollTo = false;
 					this.StationTargetID = '';
 				}
 			}
