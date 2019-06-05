@@ -83,7 +83,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             var allStAry = TT.fn.getAllStationArrayOnData(), rtAry = [];
             var name, idxof = -1;
             allStAry.map(function(st){
-                name = (isEng) ? st.estring : st.name;
+                name = (isEng && st.estring) ? st.estring : st.name;
                 idxof = name.indexOf(str);
                 if(idxof!=-1){
                     rtAry.push($.extend({indexOfNum: idxof},st));
