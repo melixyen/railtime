@@ -2778,6 +2778,13 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 dataType: 'json',
                 success: function(xml) {
                     if(typeof(successFn)=='function'){
+                        //20190625 Update Station to v2 version ID and save Station to v3id tag
+                        xml.TrainInfos.forEach(function(c){
+                            c.TimeInfos.forEach(function(t){
+                                t.v3id = t.Station;
+                                t.Station = TT.ptx.tra.v3Sv2(t.Station);
+                            })
+                        });
                         successFn(xml);
                     }
                 },
