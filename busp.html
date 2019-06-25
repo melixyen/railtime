@@ -787,6 +787,7 @@ var languagePakc = {
 			STR064: '全程站牌',
 			STR065: '單程站牌',
 			STR066: '範例：查詢台北 101 週圍各站牌至松山的公車路線',
+			STR067: '範例：查詢南港、內湖捷運站至汐止社后的公車路線',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -862,6 +863,7 @@ var languagePakc = {
 			STR064: 'Full route',
 			STR065: 'Single way',
 			STR066: 'Example : All bus from Taipei 101 to SongShan Station',
+			STR067: 'Example : From Taipei MRT station to Big Xizhi store.',
 			zxx: 'En'
 	}
 }
@@ -1765,10 +1767,14 @@ var BB = (function(TT){
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1">{{_LANG.STR046}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1">{{_LANG.STR058}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demo101()">{{_LANG.STR066}}</div>' + '</div>' +
+				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoBXS()">{{_LANG.STR067}}</div>' + '</div>' +
 			'</div>',
 		methods: {
 			demo101: function(){
 				location.href = '?busStation=%5B%7B%22name%22%3A%22101(%E4%BF%A1%E7%BE%A9%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%226928%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2215113%22%7D%2C%7B%22name%22%3A%22101(%E6%9D%BE%E6%99%BA%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%222044%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2215113%22%7D%2C%7B%22name%22%3A%22%E5%B8%82%E6%94%BF%E5%BA%9C(%E6%9D%BE%E5%A3%BD%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%222069%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2215113%22%7D%2C%7B%22name%22%3A%22101(%E5%B8%82%E5%BA%9C%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%222029%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221530%22%7D%5D#/show';
+			},
+			demoBXS: function(){
+				location.href = '?busStation=%5B%7B%22name%22%3A%22%E5%8D%97%E6%B8%AF%E5%B1%95%E8%A6%BD%E9%A4%A8%E5%BE%80%E7%A4%BE%E5%90%8E1%22%2C%22id%22%3A%221001114%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222792%22%7D%2C%7B%22name%22%3A%22%E5%8D%97%E6%B8%AF%E5%B1%95%E8%A6%BD%E9%A4%A8%E5%BE%80%E7%A4%BE%E5%90%8E2%22%2C%22id%22%3A%221001114%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%227619%22%7D%2C%7B%22name%22%3A%22%E6%8D%B7%E9%81%8B%E8%91%AB%E6%B4%B2%E7%AB%99%E5%BE%80%E7%A4%BE%E5%90%8E%22%2C%22id%22%3A%221089%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222729%22%7D%2C%7B%22name%22%3A%22%E6%8D%B7%E9%81%8B%E6%9D%B1%E6%B9%96%E7%AB%99%E5%BE%80%E7%A4%BE%E5%90%8E%22%2C%22id%22%3A%2270072%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222729%22%7D%5D#/show';
 			}
 		},
 		mounted: function(){
@@ -1987,12 +1993,19 @@ var BB = (function(TT){
 				'</div>' +
 				'<div v-if="(aryArriveTime.length==0)" class="textA">{{_LANG.STR057}}</div>' +
 			'</div>' +
+			'<div style="padding-top: 20px;">' +
+				'<div class="btn1" v-show="!flagCreateQRShow" v-on:click="flagCreateQRShow=true">Share by QR Code</div>' +
+				'<div v-if="flagCreateQRShow">' +
+					'<div class="QRShow" v-html="getQR()" style="cursor:pointer;display:inline-block;"></div>' +
+				'</div>' +
+			'</div>' +
 		'</div>',
 		data: function(){return{
 			showBusStation: BB.now.showBusStation || [],
 			aryStation: [],
 			aryArriveTime: [],
 			reloadTimer: 0,
+			flagCreateQRShow: false,
 			onReload: false
 		}},
 		methods: {
@@ -2024,6 +2037,14 @@ var BB = (function(TT){
 			getBusDataInfo: function(bus){
 				return getStopDisplayInfo(bus);
 			},
+			getQR: function(){
+				var me = this;
+				var dataURL = '';
+				genStationQR(location.href, false, function(canvas){
+					dataURL = canvas.toDataURL();
+				});
+				return '<img src="' + dataURL + '" width="300" height="300"></img>';
+			},
 			hrefMap: function(station){
 				var pos = station.StationPosition || station.StopPosition;
 				if(!pos) return '';
@@ -2047,6 +2068,7 @@ var BB = (function(TT){
 				var lastResult = [];
 				var tmpStatioinID = '', tmpStationTargetID = false, tmpCitiesAry = [], tmpStationPosition = false;
 				function goReadStation(){
+					tmpStationPosition = false;
 					if(arySBS.length>0){
 						var stObj = arySBS.shift();
 						stAryCities = stObj.cities.map(function(c){
@@ -2065,7 +2087,6 @@ var BB = (function(TT){
 					if(stAryCities.length>0){
 						var stCity = stAryCities.shift();
 						function runGetBusStation(aryFilter){
-							tmpStationPosition = false;
 							TT.ptx.bus.getBusStation(stCity.StationID, stCity.city, {
 								cbFn: function(data,e){
 									if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0 && data[0].Stops.length>0){
