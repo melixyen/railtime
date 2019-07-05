@@ -1768,7 +1768,6 @@ var BB = (function(TT){
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1">{{_LANG.STR058}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demo101()">{{_LANG.STR066}}</div>' + '</div>' +
 				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoBXS()">{{_LANG.STR067}}</div>' + '</div>' +
-				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoJTB()">範例：台北車站附近至交通部</div>' + '</div>' +
 			'</div>',
 		methods: {
 			demo101: function(){
@@ -1776,9 +1775,6 @@ var BB = (function(TT){
 			},
 			demoBXS: function(){
 				location.href = '?busStation=%5B%7B%22name%22%3A%22%E5%8D%97%E6%B8%AF%E5%B1%95%E8%A6%BD%E9%A4%A8%E5%BE%80%E7%A4%BE%E5%90%8E1%22%2C%22id%22%3A%221001114%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222792%22%7D%2C%7B%22name%22%3A%22%E5%8D%97%E6%B8%AF%E5%B1%95%E8%A6%BD%E9%A4%A8%E5%BE%80%E7%A4%BE%E5%90%8E2%22%2C%22id%22%3A%221001114%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%227619%22%7D%2C%7B%22name%22%3A%22%E6%8D%B7%E9%81%8B%E8%91%AB%E6%B4%B2%E7%AB%99%E5%BE%80%E7%A4%BE%E5%90%8E%22%2C%22id%22%3A%221089%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222729%22%7D%2C%7B%22name%22%3A%22%E6%8D%B7%E9%81%8B%E6%9D%B1%E6%B9%96%E7%AB%99%E5%BE%80%E7%A4%BE%E5%90%8E%22%2C%22id%22%3A%2270072%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222729%22%7D%5D#/show';
-			},
-			demoJTB: function(){
-				location.href = '?busStation=%5B%7B%22name%22%3A%22%E6%8D%B7%E9%81%8B%E5%8F%B0%E5%A4%A7%E9%86%AB%E9%99%A2%E7%AB%99%E8%87%B3%E4%BA%A4%E9%80%9A%E9%83%A8%22%2C%22id%22%3A%221994%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221868%22%7D%2C%7B%22name%22%3A%22%E8%87%BA%E5%8C%97%E8%BB%8A%E7%AB%99(%E5%85%AC%E5%9C%92)%E8%87%B3%E4%BA%A4%E9%80%9A%E9%83%A8%22%2C%22id%22%3A%226715%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221868%22%7D%5D#/show';
 			}
 		},
 		mounted: function(){
@@ -2301,6 +2297,8 @@ var BB = (function(TT){
 					'</ol>' +
 					'<div style="margin-top: 20px; color:#2c5dba;">應用情境</div>' +
 					'<div>' + _LANG.CM_APP_USE_P + '</div>' +
+					'<div style="margin-top: 20px; color:#2c5dba;">宣告</div>' +
+					'<div style="font-size:14px;color:#833;">作者擁有著作權及其他專屬權。作者保留改作、增補、收回或限制本作品使用的權利。作者保留於推廣期間結束後收取必要費用的權利。本作品之任何商業性使用，需取得作者之事前同意。</div>' +
 				'</div>';
 				return rt;
 			}
