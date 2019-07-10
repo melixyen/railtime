@@ -788,6 +788,19 @@ var languagePakc = {
 			STR065: '單程站牌',
 			STR066: '範例：查詢台北 101 週圍各站牌至松山的公車路線',
 			STR067: '範例：查詢南港、內湖捷運站至汐止社后的公車路線',
+			STR068: '本程式可由通過欲查詢之站牌的路線自動連結該站牌上的所有公車動態顯示，類似智慧型站牌將所有通過路線的公車動態都顯示出來。製作成 QR CODE 後，可貼在任何位置方便持有智慧型手機的人快速掃碼查詢動態。',
+			STR069: '製作公車站牌 QR Code 圖檔的方式',
+			STR070: '從[功能]選擇經由路線製作。',
+			STR071: '選擇此站牌路線的公車主管機關單位，本地站牌公車可能隸屬其他縣市管理，必要時請選擇多個縣市。共同生活圈如雙北、新竹縣市預設即為一起。',
+			STR072: '輸入公車編號或名稱，會從所選主管機關內查詢，因此請勿一次選全部縣市，雖不會遺漏但未來會耗費時間查詢所有縣市。',
+			STR073: '從查詢結果中選擇通過此站牌的路線，打開該路線所有站牌列表，找到要製作的站牌後按確定。<span style="color:red">請注意公車有分往程與返程</span>，需確認路線行駛方向和要製作的站牌是相同的。',
+			STR074: '程式會列出自動尋找出來在同站牌下的路線，輸入名稱或選擇一個建議名稱當作雲端站牌名稱。台北及新北以外的縣市目前似乎無有意義的 StationName，預設顯示東行站位之類的方向名稱，可從建議中挑選適合的名字或自行輸入。',
+			STR075: '製作完成後會產生一個網址連結，該連結即為雲端站牌 URL。下方按鈕可產生 QR CODE 圖檔，亦可存入收藏夾內作為製作群組站牌之用',
+			STR076: '製作群組的方式',
+			STR077: '從[功能]選擇管理站牌收藏夾。',
+			STR078: '勾選要合併為群組的站牌，<span style="color:red">請注意這裡的勾選順序會決定群組站牌顯示時的順序</span>，並在下方修改群組站牌名稱。',
+			STR079: '按下合併為群組站牌後即會產生 QR CODE 圖檔與查詢之 URL 連結。',
+			STR080: '應用情境',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -864,6 +877,19 @@ var languagePakc = {
 			STR065: 'Single way',
 			STR066: 'Example : All bus from Taipei 101 to SongShan Station',
 			STR067: 'Example : From Taipei MRT station to Big Xizhi store.',
+			STR068: 'This program can automatically display all the bus dynamics on the stop sign through the route of the stop sign to be queried. Similar to the smart stop sign, all the bus dynamics through the route will be displayed. After being made into a QR CODE, it can be posted in any position to facilitate the person who holds the smart phone to quickly scan the query dynamics.',
+			STR069: 'How to make a bus stop QR Code',
+			STR070: 'From the [Function] selection, make it via the route.',
+			STR071: 'If you choose the bus authority unit of this stop route, the local station bus may be under the management of other counties and cities. If necessary, please select multiple counties and cities. The common life circle such as Taipei City / New Taipei City or Hsinchu City / County is the same.',
+			STR072: 'Enter the bus number or name, which will be inquired from the selected competent authority. Therefore, please do not select all the counties and cities at one time. Although it will not be missed, it will take time to check all the counties and cities in the future.',
+			STR073: 'Select the route through this stop from the query results, open all the stop list of the route, find the stop sign to be made and press OK. <span style="color:red">Please note that the bus has a different route and return journey.</span> It is necessary to confirm that the route is the same as the stop sign to be made.',
+			STR074: 'The program will list the routes that are automatically found under the same stop, enter a name or select a suggested name as the cloud stop name. The counties and cities outside Taipei and New Taipei currently do not seem to have a meaningful StationName. The default name of the eastbound station is displayed. You can choose the appropriate name from the suggestion or enter it yourself.',
+			STR075: 'Once the production is complete, a URL link will be generated, which is the cloud stop URL. The lower button can generate a QR CODE image, or it can be saved in the favorites as a group stop sign.',
+			STR076: 'How to make a group',
+			STR077: 'Select Manage Stations Favorites from [Function].',
+			STR078: 'Check the stop signs to be merged into groups. <span style="color:red">Please note that the check order here determines the order in which the group stops are displayed</span>, and the group stop name is modified below.',
+			STR079: 'After pressing the merge as a group stop, a QR CODE image will be generated and the URL of the query will be linked.',
+			STR080: 'Situation',
 			zxx: 'En'
 	}
 }
@@ -1105,13 +1131,13 @@ var BB = (function(TT){
 		ver: 0.4
 	};
 	BB.programAbout = {
-            "程式名稱": "公車運輸 QR CODE 雲端看板",
-            "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
-            '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta " + BB.ver,
-            "產生日期": "2019/3/1",
-			"函式庫": '<a href="http://melixyen.github.io/railtime/" target="_blank" style="color:#2233EE;">接軌時刻 </a><a href="https://github.com/melixyen/rocptx" target="_blank" style="color:#2233EE;">公共交通動態查詢 PTX Javascript Library</a>',
-			"資料源": '資料介接交通部PTX服務平臺'
+            "程式名稱 (App Name)": "公車運輸 QR CODE 雲端看板",
+            "作者 (Author)": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
+            '發行單位 (Publisher)': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
+            "版本 (Version)": "Beta " + BB.ver,
+            "產生日期 (Date)": "2019/3/1",
+			"函式庫 (Lib)": '<a href="http://melixyen.github.io/railtime/" target="_blank" style="color:#2233EE;">接軌時刻 </a><a href="https://github.com/melixyen/rocptx" target="_blank" style="color:#2233EE;">公共交通動態查詢 PTX Javascript Library</a>',
+			"資料源 (Data source)": '資料介接交通部PTX服務平臺'
     };
 	BB.alert = function(str){alert(str);}
 	BB.mask = function(str){
@@ -2279,26 +2305,27 @@ var BB = (function(TT){
 				rt += '</div>';
 				// HELP Document
 				rt += '<div style="margin: 20px 4px;">' +
-					'<div>本程式可由通過欲查詢之站牌的路線自動連結該站牌上的所有公車動態顯示，類似智慧型站牌將所有通過路線的公車動態都顯示出來。製作成 QR CODE 後，可貼在任何位置方便持有智慧型手機的人快速掃碼查詢動態。</div>' +
-					'<div style="margin-top: 20px; color:#2c5dba;">製作公車站牌 QR Code 圖檔的方式</div>' +
+					'<div>' + _LANG.STR068 + '</div>' +
+					'<div style="margin-top: 20px; color:#2c5dba;">' + _LANG.STR069 + '</div>' +
 					'<ol>' +
-						'<li>從[功能]選擇經由路線製作。</li>' +
-						'<li>選擇此站牌路線的公車主管機關單位，本地站牌公車可能隸屬其他縣市管理，必要時請選擇多個縣市。共同生活圈如雙北、新竹縣市預設即為一起。</li>' +
-						'<li>輸入公車編號或名稱，會從所選主管機關內查詢，因此請勿一次選全部縣市，雖不會遺漏但未來會耗費時間查詢所有縣市。</li>' +
-						'<li>從查詢結果中選擇通過此站牌的路線，打開該路線所有站牌列表，找到要製作的站牌後按確定。<span style="color:red">請注意公車有分往程與返程</span>，需確認路線行駛方向和要製作的站牌是相同的。</li>' +
-						'<li>程式會列出自動尋找出來在同站牌下的路線，輸入名稱或選擇一個建議名稱當作雲端站牌名稱。台北及新北以外的縣市目前似乎無有意義的 StationName，預設顯示東行站位之類的方向名稱，可從建議中挑選適合的名字或自行輸入。</li>' +
-						'<li>製作完成後會產生一個網址連結，該連結即為雲端站牌 URL。下方按鈕可產生 QR CODE 圖檔，亦可存入收藏夾內作為製作群組站牌之用</li>' +
+						'<li>' + _LANG.STR070 + '</li>' +
+						'<li>' + _LANG.STR071 + '</li>' +
+						'<li>' + _LANG.STR072 + '</li>' +
+						'<li>' + _LANG.STR073 + '</li>' +
+						'<li>' + _LANG.STR074 + '</li>' +
+						'<li>' + _LANG.STR075 + '</li>' +
 					'</ol>' +
-					'<div style="margin-top: 20px; color:#2c5dba;">製作群組的方式</div>' +
+					'<div style="margin-top: 20px; color:#2c5dba;">' + _LANG.STR076 + '</div>' +
 					'<ol>' +
-						'<li>從[功能]選擇管理站牌收藏夾。</li>' +
-						'<li>勾選要合併為群組的站牌，<span style="color:red">請注意這裡的勾選順序會決定群組站牌顯示時的順序</span>，並在下方修改群組站牌名稱。</li>' +
-						'<li>按下合併為群組站牌後即會產生 QR CODE 圖檔與查詢之 URL 連結。</li>' +
+						'<li>' + _LANG.STR077 + '</li>' +
+						'<li>' + _LANG.STR078 + '</li>' +
+						'<li>' + _LANG.STR079 + '</li>' +
 					'</ol>' +
-					'<div style="margin-top: 20px; color:#2c5dba;">應用情境</div>' +
+					'<div style="margin-top: 20px; color:#2c5dba;">' + _LANG.STR080 + '</div>' +
 					'<div>' + _LANG.CM_APP_USE_P + '</div>' +
-					'<div style="margin-top: 20px; color:#2c5dba;">宣告</div>' +
+					'<div style="margin-top: 20px; color:#2c5dba;">宣告 (Declare)</div>' +
 					'<div style="font-size:14px;color:#833;">作者擁有著作權及其他專屬權。作者保留改作、增補、收回或限制本作品使用的權利。作者保留於推廣期間結束後收取必要費用的權利。本作品之任何商業性使用，需取得作者之事前同意。</div>' +
+					'<div style="font-size:14px;color:#833;">The author has copyright and other exclusive rights. The author reserves the right to modify, supplement, withdraw or limit the use of this work. The author reserves the right to charge the necessary fees after the end of the promotion period. Any commercial use of this work requires the prior consent of the author.</div>' +
 				'</div>';
 				return rt;
 			}
