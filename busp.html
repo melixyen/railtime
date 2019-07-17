@@ -709,6 +709,17 @@ body {
 	pos: [CityCode, StationID eq '2737']
 */
 //Vue.config.productionTip = false;
+var counterObj = false;
+var counterFn = function(cbFn){
+	var xhr = new XMLHttpRequest();
+	xhr.addEventListener("load", function(e){
+        counterObj = JSON.parse(e.target.responseText);
+    });
+	xhr.open('GET', 'https://melixapi.000webhostapp.com/webtool/counter.php?page=busp', true);
+	xhr.send();
+	if(typeof(cbFn)=='function') cbFn(counterObj);
+};
+counterFn();
 
 var TT = $trainTaiwanLib;
 TT.ptx.AppID = atob('M2FhNWNkN2RmMTQwNGU1ZmJhYzA2N2JmMDAzODg3Yjc=');
@@ -811,6 +822,7 @@ var languagePakc = {
 			STR078: '勾選要合併為群組的站牌，<span style="color:red">請注意這裡的勾選順序會決定群組站牌顯示時的順序</span>，並在下方修改群組站牌名稱。',
 			STR079: '按下合併為群組站牌後即會產生 QR CODE 圖檔與查詢之 URL 連結。',
 			STR080: '應用情境',
+			STR081: '流量', STR081A: '今日', STR081B: '總計',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -900,6 +912,7 @@ var languagePakc = {
 			STR078: 'Check the stop signs to be merged into groups. <span style="color:red">Please note that the check order here determines the order in which the group stops are displayed</span>, and the group stop name is modified below.',
 			STR079: 'After pressing the merge as a group stop, a QR CODE image will be generated and the URL of the query will be linked.',
 			STR080: 'Situation',
+			STR081: 'Flow', STR081A: 'Today', STR081B: 'Total',
 			zxx: 'En'
 	}
 }
@@ -2302,10 +2315,20 @@ var BB = (function(TT){
 	};
 	
 	var aboutArea = {
-		template: '<div v-html="getAboutInfo()"></div>', 
+		template: '<div>' + '<div v-html="getAboutInfo()"></div>' +
+					'<div style="margin-top: 20px; color:#2c5dba;">' + '{{_LANG.STR081}}' + '</div>' +
+					'<div>' + '{{_LANG.STR081A}}：' + '{{countDay}}' + '<br>' + '{{_LANG.STR081B}}：' + '{{countTotal}}' + '</div>' +
+		'</div>', 
 		data: function(){return {
-			name: 'about info'
+			name: 'about info',
+			countDay: 0,
+			countTotal: 0
 		}},
+		computed: {
+			counterObj: function(){
+				if(counterObj) return counterObj;
+			}
+		},
 		methods: {
 			getAboutInfo: function(){
 				var rt = '<br><br><div style="margin-left: 2%;">';
@@ -2338,7 +2361,21 @@ var BB = (function(TT){
 					'<div style="font-size:14px;color:#833;">The author has copyright and other exclusive rights. The author reserves the right to modify, supplement, withdraw or limit the use of this work. The author reserves the right to charge the necessary fees after the end of the promotion period. Any commercial use of this work requires the prior consent of the author.</div>' +
 				'</div>';
 				return rt;
+			},
+			takeCount: function(){
+				var me = this;
+				if(counterObj){
+					this.countDay = counterObj.day;
+					this.countTotal = counterObj.total;
+				}else{
+					setTimeout(function(){
+						me.takeCount();
+					}, 1000);
+				}
 			}
+		},
+		mounted: function(){
+			this.takeCount();
 		}
 	};
 
