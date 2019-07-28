@@ -2479,7 +2479,7 @@ var BB = (function(TT){
 			'<div class="guideBar">' +
 				'<div class="guideBarFlex bs_no_select">' +
 					'<div class="btnItem" v-bind:class="getInfoBtnCSS()" v-on:click="toggleFlag(\'flagExpandInfo\')">{{_LANG.STR062}}</div>' +
-					'<div class="btnItem" v-on:click="controlFunc(\'map\')">{{ _LANG.STR020 }}</div>' +
+					'<div class="btnItem" v-bind:class="mapBtnClass" v-on:click="controlFunc(\'map\')">{{ _LANG.STR020 }}</div>' +
 					'<div class="btnItem" v-show="!flagShowFullRoute" v-on:click="(flagShowFullRoute=true)">{{ _LANG.STR064 }}</div>' +
 					'<div class="btnItem" v-show="flagShowFullRoute" v-on:click="(flagShowFullRoute=false)">{{ _LANG.STR065 }}</div>' +
 				'</div>' +
@@ -2526,6 +2526,11 @@ var BB = (function(TT){
 			nearStatusData: [],
 			busInfo: false,
 			baseCSS: ''
+		},
+		computed: {
+			mapBtnClass: function(){
+				return (this.func=='map') ? 'open' : '';
+			}
 		},
 		methods: {
 			back: function(){
