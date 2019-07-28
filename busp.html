@@ -550,13 +550,16 @@ body {
     -webkit-justify-content: center;
     justify-content: center;
 }
+.pop.lv2{
+	z-index: 105;
+}
 .pop.show{
     display: block;
 }
 #showBusRoutePop{
 	position: absolute;
 	height: auto;
-	min-height: 100%;
+	min-height: 98vh;
 	width: 100%;
 }
 #showBusRoutePop .guideBar{padding: 1px 5px 6px; border-bottom: 1px solid #aa9;}
@@ -630,6 +633,12 @@ body {
 }
 #showBusRoutePop .content .row .status .busDisplayArriveMinute, #showBusRoutePop .content .row .status .busDusplayOtherStatus{
 	padding-left: 5px;
+}
+#showBusRoutePop .map{
+	height: calc(100vh - 120px);
+}
+#showBusRoutePop .map .inside{
+	height: 100%;
 }
 @media screen and (max-width: 679px) {
 	#showBusRoutePop .content .row .index{
@@ -1139,6 +1148,69 @@ var BB = (function(TT){
 		}
 		return rt;
 	}
+	var initedMap = false;
+	function renderGoogleMap(maoDOM){
+		if(initedMap) return initedMap;
+		var map = {};
+		var infowindow = new google.maps.InfoWindow();
+		var marker = [];
+		var pubLatlng = new google.maps.LatLng(BB.myLat, BB.myLng);
+		var markersArray = [];
+
+		/*========================= Start Map ============================== */
+
+		var initialize = function() {
+
+			map = new google.maps.Map(maoDOM, {
+				zoom: 17,
+				center: pubLatlng,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			});
+
+		}
+
+		var addMarker = function(cfg){
+			var pos = cfg.pos;
+			pos.lat = parseFloat(pos.lat);
+			pos.lng = parseFloat(pos.lng);
+			var param = {
+				position: pos,
+				map: map
+			}
+			for(var k in cfg){
+				if(!/pos/.test(k)){
+					param[k] = cfg[k];
+				}
+			}
+			return new google.maps.Marker(param);
+		}
+		var addPoint = function(cfg){
+			marker = addMarker(cfg);
+			markersArray.push(marker);
+			return marker;
+		}
+		clearMarker = function(marker){
+			marker.setMap(null);
+		}
+		clearAllMarker = function(){
+			var m;
+			while (m = markersArray.pop()) {
+				clearMarker(m);
+			}
+		}
+
+		/*========================= End Map ============================== */
+		initialize();
+		var rt = {
+			map: map,
+			markersArray: markersArray,
+			addPoint: addPoint,
+			clearMarker: clearMarker,
+			clearAllMarker: clearAllMarker
+		};
+		if(!initedMap) initedMap = rt;
+		return rt;
+	}
 	function scrollToTop(){
 					if(document.documentElement.scrollTop) document.documentElement.scrollTop = 0;
 					if(document.body.scrollTop) document.body.scrollTop = 0;
@@ -1147,18 +1219,20 @@ var BB = (function(TT){
 		mode: (TT.defined.GetP && TT.defined.GetP.a) ? TT.defined.GetP.a : 'make',//make , show , 
 		cityArea: define_cityArea,
 		reloadInterval: 20000,
+		myLat: '25.06764',
+		myLng: '121.66127',
 		now: {
 			busCitySelArea: [],
 			busFindRouteInput: ''
 		},
-		ver: 0.4
+		ver: 0.5
 	};
 	BB.programAbout = {
             "程式名稱 (App Name)": "公車運輸 QR CODE 雲端看板",
             "作者 (Author)": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位 (Publisher)': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本 (Version)": "Beta " + BB.ver,
-            "產生日期 (Date)": "2019/7/10",
+            "產生日期 (Date)": "2019/7/28",
 			"函式庫 (Lib)": '<a href="http://melixyen.github.io/railtime/" target="_blank" style="color:#2233EE;">接軌時刻 </a><a href="https://github.com/melixyen/rocptx" target="_blank" style="color:#2233EE;">公共交通動態查詢 PTX Javascript Library</a>',
 			"資料源 (Data source)": '資料介接交通部PTX服務平臺'
     };
@@ -2397,7 +2471,7 @@ var BB = (function(TT){
 						'<div class="stop divTableCell"><span v-html="busStop(stop)" v-on:click="openStop(stop)"></span></div>' +
 						'<div class="status divTableCell" v-html="stopStatus(stop)"></div>';
 	//Define every bus stop display format
-	var showBusRoutePopTpl = Vue.compile('<div id="showBusRoutePop" class="pop" v-if="flagShowBase">' + 
+	var showBusRoutePopTpl = Vue.compile('<div id="showBusRoutePop" class="pop" v-show="flagShowBase">' + 
 			'<div class="topBar" style="height:40px;border:5px solid #28B; font-size:36px; background-color: #8AC2E4;">' +
 				'<div class="back" v-on:click="back()" style="display:inline-block; height:40px; cursor:pointer; text-align:center; line-height:40px; width:40px; overflow:hidden;">&lt;</div>' +
 				'<div class="busNO" style="overflow:hidden; display:inline-block; width:calc(98vw - 70px); font-size:30px; height:40px; line-height:40px; border-left:5px solid #28B; text-align:center;">{{ busNO }}</div>' +
@@ -2405,6 +2479,7 @@ var BB = (function(TT){
 			'<div class="guideBar">' +
 				'<div class="guideBarFlex bs_no_select">' +
 					'<div class="btnItem" v-bind:class="getInfoBtnCSS()" v-on:click="toggleFlag(\'flagExpandInfo\')">{{_LANG.STR062}}</div>' +
+					'<div class="btnItem" v-on:click="controlFunc(\'map\')">{{ _LANG.STR020 }}</div>' +
 					'<div class="btnItem" v-show="!flagShowFullRoute" v-on:click="(flagShowFullRoute=true)">{{ _LANG.STR064 }}</div>' +
 					'<div class="btnItem" v-show="flagShowFullRoute" v-on:click="(flagShowFullRoute=false)">{{ _LANG.STR065 }}</div>' +
 				'</div>' +
@@ -2412,7 +2487,7 @@ var BB = (function(TT){
 					'<div class="info" v-show="flagExpandInfo" v-html="printBusInfo()"></div>' +
 				'</transition>' +
 			'</div>' +
-			'<div class="content" style="width:100%; background-color:#E0E9F3; padding: 20px 0px; box-sizing:border-box; overflow:auto;" v-bind:style="contentAdjust()">' +
+			'<div class="content" style="width:100%; background-color:#E0E9F3; padding: 20px 0px; box-sizing:border-box; overflow:auto;" v-show="func==\'route\'" v-bind:style="contentAdjust()">' +
 				'<div class="divTable" style="">' +
 					'<div class="divTableRow row single" v-show="!flagShowFullRoute" v-bind:class="getRowCSS(stop, rix)" v-for="(stop, rix) in aryRoute">' + 
 						tplBusDynamicRow +
@@ -2421,6 +2496,9 @@ var BB = (function(TT){
 						tplBusDynamicRow +
 					'</div>' +
 				'</div>' +
+			'</div>' +
+			'<div class="map" v-show="func==\'map\'">' +
+				'<div id="busrouteinfogooglemap" class="inside"></div>' +
 			'</div>' +
 		'</div>');
 	BB.showBusRoutePop = new Vue({
@@ -2432,7 +2510,10 @@ var BB = (function(TT){
 			flagExpandInfo: false,
 			flagShowFullRoute: false,
 			flagOpenScrollTo: false,
+			func: 'route',
+			gmap: false,
 			busNO: '',
+			mapHTML: '',
 			RouteUID: '',
 			StopUID: '',
 			StationID: '',
@@ -2440,6 +2521,7 @@ var BB = (function(TT){
 			Direction: 0,
 			aryRoute: [],
 			aryFullRoute: [],
+			aryMarkData: [],
 			cities: [],
 			nearStatusData: [],
 			busInfo: false,
@@ -2470,11 +2552,86 @@ var BB = (function(TT){
 				var h = (this.flagExpandInfo) ? 237 : 107;
 				return 'height:calc(100vh - ' + h + 'px;';
 			},
+			controlFunc: function(val){
+				if(this.func==val){
+					this.func = 'route';
+				}else{
+					this.func = val;
+				}
+			},
 			debugStop: function(stop){
 				var b = this.stopStatus(stop);
 				var a = TT.lib.clone(stop);
 				a.st = b; a.selfThis = this;
 				BB.showBusRoutePop.debugObj = a;
+			},
+			drawMap: function(){
+				var me = this;
+				BB.loadMap(function(){
+					var bounds = new google.maps.LatLngBounds();
+					me.gmap = renderGoogleMap(document.getElementById('busrouteinfogooglemap'));
+					//var aryR = me.aryRoute;
+					//var aryR = me.aryFullRoute;
+					var aryR = (me.flagShowFullRoute) ? me.aryFullRoute : me.aryRoute;
+					var flagHasNowOrTarget = false;
+					var aryMarkData = aryR.map(function(c){
+						var name = (Vue.duoguo.lang=='Zh') ? c.StopName.Zh_tw : c.StopName.En;
+						if(c.stopMoveStep && /over|target/.test(c.stopMoveStep)) flagHasNowOrTarget = true;
+						return {
+							name: name,
+							pos: { lat: parseFloat(c.StopPosition.PositionLat), lng: parseFloat(c.StopPosition.PositionLon) },
+							StopSequence: c.StopSequence,
+							stopMoveStep: c.stopMoveStep,
+							Direction: c.Direction,
+							StationID: c.StationID
+						}
+					})
+					me.gmap.clearAllMarker();
+					aryMarkData.map(function(c){
+						var param = {
+							label: c.StopSequence + '. ' + c.name,
+							pos: c.pos
+						}
+						bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
+						if(c.Direction==1) param.icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+						var marker = me.gmap.addPoint(param);
+						var bc = (me.flagShowFullRoute && c.Direction==1) ? {strokeColor:'#bc4e5f', fillColor:'#e2c7fa'} : {strokeColor:'#00b0de', fillColor:'#00d0dc'};
+						bc.strokeWeight = 3;
+						bc.scale = 3;
+						bc.fillOpacity = 0.8;
+						if(flagHasNowOrTarget){
+							switch(c.stopMoveStep){
+								case 'now':
+								case 'over':
+									bc.fillColor='#bff0ee';
+									bc.strokeColor='#22cdde';
+								break;
+								case 'target':
+									bc.fillColor='#d2b7f0';
+									bc.strokeColor='#9c2e2f';
+									bc.fillOpacity = 1;
+									bc.scale = 4;
+								break;
+								default:
+									bc.fillColor='#c0aa20';
+									bc.fillOpacity = 0.1;
+									bc.strokeWeight = 0;
+								break;
+							}
+						}
+						marker.setIcon({
+							//path: google.maps.SymbolPath.CIRCLE,
+							path: 'M -20 -5 L 20 -5 L 20 5 L -20 5 L -20 -5',
+							strokeColor: bc.strokeColor,
+							strokeWeight: bc.strokeWeight,
+							fillColor: bc.fillColor,
+							fillOpacity: bc.fillOpacity,
+							scale: bc.scale
+						})
+					})
+					me.gmap.map.fitBounds(bounds);
+					me.gmap.map.setZoom(12);
+				})
 			},
 			getBaseCSS: function(){
 				return (this.flagShowBase) ? 'show' : '';
@@ -2665,10 +2822,82 @@ var BB = (function(TT){
 					this.flagShowFullRoute = false;
 					this.flagOpenScrollTo = false;
 					this.StationTargetID = '';
+					this.func = 'route';
+				}
+			},
+			flagShowFullRoute: function(val){
+				if(this.func=='map'){
+					this.drawMap();
+				}
+			},
+			func: function(val){
+				if(val=='map'){
+					this.drawMap();
 				}
 			}
 		}
 	});
+
+	BB.loadMap = function(callback){
+		if(!callback){
+			this.callback();
+			return true;
+		}
+		if(!window.google){
+			this.callback = callback;
+			var script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCoSdi51GJXL8pSOB7RyMWGcBdt9mpXwJE&callback=BB.loadMap';
+			document.body.appendChild(script);
+		}else{
+			callback();
+		}
+	}
+
+	// BB.geoTagMap = new Vue({
+	// 	template: '<div id="geotagMap" class="pop lv2" v-if="flagShowMap">' +
+	// 		'54545' +
+	// 	'</div>',
+	// 	el: '#geoTagMap',
+	// 	data: {
+	// 		flagShowMap: false,
+	// 		initDataCfg: false
+	// 	},
+	// 	methods: {
+	// 		initMap: function(cfg){
+	// 			this.initDataCfg = cfg;
+	// 			BB.loadMap(BB.geoTagMap.initMap2);
+	// 		},
+	// 		initMap2: function(){
+	// 			var me = this;
+	// 			navigator.geolocation.getCurrentPosition(function(pos){
+	// 				var coords = pos.coords;
+	// 				BB.myLat = coords.latitude;
+	// 				BB.myLng = coords.longitude;
+	// 				console.info(pos);
+	// 				me.initMap3();
+	// 			}, function(err){
+	// 				switch(err.code){
+	// 					case err.TIMEOUT:
+	// 						BB.alert('Error ! timeout but can not get GPS info.');
+	// 					break;
+	// 					case err.POSITION_UNAVAILABLE:
+	// 						BB.alert('Error ! system can not get GPS info.');
+	// 					break;
+	// 					case err.PERMISSION_DENIED:
+	// 						BB.alert('Error ! You need confirm GPS permission of browser.\n\n請給予瀏覽器取得 GPS 座標的權限');
+	// 					break;
+	// 					case err.UNKNOWN_ERROR:
+	// 						BB.alert('Unknown Error');
+	// 					break;
+	// 				}
+	// 			})
+	// 		},
+	// 		initMap3: function(){
+	// 			console.info(BB.myLat, BB.myLng);
+	// 		}
+	// 	}
+	// })
 	}
 
 	var indexArea = {
@@ -2747,6 +2976,7 @@ var BB = (function(TT){
 			'<vcmp_menu_bar id="menuBar"></vcmp_menu_bar>' +
 			'<router-view></router-view>' +
 			'<div id="showBusRoutePop" class="pop"></div>' +
+			//'<div id="geoTagMap" class="pop"></div>' +
 			'<div id="statusBar"></div>' +
 		'</div>');
 		BB.main = new Vue({
