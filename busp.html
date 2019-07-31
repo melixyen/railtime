@@ -832,6 +832,8 @@ var languagePakc = {
 			STR079: '按下合併為群組站牌後即會產生 QR CODE 圖檔與查詢之 URL 連結。',
 			STR080: '應用情境',
 			STR081: '流量', STR081A: '今日', STR081B: '總計',
+			STR082: '或是找附近站牌',
+			STR083: '打開地圖',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -922,6 +924,8 @@ var languagePakc = {
 			STR079: 'After pressing the merge as a group stop, a QR CODE image will be generated and the URL of the query will be linked.',
 			STR080: 'Situation',
 			STR081: 'Flow', STR081A: 'Today', STR081B: 'Total',
+			STR082: 'Or search by map',
+			STR083: 'Open map',
 			zxx: 'En'
 	}
 }
@@ -1124,6 +1128,70 @@ var BB = (function(TT){
 		}
 		return rt;
 	}
+	function getAllStationStop(cities, StationID, cbFn){
+		var res = [];
+		var StationStopName = '', aryStationListStopName = [];
+		var listCityStops = [];
+		var aryArriveTime = [];
+		function getStationStop(){
+			if(cities.length > 0){
+				var city = cities.shift();
+				var cityStr = TT.ptx.bus.getCityData(city).City;
+				
+				function runGetBusStation(aryFilter){
+					TT.ptx.bus.getBusStation(StationID, city, {cbFn: function(data,e){
+						if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0 && data[0].Stops.length>0){
+							var dataStops = data[0].Stops;
+							if(aryFilter){
+								dataStops = dataStops.filter(function(c){
+									return !!(aryFilter.indexOf(c.RouteUID)!=-1);
+								})
+							}
+							var ary = dataStops.map(function(c){
+								c.CityCode = city;
+								c.City = cityStr;
+								c.StationID = StationID;
+								var stName = getStopDisplayName(c,'Zh');
+								if(aryStationListStopName.indexOf(stName)==-1) aryStationListStopName.push(stName);
+								var ename = c.StopName.En;
+								if(ename && aryStationListStopName.indexOf(ename)==-1) aryStationListStopName.push(ename);
+								return c;
+							});
+							StationStopName = getStopDisplayName(data[0]);
+							if(!StationStopName) StationStopName = getStopDisplayName(data[0], 'Zh');
+							res = res.concat(ary);
+						}
+						getStationStop();
+					}});
+				}
+				runGetBusStation();
+			}else{
+				BB.now.stopList = res;
+				BB.now.StationStopName = StationStopName;
+				BB.now.aryStationListStopName = aryStationListStopName;
+				listCityStops = procCityWithStation(res, 'array');
+				getStopArriveTime();
+			}
+		}
+		function getStopArriveTime(){
+			if(listCityStops.length>0){
+				var city = listCityStops.shift();
+				var cityCode = city.CityCode, aryStopUID = city.StopUID;
+
+				TT.ptx.bus.getBusArriveTime(aryStopUID, cityCode, {cbFn: function(data,e){
+					if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0){
+						aryArriveTime = aryArriveTime.concat(data);
+					}
+					getStopArriveTime();
+				}})
+			}else{
+				BB.unmask();
+				BB.now.aryArriveTime = aryArriveTime;
+				if(typeof(cbFn)=='function') cbFn();
+			}
+		}
+		getStationStop();
+	}
 	function makeShowURL(ary, id, cities){
 		if(typeof(ary)=='string' && typeof(id)=='string') ary = [{name: ary, id: id, cities: cities}];
 		var url = location.href.toString().replace(location.search,'').replace(location.hash,'');
@@ -1323,11 +1391,16 @@ var BB = (function(TT){
 					'</div>' +
 				'</div>' +
 			'</div>' +
+			'<div>{{_LANG.STR082}} ...</div>' +
+			'<div class="busFindRouteFrame frame1">' +
+				'<div class="btn5" v-on:click="openMap()">{{_LANG.STR083}}</div>' +
+			'</div>' +
 		'</div>',
 		data: function(){return{
 			keyNumberAry: ['藍','7','8','9','紅','4','5','6','綠','1','2','3','橘','棕','0','副'],
 			keyEngAry: ['F','A','B','C','幹線','通勤','專車','快','快速','市民','懷恩','接駁'],
-			busFindRouteInput: this.$parent.busFindRouteInput
+			busFindRouteInput: this.$parent.busFindRouteInput,
+			as: false
 		}},
 		methods: {
 			ck: function(num){
@@ -1340,6 +1413,24 @@ var BB = (function(TT){
 			},
 			inputClear: function(){
 				this.busFindRouteInput = '';
+			},
+			openMap: function(){
+				var me = this;
+				BB.geoTagMap.initMap({
+					parent: this,
+					fun: 'selectStation',
+					cbFn: function(bm){
+						BB.now.cities = bm.cities;
+						BB.now.StationID = bm.StationID;
+						
+						if(me.as=='direct'){
+							var url = makeShowURL(getStopDisplayName(bm.StationObj), bm.StationID, bm.cities);
+							location.href = url;
+						}else{
+							location.hash = location.hash.replace('busfindroute','busarrivetime');
+						}
+					}
+				});
 			}
 		},
 		watch: {
@@ -1347,6 +1438,9 @@ var BB = (function(TT){
 				this.$parent.busFindRouteInput = this.busFindRouteInput;
 				BB.now.busFindRouteInput = this.busFindRouteInput;
 			}
+		},
+		mounted: function(){
+			this.as = (this.$route.query && this.$route.query.as) ? this.$route.query.as : false;
 		}
 	}
 	var busFindList = {//列出尋找到的所有巴士路線
@@ -2859,50 +2953,130 @@ var BB = (function(TT){
 		}
 	}
 
-	// BB.geoTagMap = new Vue({
-	// 	template: '<div id="geotagMap" class="pop lv2" v-if="flagShowMap">' +
-	// 		'54545' +
-	// 	'</div>',
-	// 	el: '#geoTagMap',
-	// 	data: {
-	// 		flagShowMap: false,
-	// 		initDataCfg: false
-	// 	},
-	// 	methods: {
-	// 		initMap: function(cfg){
-	// 			this.initDataCfg = cfg;
-	// 			BB.loadMap(BB.geoTagMap.initMap2);
-	// 		},
-	// 		initMap2: function(){
-	// 			var me = this;
-	// 			navigator.geolocation.getCurrentPosition(function(pos){
-	// 				var coords = pos.coords;
-	// 				BB.myLat = coords.latitude;
-	// 				BB.myLng = coords.longitude;
-	// 				console.info(pos);
-	// 				me.initMap3();
-	// 			}, function(err){
-	// 				switch(err.code){
-	// 					case err.TIMEOUT:
-	// 						BB.alert('Error ! timeout but can not get GPS info.');
-	// 					break;
-	// 					case err.POSITION_UNAVAILABLE:
-	// 						BB.alert('Error ! system can not get GPS info.');
-	// 					break;
-	// 					case err.PERMISSION_DENIED:
-	// 						BB.alert('Error ! You need confirm GPS permission of browser.\n\n請給予瀏覽器取得 GPS 座標的權限');
-	// 					break;
-	// 					case err.UNKNOWN_ERROR:
-	// 						BB.alert('Unknown Error');
-	// 					break;
-	// 				}
-	// 			})
-	// 		},
-	// 		initMap3: function(){
-	// 			console.info(BB.myLat, BB.myLng);
-	// 		}
-	// 	}
-	// })
+	BB.geoTagMap = new Vue({
+		template: '<div id="geotagMap" class="pop lv2" v-if="flagShowMap">' +
+			'<div>Toolbar</div>' +
+			'<div id="geotaggooglemap" style="width:100%; height:100%;"></div>' +
+		'</div>',
+		el: '#geoTagMap',
+		data: {
+			flagShowMap: false,
+			initDataCfg: false,
+			map: false,
+			markersArray: [],
+			pubLatlng: false
+		},
+		methods: {
+			initMap: function(cfg){
+				this.initDataCfg = cfg;
+				this.flagShowMap = true;
+				BB.loadMap(BB.geoTagMap.initMap2);
+			},
+			initMap2: function(){
+				var me = this;
+				navigator.geolocation.getCurrentPosition(function(pos){
+					var coords = pos.coords;
+					BB.myLat = coords.latitude;
+					BB.myLng = coords.longitude;
+					me.initMap3();
+				}, function(err){
+					switch(err.code){
+						case err.TIMEOUT:
+							BB.alert('Error ! timeout but can not get GPS info.');
+						break;
+						case err.POSITION_UNAVAILABLE:
+							BB.alert('Error ! system can not get GPS info.');
+						break;
+						case err.PERMISSION_DENIED:
+							BB.alert('Error ! You need confirm GPS permission of browser.\n\n請給予瀏覽器取得 GPS 座標的權限');
+						break;
+						case err.UNKNOWN_ERROR:
+							BB.alert('Unknown Error');
+						break;
+					}
+				})
+			},
+			initMap3: function(){
+				var me = this;
+				pubLatlng = new google.maps.LatLng(BB.myLat, BB.myLng);
+				var dom = document.getElementById('geotaggooglemap');
+				this.map = new google.maps.Map(dom, {
+					zoom: 17,
+					center: pubLatlng,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				});
+
+				var backAry = [];
+				var stationAry = [];
+				BB.now.busCitySelArea.forEach(function(c){
+					backAry = backAry.concat(getCityAreaData(c).aryCityCode);
+				});
+				var cities = JSON.parse(JSON.stringify(backAry));
+				backAryPromise = backAry.map(function(city){
+					return new Promise(function(resolve, reject){
+						TT.ptx.bus.getPositionBusStation(city, BB.myLat, BB.myLng, {
+							far: 250,
+							cbFn: function(e){
+								resolve(e);
+							}
+						});
+					});
+				})
+				Promise.all(backAryPromise).then(function(aryA){
+					var tmpA = [];
+					aryA.map(function(aryB){
+						aryB.forEach(function(c){
+							if(tmpA.indexOf(c.StationID)==-1){
+								tmpA.push(c.StationID);
+								stationAry.push(c);
+							}
+						})
+					})
+					stationAry.forEach(function(c){
+						var name = (Vue.duoguo.lang!='Zh' && c.StationName.En) ? c.StationName.En : c.StationName.Zh_tw;
+						var marker = new google.maps.Marker({
+							position: {lat: c.StationPosition.PositionLat, lng: c.StationPosition.PositionLon},
+							label: name,
+							map: me.map
+						});
+						marker.setIcon({
+							path: 'M -20 -5 L 20 -5 L 20 5 L -20 5 L -20 -5',
+							strokeColor: '#00b0de',
+							strokeWeight: 3,
+							fillColor: '#00d0dc',
+							fillOpacity: 0.7,
+							scale: 3
+						})
+						marker.addListener('click', function(e){
+							getAllStationStop(backAry, c.StationID, function(){
+								if(me.initDataCfg && me.initDataCfg.fun=='selectStation'){
+									me.flagShowMap = false;
+									me.initDataCfg.cbFn({
+										cities: cities,
+										StationObj: c,
+										StationID: c.StationID
+									});
+								}
+
+							})
+						})
+						me.markersArray.push(marker);
+					})
+				})
+
+			},
+			clearMarker: function(marker){
+				marker.setMap(null);
+			},
+			clearAllMarker: function(){
+				var marker;
+				var me = this;
+				while (marker = me.markersArray.pop()) {
+					marker.setMap(null);
+				}
+			}
+		}
+	})
 	}
 
 	var indexArea = {
@@ -2981,7 +3155,7 @@ var BB = (function(TT){
 			'<vcmp_menu_bar id="menuBar"></vcmp_menu_bar>' +
 			'<router-view></router-view>' +
 			'<div id="showBusRoutePop" class="pop"></div>' +
-			//'<div id="geoTagMap" class="pop"></div>' +
+			'<div id="geoTagMap" class="pop"></div>' +
 			'<div id="statusBar"></div>' +
 		'</div>');
 		BB.main = new Vue({
