@@ -837,6 +837,7 @@ var languagePakc = {
 			STR084: '關閉地圖',
 			STR085: '半徑',
 			STR086: '公尺',
+			STR087: '系統將嘗試用 https 通訊協定以便順利取得座標，請同意給予權限',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -932,6 +933,7 @@ var languagePakc = {
 			STR084: 'Close map',
 			STR085: 'Radius',
 			STR086: 'meter',
+			STR087: 'System will try use https protocol to get GPS info. Please let us have the permission to get GPS info.',
 			zxx: 'En'
 	}
 }
@@ -2997,7 +2999,12 @@ var BB = (function(TT){
 							BB.alert('Error ! system can not get GPS info.');
 						break;
 						case err.PERMISSION_DENIED:
-							BB.alert('Error ! You need confirm GPS permission of browser.\n\n請給予瀏覽器取得 GPS 座標的權限');
+							if(location.protocol == 'http:'){
+								BB.alert(_LANG.STR087);
+								location.href = location.href.split('#')[0].replace('http://','https://');
+							}else{
+								BB.alert('Error ! You need confirm GPS permission of browser.\n\n請給予瀏覽器取得 GPS 座標的權限');
+							}
 						break;
 						case err.UNKNOWN_ERROR:
 							BB.alert('Unknown Error');
