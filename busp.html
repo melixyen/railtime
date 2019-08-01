@@ -834,6 +834,9 @@ var languagePakc = {
 			STR081: '流量', STR081A: '今日', STR081B: '總計',
 			STR082: '或是找附近站牌',
 			STR083: '打開地圖',
+			STR084: '關閉地圖',
+			STR085: '半徑',
+			STR086: '公尺',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -926,6 +929,9 @@ var languagePakc = {
 			STR081: 'Flow', STR081A: 'Today', STR081B: 'Total',
 			STR082: 'Or search by map',
 			STR083: 'Open map',
+			STR084: 'Close map',
+			STR085: 'Radius',
+			STR086: 'meter',
 			zxx: 'En'
 	}
 }
@@ -1393,7 +1399,9 @@ var BB = (function(TT){
 			'</div>' +
 			'<div>{{_LANG.STR082}} ...</div>' +
 			'<div class="busFindRouteFrame frame1">' +
-				'<div class="btn5" v-on:click="openMap()">{{_LANG.STR083}}</div>' +
+				'<div class="btn5" v-on:click="openMap(250)">{{_LANG.STR083}} ({{_LANG.STR085}} 250 {{_LANG.STR086}})</div>' +
+				'<div class="btn5" v-on:click="openMap(500)">{{_LANG.STR083}} ({{_LANG.STR085}} 500 {{_LANG.STR086}})</div>' +
+				'<div class="btn5" v-on:click="openMap(800)">{{_LANG.STR083}} ({{_LANG.STR085}} 800 {{_LANG.STR086}})</div>' +
 			'</div>' +
 		'</div>',
 		data: function(){return{
@@ -1414,18 +1422,19 @@ var BB = (function(TT){
 			inputClear: function(){
 				this.busFindRouteInput = '';
 			},
-			openMap: function(){
+			openMap: function(meter){
 				var me = this;
 				BB.geoTagMap.initMap({
 					parent: this,
 					fun: 'selectStation',
+					far: meter,
 					cbFn: function(bm){
 						BB.now.cities = bm.cities;
 						BB.now.StationID = bm.StationID;
 						
 						if(me.as=='direct'){
 							var url = makeShowURL(getStopDisplayName(bm.StationObj), bm.StationID, bm.cities);
-							location.href = url;
+							window.open(url, 'map');
 						}else{
 							location.hash = location.hash.replace('busfindroute','busarrivetime');
 						}
@@ -2955,7 +2964,7 @@ var BB = (function(TT){
 
 	BB.geoTagMap = new Vue({
 		template: '<div id="geotagMap" class="pop lv2" v-if="flagShowMap">' +
-			'<div>Toolbar</div>' +
+			'<div class="btn1" v-on:click="flagShowMap=false;">{{_LANG.STR084}}</div>' +
 			'<div id="geotaggooglemap" style="width:100%; height:100%;"></div>' +
 		'</div>',
 		el: '#geoTagMap',
@@ -3015,7 +3024,7 @@ var BB = (function(TT){
 				backAryPromise = backAry.map(function(city){
 					return new Promise(function(resolve, reject){
 						TT.ptx.bus.getPositionBusStation(city, BB.myLat, BB.myLng, {
-							far: 250,
+							far: me.initDataCfg.far || 250,
 							cbFn: function(e){
 								resolve(e);
 							}
