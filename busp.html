@@ -389,6 +389,13 @@ body {
 	min-width: 50px;
 }
 
+#textlentry {
+	position: absolute;
+	font-size: 14px;
+	left: 110vh;
+	top: 0;
+}
+
 
 #showArea .stationDisplayTitle{
 	background-color: #217;
@@ -2729,9 +2736,12 @@ var BB = (function(TT){
 								break;
 							}
 						}
+						var txlendiv = document.getElementById('textlentry');
+						txlendiv.innerHTML = param.label;
+						var txw = Math.ceil(txlendiv.offsetWidth / 2 / 3);
 						marker.setIcon({
 							//path: google.maps.SymbolPath.CIRCLE,
-							path: 'M -20 -5 L 20 -5 L 20 5 L -20 5 L -20 -5',
+							path: 'M -' + txw + ' -5 L ' + txw + ' -5 L ' + txw + ' 5 L -' + txw + ' 5 L -' + txw + ' -5',
 							strokeColor: bc.strokeColor,
 							strokeWeight: bc.strokeWeight,
 							fillColor: bc.fillColor,
@@ -3055,8 +3065,11 @@ var BB = (function(TT){
 							label: name,
 							map: me.map
 						});
+						var txlendiv = document.getElementById('textlentry');
+						txlendiv.innerHTML = name;
+						var txw = Math.ceil(txlendiv.offsetWidth / 2 / 3);
 						marker.setIcon({
-							path: 'M -20 -5 L 20 -5 L 20 5 L -20 5 L -20 -5',
+							path: 'M -' + txw + ' -5 L ' + txw + ' -5 L ' + txw + ' 5 L -' + txw + ' 5 L -' + txw + ' -5',
 							strokeColor: '#00b0de',
 							strokeWeight: 3,
 							fillColor: '#00d0dc',
@@ -3066,9 +3079,9 @@ var BB = (function(TT){
 						marker.addListener('click', function(e){
 							getAllStationStop(backAry, c.StationID, function(){
 								if(me.initDataCfg && me.initDataCfg.fun=='selectStation'){
-									me.flagShowMap = false;
 									me.initDataCfg.cbFn({
 										cities: cities,
+										pop: me,
 										StationObj: c,
 										StationID: c.StationID
 									});
@@ -3191,5 +3204,6 @@ var BB = (function(TT){
 <body onload="BB.initFn()">
 	<div id="main"></div>
 	<div id="mask" class="mask"><div class="text"></div></div>
+	<div id="textlentry"></div>
 </body>
 </html>
