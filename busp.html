@@ -392,8 +392,9 @@ body {
 #textlentry {
 	position: absolute;
 	font-size: 14px;
-	left: 110vh;
+	right: 0px;
 	top: 0;
+	opacity: 0.1;
 }
 
 
@@ -2687,8 +2688,6 @@ var BB = (function(TT){
 				BB.loadMap(function(){
 					var bounds = new google.maps.LatLngBounds();
 					me.gmap = renderGoogleMap(document.getElementById('busrouteinfogooglemap'));
-					//var aryR = me.aryRoute;
-					//var aryR = me.aryFullRoute;
 					var aryR = (me.flagShowFullRoute) ? me.aryFullRoute : me.aryRoute;
 					var flagHasNowOrTarget = false;
 					var aryMarkData = aryR.map(function(c){
@@ -2709,7 +2708,6 @@ var BB = (function(TT){
 							label: c.StopSequence + '. ' + c.name,
 							pos: c.pos
 						}
-						bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
 						if(c.Direction==1) param.icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
 						var marker = me.gmap.addPoint(param);
 						var bc = (me.flagShowFullRoute && c.Direction==1) ? {strokeColor:'#bc4e5f', fillColor:'#e2c7fa'} : {strokeColor:'#00b0de', fillColor:'#00d0dc'};
@@ -2722,6 +2720,7 @@ var BB = (function(TT){
 								case 'over':
 									bc.fillColor='#bff0ee';
 									bc.strokeColor='#22cdde';
+									bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
 								break;
 								case 'target':
 									bc.fillColor='#d2b7f0';
@@ -2735,12 +2734,13 @@ var BB = (function(TT){
 									bc.strokeWeight = 0;
 								break;
 							}
+						}else{
+							bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
 						}
 						var txlendiv = document.getElementById('textlentry');
 						txlendiv.innerHTML = param.label;
 						var txw = Math.ceil(txlendiv.offsetWidth / 2 / 3);
 						marker.setIcon({
-							//path: google.maps.SymbolPath.CIRCLE,
 							path: 'M -' + txw + ' -5 L ' + txw + ' -5 L ' + txw + ' 5 L -' + txw + ' 5 L -' + txw + ' -5',
 							strokeColor: bc.strokeColor,
 							strokeWeight: bc.strokeWeight,
@@ -2750,7 +2750,7 @@ var BB = (function(TT){
 						})
 					})
 					me.gmap.map.fitBounds(bounds);
-					me.gmap.map.setZoom(12);
+					me.gmap.map.setZoom(14);
 				})
 			},
 			getBaseCSS: function(){
