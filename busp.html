@@ -1232,69 +1232,7 @@ var BB = (function(TT){
 		}
 		return rt;
 	}
-	var initedMap = false;
-	function renderGoogleMap(maoDOM){
-		if(initedMap) return initedMap;
-		var map = {};
-		var infowindow = new google.maps.InfoWindow();
-		var marker = [];
-		var pubLatlng = new google.maps.LatLng(BB.myLat, BB.myLng);
-		var markersArray = [];
-
-		/*========================= Start Map ============================== */
-
-		var initialize = function() {
-
-			map = new google.maps.Map(maoDOM, {
-				zoom: 17,
-				center: pubLatlng,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			});
-
-		}
-
-		var addMarker = function(cfg){
-			var pos = cfg.pos;
-			pos.lat = parseFloat(pos.lat);
-			pos.lng = parseFloat(pos.lng);
-			var param = {
-				position: pos,
-				map: map
-			}
-			for(var k in cfg){
-				if(!/pos/.test(k)){
-					param[k] = cfg[k];
-				}
-			}
-			return new google.maps.Marker(param);
-		}
-		var addPoint = function(cfg){
-			marker = addMarker(cfg);
-			markersArray.push(marker);
-			return marker;
-		}
-		clearMarker = function(marker){
-			marker.setMap(null);
-		}
-		clearAllMarker = function(){
-			var m;
-			while (m = markersArray.pop()) {
-				clearMarker(m);
-			}
-		}
-
-		/*========================= End Map ============================== */
-		initialize();
-		var rt = {
-			map: map,
-			markersArray: markersArray,
-			addPoint: addPoint,
-			clearMarker: clearMarker,
-			clearAllMarker: clearAllMarker
-		};
-		if(!initedMap) initedMap = rt;
-		return rt;
-	}
+	
 	function scrollToTop(){
 					if(document.documentElement.scrollTop) document.documentElement.scrollTop = 0;
 					if(document.body.scrollTop) document.body.scrollTop = 0;
@@ -2592,7 +2530,7 @@ var BB = (function(TT){
 			'<div class="guideBar">' +
 				'<div class="guideBarFlex bs_no_select">' +
 					'<div class="btnItem" v-bind:class="getInfoBtnCSS()" v-on:click="toggleFlag(\'flagExpandInfo\')">{{_LANG.STR062}}</div>' +
-					'<div class="btnItem" v-bind:class="mapBtnClass" v-on:click="controlFunc(\'map\')">{{ _LANG.STR020 }}</div>' +
+					'<div class="btnItem" v-on:click="controlFunc(\'map\')">{{ _LANG.STR020 }}</div>' +
 					'<div class="btnItem" v-show="!flagShowFullRoute" v-on:click="(flagShowFullRoute=true)">{{ _LANG.STR064 }}</div>' +
 					'<div class="btnItem" v-show="flagShowFullRoute" v-on:click="(flagShowFullRoute=false)">{{ _LANG.STR065 }}</div>' +
 				'</div>' +
@@ -2600,7 +2538,7 @@ var BB = (function(TT){
 					'<div class="info" v-show="flagExpandInfo" v-html="printBusInfo()"></div>' +
 				'</transition>' +
 			'</div>' +
-			'<div class="content" style="width:100%; background-color:#E0E9F3; padding: 20px 0px; box-sizing:border-box; overflow:auto;" v-show="func==\'route\'" v-bind:style="contentAdjust()">' +
+			'<div class="content" style="width:100%; background-color:#E0E9F3; padding: 20px 0px; box-sizing:border-box; overflow:auto;" v-bind:style="contentAdjust()">' +
 				'<div class="divTable" style="">' +
 					'<div class="divTableRow row single" v-show="!flagShowFullRoute" v-bind:class="getRowCSS(stop, rix)" v-for="(stop, rix) in aryRoute">' + 
 						tplBusDynamicRow +
@@ -2609,9 +2547,6 @@ var BB = (function(TT){
 						tplBusDynamicRow +
 					'</div>' +
 				'</div>' +
-			'</div>' +
-			'<div class="map" v-show="func==\'map\'">' +
-				'<div id="busrouteinfogooglemap" class="inside"></div>' +
 			'</div>' +
 		'</div>');
 	BB.showBusRoutePop = new Vue({
@@ -2623,7 +2558,6 @@ var BB = (function(TT){
 			flagExpandInfo: false,
 			flagShowFullRoute: false,
 			flagOpenScrollTo: false,
-			func: 'route',
 			gmap: false,
 			busNO: '',
 			mapHTML: '',
@@ -2639,11 +2573,6 @@ var BB = (function(TT){
 			nearStatusData: [],
 			busInfo: false,
 			baseCSS: ''
-		},
-		computed: {
-			mapBtnClass: function(){
-				return (this.func=='map') ? 'open' : '';
-			}
 		},
 		methods: {
 			back: function(){
@@ -2671,11 +2600,7 @@ var BB = (function(TT){
 				return 'height:calc(100vh - ' + h + 'px;';
 			},
 			controlFunc: function(val){
-				if(this.func==val){
-					this.func = 'route';
-				}else{
-					this.func = val;
-				}
+				if(val=='map'){this.drawMap();}
 			},
 			debugStop: function(stop){
 				var b = this.stopStatus(stop);
@@ -2684,73 +2609,81 @@ var BB = (function(TT){
 				BB.showBusRoutePop.debugObj = a;
 			},
 			drawMap: function(){
-				var me = this;
-				BB.loadMap(function(){
-					var bounds = new google.maps.LatLngBounds();
-					me.gmap = renderGoogleMap(document.getElementById('busrouteinfogooglemap'));
-					var aryR = (me.flagShowFullRoute) ? me.aryFullRoute : me.aryRoute;
-					var flagHasNowOrTarget = false;
-					var aryMarkData = aryR.map(function(c){
-						var name = (Vue.duoguo.lang=='Zh') ? c.StopName.Zh_tw : c.StopName.En;
-						if(c.stopMoveStep && /over|target/.test(c.stopMoveStep)) flagHasNowOrTarget = true;
-						return {
-							name: name,
-							pos: { lat: parseFloat(c.StopPosition.PositionLat), lng: parseFloat(c.StopPosition.PositionLon) },
-							StopSequence: c.StopSequence,
-							stopMoveStep: c.stopMoveStep,
-							Direction: c.Direction,
-							StationID: c.StationID
-						}
-					})
-					me.gmap.clearAllMarker();
-					aryMarkData.map(function(c){
-						var param = {
-							label: c.StopSequence + '. ' + c.name,
-							pos: c.pos
-						}
-						if(c.Direction==1) param.icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
-						var marker = me.gmap.addPoint(param);
-						var bc = (me.flagShowFullRoute && c.Direction==1) ? {strokeColor:'#bc4e5f', fillColor:'#e2c7fa'} : {strokeColor:'#00b0de', fillColor:'#00d0dc'};
-						bc.strokeWeight = 3;
-						bc.scale = 3;
-						bc.fillOpacity = 0.8;
-						if(flagHasNowOrTarget){
-							switch(c.stopMoveStep){
-								case 'now':
-								case 'over':
-									bc.fillColor='#bff0ee';
-									bc.strokeColor='#22cdde';
-									bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
-								break;
-								case 'target':
-									bc.fillColor='#d2b7f0';
-									bc.strokeColor='#9c2e2f';
-									bc.fillOpacity = 1;
-									bc.scale = 4;
-								break;
-								default:
-									bc.fillColor='#c0aa20';
-									bc.fillOpacity = 0.1;
-									bc.strokeWeight = 0;
-								break;
+				var routePanel = this;
+				BB.geoTagMap.initBusRouteMap({
+					initCbFn: function(){
+						var me = this;
+						var bounds = new google.maps.LatLngBounds();
+						me.pubLatlng = new google.maps.LatLng(BB.myLat, BB.myLng);
+						me.renderMap({
+							zoom: 17,
+							center: me.pubLatlng,
+							mapTypeId: google.maps.MapTypeId.ROADMAP
+						});
+						var aryR = (routePanel.flagShowFullRoute) ? routePanel.aryFullRoute : routePanel.aryRoute;
+						var flagHasNowOrTarget = false;
+						var aryMarkData = aryR.map(function(c){
+							var name = (Vue.duoguo.lang=='Zh') ? c.StopName.Zh_tw : c.StopName.En;
+							if(c.stopMoveStep && /over|target/.test(c.stopMoveStep)) flagHasNowOrTarget = true;
+							return {
+								name: name,
+								pos: { lat: parseFloat(c.StopPosition.PositionLat), lng: parseFloat(c.StopPosition.PositionLon) },
+								StopSequence: c.StopSequence,
+								stopMoveStep: c.stopMoveStep,
+								Direction: c.Direction,
+								StationID: c.StationID
 							}
-						}else{
-							bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
-						}
-						var txlendiv = document.getElementById('textlentry');
-						txlendiv.innerHTML = param.label;
-						var txw = Math.ceil(txlendiv.offsetWidth / 2 / 3);
-						marker.setIcon({
-							path: 'M -' + txw + ' -5 L ' + txw + ' -5 L ' + txw + ' 5 L -' + txw + ' 5 L -' + txw + ' -5',
-							strokeColor: bc.strokeColor,
-							strokeWeight: bc.strokeWeight,
-							fillColor: bc.fillColor,
-							fillOpacity: bc.fillOpacity,
-							scale: bc.scale
 						})
-					})
-					me.gmap.map.fitBounds(bounds);
-					me.gmap.map.setZoom(14);
+						me.clearAllMarker();
+						aryMarkData.map(function(c){
+							var param = {
+								label: c.StopSequence + '. ' + c.name,
+								pos: c.pos
+							}
+							if(c.Direction==1) param.icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+							var marker = me.addPoint(param);
+							var bc = (routePanel.flagShowFullRoute && c.Direction==1) ? {strokeColor:'#bc4e5f', fillColor:'#e2c7fa'} : {strokeColor:'#00b0de', fillColor:'#00d0dc'};
+							bc.strokeWeight = 3;
+							bc.scale = 3;
+							bc.fillOpacity = 0.8;
+							if(flagHasNowOrTarget){
+								switch(c.stopMoveStep){
+									case 'now':
+									case 'over':
+										bc.fillColor='#bff0ee';
+										bc.strokeColor='#22cdde';
+										bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
+									break;
+									case 'target':
+										bc.fillColor='#d2b7f0';
+										bc.strokeColor='#9c2e2f';
+										bc.fillOpacity = 1;
+										bc.scale = 4;
+									break;
+									default:
+										bc.fillColor='#c0aa20';
+										bc.fillOpacity = 0.1;
+										bc.strokeWeight = 0;
+									break;
+								}
+							}else{
+								bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
+							}
+							var txlendiv = document.getElementById('textlentry');
+							txlendiv.innerHTML = param.label;
+							var txw = Math.ceil(txlendiv.offsetWidth / 2 / 3);
+							marker.setIcon({
+								path: 'M -' + txw + ' -5 L ' + txw + ' -5 L ' + txw + ' 5 L -' + txw + ' 5 L -' + txw + ' -5',
+								strokeColor: bc.strokeColor,
+								strokeWeight: bc.strokeWeight,
+								fillColor: bc.fillColor,
+								fillOpacity: bc.fillOpacity,
+								scale: bc.scale
+							})
+						})
+						me.map.fitBounds(bounds);
+						me.map.setZoom(14);
+					}
 				})
 			},
 			getBaseCSS: function(){
@@ -2942,18 +2875,11 @@ var BB = (function(TT){
 					this.flagShowFullRoute = false;
 					this.flagOpenScrollTo = false;
 					this.StationTargetID = '';
-					this.func = 'route';
+
+					if(BB.geoTagMap.flagShowMap) BB.geoTagMap.flagShowMap = false;
 				}
 			},
 			flagShowFullRoute: function(val){
-				if(this.func=='map'){
-					this.drawMap();
-				}
-			},
-			func: function(val){
-				if(val=='map'){
-					this.drawMap();
-				}
 			}
 		}
 	});
@@ -2968,14 +2894,16 @@ var BB = (function(TT){
 			var script = document.createElement('script');
 			script.type = 'text/javascript';
 			script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCoSdi51GJXL8pSOB7RyMWGcBdt9mpXwJE&callback=BB.loadMap';
-			document.body.appendChild(script);
+			//document.body.appendChild(script);
+			var head = document.head || document.querySelector("head");
+			head.appendChild(script);
 		}else{
 			callback();
 		}
 	}
 
 	BB.geoTagMap = new Vue({
-		template: '<div id="geotagMap" class="pop lv2" v-if="flagShowMap">' +
+		template: '<div id="geotagMap" class="pop lv2" v-show="flagShowMap">' +
 			'<div class="btn1" v-on:click="flagShowMap=false;">{{_LANG.STR084}}</div>' +
 			'<div id="geotaggooglemap" style="width:100%; height:100%;"></div>' +
 		'</div>',
@@ -2992,6 +2920,14 @@ var BB = (function(TT){
 				this.initDataCfg = cfg;
 				this.flagShowMap = true;
 				BB.loadMap(BB.geoTagMap.initMap2);
+			},
+			initBusRouteMap: function(cfg){
+				var thisA = this;
+				this.initDataCfg = cfg;
+				this.flagShowMap = true;
+				BB.loadMap(function(){
+					cfg.initCbFn.call(thisA);
+				});
 			},
 			initMap2: function(){
 				var me = this;
@@ -3022,13 +2958,22 @@ var BB = (function(TT){
 					}
 				})
 			},
+			renderMap: function(cfg){
+				var me = this;
+				if(this.map){
+				}else{
+					var dom = document.getElementById('geotaggooglemap');
+					this.map = new google.maps.Map(dom, cfg);
+				}
+				return this.map;
+			},
 			initMap3: function(){
 				var me = this;
-				pubLatlng = new google.maps.LatLng(BB.myLat, BB.myLng);
+				me.pubLatlng = new google.maps.LatLng(BB.myLat, BB.myLng);
 				var dom = document.getElementById('geotaggooglemap');
-				this.map = new google.maps.Map(dom, {
+				this.renderMap({
 					zoom: 17,
-					center: pubLatlng,
+					center: me.pubLatlng,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				});
 
@@ -3093,6 +3038,26 @@ var BB = (function(TT){
 					})
 				})
 
+			},
+			addMarker: function(cfg){
+				var pos = cfg.pos;
+				pos.lat = parseFloat(pos.lat);
+				pos.lng = parseFloat(pos.lng);
+				var param = {
+					position: pos,
+					map: this.map
+				}
+				for(var k in cfg){
+					if(!/pos/.test(k)){
+						param[k] = cfg[k];
+					}
+				}
+				return new google.maps.Marker(param);
+			},
+			addPoint: function(cfg){
+				var marker = this.addMarker(cfg);
+				this.markersArray.push(marker);
+				return marker;
 			},
 			clearMarker: function(marker){
 				marker.setMap(null);
