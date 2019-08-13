@@ -2416,7 +2416,7 @@ var BB = (function(TT){
 					me.onReload = false;
 					me.aryArriveTime = data;
 					me.reloadTimer = setTimeout(me.reloadPage, reloadInterval);
-					if(BB.showBusRoutePop.flagShowBase){
+					if(BB.showBusRoutePop && BB.showBusRoutePop.flagShowBase){
 						BB.showBusRoutePop.getBusDynamicData();
 					}
 				})
