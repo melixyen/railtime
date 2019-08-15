@@ -1945,6 +1945,9 @@ var BB = (function(TT){
 				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoGUG()">Example : MRT to 故宮</div>' + '</div>' +
 				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoR29()">Example : 瑞芳至九份</div>' + '</div>' +
 				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoX2D()">Example : 信義計劃區至動物園</div>' + '</div>' +
+				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoSND()">Example : 松德站出發</div>' + '</div>' +
+				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoS2S()">Example : 松山車站到松德站</div>' + '</div>' +
+				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoM2S()">Example : 附近捷運站到松德站</div>' + '</div>' +
 			'</div>',
 		methods: {
 			demo101: function(){
@@ -1961,6 +1964,15 @@ var BB = (function(TT){
 			},
 			demoX2D: function(){
 				location.href = '?busStation=%5B%7B%22name%22%3A%22%E5%B8%82%E6%94%BF%E5%BA%9C%E7%AB%99%E8%87%B3%E5%8B%95%E7%89%A9%E5%9C%92%22%2C%22id%22%3A%223916%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222442%22%7D%2C%7B%22name%22%3A%22%E6%B6%88%E9%98%B2%E5%B1%80(%E6%9D%BE%E4%BB%81%E8%B7%AF)%E8%87%B3%E5%8B%95%E7%89%A9%E5%9C%92%22%2C%22id%22%3A%221165604593%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222442%22%7D%2C%7B%22name%22%3A%22101%E8%87%B3%E5%8B%95%E7%89%A9%E5%9C%92%22%2C%22id%22%3A%222028%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2250672%22%7D%5D#/show';
+			},
+			demoSND: function(){
+				location.href = '?busStation=%5B%7B%22name%22%3A%22%E6%9D%BE%E5%BE%B7%E7%AB%99%22%2C%22id%22%3A%222107%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%7D%5D#/show';
+			},
+			demoS2S: function(){
+				location.href = '?busStation=%5B%7B%22name%22%3A%22%E6%9D%BE%E5%B1%B1%E8%BB%8A%E7%AB%99(%E6%9D%BE%E5%B1%B1)%22%2C%22id%22%3A%222093%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222106%22%7D%5D#/show';
+			},
+			demoM2S: function(){
+				location.href = '?busStation=%5B%7B%22name%22%3A%22%E6%8D%B7%E9%81%8B%E6%B0%B8%E6%98%A5%E7%AB%99(%E6%9D%BE%E5%B1%B1)%22%2C%22id%22%3A%222060%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222106%22%7D%2C%7B%22name%22%3A%22%E6%8D%B7%E9%81%8B%E8%B1%A1%E5%B1%B1%E7%AB%99%E5%BE%80%E6%9D%BE%E5%BE%B7%22%2C%22id%22%3A%2220305%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222106%22%7D%5D#/show';
 			}
 		},
 		mounted: function(){
