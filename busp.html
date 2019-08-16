@@ -846,6 +846,7 @@ var languagePakc = {
 			STR085: '半徑',
 			STR086: '公尺',
 			STR087: '系統將嘗試用 https 通訊協定以便順利取得座標，請同意給予權限',
+			STR088: '偵測站牌',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -942,6 +943,7 @@ var languagePakc = {
 			STR085: 'Radius',
 			STR086: 'meter',
 			STR087: 'System will try use https protocol to get GPS info. Please let us have the permission to get GPS info.',
+			STR088: 'Detect Stop',
 			zxx: 'En'
 	}
 }
@@ -1254,7 +1256,7 @@ var BB = (function(TT){
             "作者 (Author)": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位 (Publisher)': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本 (Version)": "Beta " + BB.ver,
-            "產生日期 (Date)": "2019/7/28",
+            "產生日期 (Date)": "2019/8/16",
 			"函式庫 (Lib)": '<a href="http://melixyen.github.io/railtime/" target="_blank" style="color:#2233EE;">接軌時刻 </a><a href="https://github.com/melixyen/rocptx" target="_blank" style="color:#2233EE;">公共交通動態查詢 PTX Javascript Library</a>',
 			"資料源 (Data source)": '資料介接交通部PTX服務平臺'
     };
@@ -1385,7 +1387,9 @@ var BB = (function(TT){
 							window.open(url, 'map');
 						}else{
 							location.hash = location.hash.replace('busfindroute','busarrivetime');
+							bm.pop.flagShowMap = false;
 						}
+						BB.now.searchBusStopByMap = true;
 					}
 				});
 			}
@@ -1398,6 +1402,10 @@ var BB = (function(TT){
 		},
 		mounted: function(){
 			this.as = (this.$route.query && this.$route.query.as) ? this.$route.query.as : false;
+			if(BB.now.searchBusStopByMap == true){
+				BB.geoTagMap.reMadeStopList();
+				delete BB.now.searchBusStopByMap;
+			}
 		}
 	}
 	var busFindList = {//列出尋找到的所有巴士路線
@@ -2916,13 +2924,18 @@ var BB = (function(TT){
 
 	BB.geoTagMap = new Vue({
 		template: '<div id="geotagMap" class="pop lv2" v-show="flagShowMap">' +
-			'<div class="btn1" v-on:click="flagShowMap=false;">{{_LANG.STR084}}</div>' +
+			'<div style="display:inline-flex;">' +
+				'<div class="btn1" v-on:click="flagShowMap=false;">{{_LANG.STR084}}</div>' +
+				'<div class="btn1" v-on:click="updateCenterStop()" v-show="initDataCfg && initDataCfg.fun==\'selectStation\'">{{_LANG.STR088}}</div>' +
+			'</div>' +
 			'<div id="geotaggooglemap" style="width:100%; height:100%;"></div>' +
 		'</div>',
 		el: '#geoTagMap',
 		data: {
 			flagShowMap: false,
 			initDataCfg: false,
+			flagLock: false,
+			lat: BB.myLat, lng: BB.myLng,
 			map: false,
 			markersArray: [],
 			pubLatlng: false
@@ -2962,6 +2975,7 @@ var BB = (function(TT){
 								location.href = location.href.split('#')[0].replace('http://','https://');
 							}else{
 								BB.alert('Error ! You need confirm GPS permission of browser.\n\n請給予瀏覽器取得 GPS 座標的權限');
+								me.initMap3();
 							}
 						break;
 						case err.UNKNOWN_ERROR:
@@ -2979,9 +2993,11 @@ var BB = (function(TT){
 				}
 				return this.map;
 			},
-			initMap3: function(){
+			initMap3: function(lat, lng){
 				var me = this;
-				me.pubLatlng = new google.maps.LatLng(BB.myLat, BB.myLng);
+				lat = lat || BB.myLat;
+				lng = lng || BB.myLng;
+				me.pubLatlng = new google.maps.LatLng(lat, lng);
 				var dom = document.getElementById('geotaggooglemap');
 				this.renderMap({
 					zoom: 17,
@@ -2991,13 +3007,14 @@ var BB = (function(TT){
 
 				var backAry = [];
 				var stationAry = [];
+				me.clearAllMarker();
 				BB.now.busCitySelArea.forEach(function(c){
 					backAry = backAry.concat(getCityAreaData(c).aryCityCode);
 				});
 				var cities = JSON.parse(JSON.stringify(backAry));
 				backAryPromise = backAry.map(function(city){
 					return new Promise(function(resolve, reject){
-						TT.ptx.bus.getPositionBusStation(city, BB.myLat, BB.myLng, {
+						TT.ptx.bus.getPositionBusStation(city, lat, lng, {
 							far: me.initDataCfg.far || 250,
 							cbFn: function(e){
 								resolve(e);
@@ -3080,6 +3097,25 @@ var BB = (function(TT){
 				while (marker = me.markersArray.pop()) {
 					marker.setMap(null);
 				}
+			},
+			reMadeStopList: function(){
+				this.flagShowMap = true;
+				this.updateCenterStop();
+			},
+			updateCenterStop: function(){
+				if(this.flagLock) return false;
+				var me = this;
+				var map = this.map;
+				this.lat = map.getCenter().lat();
+				this.lng = map.getCenter().lng();
+				this.flagLock = true;
+				setTimeout(function(){me.flagLock = false;}, 5000);
+				this.initMap3(this.lat, this.lng);
+			}
+		},
+		watch: {
+			flagShowMap: function(){
+				this.flagLock = false;
 			}
 		}
 	})
