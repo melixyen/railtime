@@ -1440,6 +1440,7 @@ var BB = (function(TT){
 		data: function(){return{
 			busFindRouteResult: (BB.now.busFindRouteResult) ? JSON.parse(JSON.stringify(BB.now.busFindRouteResult)) : [],
 			nextPage: false,
+			as: false,
 			selectStop: [],
 			selectStopIndex: [],
 			selectStopRouteUID: ''
@@ -1639,6 +1640,18 @@ var BB = (function(TT){
 			},
 			showHideStop: function(bus){
 				bus.displayStop = !bus.displayStop;
+				if(this.as=='direct' && bus.displayStop){
+					BB.showBusRoutePop.RouteUID = bus.RouteUID;
+					BB.showBusRoutePop.StopUID = bus.Stops[0].StopUID;
+					BB.showBusRoutePop.Direction = bus.Direction;
+					BB.showBusRoutePop.busNO = getBusDisplayString(bus);
+					var backAry = [];
+					BB.now.busCitySelArea.forEach(function(c){
+						backAry = backAry.concat(getCityAreaData(c).aryCityCode);
+					});
+					BB.showBusRoutePop.cities = backAry;
+					location.hash = location.hash.replace(this.$route.path, this.$route.path + '/line');
+				}
 			}
 		},
 		watch: {
@@ -1647,9 +1660,13 @@ var BB = (function(TT){
 				this.selectStopRouteUID = (this.selectStop.length>0) ? this.selectStop[0].RouteUID : '';
 				var flgNext = !(this.selectStop.length>1);
 				this.$parent.flagDisableNext = flgNext;
+			},
+			'$route': function(vroute){
+				BB.showBusRoutePop.flagShowBase = !!(vroute.path=='/make/busfindlist/line');
 			}
 		},
 		mounted: function(){
+			this.as = (this.$route.query && this.$route.query.as) ? this.$route.query.as : false;
 			this.selectStop = [];
 			BB.busFindList = this;
 			this.nextPage = (this.$route.query && this.$route.query.as) ? this.$route.query.as : false;
@@ -2478,9 +2495,21 @@ var BB = (function(TT){
 								pos: c.pos
 							}
 							var marker = me.addPoint(param);
+							var txlendiv = document.getElementById('textlentry');
+							txlendiv.innerHTML = c.name;
+							var txw = Math.ceil(txlendiv.offsetWidth / 2 / 3);
+							marker.setIcon({
+								labelOrigin: new google.maps.Point(0, -10),
+								path: 'M -' + txw + ' -15 L ' + txw + ' -15 L ' + txw + ' -5 ' + ' L 3 -5 L 0 0 L -3 -5 ' + ' L -' + txw + ' -5 L -' + txw + ' -15',
+								strokeColor: '#00b0de',
+								strokeWeight: 3,
+								fillColor: '#00d0dc',
+								fillOpacity: 0.7,
+								scale: 3
+							})
 							bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
 						});
-						me.map.fitBounds(bounds);
+						setTimeout(function(){me.map.fitBounds(bounds);},500);
 						me.map.setZoom(16);
 					}
 				});
@@ -2634,6 +2663,7 @@ var BB = (function(TT){
 			aryMarkData: [],
 			cities: [],
 			nearStatusData: [],
+			nowStopPosition: {lat:BB.myLat, lng:BB.myLng},
 			busInfo: false,
 			baseCSS: ''
 		},
@@ -2677,7 +2707,7 @@ var BB = (function(TT){
 					initCbFn: function(){
 						var me = this;
 						var bounds = new google.maps.LatLngBounds();
-						me.pubLatlng = new google.maps.LatLng(BB.myLat, BB.myLng);
+						me.pubLatlng = new google.maps.LatLng(routePanel.nowStopPosition.lat, routePanel.nowStopPosition.lng);
 						me.renderMap({
 							zoom: 17,
 							center: me.pubLatlng,
@@ -2736,7 +2766,8 @@ var BB = (function(TT){
 							txlendiv.innerHTML = param.label;
 							var txw = Math.ceil(txlendiv.offsetWidth / 2 / 3);
 							marker.setIcon({
-								path: 'M -' + txw + ' -5 L ' + txw + ' -5 L ' + txw + ' 5 L -' + txw + ' 5 L -' + txw + ' -5',
+								labelOrigin: new google.maps.Point(0, -10),
+								path: 'M -' + txw + ' -15 L ' + txw + ' -15 L ' + txw + ' -5 ' + ' L 3 -5 L 0 0 L -3 -5 ' + ' L -' + txw + ' -5 L -' + txw + ' -15',
 								strokeColor: bc.strokeColor,
 								strokeWeight: bc.strokeWeight,
 								fillColor: bc.fillColor,
@@ -2744,8 +2775,9 @@ var BB = (function(TT){
 								scale: bc.scale
 							})
 						})
-						me.map.fitBounds(bounds);
-						me.map.setZoom(16);
+						//me.map.fitBounds(bounds);
+						me.map.setCenter(me.pubLatlng);
+						me.map.setZoom(17);
 					}
 				})
 			},
@@ -2776,6 +2808,7 @@ var BB = (function(TT){
 								if(ary[j].StopUID==me.StopUID){
 									isNowStop = true;
 									stopMoveStep = 'now';
+									if(ary[j].StopPosition) me.nowStopPosition = {lat:ary[j].StopPosition.PositionLat, lng:ary[j].StopPosition.PositionLon};
 								}else if(/now|over/.test(stopMoveStep) && ary[j].StationID && me.StationTargetID){
 									stopMoveStep = 'over';
 									if(me.StationTargetID==ary[j].StationID){
@@ -3094,7 +3127,8 @@ var BB = (function(TT){
 						txlendiv.innerHTML = name;
 						var txw = Math.ceil(txlendiv.offsetWidth / 2 / 3);
 						marker.setIcon({
-							path: 'M -' + txw + ' -5 L ' + txw + ' -5 L ' + txw + ' 5 L -' + txw + ' 5 L -' + txw + ' -5',
+							labelOrigin: new google.maps.Point(0, -10),
+							path: 'M -' + txw + ' -15 L ' + txw + ' -15 L ' + txw + ' -5 ' + ' L 3 -5 L 0 0 L -3 -5 ' + ' L -' + txw + ' -5 L -' + txw + ' -15',
 							strokeColor: '#00b0de',
 							strokeWeight: 3,
 							fillColor: '#00d0dc',
@@ -3197,7 +3231,11 @@ var BB = (function(TT){
 				{path: '/', component: makeIndex},
 				{path: 'buscity', component: busCity},
 				{path: 'busfindroute', component: busFindRoute},
-				{path: 'busfindlist', component: busFindList},
+				{path: 'busfindlist', component: busFindList,
+					children: [
+						{path: 'line'}
+					]
+				},
 				{path: 'busarrivetime', component: busArriveTime},
 				{path: 'busmakeurl', component: busMakeURL},
 				{path: 'busbookmark', component: busBookmark},
