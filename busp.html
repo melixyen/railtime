@@ -1258,7 +1258,7 @@ var BB = (function(TT){
             "作者 (Author)": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位 (Publisher)': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本 (Version)": "Beta " + BB.ver,
-            "產生日期 (Date)": "2019/8/16",
+            "產生日期 (Date)": "2019/8/22",
 			"函式庫 (Lib)": '<a href="http://melixyen.github.io/railtime/" target="_blank" style="color:#2233EE;">接軌時刻 </a><a href="https://github.com/melixyen/rocptx" target="_blank" style="color:#2233EE;">公共交通動態查詢 PTX Javascript Library</a>',
 			"資料源 (Data source)": '資料介接交通部PTX服務平臺'
     };
@@ -1645,6 +1645,7 @@ var BB = (function(TT){
 					BB.showBusRoutePop.StopUID = bus.Stops[0].StopUID;
 					BB.showBusRoutePop.Direction = bus.Direction;
 					BB.showBusRoutePop.busNO = getBusDisplayString(bus);
+					BB.showBusRoutePop.flagAutoReload = true;
 					var backAry = [];
 					BB.now.busCitySelArea.forEach(function(c){
 						backAry = backAry.concat(getCityAreaData(c).aryCityCode);
@@ -2233,6 +2234,10 @@ var BB = (function(TT){
 					'<div class="QRShow" v-html="getQR()" style="cursor:pointer;display:inline-block;"></div>' +
 				'</div>' +
 			'</div>' +
+			'<div style="background:linear-gradient(to right, #121, #122 65%, #aba);width:100%;padding:4px; height:34px; overflow:hidden;">' +
+				'<div style="vertical-align:middle; height:34px; display:inline-block; color:#ff4;">Data source:</div>' +
+				'<img src="https://ptx.transportdata.tw/PTX/logo.png" style="max-height:33px; max-width:153px;">' +
+			'</div>' +
 		'</div>',
 		data: function(){return{
 			showBusStation: BB.now.showBusStation || [],
@@ -2650,9 +2655,11 @@ var BB = (function(TT){
 			flagExpandInfo: false,
 			flagShowFullRoute: false,
 			flagOpenScrollTo: false,
+			flagAutoReload: false,
 			gmap: false,
 			busNO: '',
 			mapHTML: '',
+			reloadTimer: 0,
 			RouteUID: '',
 			StopUID: '',
 			StationID: '',
@@ -2780,6 +2787,17 @@ var BB = (function(TT){
 						me.map.setZoom(17);
 					}
 				})
+			},
+			dynamicReload: function(){
+				var me = this;
+				if(!me.flagAutoReload) return false;
+				clearTimeout(me.reloadTimer);
+				me.reloadTimer = setTimeout(function(){
+					if(me.flagShowBase && me.flagAutoReload){
+						me.getBusDynamicData();
+						me.dynamicReload();
+					}
+				}, BB.reloadInterval);
 			},
 			getBaseCSS: function(){
 				return (this.flagShowBase) ? 'show' : '';
@@ -2970,10 +2988,15 @@ var BB = (function(TT){
 					this.busInfo = false;
 					this.flagShowFullRoute = false;
 					this.flagOpenScrollTo = false;
+					this.flagAutoReload = false;
 					this.StationTargetID = '';
 
+					clearInterval(this.reloadTimer);
 					if(BB.geoTagMap.flagShowMap) BB.geoTagMap.flagShowMap = false;
 				}
+			},
+			flagAutoReload: function(val){
+				if(val) this.dynamicReload();
 			},
 			flagShowFullRoute: function(val){
 			}
