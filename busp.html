@@ -848,6 +848,7 @@ var languagePakc = {
 			STR087: '系統將嘗試用 https 通訊協定以便順利取得座標，請同意給予權限',
 			STR088: '偵測站牌',
 			STR089: '從地圖看所有站牌',
+			STR090: '語音播放站名',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -946,6 +947,7 @@ var languagePakc = {
 			STR087: 'System will try use https protocol to get GPS info. Please let us have the permission to get GPS info.',
 			STR088: 'Detect Stop',
 			STR089: 'List stops in map',
+			STR090: 'Speak stop name',
 			zxx: 'En'
 	}
 }
@@ -1241,6 +1243,36 @@ var BB = (function(TT){
 					if(document.documentElement.scrollTop) document.documentElement.scrollTop = 0;
 					if(document.body.scrollTop) document.body.scrollTop = 0;
 	}
+
+	var voicePlayerURL = {isLoading:false};
+	function voicePlayer(text){
+		if(voicePlayerURL[text]){
+			voicePlayerControl(voicePlayerURL[text]);
+			return false;
+		}
+		if(voicePlayerURL.isLoading) return false;
+		BB.mask('Wait for speaking...'); voicePlayerURL.isLoading = true;
+		
+		fetch('https://melixapi.000webhostapp.com/webtool/ttsvoice.php?text=' + encodeURIComponent(text)).then(function(e){
+			return e.json();
+		}).then(function(json){
+			voicePlayerControl(json.url);
+			voicePlayerURL[text] = json.url;
+			BB.unmask(); voicePlayerURL.isLoading = false;
+		}).catch(function(e){
+			BB.unmask(); voicePlayerURL.isLoading = false;
+		})
+	}
+	function voicePlayerControl(source){
+		var audio = document.createElement("audio");
+		audio.autoplay = true;
+		audio.load()
+		audio.addEventListener("load", function() { 
+			audio.play(); 
+		}, true);
+		audio.src = source;
+	}
+
 	var BB = {
 		mode: (TT.defined.GetP && TT.defined.GetP.a) ? TT.defined.GetP.a : 'make',//make , show , 
 		cityArea: define_cityArea,
@@ -2230,6 +2262,7 @@ var BB = (function(TT){
 			'<div style="padding-top: 20px;">' +
 				'<div class="btn1" v-show="!flagCreateQRShow" v-on:click="flagCreateQRShow=true">Share by QR Code</div>' +
 				'<div class="btn1" v-show="aryArriveTime.length>1" v-on:click="stopsInMap()">{{_LANG.STR089}}</div>' +
+				'<div class="btn1" v-on:click="stopVoice()">{{_LANG.STR090}}</div>' +
 				'<div v-if="flagCreateQRShow">' +
 					'<div class="QRShow" v-html="getQR()" style="cursor:pointer;display:inline-block;"></div>' +
 				'</div>' +
@@ -2518,6 +2551,17 @@ var BB = (function(TT){
 						me.map.setZoom(16);
 					}
 				});
+			},
+			stopVoice: function(){
+				if(this.aryArriveTime.length==1){
+					var stopName = this.aryArriveTime[0].StationName;
+				}else{
+					var aryStopName = this.aryArriveTime.map(function(c){
+						return c.StationName;
+					})
+					var stopName = aryStopName.join('　，　');
+				}
+				voicePlayer(stopName);
 			}
 		},
 		mounted: function(){
