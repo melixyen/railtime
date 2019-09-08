@@ -130,6 +130,13 @@ body {
 	cursor: pointer;
 }
 
+.base64_voicePlayerIcon {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+  	background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNMyAxMHY0YzAgLjU1LjQ1IDEgMSAxaDNsMy4yOSAzLjI5Yy42My42MyAxLjcxLjE4IDEuNzEtLjcxVjYuNDFjMC0uODktMS4wOC0xLjM0LTEuNzEtLjcxTDcgOUg0Yy0uNTUgMC0xIC40NS0xIDF6bTEzLjUgMmMwLTEuNzctMS4wMi0zLjI5LTIuNS00LjAzdjguMDVjMS40OC0uNzMgMi41LTIuMjUgMi41LTQuMDJ6TTE0IDQuNDV2LjJjMCAuMzguMjUuNzEuNi44NUMxNy4xOCA2LjUzIDE5IDkuMDYgMTkgMTJzLTEuODIgNS40Ny00LjQgNi41Yy0uMzYuMTQtLjYuNDctLjYuODV2LjJjMCAuNjMuNjMgMS4wNyAxLjIxLjg1QzE4LjYgMTkuMTEgMjEgMTUuODQgMjEgMTJzLTIuNC03LjExLTUuNzktOC40Yy0uNTgtLjIzLTEuMjEuMjItMS4yMS44NXoiLz48L3N2Zz4=")
+}
+
 /* Common CSS Area End*/
 
 #main {
@@ -2262,7 +2269,7 @@ var BB = (function(TT){
 			'<div style="padding-top: 20px;">' +
 				'<div class="btn1" v-show="!flagCreateQRShow" v-on:click="flagCreateQRShow=true">Share by QR Code</div>' +
 				'<div class="btn1" v-show="aryArriveTime.length>1" v-on:click="stopsInMap()">{{_LANG.STR089}}</div>' +
-				'<div class="btn1" v-on:click="stopVoice()">{{_LANG.STR090}}</div>' +
+				'<div class="btn1 base64_voicePlayerIcon" style="width:30px;" v-on:click="stopVoice()"></div>' +
 				'<div v-if="flagCreateQRShow">' +
 					'<div class="QRShow" v-html="getQR()" style="cursor:pointer;display:inline-block;"></div>' +
 				'</div>' +
