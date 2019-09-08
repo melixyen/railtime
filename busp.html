@@ -2529,7 +2529,7 @@ var BB = (function(TT){
 						me.clearAllMarker();
 						aryMarkData.map(function(c){
 							var param = {
-								label: c.name,
+								label: {text:c.name, color:'#FFFFFF'},
 								pos: c.pos
 							}
 							var marker = me.addPoint(param);
@@ -2539,10 +2539,10 @@ var BB = (function(TT){
 							marker.setIcon({
 								labelOrigin: new google.maps.Point(0, -10),
 								path: 'M -' + txw + ' -15 L ' + txw + ' -15 L ' + txw + ' -5 ' + ' L 3 -5 L 0 0 L -3 -5 ' + ' L -' + txw + ' -5 L -' + txw + ' -15',
-								strokeColor: '#00b0de',
+								strokeColor: '#000053',
 								strokeWeight: 3,
-								fillColor: '#00d0dc',
-								fillOpacity: 0.7,
+								fillColor: '#000053',
+								fillOpacity: 1,
 								scale: 3
 							})
 							bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
@@ -2781,41 +2781,50 @@ var BB = (function(TT){
 						me.clearAllMarker();
 						aryMarkData.map(function(c){
 							var param = {
-								label: c.StopSequence + '. ' + c.name,
+								label: {text:c.StopSequence + '. ' + c.name, color:'#FFFFFF'},
 								pos: c.pos
 							}
 							if(c.Direction==1) param.icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
-							var marker = me.addPoint(param);
-							var bc = (routePanel.flagShowFullRoute && c.Direction==1) ? {strokeColor:'#bc4e5f', fillColor:'#e2c7fa'} : {strokeColor:'#00b0de', fillColor:'#00d0dc'};
+							var bc = (routePanel.flagShowFullRoute && c.Direction==1) ? {strokeColor:'#550000', fillColor:'#550000'} : {strokeColor:'#000055', fillColor:'#000055'};
 							bc.strokeWeight = 3;
 							bc.scale = 3;
-							bc.fillOpacity = 0.8;
+							bc.fillOpacity = 1;
 							if(flagHasNowOrTarget){
 								switch(c.stopMoveStep){
 									case 'now':
+										bc.fillColor='#000055';
+										bc.strokeColor='#d2d520';
+										param.label.color = '#e0ec10';
+										bc.strokeWeight = 3;
+										bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
+									break;
 									case 'over':
-										bc.fillColor='#bff0ee';
-										bc.strokeColor='#22cdde';
+										bc.fillColor='#000055';
+										bc.strokeColor='#000055';
 										bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
 									break;
 									case 'target':
 										bc.fillColor='#d2b7f0';
 										bc.strokeColor='#9c2e2f';
+										param.label.color = '#111111';
 										bc.fillOpacity = 1;
 										bc.scale = 4;
 									break;
 									default:
-										bc.fillColor='#c0aa20';
-										bc.fillOpacity = 0.1;
-										bc.strokeWeight = 0;
+										bc.fillColor='#00d0dc';
+										bc.strokeColor='#00b0de';
+										param.label.color = '#111111';
+										bc.fillOpacity = 0.7;
+										bc.strokeWeight = 2;
 									break;
 								}
 							}else{
 								bounds.extend(new google.maps.LatLng(c.pos.lat, c.pos.lng));
 							}
 							var txlendiv = document.getElementById('textlentry');
-							txlendiv.innerHTML = param.label;
+							txlendiv.innerHTML = param.label.text;
 							var txw = Math.ceil(txlendiv.offsetWidth / 2 / 3);
+							var marker = me.addPoint(param);
 							marker.setIcon({
 								labelOrigin: new google.maps.Point(0, -10),
 								path: 'M -' + txw + ' -15 L ' + txw + ' -15 L ' + txw + ' -5 ' + ' L 3 -5 L 0 0 L -3 -5 ' + ' L -' + txw + ' -5 L -' + txw + ' -15',
@@ -3187,7 +3196,7 @@ var BB = (function(TT){
 						var name = (Vue.duoguo.lang!='Zh' && c.StationName.En) ? c.StationName.En : c.StationName.Zh_tw;
 						var marker = new google.maps.Marker({
 							position: {lat: c.StationPosition.PositionLat, lng: c.StationPosition.PositionLon},
-							label: name,
+							label: {text:name, color:'#FFFFFF'},
 							map: me.map
 						});
 						var txlendiv = document.getElementById('textlentry');
@@ -3196,10 +3205,10 @@ var BB = (function(TT){
 						marker.setIcon({
 							labelOrigin: new google.maps.Point(0, -10),
 							path: 'M -' + txw + ' -15 L ' + txw + ' -15 L ' + txw + ' -5 ' + ' L 3 -5 L 0 0 L -3 -5 ' + ' L -' + txw + ' -5 L -' + txw + ' -15',
-							strokeColor: '#00b0de',
+							strokeColor: '#000055',
 							strokeWeight: 3,
-							fillColor: '#00d0dc',
-							fillOpacity: 0.7,
+							fillColor: '#000055',
+							fillOpacity: 1,
 							scale: 3
 						})
 						marker.addListener('click', function(e){
