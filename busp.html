@@ -1251,6 +1251,16 @@ var BB = (function(TT){
 					if(document.body.scrollTop) document.body.scrollTop = 0;
 	}
 
+	function tinyURL(url, cbFn){
+		var api = 'https://melixapi.000webhostapp.com/webtool/util.php?fun=tinyurl&url=';
+		var xhr = new XMLHttpRequest();
+		xhr.addEventListener("load", function(e){
+			if(typeof(cbFn)=='function') cbFn(JSON.parse(e.target.responseText));
+		});
+		xhr.open('GET', api + encodeURIComponent(url), true);
+		xhr.send();
+	}
+
 	var voicePlayerURL = {isLoading:false};
 	function voicePlayer(text){
 		if(voicePlayerURL[text]){
@@ -1796,12 +1806,16 @@ var BB = (function(TT){
 				}
 			},
 			makeURL: function(){
+				var me = this;
 				var url = makeShowURL(this.StationStopName, this.StationID, BB.now.cities);
 				if(this.StationTargetID){
 					url = makeShowURL([{name:this.StationStopName, id:this.StationID, cities:BB.now.cities, ts:this.StationTargetID}]);
 				}
 				this.link = url;
-				this.genStationQR();
+				tinyURL(url, function(res){
+					me.link = res.url;
+					me.genStationQR();
+				})
 				return '<a href="' + url + '" target="_blank">' + _LANG.STR063 + ' (' + this.StationStopName + ')' + '</a>';
 			},
 			genStationQR: function(){
@@ -1849,6 +1863,7 @@ var BB = (function(TT){
 					'</div>' +
 					'<div v-html="getImage()" v-on:click="openSaveQR()" style="display:inline-block;"></div>' +
 					'<div v-html="printURL()" style="word-break:break-all;"></div>' +
+					'<br><div v-html="printOrigURL()" style="word-break:break-all;"></div>' +
 				'</div>' +
 				'<div class="textB" v-show="!flagShowGroupLink">{{_LANG.STR051}}</div>' +
 			'</div>' +
@@ -1862,6 +1877,7 @@ var BB = (function(TT){
 			GroupStopName: '',
 			GroupData: [],
 			url: '',
+			origURL: '',
 			checkStID: []
 		}},
 		methods: {
@@ -1897,10 +1913,13 @@ var BB = (function(TT){
 				});
 				this.GroupData = ary;
 				var url = makeShowURL(ary);
-				this.url = url;
-				this.genStationQR();
-				this.flagShowGroupLink = true;
-				this.flagShowCreated = true; setTimeout(function(){me.flagShowCreated=false;},2000);
+				this.origURL = url;
+				tinyURL(url, function(res){
+					me.url = res.url;
+					me.genStationQR();
+					me.flagShowGroupLink = true;
+					me.flagShowCreated = true; setTimeout(function(){me.flagShowCreated=false;},2000);
+				})
 			},
 			link: function(bm){
 				var url = makeShowURL(bm.name, bm.StationID, bm.cities);
@@ -1915,6 +1934,9 @@ var BB = (function(TT){
 			},
 			printURL: function(){
 				return '<a href="' + this.url + '" target="_blank">' + _LANG.STR063 + ' (' + this.GroupStopName + ')' + '</a>';
+			},
+			printOrigURL: function(){
+				return '<a href="' + this.origURL + '" target="_blank">' + _LANG.STR063 + '_SOURCE' + ' (' + this.GroupStopName + ')' + '</a>';
 			},
 			genStationQR: function(){
 				var me = this;
@@ -1980,9 +2002,13 @@ var BB = (function(TT){
 				window.open(url, "_blank");
 			},
 			make: function(bm){
+				var me = this;
 				this.url = makeShowURL(bm.StationArray);
 				this.GroupStopName = bm.name;
-				this.genStationQR();
+				tinyURL(this.url, function(res){
+					me.url = res.url;
+					me.genStationQR();
+				})
 			},
 			genStationQR: function(){
 				var me = this;
@@ -2271,6 +2297,8 @@ var BB = (function(TT){
 				'<div class="btn1" v-show="aryArriveTime.length>1" v-on:click="stopsInMap()">{{_LANG.STR089}}</div>' +
 				'<div class="btn1 base64_voicePlayerIcon" style="width:30px;" v-on:click="stopVoice()"></div>' +
 				'<div v-if="flagCreateQRShow">' +
+					'<div class="QRShow" v-html="htmlQR" style="cursor:pointer;display:inline-block;"></div>' +
+					'<br><br>' +
 					'<div class="QRShow" v-html="getQR()" style="cursor:pointer;display:inline-block;"></div>' +
 				'</div>' +
 			'</div>' +
@@ -2285,6 +2313,7 @@ var BB = (function(TT){
 			aryArriveTime: [],
 			reloadTimer: 0,
 			flagCreateQRShow: false,
+			htmlQR: '',
 			onReload: false
 		}},
 		methods: {
@@ -2318,10 +2347,16 @@ var BB = (function(TT){
 			},
 			getQR: function(){
 				var me = this;
-				var dataURL = '';
+				var dataURL = '', data3URL = '';
 				genStationQR(location.href, false, function(canvas){
 					dataURL = canvas.toDataURL();
-				});
+				})
+				tinyURL(location.href, function(res){
+					genStationQR(res.url, false, function(canvas){
+						data3URL = canvas.toDataURL();
+						me.htmlQR = '<img src="' + data3URL + '" width="300" height="300"></img>';
+					});
+				})
 				return '<img src="' + dataURL + '" width="300" height="300"></img>';
 			},
 			hrefMap: function(station){
@@ -2593,6 +2628,9 @@ var BB = (function(TT){
 			clearTimeout(this.reloadTimer);
 		},
 		watch: {
+			flagCreateQRShow: function(){
+				this.getQR();
+			},
 			'$route': function(vroute){
 				BB.showBusRoutePop.flagShowBase = !!(vroute.path=='/show/line');
 			}
