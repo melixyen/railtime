@@ -2299,7 +2299,7 @@ var BB = (function(TT){
 				'<div v-if="flagCreateQRShow">' +
 					'<div class="QRShow" v-html="htmlQR" style="cursor:pointer;display:inline-block;"></div>' +
 					'<br><br>' +
-					'<div class="QRShow" v-html="getQR()" style="cursor:pointer;display:inline-block;"></div>' +
+					'<div class="QRShow" v-html="htmlOrigQR" style="cursor:pointer;display:inline-block;"></div>' +
 				'</div>' +
 			'</div>' +
 			'<div style="background:linear-gradient(to right, #121, #122 65%, #aba);width:100%;padding:4px; height:34px; overflow:hidden;">' +
@@ -2314,6 +2314,7 @@ var BB = (function(TT){
 			reloadTimer: 0,
 			flagCreateQRShow: false,
 			htmlQR: '',
+			htmlOrigQR: '',
 			onReload: false
 		}},
 		methods: {
@@ -2357,7 +2358,8 @@ var BB = (function(TT){
 						me.htmlQR = '<img src="' + data3URL + '" width="300" height="300"></img>';
 					});
 				})
-				return '<img src="' + dataURL + '" width="300" height="300"></img>';
+				me.htmlOrigQR = '<img src="' + dataURL + '" width="300" height="300"></img>';
+				return htmlOrigQR;
 			},
 			hrefMap: function(station){
 				var pos = station.StationPosition || station.StopPosition;
