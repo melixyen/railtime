@@ -1930,6 +1930,7 @@ var BB = (function(TT){
 				BB.now.cities = bm.cities;
 				BB.now.StationID = bm.StationID;
 				BB.now.StationStopName = bm.name;
+				if(bm.StationTargetID) BB.now.StationTargetID = bm.StationTargetID;
 				location.hash = '/make/busmakeurl';
 			},
 			printURL: function(){
@@ -2359,7 +2360,6 @@ var BB = (function(TT){
 					});
 				})
 				me.htmlOrigQR = '<img src="' + dataURL + '" width="300" height="300"></img>';
-				return htmlOrigQR;
 			},
 			hrefMap: function(station){
 				var pos = station.StationPosition || station.StopPosition;
