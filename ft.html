@@ -369,6 +369,8 @@ var LANG = {
     zx: ''
 }
 var TT = {
+    dimMaxNum: 19,
+    dimBaseFontBigZommRate: 1,
     data: {
         tra: {
         	defined: {
@@ -1748,7 +1750,7 @@ TT.makeMainAreaRenderDiv = function(){
             getMap: function(){
                 var stObj = TT.fn.getStationByID(this.stationID);
                 var lineAry = JSON.parse(JSON.stringify(TT.data.tra.line));
-                var maxCatchNum = 19;
+                var maxCatchNum = TT.dimMaxNum;
                 var line = false,
                     otherLine = [],
                     dir0StAry = [],
@@ -1886,7 +1888,7 @@ TT.makeMainAreaRenderDiv = function(){
                 if(this.stationStyleData[stObj.id]){
                     cssColor = 'color:#FFF; background-color:' + this.stationStyleData[stObj.id].color;
                 }
-                return 'font-size:' + TT.ui.stationBtnSize + 'px; padding:' + TT.ui.stationBtnPadding + 'px; margin:' + TT.ui.stationBtnMargin + 'px; border-width:' + TT.ui.stationBtnBorder + 'px;' + cssColor;
+                return 'font-size:' + TT.ui.stationBtnSize * TT.dimBaseFontBigZommRate + 'px; padding:' + TT.ui.stationBtnPadding + 'px; margin:' + TT.ui.stationBtnMargin + 'px; border-width:' + TT.ui.stationBtnBorder + 'px;' + cssColor;
             },
             hideAllPanel: function(){
                 this.flagShowTime = false;
@@ -1967,6 +1969,12 @@ TT.initFn = function(){
         var GetP = TT.defined.GetP;
         if(GetP["a"]){
             TT.goingData.stationID = (/^tra/.test(GetP["a"])) ? GetP["a"] : 'tra_' + GetP["a"];
+        }
+        if(GetP["mod"]){
+            if(GetP["mod"]=='busp'){
+                TT.dimBaseFontBigZommRate = 1.8;
+                TT.dimMaxNum = 10;
+            }
         }
     }
     TT.mainArea = TT.makeMainAreaRenderDiv();

@@ -2280,7 +2280,7 @@ var BB = (function(TT){
 	var showArea = {
 		template: '<div id="showArea">' +
 			'<div class="trainArea">' +
-				'<div class="trainButtonArea" v-if="!!includeTRA">' +
+				'<div class="trainButtonArea bs_no_select" v-if="!!includeTRA">' +
 					'<div class="trainBtn" v-on:click="flagShowTrainTime = !flagShowTrainTime">{{includeTRA.stationName}}時刻表快查</div>' +
 				'</div>' +
 				
@@ -2346,7 +2346,7 @@ var BB = (function(TT){
 				if(!BB.now.includeTRA) return '';
 				var ptc = location.protocol;
 				if(/^file/.test(ptc)) ptc = 'https:';
-				return ptc + '//melixyen.github.io/railtime/ft.html?a=' + BB.now.includeTRA.stationID;
+				return ptc + '//melixyen.github.io/railtime/ft.html?mod=busp&a=' + BB.now.includeTRA.stationID;
 			},
 			pubMsg: function(){
 				return BB.now.pubMsg;
