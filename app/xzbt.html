@@ -4,10 +4,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width; initial-scale=1.0" />
-<meta name="description" content="公車運輸 QR CODE 雲端看板" />
+<meta name="description" content="汐止雲端車站" />
 <meta name="keywords" content="CANVAS,公車,客運,巴士,接軌時刻" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-<title>公車運輸 QR CODE 雲端看板</title>
+<title>汐止雲端車站</title>
 <style type="text/css">
 @charset "utf-8";
 
@@ -405,6 +405,38 @@ body {
 }
 
 
+/* Train Button Area Start */
+#showArea .trainArea .time iframe{
+	border: none;
+	width: 100%;
+	height: 100%;
+}
+#showArea .trainButtonArea{
+	box-sizing: border-box;
+	min-height: 60px;
+	background-color: #24B;
+	width: 100%;
+	text-align: center;
+}
+#showArea .trainButtonArea .trainBtn{
+	box-sizing: border-box;
+	display: inline-block;
+	height: 60px;
+	border: 3px solid #EEE;
+	padding: 7px;
+	color: #EEE;
+	text-align: center;
+	margin: 0 auto;
+	line-height: 40px;
+	font-size: 24px;
+	cursor: pointer;
+}
+#showArea .time{
+	height: calc(90vh - 120px);
+	overflow: auto;
+	font-size: 16px;
+}
+/* Train Button Area End */
 #showArea .stationDisplayTitle{
 	background-color: #217;
 	position: relative;
@@ -696,10 +728,10 @@ body {
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue-router@2.7.0/dist/vue-router.js"></script>
 -->
 
-<script type="text/javascript" src="./libs/vue.js"></script>
-<script type="text/javascript" src="./libs/vue-router.js"></script>
-<script type="text/javascript" src="./libs/vue-duoguo.js"></script>
-<script type="text/javascript" src="./libs/QRious.js"></script>
+<script type="text/javascript" src="../libs/vue.js"></script>
+<script type="text/javascript" src="../libs/vue-router.js"></script>
+<script type="text/javascript" src="../libs/vue-duoguo.js"></script>
+<script type="text/javascript" src="../libs/QRious.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143711253-1"></script>
 <script>
@@ -711,9 +743,9 @@ body {
 </script>
 
 
-<script type="text/javascript" src="ttlib/defined.js"></script>
-<script type="text/javascript" src="ttlib/data.js"></script>
-<script type="text/javascript" src="ttlib/ptx.js"></script>
+<script type="text/javascript" src="../ttlib/defined.js"></script>
+<script type="text/javascript" src="../ttlib/data.js"></script>
+<script type="text/javascript" src="../ttlib/ptx.js"></script>
 <script type="text/javascript">
 /*
 	ptx 過濾模式
@@ -755,16 +787,10 @@ var languagePakc = {
 			CM_OK: '確定',
 			CM_CANCEL: '取消',
 			CM_REMOVE: '刪除',
-			CM_TITLE: '公車運輸 QR CODE 雲端看板',
+			CM_TITLE: '汐止雲端站長',
 			CM_APP_USE_P: '<p>' +
-				'本程式可協助您查詢或製作公車站牌的公車動態查詢 QR CODE 碼，並且您可選擇過濾所有從 A 站牌開到 B 站牌的才顯示其餘不顯示（例如過濾汐止後火車站到南港展覽館的公車不會顯示直達公館的 907）。' +
-				'列印雲端站牌的 QR CODE 碼可貼在實際站牌上，方便尚未安裝智慧型公車動態顯示器的站牌候車者可直接使用智慧型手機掃瞄後查詢公車動態。' +
+				'本程式為公車運輸 QR CODE 雲端看板客製化，專屬顯示汐止車站周圍站牌使用。' +
 			'</p><p>' +
-				'在民間應用上，由於其可過濾公車路線以及組合不同站牌於一支 QR CODE 內，因此可以自行依據需求製作公車站牌的 QR CODE 並印於廣告、文宣、喜帖、邀請函之類的地方。' +
-				'例如舉行婚禮的地方沒有捷運火車只有公車時，大眾運輸資訊除了印刷公車路線外，還可印上主要車站、市中心抵達婚禮會場的公車動態 QR CODE，賓客掃瞄後即可知道要轉乘之公車站牌和公車路線動態。' +
-			'</p><p>' +
-				'在商業應用上，因為本程式可組成群組站牌，當附近有多支公車站牌例如台北101 週邊有三處站牌分別有不同路線可到松山車站，可合併為一個雲端站牌 QR CODE，並印刷在商場內的地圖上。' +
-				'遊客在商場內看地圖的同時，知道附近不同的站牌位置，可立即掃描 QR CODE 掌握最快前往松山車站的公車以及站牌位置，方便繼續前往五分埔及饒河夜市觀光。' +
 			'</p>',
 			STR001: '功能',
 			STR002: '關於',
@@ -1300,14 +1326,14 @@ var BB = (function(TT){
 			busCitySelArea: [],
 			busFindRouteInput: ''
 		},
-		ver: 0.5
+		ver: 0.1
 	};
 	BB.programAbout = {
-            "程式名稱 (App Name)": "公車運輸 QR CODE 雲端看板",
+            "程式名稱 (App Name)": "汐止雲端車站",
             "作者 (Author)": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位 (Publisher)': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
             "版本 (Version)": "Beta " + BB.ver,
-            "產生日期 (Date)": "2019/8/22",
+            "產生日期 (Date)": "2019/9/29",
 			"函式庫 (Lib)": '<a href="http://melixyen.github.io/railtime/" target="_blank" style="color:#2233EE;">接軌時刻 </a><a href="https://github.com/melixyen/rocptx" target="_blank" style="color:#2233EE;">公共交通動態查詢 PTX Javascript Library</a>',
 			"資料源 (Data source)": '資料介接交通部PTX服務平臺'
     };
@@ -2030,55 +2056,30 @@ var BB = (function(TT){
 
 	var makeIndex = {
 		template: '<div>' +
+				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoXZ24()">汐止雲端車站</div>' + '</div>' +
+				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoXZ23()">汐科雲端車站</div>' + '</div>' +
+				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoXZ24TU()">新昌圖書館</div>' + '</div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity?as=direct\'}">' + '<div class="btn1">{{_LANG.STR061}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">{{_LANG.STR003}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1">{{_LANG.STR046}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1">{{_LANG.STR058}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demo101()">{{_LANG.STR066}}</div>' + '</div>' +
-				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoBXS()">{{_LANG.STR067}}</div>' + '</div>' +
-				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="cloudXizhi()">複合運用 : 汐止雲端車站</div>' + '</div>' +
-				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoGUG()">Example : MRT to 故宮</div>' + '</div>' +
-				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoR29()">Example : 瑞芳至九份</div>' + '</div>' +
-				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoX2D()">Example : 信義計劃區至動物園</div>' + '</div>' +
-				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoSND()">Example : 松德站出發</div>' + '</div>' +
-				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoS2S()">Example : 松山車站到松德站</div>' + '</div>' +
-				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoM2S()">Example : 附近捷運站到松德站</div>' + '</div>' +
-				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoJTS()">Example : 交通部附近站牌</div>' + '</div>' +
-				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoM2J()">Example : 捷運站至交通部</div>' + '</div>' +
 			'</div>',
 		methods: {
 			demo101: function(){
 				location.href = '?busStation=%5B%7B%22name%22%3A%22101(%E4%BF%A1%E7%BE%A9%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%226928%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2215113%22%7D%2C%7B%22name%22%3A%22101(%E6%9D%BE%E6%99%BA%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%222044%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2215113%22%7D%2C%7B%22name%22%3A%22%E5%B8%82%E6%94%BF%E5%BA%9C(%E6%9D%BE%E5%A3%BD%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%222069%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2215113%22%7D%2C%7B%22name%22%3A%22101(%E5%B8%82%E5%BA%9C%E8%B7%AF)%E5%88%B0%E6%9D%BE%E5%B1%B1%22%2C%22id%22%3A%222029%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221530%22%7D%5D#/show';
 			},
 			demoBXS: function(){
-				location.href = '?busStation=%5B%7B%22name%22%3A%22%E5%8D%97%E6%B8%AF%E5%B1%95%E8%A6%BD%E9%A4%A8%E5%BE%80%E7%A4%BE%E5%90%8E1%22%2C%22id%22%3A%221001114%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222792%22%7D%2C%7B%22name%22%3A%22%E5%8D%97%E6%B8%AF%E5%B1%95%E8%A6%BD%E9%A4%A8%E5%BE%80%E7%A4%BE%E5%90%8E2%22%2C%22id%22%3A%221001114%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%227619%22%7D%2C%7B%22name%22%3A%22%E6%8D%B7%E9%81%8B%E8%91%AB%E6%B4%B2%E7%AB%99%E5%BE%80%E7%A4%BE%E5%90%8E%22%2C%22id%22%3A%221089%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222729%22%7D%2C%7B%22name%22%3A%22%E6%8D%B7%E9%81%8B%E6%9D%B1%E6%B9%96%E7%AB%99%E5%BE%80%E7%A4%BE%E5%90%8E%22%2C%22id%22%3A%2270072%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222729%22%7D%5D#/show';
+				location.href = '?demo=xz24&busStation=%5B%7B%22name%22%3A%22%E6%B1%90%E6%AD%A2%22%2C%22id%22%3A%221001113%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221659%22%7D%2C%7B%22name%22%3A%22%E6%B1%90%E6%AD%A2%E5%BE%8C%E8%BB%8A%E7%AB%99%22%2C%22id%22%3A%222746%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221659%22%7D%2C%7B%22name%22%3A%22%E6%B1%90%E6%AD%A2%E7%81%AB%E8%BB%8A%E7%AB%99(%E5%BF%A0%E5%AD%9D%E6%9D%B1%E8%B7%AF)%22%2C%22id%22%3A%2270966%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221659%22%7D%5D#/show';
 			},
-			demoGUG: function(){
-				location.href = '?busStation=%5B%7B%22name%22%3A%22%E5%A3%AB%E6%9E%97%E7%AB%99%E5%88%B0%E6%95%85%E5%AE%AE%22%2C%22id%22%3A%22795%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2270042%22%7D%2C%7B%22name%22%3A%22%E5%8A%8D%E5%8D%97%E8%B7%AF%E7%AB%99%E8%87%B3%E6%95%85%E5%AE%AE%22%2C%22id%22%3A%221000695%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%224684%22%7D%2C%7B%22name%22%3A%22%E5%A4%A7%E7%9B%B4%E7%AB%99%E8%87%B3%E6%95%85%E5%AE%AE%22%2C%22id%22%3A%224187%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%22764%22%7D%5D#/show';
+			demoXZ24: function(){
+				location.href = '?demo=xz24#/show';
 			},
-			demoR29: function(){
-				location.href = '?busStation=%5B%7B%22name%22%3A%22%E7%91%9E%E8%8A%B3%E8%87%B3%E4%B9%9D%E4%BB%BD%22%2C%22id%22%3A%2271300%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2271451%22%7D%5D#/show';
+			demoXZ24TU: function(){
+				location.href = '?demo=xz24&bk=tu#/show';
 			},
-			demoX2D: function(){
-				location.href = '?busStation=%5B%7B%22name%22%3A%22%E5%B8%82%E6%94%BF%E5%BA%9C%E7%AB%99%E8%87%B3%E5%8B%95%E7%89%A9%E5%9C%92%22%2C%22id%22%3A%223916%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222442%22%7D%2C%7B%22name%22%3A%22%E6%B6%88%E9%98%B2%E5%B1%80(%E6%9D%BE%E4%BB%81%E8%B7%AF)%E8%87%B3%E5%8B%95%E7%89%A9%E5%9C%92%22%2C%22id%22%3A%221165604593%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222442%22%7D%2C%7B%22name%22%3A%22101%E8%87%B3%E5%8B%95%E7%89%A9%E5%9C%92%22%2C%22id%22%3A%222028%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%2250672%22%7D%5D#/show';
-			},
-			demoSND: function(){
-				location.href = '?busStation=%5B%7B%22name%22%3A%22%E6%9D%BE%E5%BE%B7%E7%AB%99%22%2C%22id%22%3A%222107%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%7D%5D#/show';
-			},
-			demoS2S: function(){
-				location.href = '?busStation=%5B%7B%22name%22%3A%22%E6%9D%BE%E5%B1%B1%E8%BB%8A%E7%AB%99(%E6%9D%BE%E5%B1%B1)%22%2C%22id%22%3A%222093%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222106%22%7D%5D#/show';
-			},
-			demoM2S: function(){
-				location.href = '?busStation=%5B%7B%22name%22%3A%22%E6%8D%B7%E9%81%8B%E6%B0%B8%E6%98%A5%E7%AB%99(%E6%9D%BE%E5%B1%B1)%22%2C%22id%22%3A%222060%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222106%22%7D%2C%7B%22name%22%3A%22%E6%8D%B7%E9%81%8B%E8%B1%A1%E5%B1%B1%E7%AB%99%E5%BE%80%E6%9D%BE%E5%BE%B7%22%2C%22id%22%3A%2220305%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%222106%22%7D%5D#/show';
-			},
-			demoJTS: function(){
-				location.href = '?busStation=%5B%7B%22name%22%3A%22%E4%BB%81%E6%84%9B%E6%9D%AD%E5%B7%9E%E8%B7%AF%E5%8F%A31%22%2C%22id%22%3A%221865%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%7D%2C%7B%22name%22%3A%22%E4%BB%81%E6%84%9B%E6%9D%AD%E5%B7%9E%E8%B7%AF%E5%8F%A32%22%2C%22id%22%3A%221935%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%7D%2C%7B%22name%22%3A%22%E4%BB%81%E6%84%9B%E7%B4%B9%E8%88%88%E8%A1%97%E5%8F%A3%22%2C%22id%22%3A%221868%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%7D%2C%7B%22name%22%3A%22%E4%BB%81%E6%84%9B%E8%B7%AF%E4%BA%8C%E6%AE%B5%22%2C%22id%22%3A%221001466%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%7D%5D#/show';
-			},
-			demoM2J: function(){
-				location.href = '?busStation=%5B%7B%22name%22%3A%22%E5%BF%A0%E5%AD%9D%E6%96%B0%E7%94%9F%E8%87%B3%E4%BA%A4%E9%80%9A%E9%83%A8%22%2C%22id%22%3A%221000396%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221001466%22%7D%2C%7B%22name%22%3A%22%E5%8F%B0%E5%A4%A7%E9%86%AB%E9%99%A2%E8%87%B3%E4%BA%A4%E9%80%9A%E9%83%A8%22%2C%22id%22%3A%221994%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221868%22%7D%2C%7B%22name%22%3A%22%E8%87%BA%E5%8C%97%E8%BB%8A%E7%AB%99%E5%88%B0%E4%BA%A4%E9%80%9A%E9%83%A8%22%2C%22id%22%3A%221890%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221868%22%7D%2C%7B%22name%22%3A%22%E5%B8%82%E6%94%BF%E5%BA%9C%E5%88%B0%E4%BA%A4%E9%80%9A%E9%83%A8%22%2C%22id%22%3A%222149%22%2C%22cities%22%3A%5B%22TPE%22%2C%22NWT%22%5D%2C%22ts%22%3A%221865%22%7D%5D#/show';
-			},
-			cloudXizhi: function(){
-				location.href = 'app/xzbt.html?demo=xz24#/show'
+			demoXZ23: function(){
+				location.href = '?demo=xz23#/show';
 			}
 		},
 		mounted: function(){
@@ -2278,6 +2279,17 @@ var BB = (function(TT){
 					
 	var showArea = {
 		template: '<div id="showArea">' +
+			'<div class="trainArea">' +
+				'<div class="trainButtonArea" v-if="!!includeTRA">' +
+					'<div class="trainBtn" v-on:click="flagShowTrainTime = !flagShowTrainTime">{{includeTRA.stationName}}時刻表快查</div>' +
+				'</div>' +
+				
+				'<transition name="expandBox">' +
+					'<div class="time" v-show="flagShowTrainTime">' +
+						'<iframe v-bind:src="includeTRAsrc"></iframe>' +
+					'</div>' +
+				'</transition>' +
+			'</div>' +
 			'<div class="allOute">' +
 				'<div class="allIn" v-for="(station, stIdx) in aryArriveTime">' +
 					'<div class="stationDisplayTitle">' +
@@ -2296,6 +2308,9 @@ var BB = (function(TT){
 					'</div>' +
 				'</div>' +
 				'<div v-if="(aryArriveTime.length==0)" class="textA">{{_LANG.STR057}}</div>' +
+			'</div>' +
+			'<div class="pubMsgArea" v-if="!!pubMsg">' +
+				'<div style="padding:5px; color:#EF2938;">{{pubMsg}}</div>' +
 			'</div>' +
 			'<div style="padding-top: 20px;">' +
 				'<div class="btn1" v-show="!flagCreateQRShow" v-on:click="flagCreateQRShow=true">Share by QR Code</div>' +
@@ -2320,8 +2335,21 @@ var BB = (function(TT){
 			flagCreateQRShow: false,
 			htmlQR: '',
 			htmlOrigQR: '',
-			onReload: false
+			onReload: false,
+			flagShowTrainTime: false
 		}},
+		computed: {
+			includeTRA: function(){
+				return BB.now.includeTRA;
+			},
+			includeTRAsrc: function(){
+				if(!BB.now.includeTRA) return '';
+				return 'http://melixyen.github.io/railtime/ft.html?a=' + BB.now.includeTRA.stationID;
+			},
+			pubMsg: function(){
+				return BB.now.pubMsg;
+			}
+		},
 		methods: {
 			tet2: function(station){
 				return '<div class="">' + station.StationName + '</div>';
@@ -3401,13 +3429,24 @@ var BB = (function(TT){
 	});
 
 	BB.initFn = function(){
-		var GetP = TT.defined.GetP;
+		var GetP = TT.defined.GetP || {};
 		if(GetP && GetP[_DEFINE_PARAM_BUS_STATION]){
 			try {
 				BB.now.showBusStation = JSON.parse(decodeURIComponent(GetP[_DEFINE_PARAM_BUS_STATION]));
 			}catch(e){
 				// Error
 			}
+		}
+		if(GetP.demo=='xz24'){
+			BB.now.includeTRA = {stationID: '1005', stationName: '汐止車站'};
+			BB.now.showBusStation = JSON.parse('[{\"name\":\"汐止\",\"id\":\"1001113\",\"cities\":[\"TPE\",\"NWT\"],\"ts\":\"1659\"},{\"name\":\"汐止後車站\",\"id\":\"2746\",\"cities\":[\"TPE\",\"NWT\"],\"ts\":\"1659\"},{\"name\":\"汐止火車站(忠孝東路)\",\"id\":\"70966\",\"cities\":[\"TPE\",\"NWT\"],\"ts\":\"1659\"}]');
+			if(GetP.bk=='tu'){
+				BB.now.showBusStation = JSON.parse('[{\"name\":\"汐止\",\"id\":\"1001113\",\"cities\":[\"TPE\",\"NWT\"],\"ts\":\"1659\"},{\"name\":\"汐止後車站\",\"id\":\"2746\",\"cities\":[\"TPE\",\"NWT\"],\"ts\":\"1659\"},{\"name\":\"新昌圖書館\",\"id\":\"70961\",\"cities\":[\"TPE\",\"NWT\"],\"ts\":\"1659\"}]');
+				BB.now.pubMsg = '新昌圖書館站牌因工程暫時遷移至過涵洞後的福安里，請根據公車動態判斷要往回走或至汐止後車站搭別班公車，或是搭乘火車。';
+			}
+		}else if(GetP.demo=='xz23'){
+			BB.now.includeTRA = {stationID: '1031', stationName: '汐科車站'};
+			BB.now.showBusStation = JSON.parse('[{\"name\":\"汐科站北站\",\"id\":\"7627\",\"cities\":[\"TPE\",\"NWT\"],\"ts\":\"1659\"},{\"name\":\"連興街口\",\"id\":\"2793\",\"cities\":[\"TPE\",\"NWT\"],\"ts\":\"1659\"}]');
 		}
 		var tpl = Vue.compile('<div id="main">' + 
 			'<vcmp_menu_bar id="menuBar"></vcmp_menu_bar>' +
