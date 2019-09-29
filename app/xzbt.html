@@ -2344,7 +2344,9 @@ var BB = (function(TT){
 			},
 			includeTRAsrc: function(){
 				if(!BB.now.includeTRA) return '';
-				return 'http://melixyen.github.io/railtime/ft.html?a=' + BB.now.includeTRA.stationID;
+				var ptc = location.protocol;
+				if(/^file/.test(ptc)) ptc = 'https:';
+				return ptc + '//melixyen.github.io/railtime/ft.html?a=' + BB.now.includeTRA.stationID;
 			},
 			pubMsg: function(){
 				return BB.now.pubMsg;
