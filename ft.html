@@ -838,7 +838,7 @@ var TT = {
 	descriptionText: [
 		'接軌時刻快查系統，',
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 15px;">' +
-			"更新日期: 2019/04/16</span>",
+			"更新日期: 2019/09/30</span>",
             '<span style="margin:0 20px;">資料介接交通部PTX服務平臺</span>'
 	],
     defined: {
@@ -1100,7 +1100,7 @@ TT.ui = {
             TT.ui.stationBtnPadding = Math.floor(fontBaseBigSize/60);
             TT.ui.stationBtnMargin = Math.floor(fontBaseBigSize/80);
             TT.ui.stationBtnBorder = Math.floor(fontBaseBigSize/100);
-            stationBtnAll.css('fontSize', TT.ui.stationBtnSize+'px').css('padding', TT.ui.stationBtnPadding+'px').css('margin', TT.ui.stationBtnMargin+'px').css('borderWidth', TT.ui.stationBtnBorder+'px');
+            stationBtnAll.css('fontSize', TT.ui.stationBtnSize * TT.dimBaseFontBigZommRate+'px').css('padding', TT.ui.stationBtnPadding+'px').css('margin', TT.ui.stationBtnMargin+'px').css('borderWidth', TT.ui.stationBtnBorder+'px');
             
             //var setApplyBtn = $('#setpage .applyBtn');
             //setApplyBtn.css('fontSize', TT.ui.stationBtnSize+'px').css('padding', TT.ui.stationBtnPadding+'px').css('margin', TT.ui.stationBtnMargin+'px').css('borderWidth', TT.ui.stationBtnBorder+'px');
@@ -1531,6 +1531,12 @@ TT.makeMainAreaRenderDiv = function(){
                     vm.switchStation();
                 }
             }
+        },
+        updated: function(){
+            var me = this;
+            if(TT.appMod=='busp'){
+                setTimeout(function(){ me.listSearch(); }, 500);
+            }
         }
     });
     
@@ -1693,7 +1699,7 @@ TT.makeMainAreaRenderDiv = function(){
             backPage: function(){
                 //sptr015
                 if(this.flagShowMap){
-                    if(window.confirm){
+                    if(window.confirm && TT.appMod!='busp'){
                         var r = confirm(LANG.sptr015);
                         if(r){
                             location.href='./';
@@ -1896,6 +1902,7 @@ TT.makeMainAreaRenderDiv = function(){
                 this.flagShowMap = false;
             },
             listStatus: function(){
+                if(TT.appMod=='busp') return '台鐵列車快查 Web App 內嵌應用範例';
                 return TT.descriptionText.join('');
             },
             clickMenuText: function(){
@@ -1974,6 +1981,7 @@ TT.initFn = function(){
             if(GetP["mod"]=='busp'){
                 TT.dimBaseFontBigZommRate = 1.8;
                 TT.dimMaxNum = 10;
+                TT.appMod = 'busp';
             }
         }
     }
