@@ -316,6 +316,7 @@ body {
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <!--<script type="text/javascript" src="./libs/vue.js"></script>-->
+<script type="text/javascript" src="https://melixyen.github.io/rocptx/dist/ptx.min.js"></script>
 <script type="text/javascript">
 //jsSHA function start
 (function(G){function r(d,b,c){var h=0,a=[],f=0,g,m,k,e,l,p,q,t,w=!1,n=[],u=[],v,r=!1;c=c||{};g=c.encoding||"UTF8";v=c.numRounds||1;if(v!==parseInt(v,10)||1>v)throw Error("numRounds must a integer >= 1");if("SHA-1"===d)l=512,p=z,q=H,e=160,t=function(a){return a.slice()};else throw Error("Chosen SHA variant is not supported");k=A(b,g);m=x(d);this.setHMACKey=function(a,f,b){var c;if(!0===w)throw Error("HMAC key already set");if(!0===r)throw Error("Cannot set HMAC key after calling update");
@@ -368,6 +369,8 @@ var LANG = {
     sptr032: '實際開車',
     zx: ''
 }
+var v2Sv3 = rocptx.id.tra.getPTXV3byV2;
+var v3Sv2 = rocptx.id.tra.getPTXV2byV3;
 var TT = {
     dimMaxNum: 19,
     dimBaseFontBigZommRate: 1,
@@ -1211,6 +1214,8 @@ TT.pubData = {
     getURL: function(url, cbFn){
         function reqListener(xhr){
             if(xhr.target.readyState==4 && xhr.target.status==200){
+                //v3Sv2
+                console.info(JSON.parse(xhr.target.response));
                 cbFn(JSON.parse(xhr.target.response));
             }else{
                 cbFn('fail');
@@ -1233,13 +1238,13 @@ TT.pubData = {
     getStationLiveInfo: function(stid, cbFn){
         stid = (stid) ? stid.replace('tra_','') : '1008';
         cbFn = cbFn || function(data){console.info(data);};
-        var url = 'https://ptx.transportdata.tw/MOTC/v2/Rail/TRA/LiveBoard/Station/' + stid + '?$top=30&$format=JSON';
+        var url = 'https://ptx.transportdata.tw/MOTC/v2/Rail/TRA/LiveBoard/Station/' + v2Sv3(stid) + '?$top=30&$format=JSON';
         this.getURL(url, cbFn);
     },
     getStationTodayTime: function(stid, cbFn){
         stid = (stid) ? stid.replace('tra_','') : '1008';
         cbFn = cbFn || function(data){console.info(data);};
-        var url = 'https://ptx.transportdata.tw/MOTC/v2/Rail/TRA/DailyTimetable/Station/' + stid + '/' + TT.goingData.today + '?$top=3000&$format=JSON';
+        var url = 'https://ptx.transportdata.tw/MOTC/v2/Rail/TRA/DailyTimetable/Station/' + v2Sv3(stid) + '/' + TT.goingData.today + '?$top=3000&$format=JSON';
         this.getURL(url, cbFn);
     }
 }
