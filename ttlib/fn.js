@@ -2823,70 +2823,6 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 TT.fn.getTRA_JSON(url, successFn, errorFn);
             },100);
         },
-        getTRA_JSON_by_TRA_XML: function(xml){
-            var aryTRA_Cars = xml.getElementsByTagName('TrainInfo');
-            var rt = new Array();
-            
-            for(var i=0; i<aryTRA_Cars.length; i++){
-                var xt = aryTRA_Cars[i];
-                var jo = TT.fn.getXML_Attribute2Obj(xt);
-                jo.TimeInfo = new Array();
-                var timeInfo = xt.getElementsByTagName('TimeInfo');
-                for(var j=0; j<timeInfo.length; j++){
-                    var timext = timeInfo[j];
-                    var timejo = TT.fn.getXML_Attribute2Obj(timext);
-                    jo.TimeInfo.push(timejo);
-                    jo.TimeInfo.sort(TT.fn.getTRA_sortByTimeInfoOrder);
-                }
-                rt.push(jo);
-            }
-            return rt;
-        },
-        getTRA_XML: function(url, successFn, errorFn){
-            $.ajax({
-                url: url,
-                type: 'GET',
-                dataType: 'xml',
-                success: function(xml) {
-                    if(typeof(successFn)=='function'){
-                        successFn(xml);
-                    }
-                },
-                error: function(){
-                    if(typeof(errorFn)=='function'){
-                        errorFn();
-                    }
-                }
-            });
-        },
-        getTRA_weekXML: function(w, cbFn){
-            if(!w) w = TT.defined.defaultTRAWeekday;
-            var url = 'w' + w + '.xml';
-            TT.ui.mask();
-            TT.ui.printStatus('讀取台鐵' + TT.ui.transWeekToString(w) + '時刻表中...');
-            
-            function successFn(xml){
-                    TT.ui.printStatus('讀取台鐵' + TT.ui.transWeekToString(w) + '時刻表完成。');
-                    TT.ui.unmask();
-                    if(TT.fn.checkIsFunction(cbFn)){
-                        cbFn(w, xml);
-                    }
-                    TT.ui.updateCenter('home');
-            }
-            
-            function errorFn(){
-                    TT.msg.show('讀取台鐵' + TT.ui.transWeekToString(w) + '時刻表失敗！');
-                    TT.ui.printStatus('讀取台鐵' + TT.ui.transWeekToString(w) + '時刻表失敗！');
-                    TT.ui.unmask();
-                    TT.ui.updateCenter('home');
-                    if(TT.fn.checkIsFunction(cbFn)){
-                        cbFn('error');
-                    }
-            }
-            setTimeout(function(){
-                TT.fn.getTRA_XML(url, successFn, errorFn);
-            },100);
-        },
         getTRA_TimeTable2Data: function(weekString, cbFn){
             if(weekString==null) weekString = '0123456';//0 for sunday
             if(!TT.data.tra.timeTable) TT.data.tra.timeTable = new Array();
@@ -2895,7 +2831,6 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 if(TT.fn.checkIsError(w)){
                     return false;
                 }
-                //var dayJo = TT.fn.getTRA_JSON_by_TRA_XML(xml);
                 var dayJo = TT.fn.getTRA_JSON_by_TRA_JSON(xml);
                 TT.data.tra.timeTable[parseInt(w,10)] = dayJo;
                 nextDay();
@@ -2914,7 +2849,6 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     nextDay();
                     return false;
                 }
-                //TT.fn.getTRA_weekXML(w, writeFn);
                 TT.fn.getTRA_weekJSON(w, writeFn);
             }
             nextDay();
