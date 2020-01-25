@@ -1083,7 +1083,10 @@
                     id: "trtc_6",
                     name: "[北捷]環狀線(6)",
                     color: "#fedb00",
-                    isPlanLine: true,
+                    isPlanLine: false,
+                    hasPlanLineRange: [
+                        ['trtc_019', 'trtc_036'], ['trtc_y19','trtc_y8']
+                    ],
                     nameTag: {
                         fontColor: '#425',
                         id:'trtc_y16', 
@@ -1096,6 +1099,7 @@
                         {type: 'station', id: 'trtc_y2'},
                         {type: 'station', id: 'trtc_y3'},
                         {type: 'station', id: 'trtc_y4'},
+                        {type: 'station', id: 'trtc_036'},
                         {type: 'station', id: 'trtc_y7'},
                         {type: 'station', id: 'trtc_047'},
                         {type: 'station', id: 'trtc_y11'},
@@ -1134,12 +1138,12 @@
                         {type: 'station', id: 'trtc_y8'}
                     ],
                     station: {
-                        "trtc_019": {x: 400, y: 420, name: '動物園', stationClass: 3, noDraw: true},
-                        "trtc_y1a": {x: 355, y: 420, name: '政大', stationClass: 4, noClick: true},
-                        "trtc_y2": {x: 300, y: 420, name: '文山區公所', stationClass: 4, noClick: true},
-                        "trtc_y3": {x: 300, y: 395, name: '馬明潭', stationClass: 4, noClick: true},
-                        "trtc_y4": {x: 270, y: 370, name: '考試院', stationClass: 4, noClick: true},
-                        "trtc_y5": {x: 200, y: 370, name: '寶斗厝', stationClass: 4, noClick: true},
+                        "trtc_019": {x: 400, y: 420, name: '動物園', stationClass: 3, noDraw: true, isPlanStation:true},
+                        "trtc_y1a": {x: 355, y: 420, name: '政大', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y2": {x: 300, y: 420, name: '文山區公所', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y3": {x: 300, y: 395, name: '馬明潭', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y4": {x: 270, y: 370, name: '考試院', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y5": {x: 200, y: 370, name: '寶斗厝', stationClass: 4, noClick: true, isPlanStation:true},
                         "trtc_036": {x: 140, y: 370, name: '大坪林', stationClass: 4, noDraw: true},
                         "trtc_y7": {x: 75, y: 370, name: '十四張', stationClass: 4, noClick: true},
                         "trtc_y8": {x: 10, y: 360, name: '秀朗橋', stationClass: 4, noClick: true},
@@ -1154,37 +1158,37 @@
                         "trtc_123": {x: -290, y: -20, name: '頭前庄', stationClass: 3, noDraw: true},
                         "trtc_y18": {x: -290, y: -50, name: '幸福', stationClass: 4, noClick: true},
                         "trtc_y19": {x: -270, y: -106, name: '新北產業園區', stationClass: 1, company: true, noClick: true},
-                        "trtc_y19a": {x: -270, y: -132, name: '工商展覽中心', stationClass: 4, noClick: true},
-                        "trtc_y19b": {x: -270, y: -156, name: '更寮', stationClass: 4, noClick: true},
-                        "trtc_y20": {x: -270, y: -180, name: '中路', stationClass: 4, noClick: true},
-                        "trtc_176": {x: -215, y: -180, name: '徐匯中學', stationClass: 4, noDraw: true},
-                        "trtc_y22": {x: -160, y: -180, name: '分子尾', stationClass: 4, noClick: true},
-                        "trtc_y23": {x: -160, y: -210, name: '重陽橋', stationClass: 4, noClick: true},
-                        "trtc_y24": {x: -108, y: -210, name: '社子', stationClass: 4, noClick: true},
-                        "trtc_y25": {x: -42, y: -189, name: '士林區公所', stationClass: 4, noClick: true},
-                        "trtc_058": {x: 10, y: -189, name: '士林', stationClass: 4, noDraw: true},
-                        "trtc_y27": {x: 130, y: -189, name: '林子口', stationClass: 4, noClick: true},
-                        "trtc_y28": {x: 200, y: -235, name: '故宮', stationClass: 4, noClick: true},
-                        "trtc_022": {x: 300, y: -235, name: '劍南路', stationClass: 4, noDraw: true, noClick: true},
-                        "trtc_y30": {x: 330, y: -210, name: '下塔悠', stationClass: 4, noClick: true},
-                        "trtc_y31": {x: 370, y: -205, name: '洲子', stationClass: 4, noClick: true},
-                        "trtc_y32": {x: 400, y: -185, name: '內科', stationClass: 4, noClick: true},
-                        "trtc_y33": {x: 400, y: -160, name: '瑞光', stationClass: 4, noClick: true},
-                        "trtc_y34": {x: 400, y: -135, name: '民權大橋', stationClass: 4, noClick: true},
-                        "trtc_y35": {x: 400, y: -110, name: '舊宗', stationClass: 3, noClick: true},
-                        "trtc_y36": {x: 450, y: 5, name: '松山 (環狀)', stationClass: 2, noClick: true},
-                        "trtc_094": {x: 450, y: 60, name: '永春', stationClass: 4 , noClick: true, noDraw: true},
-                        "trtc_099": {x: 435, y: 150, name: '象山', stationClass: 3 , noClick: true, noDraw: true},
-                        "trtc_y39": {x: 435, y: 188, name: '吳興國小', stationClass: 4, noClick: true},
-                        "trtc_yt35": {x: 380, y: -77, name: '西松', stationClass: 4, noClick: true},
-                        "trtc_yt36": {x: 350, y: 30, name: '中崙', stationClass: 4, noClick: true},
-                        "trtc_092": {x: 349, y: 60, name: '國父紀念館', stationClass: 4, noDraw: true},
-                        "trtc_yt38": {x: 330, y: 128, name: '三張犁', stationClass: 4, noClick: true},
-                        "trtc_013": {x: 280, y: 230, name: '六張犁', stationClass: 4, noDraw: true, noClick: true},
-                        "trtc_yt40": {x: 190, y: 255, name: '龍安', stationClass: 4, noClick: true},
-                        "trtc_039": {x: 100, y: 280, name: '公館', stationClass: 4, noDraw: true},
-                        "trtc_yt42": {x: 50, y: 300, name: '福和', stationClass: 4, noClick: true},
-                        "trtc_yt43": {x: 30, y: 330, name: '得和', stationClass: 4, noClick: true}
+                        "trtc_y19a": {x: -270, y: -132, name: '工商展覽中心', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y19b": {x: -270, y: -156, name: '更寮', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y20": {x: -270, y: -180, name: '中路', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_176": {x: -215, y: -180, name: '徐匯中學', stationClass: 4, noDraw: true, isPlanStation:true},
+                        "trtc_y22": {x: -160, y: -180, name: '分子尾', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y23": {x: -160, y: -210, name: '重陽橋', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y24": {x: -108, y: -210, name: '社子', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y25": {x: -42, y: -189, name: '士林區公所', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_058": {x: 10, y: -189, name: '士林', stationClass: 4, noDraw: true, isPlanStation:true},
+                        "trtc_y27": {x: 130, y: -189, name: '林子口', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y28": {x: 200, y: -235, name: '故宮', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_022": {x: 300, y: -235, name: '劍南路', stationClass: 4, noDraw: true, noClick: true, isPlanStation:true},
+                        "trtc_y30": {x: 330, y: -210, name: '下塔悠', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y31": {x: 370, y: -205, name: '洲子', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y32": {x: 400, y: -185, name: '內科', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y33": {x: 400, y: -160, name: '瑞光', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y34": {x: 400, y: -135, name: '民權大橋', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_y35": {x: 400, y: -110, name: '舊宗', stationClass: 3, noClick: true, isPlanStation:true},
+                        "trtc_y36": {x: 450, y: 5, name: '松山 (環狀)', stationClass: 2, noClick: true, isPlanStation:true},
+                        "trtc_094": {x: 450, y: 60, name: '永春', stationClass: 4 , noClick: true, noDraw: true, isPlanStation:true},
+                        "trtc_099": {x: 435, y: 150, name: '象山', stationClass: 3 , noClick: true, noDraw: true, isPlanStation:true},
+                        "trtc_y39": {x: 435, y: 188, name: '吳興國小', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_yt35": {x: 380, y: -77, name: '西松', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_yt36": {x: 350, y: 30, name: '中崙', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_092": {x: 349, y: 60, name: '國父紀念館', stationClass: 4, noDraw: true, isPlanStation:true},
+                        "trtc_yt38": {x: 330, y: 128, name: '三張犁', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_013": {x: 280, y: 230, name: '六張犁', stationClass: 4, noDraw: true, noClick: true, isPlanStation:true},
+                        "trtc_yt40": {x: 190, y: 255, name: '龍安', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_039": {x: 100, y: 280, name: '公館', stationClass: 4, noDraw: true, isPlanStation:true},
+                        "trtc_yt42": {x: 50, y: 300, name: '福和', stationClass: 4, noClick: true, isPlanStation:true},
+                        "trtc_yt43": {x: 30, y: 330, name: '得和', stationClass: 4, noClick: true, isPlanStation:true}
                     }
                 }, {
                 //萬大線 a1d884 民汐線 25aae1 三鶯線 79bce8
@@ -1341,8 +1345,11 @@
                     id: "ntmetro_tamsui",
                     name: "[新北]淡海輕軌",
                     color: "#ff4d00",
-                    isPlanLine: true,
+                    isPlanLine: false,
                     isNoClickLine: true,
+                    hasPlanLineRange: [
+                        ['ntmetro_V28', 'ntmetro_V26']
+                    ],
                     nameTag: {
                         fontColor: '#FFF',
                         id:'ntmetro_V02', 
@@ -1372,9 +1379,9 @@
                         "ntmetro_V09": {x: -530, y: -385, name: '濱海沙崙', stationClass: 5},
                         "ntmetro_V10": {x: -560, y: -365, name: '淡海新市鎮', stationClass: 5},
                         "ntmetro_V11": {x: -560, y: -345, name: '崁頂', stationClass: 5},
-                        "ntmetro_V28": {x: -490, y: -365, name: '台北海洋大學', stationClass: 5},
-                        "ntmetro_V27": {x: -490, y: -345, name: '沙崙', stationClass: 5},
-                        "ntmetro_V26": {x: -490, y: -325, name: '淡水漁人碼頭', stationClass: 5}
+                        "ntmetro_V28": {x: -490, y: -365, name: '台北海洋大學', stationClass: 5, isPlanStation:true},
+                        "ntmetro_V27": {x: -490, y: -345, name: '沙崙', stationClass: 5, isPlanStation:true},
+                        "ntmetro_V26": {x: -490, y: -325, name: '淡水漁人碼頭', stationClass: 5, isPlanStation:true}
                     }
                 }, {
                     id: "ntmetro_ankeng",
@@ -1932,6 +1939,39 @@
                     aryLine: aryLine,
                     color: (isPlanLine && !cfg.drawPlanLineOriginalColor) ? cfg.drawPlanColor : tLine.color
                 });
+                if(!tLine.isPlanLine && !cfg.drawPlanLineOriginalColor && tLine.hasPlanLineRange && tLine.hasPlanLineRange.length>0){
+                    //覆蓋 plan line color
+                    tLine.hasPlanLineRange.forEach(function(rg){
+                        var aryPlanRange = [], aryPlanLine = [], isInRange = false;
+                        for(var i=0; i<dLine.length; i++){
+                            if(!isInRange && dLine[i].id==rg[0]){
+                                isInRange = true;
+                                aryPlanRange.push(dLine[i]);
+                            }else if(isInRange){
+                                aryPlanRange.push(dLine[i]);
+                                if(dLine[i].id==rg[1]) break;
+                            }
+                        }
+                        for(var i=0; i<aryPlanRange.length; i++){
+                            if(i==0) continue;
+                            stData = getStationData(aryPlanRange[i].id);
+                            if(aryPlanRange[i].type=='station'){
+                                aryPlanLine.push({x: stData.x, y: stData.y});
+                            }else if(aryPlanRange[i].type=='turn'){
+                                aryPlanLine.push({x: stData.x + aryPlanRange[i].ox, y: stData.y + aryPlanRange[i].oy, turn: true});
+                            }else if(aryPlanRange[i].type=='move'){
+                                aryPlanLine.push({x: stData.x, y: stData.y, move: true});
+                            }
+                        }
+                        stData = getStationData(rg[0]);
+                        ca.line({
+                            startX: stData.x,
+                            startY: stData.y,
+                            aryLine: aryPlanLine,
+                            color: cfg.drawPlanColor
+                        });
+                    })
+                }
             }
             
             function drawNameTagFn(tLine){
