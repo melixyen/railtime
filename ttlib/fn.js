@@ -2983,6 +2983,9 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 var hslTime = TT.fn.getTRTC_rnw_stationTime('trtc_077', line, dir, w);
                 return offsetTimeFn(hslTime, -3);
             }
+            if(rnwTime==false && line=='trtc_1'){
+                return TT.fn.getTRTC_ptxCalc_stationTime(stationID, line, dir, w);
+            }
             if(!w) w = TT.defined.defaultTRAWeekday;
             w = parseInt(w);
             if(!line){
@@ -3103,6 +3106,24 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 for(var i=0; i<st.length; i++){
                     if(st[i].dir==dir && st[i].week.indexOf(w)>=0){
                         rt = st[i].time;
+                        break;
+                    }
+                }
+            }
+            return rt;
+        },
+        getTRTC_ptxCalc_stationTime: function(stationID, line, dir, w){
+            if(!w) w = TT.defined.defaultTRAWeekday;
+            var ptxTmp = false, rt = false;
+            if(line=='trtc_1') ptxTmp = TT.ptx.trtc.catchData.calcBRLineTime();
+            if(ptxTmp){
+                var ptxID = TT.ptx.id.trtc.getPTXV2(stationID, line);
+                var st = ptxTmp.find(function(c){
+                    return c.StationID==ptxID;
+                }).Direction[dir];
+                for(var i=0; i<st.length; i++){
+                    if(st[i].weekStr.indexOf(w)>=0){
+                        rt = st[i].Timetables;
                         break;
                     }
                 }
@@ -3272,6 +3293,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             line = TT.fn.getTRTC_lineCheckOrDefault(a, b, line);
             if(line){
                 var baseStation = '';
+                if(line=='trtc_1') baseStation = 'trtc_br01';
                 if(line=='trtc_2') baseStation = 'trtc_071';
                 if(line=='trtc_3') baseStation = 'trtc_111';
                 if(line=='trtc_4') baseStation = 'trtc_048';

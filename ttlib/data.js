@@ -554,6 +554,27 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
         },
         trtc: {
             station_ary: [
+                //Wenhu Line
+                {id:"trtc_br01", name: "動物園", estring: "dongwuyuantaipeizoo"},
+                {id:"trtc_br02", name: "木柵", estring: "muzha"},
+                {id:"trtc_br03", name: "萬芳社區", estring: "wanfangshequwanfangcommunity"},
+                {id:"trtc_br04", name: "萬芳醫院", estring: "dongwuyuantaipeizoo"},
+                {id:"trtc_br05", name: "辛亥", estring: "xinhai"},
+                {id:"trtc_br06", name: "麟光", estring: "linguang"},
+                {id:"trtc_br07", name: "六張犁", estring: "liuzhangli"},
+                {id:"trtc_br08", name: "科技大樓", estring: "kejidaloutechnologybuilding"},
+                {id:"trtc_br12", name: "中山國中", estring: "zhongshanguozhongzhongshanjuniorhighschool"},
+                {id:"trtc_br13", name: "松山機場", estring: "songshanjichangsongshanairport"},
+                {id:"trtc_br14", name: "大直", estring: "dazhi"},
+                {id:"trtc_br15", name: "劍南路", estring: "jiannanlujiannanroad"},
+                {id:"trtc_br16", name: "西湖", estring: "xihu"},
+                {id:"trtc_br17", name: "港墘", estring: "gangqian"},
+                {id:"trtc_br18", name: "文德", estring: "wende"},
+                {id:"trtc_br19", name: "內湖", estring: "neihu"},
+                {id:"trtc_br20", name: "大湖公園", estring: "dahugongyuandahupark"},
+                {id:"trtc_br21", name: "葫洲", estring: "huzhou"},
+                {id:"trtc_br22", name: "東湖", estring: "donghu"},
+                {id:"trtc_br23", name: "南港軟體園區", estring: "nangangruantiyuanqunangangsoftwarepark"},
                 //Bannan Line
                 {id:"trtc_031", name: "南港展覽館", estring: "nangangzhanlanguantaipeinangangexhibitioncenter"},
                 {id:"trtc_097", name: "南港", estring: "nangang"},
@@ -647,6 +668,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             ],
             line: [
                 {
+                    id: "trtc_1",
+                    name: "文湖線(1)",
+                    color: "#b57a25",
+                    dir: "0",
+                    station: ["trtc_br01","trtc_br02","trtc_br03","trtc_br04","trtc_br05","trtc_br06","trtc_br07","trtc_br08","trtc_011","trtc_010","trtc_009","trtc_br12","trtc_br13","trtc_br14","trtc_br15","trtc_br16","trtc_br17","trtc_br18","trtc_br19","trtc_br20","trtc_br21","trtc_br22","trtc_br23","trtc_031"]
+                }, {
                     id: "trtc_5",
                     name: "板南線(5)",
                     color: "#005eb8",
@@ -711,6 +738,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 }
             ],
             offset_time: {
+                "trtc_1": {
+                    "trtc_br01": {
+                        "LineDir": "0", "trtc_br01":0, "trtc_br02":2,"trtc_br03":3,"trtc_br04":5,"trtc_br05":7,"trtc_br06":10,"trtc_br07":11,"trtc_br08":14,"trtc_011":15,"trtc_010":17,"trtc_009":19,"trtc_br12":21,"trtc_br13":23,
+                            "trtc_br14":27,"trtc_br15":29,"trtc_br16":31,"trtc_br17":33,"trtc_br18":34,"trtc_br19":36,"trtc_br20":37,"trtc_br21":40,"trtc_br22":41,"trtc_br23":43,"trtc_031":45
+                    }
+                },
                 "trtc_5": {
                     "trtc_097": {
                         "LineDir": "1", "trtc_031":-2, "trtc_097":0, "trtc_096":2, "trtc_095":4, "trtc_094":6, "trtc_093":8, "trtc_092":9, "trtc_091":11, "trtc_010":12, "trtc_089":15, "trtc_088":16, "trtc_051":18, "trtc_086":21
@@ -1175,6 +1208,26 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     changeLine: ["trtc_4", "trtc_4"],
                     changeStation: ['trtc_128','trtc_128'],
                     walkMinute: 1
+                }, {
+                    id: 'daan1', name: "大安",
+                    changeLine: ["trtc_2", "trtc_1"],
+                    changeStation: ['trtc_011','trtc_011'],
+                    walkMinute: 5
+                }, {
+                    id: 'zhongxiaofx1', name: "忠孝復興",
+                    changeLine: ["trtc_5", "trtc_1"],
+                    changeStation: ['trtc_010','trtc_010'],
+                    walkMinute: 5
+                }, {
+                    id: 'nanjingfx1', name: "南京復興",
+                    changeLine: ["trtc_3", "trtc_1"],
+                    changeStation: ['trtc_009','trtc_009'],
+                    walkMinute: 5
+                }, {
+                    id: 'nangangexpo1', name: "南港展覽館",
+                    changeLine: ["trtc_5", "trtc_1"],
+                    changeStation: ['trtc_031','trtc_031'],
+                    walkMinute: 5
                 }, {
                     id: 'changgengyiyuan1', name: "長庚醫院",
                     changeLine: ["tymetro_1", "tymetro_1"],
@@ -1937,6 +1990,41 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         bypassStationReg: '^trtc_04[0-3]$|^trtc_03[2-9]$',
                         line: ["trtc_3", "trtc_2"],
                         transStation: ["zhongshan1"]
+                    }
+                ]
+            }, {
+                id: 'trtc_1,trtc_2',
+                fromToLine: ["trtc_1","trtc_2"],
+                sect: ['taipei'],
+                route: [
+                    {
+                        line: ["trtc_1", "trtc_2"],
+                        transStation: ["daan1"]
+                    }
+                ]
+            }, {
+                id: 'trtc_1,trtc_3',
+                fromToLine: ["trtc_1","trtc_3"],
+                sect: ['taipei'],
+                route: [
+                    {
+                        line: ["trtc_1", "trtc_3"],
+                        transStation: ["nanjingfx1"]
+                    }
+                ]
+            }, {
+                id: 'trtc_1,trtc_5',
+                fromToLine: ["trtc_1","trtc_5"],
+                sect: ['taipei'],
+                route: [
+                    {
+                        line: ["trtc_1", "trtc_5"],
+                        transStation: ["zhongxiaofx1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_br0[1-8]$|^trtc_009$|^trtc_01[0-1]$|^trtc_br1[2-4]$',
+                        line: ["trtc_1", "trtc_5"],
+                        transStation: ["nangangexpo1"]
                     }
                 ]
             }, {

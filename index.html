@@ -201,7 +201,7 @@ body {
 .define_rail_bgcolor_tra_xibu, .define_rail_bgcolor_tra_shan, .define_rail_bgcolor_tra_zhjy, .define_rail_bgcolor_tra_jygx, .define_rail_bgcolor_tra_pingdong, .define_rail_bgcolor_tra_yilan, .define_rail_bgcolor_tra_beihui,
 .define_rail_bgcolor_tra_pingxi, .define_rail_bgcolor_tra_liujia, .define_rail_bgcolor_tra_huadong, .define_rail_bgcolor_tra_shalun, .define_rail_bgcolor_tra_hai, .define_rail_bgcolor_tra_jiji,
 .define_rail_bgcolor_tymetro_1,
-.define_rail_bgcolor_trtc_2, .define_rail_bgcolor_trtc_3, .define_rail_bgcolor_trtc_4, .define_rail_bgcolor_trtc_5{
+.define_rail_bgcolor_trtc_1, .define_rail_bgcolor_trtc_2, .define_rail_bgcolor_trtc_3, .define_rail_bgcolor_trtc_4, .define_rail_bgcolor_trtc_5{
     color: #EEF !important;
 }
 .define_rail_bgcolor_tra_xibu{
@@ -245,6 +245,9 @@ body {
 }
 .define_rail_bgcolor_tymetro_1{
     background-color: #8e47ad !important;
+}
+.define_rail_bgcolor_trtc_1{
+    background-color: #b57a25 !important;
 }
 .define_rail_bgcolor_trtc_2{
     background-color: #cb2c30 !important;
@@ -496,10 +499,12 @@ body {
     height: 48px;
     border-left: 5px dashed #000000;
 }
+.timeTableTrainRouteBox .table .deep .line_color.trtc_1, .timeTableTrainRouteBox .table .deep .line_color.trtc_1 .bd{border-color: #b57a25;}
 .timeTableTrainRouteBox .table .deep .line_color.trtc_2, .timeTableTrainRouteBox .table .deep .line_color.trtc_2 .bd{border-color: #cb2c30;}
 .timeTableTrainRouteBox .table .deep .line_color.trtc_3, .timeTableTrainRouteBox .table .deep .line_color.trtc_3 .bd{border-color: #007749;}
 .timeTableTrainRouteBox .table .deep .line_color.trtc_4, .timeTableTrainRouteBox .table .deep .line_color.trtc_4 .bd{border-color: #ffa300;}
 .timeTableTrainRouteBox .table .deep .line_color.trtc_5, .timeTableTrainRouteBox .table .deep .line_color.trtc_5 .bd{border-color: #005eb8;}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_1 .bd,
 .timeTableTrainRouteBox .table .deep .line_color.trtc_2 .bd,
 .timeTableTrainRouteBox .table .deep .line_color.trtc_3 .bd,
 .timeTableTrainRouteBox .table .deep .line_color.trtc_4 .bd,
@@ -808,11 +813,12 @@ var TT = (function(){
             "程式名稱": "接軌時刻",
             "作者": "Melix Yen (melixyen@gmail.com)",//修改後請將自己的名稱以 , 分隔加在前人後面，可帶括號標誌匿名或電子郵件等其他資訊，例如 test (test@abc.com)
             '發行單位': '<span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span>',
-            "版本": "Beta 0.6.0",
-            "產生日期": "2018/12/20",
+            "版本": "Beta 0.6.1",
+            "產生日期": "2020/01/27",
             "資料源": "離線資料由台鐵及捷運公開資料轉換取得，線上資料介接交通部PTX服務平臺"
     };
     TT.defined.programUpdateInfo = [
+                    'Beta 0.6.1: 新增文湖線，使用頻率計算時刻表。',
                     'Beta 0.6.0: 新增公共交通整合平台 PTX API 呼叫 lib，有讀回時刻表則用該時刻表。',
                     'Beta 0.5.9: 新增台鐵補償式自動化搜尋連結處理屏東線及海線和集集線。',
                     'Beta 0.5.8: 新增台鐵捷運化 2018 年啟用之台中及高雄通勤站。',
