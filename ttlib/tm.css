@@ -190,7 +190,7 @@ body {
 .define_rail_bgcolor_tra_xibu, .define_rail_bgcolor_tra_shan, .define_rail_bgcolor_tra_zhjy, .define_rail_bgcolor_tra_jygx, .define_rail_bgcolor_tra_pingdong, .define_rail_bgcolor_tra_yilan, .define_rail_bgcolor_tra_beihui,
 .define_rail_bgcolor_tra_pingxi, .define_rail_bgcolor_tra_liujia, .define_rail_bgcolor_tra_huadong, .define_rail_bgcolor_tra_shalun, .define_rail_bgcolor_tra_hai, .define_rail_bgcolor_tra_jiji,
 .define_rail_bgcolor_tymetro_1,
-.define_rail_bgcolor_trtc_1, .define_rail_bgcolor_trtc_2, .define_rail_bgcolor_trtc_3, .define_rail_bgcolor_trtc_4, .define_rail_bgcolor_trtc_5{
+.define_rail_bgcolor_trtc_1, .define_rail_bgcolor_trtc_2, .define_rail_bgcolor_trtc_3, .define_rail_bgcolor_trtc_4, .define_rail_bgcolor_trtc_5, .define_rail_bgcolor_trtc_6{
     color: #EEF !important;
 }
 .define_rail_bgcolor_tra_xibu{
@@ -250,6 +250,10 @@ body {
 }
 .define_rail_bgcolor_trtc_5{
     background-color: #005eb8 !important;
+}
+.define_rail_bgcolor_trtc_6{
+    background-color: #ffdb00 !important;
+    color: #555 !important;
 }
 
 .tt_ck_route_sh{
@@ -493,11 +497,13 @@ body {
 .timeTableTrainRouteBox .table .deep .line_color.trtc_3, .timeTableTrainRouteBox .table .deep .line_color.trtc_3 .bd{border-color: #007749;}
 .timeTableTrainRouteBox .table .deep .line_color.trtc_4, .timeTableTrainRouteBox .table .deep .line_color.trtc_4 .bd{border-color: #ffa300;}
 .timeTableTrainRouteBox .table .deep .line_color.trtc_5, .timeTableTrainRouteBox .table .deep .line_color.trtc_5 .bd{border-color: #005eb8;}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_6, .timeTableTrainRouteBox .table .deep .line_color.trtc_6 .bd{border-color: #ffdb00;}
 .timeTableTrainRouteBox .table .deep .line_color.trtc_1 .bd,
 .timeTableTrainRouteBox .table .deep .line_color.trtc_2 .bd,
 .timeTableTrainRouteBox .table .deep .line_color.trtc_3 .bd,
 .timeTableTrainRouteBox .table .deep .line_color.trtc_4 .bd,
-.timeTableTrainRouteBox .table .deep .line_color.trtc_5 .bd{
+.timeTableTrainRouteBox .table .deep .line_color.trtc_5 .bd,
+.timeTableTrainRouteBox .table .deep .line_color.trtc_6 .bd{
     border-style: solid;
 }
 .timeTableTrainRouteBox .table .deep .line_color.tymetro_1, .timeTableTrainRouteBox .table .deep .line_color.tymetro_1 .bd{

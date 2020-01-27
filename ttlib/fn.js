@@ -2986,6 +2986,10 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             if(rnwTime==false && line=='trtc_1'){
                 return TT.fn.getTRTC_ptxCalc_stationTime(stationID, line, dir, w);
             }
+            if(rnwTime==false && line=='trtc_6'){
+                var ssrt = TT.fn.getTRTC_rnw_stationTime('trtc_177', 'trtc_4', dir, w);//環狀線暫無時刻表，用三和國中站時刻表替代所有站
+                return ssrt;
+            }
             if(!w) w = TT.defined.defaultTRAWeekday;
             w = parseInt(w);
             if(!line){
@@ -3298,6 +3302,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 if(line=='trtc_3') baseStation = 'trtc_111';
                 if(line=='trtc_4') baseStation = 'trtc_048';
                 if(line=='trtc_5') baseStation = 'trtc_097';
+                if(line=='trtc_6') baseStation = 'trtc_036';
                 var lineA = TT.data.trtc.offset_time[line][baseStation];
                 var aOffset = lineA[a];
                 var bOffset = lineA[b];
