@@ -1,0 +1,754 @@
+@charset "utf-8";
+
+body {
+    /*font-family:'細明體', "PMingLiU";*/
+    font-size: 14px;
+    margin: 0px;
+}
+
+.floatLeftStyle{
+	float: left;
+}
+
+.headerBar{
+    position: fixed;
+    height: 40px;
+    max-height: 40px;
+    overflow: hidden;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    line-height: 28px;
+    background-color: #FFF;
+}
+.headerButton, .headerButton2{
+    display: inline;
+    margin: 3px 6px;
+    border: 2px solid #22CCEF;
+    background-color: #4BE9F2;
+    color: #5E5E5E;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.headerButton2{
+    border: 2px solid #a2a912;
+    background-color: #dbc932;
+}
+@supports (display: flex) {
+    .headerBar{
+        display: -webkit-flex;
+        display: flex;
+    }
+    .headerButton{
+        -webkit-flex: 1;
+        flex: 1;
+    }
+}
+
+.statusBar{
+    position: fixed;
+    height: 20px;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    background-color: #DDD;
+    padding-left: 20px;
+    color: #5E3B70;
+    line-height: 18px;
+    font-size: 12px;
+}
+
+.center{
+    border: 2px solid #4EBCD5;
+    margin: 40px 10px 20px;
+    overflow: auto;
+}
+
+.centerPage{
+    margin: 3px;
+    display: none;
+    padding-top: 15px;
+}
+.centerPage.show{
+    display: block;
+}
+.centerPage .selectStationOut{background-color: #E2FAE4;}
+.centerPage .selectWeekOut, .centerPage .selectTimeOut{background-color: #FAFAE2;}
+.centerPage .selectStationOut .selectStationIn,  .centerPage .findButtonDiv,
+.centerPage .selectWeekOut .selectWeekIn,
+.centerPage .selectTimeOut .selectTimeIn{
+    padding: 5px;
+}
+
+.centerPage .findButtonDiv{
+	display: inline-block;
+	width: 90%;
+}
+
+.centerPage .selectTimeOut .selectTimeIn .setNow{
+    display: inline-block;
+    font-size: 12px;
+    margin: 0 5px;
+    border-radius: 10px;
+    border: 2px solid #7CE;
+    background-color: #8EF;
+    color: #357;
+    padding: 0px 8px;
+    cursor: pointer;
+}
+
+.help_selectStationByLine,
+.centerPage .selectStationOut .selectStationIn .selectStationByLine,
+.centerPage .selectStationOut .selectStationIn .selectStationExchange{
+    display: inline-block;
+    border: 2px solid #1A2;
+    border-radius: 10px;
+    background-color: #2E3;
+    color: #131;
+    padding: 0px 8px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+.centerPage .selectStationOut .selectStationIn .selectStationExchange{
+    border: 2px solid #7CE;
+    background-color: #8EF;
+    color: #357;
+}
+.centerPage .inputStation{
+    display: inline-block;
+    width: 120px;
+    margin: 0 10px;
+}
+#ttc_stationSelect_start, #ttc_stationSelect_end{
+    background-color: #EEF;
+}
+
+.center .frameA{
+    border: 1px solid #2E9CB5;
+    margin: 10px auto;
+    max-width: 1000px;
+    padding: 3px;
+}
+.center .frameA .title{
+    font-weight: bold;
+    font-size: 16px;
+    color: #444;
+    margin: 3px;
+}
+
+.center .frameB{
+    border: 1px solid #4E9CD5;
+    margin: 10px auto;
+    padding: 3px;
+}
+
+.center .ttbDisplay{
+    border: 1px solid #4E8CE5;
+    margin: 10px auto;
+    max-width: 1000px;
+}
+
+.center .ttbDisplay .route{
+    background-color: #FCF9FD;
+    border-bottom: 1px solid #4A4C55;
+    margin: 0px;
+    min-height: 80px;
+    width: 100%;
+}
+.center .ttbDisplay .train{
+    background-color: #FEFEFE;
+    margin: 0px;
+    min-height: 200px;
+    width: 100%;
+}
+
+.center .preSetting{
+    border-bottom: 1px solid #2C2C2C;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+.inputListStation{
+    position: absolute;
+    background-color: #FDFDFD;
+    border: 1px solid #CACACA;
+    top: 0px;
+    left: 0px;
+    cursor: pointer;
+}
+.inputListStation .name{
+    padding: 5px 10px;
+    font-size: 13px;
+    color: #2D4DFF;
+}
+.inputListStation .name:hover{
+    background-color: #DFD;
+}
+
+.define_rail_bgcolor_tra_xibu, .define_rail_bgcolor_tra_shan, .define_rail_bgcolor_tra_zhjy, .define_rail_bgcolor_tra_jygx, .define_rail_bgcolor_tra_pingdong, .define_rail_bgcolor_tra_yilan, .define_rail_bgcolor_tra_beihui,
+.define_rail_bgcolor_tra_pingxi, .define_rail_bgcolor_tra_liujia, .define_rail_bgcolor_tra_huadong, .define_rail_bgcolor_tra_shalun, .define_rail_bgcolor_tra_hai, .define_rail_bgcolor_tra_jiji,
+.define_rail_bgcolor_tymetro_1,
+.define_rail_bgcolor_trtc_1, .define_rail_bgcolor_trtc_2, .define_rail_bgcolor_trtc_3, .define_rail_bgcolor_trtc_4, .define_rail_bgcolor_trtc_5{
+    color: #EEF !important;
+}
+.define_rail_bgcolor_tra_xibu{
+    background-color: #000050 !important;
+}
+.define_rail_bgcolor_tra_shan{
+    background-color: #104020 !important;
+}
+.define_rail_bgcolor_tra_zhjy{
+    background-color: #707010 !important;
+}
+.define_rail_bgcolor_tra_jygx{
+    background-color: #302040 !important;
+}
+.define_rail_bgcolor_tra_pingdong{
+    background-color: #7D3810 !important;
+}
+.define_rail_bgcolor_tra_yilan{
+    background-color: #500000 !important;
+}
+.define_rail_bgcolor_tra_beihui{
+    background-color: #004060 !important;
+}
+.define_rail_bgcolor_tra_huadong{
+    background-color: #605040 !important;
+}
+.define_rail_bgcolor_tra_hai{
+    background-color: #2050C0 !important;
+}
+.define_rail_bgcolor_tra_pingxi{
+    background-color: #003030 !important;
+}
+.define_rail_bgcolor_tra_liujia{
+    background-color: #403090 !important;
+}
+.define_rail_bgcolor_tra_jiji{
+    background-color: #22A050 !important;
+}
+.define_rail_bgcolor_tra_shalun{
+    background-color: #124060 !important;
+}
+.define_rail_bgcolor_tymetro_1{
+    background-color: #8e47ad !important;
+}
+.define_rail_bgcolor_trtc_1{
+    background-color: #b57a25 !important;
+}
+.define_rail_bgcolor_trtc_2{
+    background-color: #cb2c30 !important;
+}
+.define_rail_bgcolor_trtc_3{
+    background-color: #007749 !important;
+}
+.define_rail_bgcolor_trtc_4{
+    background-color: #ffa300 !important;
+    color: #555 !important;
+}
+.define_rail_bgcolor_trtc_5{
+    background-color: #005eb8 !important;
+}
+
+.tt_ck_route_sh{
+    display:inline-block; border:1px solid #222;
+    background-color: #EFBCDF;
+    margin: 8px;
+    height: 24px;
+}
+.tt_ck_route_sh .stag{
+    color: #FDFDFD;
+    background-color: #9c6f2e;
+    border:1px solid #812;
+    display:inline-block;
+    margin-right: 8px;
+}
+.tt_ck_route_sh .fmin{
+    color: #223EED;
+}
+.tt_ck_route_filterPri{
+    display:inline-block; 
+    border:2px solid #BA2;
+    border-radius: 5px;
+    background-color: #EFDC3F;
+    margin: 3px 8px;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    font-size: 140%;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+.tt_ck_sortby_sh{
+    display:inline-block; 
+    border:1px solid #29A;
+    border-radius: 8px;
+    background-color: #AFBCBF;
+    margin: 5px 10px;
+    padding: 1px 5px 1px 8px;
+    cursor: pointer;
+    position: relative;
+}
+.tt_ck_sortby_sh.select{
+    border:1px solid #2A9;
+    border-left: 20px solid #3E4;;
+    background-color: #AFECAF;
+    color: #5C1B6F;
+}
+.helpForSortBySelectButton .arrow, .helpForRouteCheckBox .arrow{
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    border-right: 8px solid #2A9;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    margin-right: 5px;
+}
+.helpForSortBySelectButton{
+    color: #FEFEFE;
+}
+.helpForRouteCheckBox{
+    color: #2B3D9A;
+}
+
+.timeTableTrainRouteBox{
+    margin: 10px 50px 20px 50px;
+    padding: 5px 0px;
+    border-bottom: 2px solid #041239;
+    background-color: #FFF;
+}
+.timeTableTrainRouteBox .header{
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid #D2E5BA;
+}
+.timeTableTrainRouteBox .header .sub{
+    display: inline;
+    margin: 3px 20px 3px 0px;
+}
+
+.timeTableTrainRouteBox .header .num{
+    color: #901111;
+    font-size: 14px;
+}
+.timeTableTrainRouteBox .header .count .val{
+    color: #FF2C0E;
+}
+.timeTableTrainRouteBox .header .totalTime .val{
+    color: #1F9C8E;
+}
+.timeTableTrainRouteBox .header .startTime .val, .timeTableTrainRouteBox .header .endTime .val{
+    color: #1F6CFE;
+}
+.timeTableTrainRouteBox .header .printCanvas{
+    color: #DFF2D2;
+    background-color: #30201A;
+    padding: 0px 5px;
+    border: 1px solid #40302A;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.timeTableTrainRouteBox .timeRouteDiv{
+    position: relative;
+}
+.timeTableTrainRouteBox .table th{
+    margin: 3px 10px;
+    background-color: #B7EFF0;
+    color: #2E0E1E;
+    font-size: 16px;
+    font-weight: 400;
+    border: 2px solid #FDFDFD;
+}
+.timeTableTrainRouteBox .table td{
+    margin: 3px 10px;
+    color: #2E0E1E;
+    font-size: 14px;
+    font-weight: 400;
+}
+.timeTableTrainRouteBox .table .sect{
+    min-width: 40px;
+}
+.timeTableTrainRouteBox .table .time{
+    min-width: 70px;
+}
+.timeTableTrainRouteBox .table .station{
+    min-width: 120px;
+}
+.timeTableTrainRouteBox .table .info{
+    min-width: 150px;
+    max-width: 150px;
+}
+.timeTableTrainRouteBox .table .line{
+    min-width: 190px;
+    max-width: 250px;
+}
+.timeTableTrainRouteBox .table .other{
+    min-width: 80px;
+}
+.timeTableTrainRouteBox .table td.sect{
+    color: #BD122B;
+}
+.timeTableTrainRouteBox .transStationVideoClick{
+    display: inline-block;
+    margin-left: 18px;
+    padding: 0px 5px;
+    color: #F0FE46;
+    background-color: #202029;
+    border-radius: 8px;
+    cursor: pointer;
+    animation-duration: 1s;
+    animation-name: ccblink;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+@keyframes ccblink{
+    0%{color: #F0FE46;}
+    40%{color: #A0FE66;}
+    70%{color: #80FE86;}
+    100%{color: #A0FE66;}
+}
+.timeTableTrainRouteBox .transStationAdjustWalkTime{
+    display: inline-block;
+    margin-left: 18px;
+    padding: 0px 5px;
+    color: #1deafc;
+    background-color: #7c3014;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 579px) {
+    .timeTableTrainRouteBox .table .info, .timeTableTrainRouteBox .table .line, .timeTableTrainRouteBox .table .other{
+        display: none;
+    }
+}
+@media screen and (min-width: 580px) and (max-width: 779px) {
+    .timeTableTrainRouteBox .table .line, .timeTableTrainRouteBox .table .other{
+        display: none;
+    }
+}
+@media screen and (min-width: 780px) and (max-width: 909px) {
+    .timeTableTrainRouteBox .table .other{
+        display: none;
+    }
+}
+.timeTableTrainRouteBox .timeRouteDiv.showAll .table .info, .timeTableTrainRouteBox .timeRouteDiv.showAll .table .line, .timeTableTrainRouteBox .timeRouteDiv.showAll .table .other{
+    display: table-cell;
+}
+.timeTableTrainRouteBox .timeRouteDiv .more, .help_timeTableResultMore{
+    width: 40px;
+    height: 32px;
+    font-size: 200%;
+    color: #BBB;
+    font-weight: bold;
+    position: absolute;
+    right: -40px;
+    top: 7px;
+    background-color: #DDD;
+    border: 1px solid #BBB;
+    overflow: hidden;
+    cursor: pointer;
+}
+.help_timeTableResultMore{
+    position: static;
+    display: inline-block;
+}
+@media screen and (min-width: 910px) {
+    .timeTableTrainRouteBox .timeRouteDiv .more{
+        display: none;
+    }
+}
+.timeTableTrainRouteBox .timeRouteDiv.showAll .more{display: none;}
+
+.timeTableTrainRouteBox .table .timeBox .value, .timeTableTrainRouteBox .table .stationBox .value{
+    min-height: 20px;
+    font-size: 120%;
+}
+.timeTableTrainRouteBox .table .timeBox .deep, .timeTableTrainRouteBox .table .stationBox .deep{
+    text-align: center;
+    min-height: 50px;
+}
+.timeTableTrainRouteBox .table .timeBox .deep .minute{
+    line-height: 50px;
+    color: #8E8E8E;
+}
+.timeTableTrainRouteBox .table .deep .line_color{
+    border: 1px solid #000000;
+    width: 5px;
+    height: 48px;
+    overflow: hidden;
+}
+.timeTableTrainRouteBox .table .deep .line_color .bd{
+    height: 48px;
+    border-left: 5px dashed #000000;
+}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_1, .timeTableTrainRouteBox .table .deep .line_color.trtc_1 .bd{border-color: #b57a25;}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_2, .timeTableTrainRouteBox .table .deep .line_color.trtc_2 .bd{border-color: #cb2c30;}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_3, .timeTableTrainRouteBox .table .deep .line_color.trtc_3 .bd{border-color: #007749;}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_4, .timeTableTrainRouteBox .table .deep .line_color.trtc_4 .bd{border-color: #ffa300;}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_5, .timeTableTrainRouteBox .table .deep .line_color.trtc_5 .bd{border-color: #005eb8;}
+.timeTableTrainRouteBox .table .deep .line_color.trtc_1 .bd,
+.timeTableTrainRouteBox .table .deep .line_color.trtc_2 .bd,
+.timeTableTrainRouteBox .table .deep .line_color.trtc_3 .bd,
+.timeTableTrainRouteBox .table .deep .line_color.trtc_4 .bd,
+.timeTableTrainRouteBox .table .deep .line_color.trtc_5 .bd{
+    border-style: solid;
+}
+.timeTableTrainRouteBox .table .deep .line_color.tymetro_1, .timeTableTrainRouteBox .table .deep .line_color.tymetro_1 .bd{
+    border-color: #8e47ad;
+}
+.timeTableTrainRouteBox .table td.transStation{
+    color: #9D92AB;
+    border-bottom: 1px solid #CCC;
+}
+.timeTableTrainRouteBox .table .trtcArriveTimeInfo{
+    font-size: 80%;
+    color: #AA2010;
+}
+
+.editTool .tag{
+    display: block;
+    width: 100%;
+    height: 40px;
+}
+.editTool .tag .tagSelect{
+    /*display: inline;*/
+    float: left;
+    margin: 0px 10px;
+    padding: 5px;
+    border: 2px solid #2C2E2F;
+    background-color: #EEC;
+    cursor: pointer;
+}
+.editTool .tag .tagSelect.selected{background-color: #DCE;}
+.editTool .editor{
+    width: 100%;
+}
+.editTool .editor textarea{
+    width: 90%;
+    height: 400px;
+}
+.editTool .editor .btnDiv{
+    display: inline;
+    margin: 0 10px 0 0;
+}
+
+.ckWeekLoaded{
+    background-color: #FF0000;
+    color: #FFF;
+    display: inline;
+    padding: 0 10px;
+}
+
+.defineFontStyle1{
+    color: #302010;
+    font-weight: 500;
+    background-color: #D0C0F0;
+}
+
+.mask{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(210,210,210,0.6);
+    text-align: center;
+    z-index: 105;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+.mask .text{
+    position: relative;
+    font-size: 24px;
+    color: #EF7879;
+}
+.mask.show{
+    display: -webkit-flex;
+    display: flex;
+}
+.systemButton{
+    cursor: pointer;
+    border: 2px solid #999;
+    background-color: #DDD;
+    min-height: 30px;
+    line-height: 26px;
+    padding: 2px 12px;
+    display: inline;
+    margin: 0px 5px;
+}
+
+.msg.show{
+    min-width: 100px;
+    max-width: 50%;
+    padding: 20px;
+    background-color: #2080D0;
+    color: #FFF;
+    position: fixed;
+    opacity: 1;
+    transition: opacity 0.9s ease 0.1s;
+    z-index: 151;
+    text-align: center;
+}
+.msg.show.afterEffect{opacity: 0;}
+
+.ttWindow{
+    display: inline-block;
+    padding: 20px;
+    background-color: #3F9EED;
+    border: 2px solid #948522;
+    position: absolute;
+    top: 0px;
+    height: 0px;
+}
+.ttWindow .inner{
+    background-color: #F2F2F2;
+    min-width: 160px;
+    min-height: 100px;
+}
+.ttWindow .ttWindowClose, .ttMapSelector .ttWindowClose{
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #4D5F5F;
+    position: absolute;
+    right: 0px;
+    top: 2px;
+    cursor: pointer;
+}
+
+.ttMapSelector{
+    display: inline-block;
+    background-color: #FFF;
+    background-color: rgba(255,255,255,1);
+    border: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    min-height: 500px;
+    overflow: hidden;
+}
+.ttMapSelector .main{
+    position: relative;
+    left: 0px;
+}
+.ttMapSelector .header{
+    position: relative;
+    left: 0px;
+    height: 30px;
+    max-height: 30px;
+    overflow: hidden;
+}
+.ttMapSelector .header .tabName{
+    float: left;
+    padding: 2px 5px;
+    border: 2px solid #FC98DA;
+    height: 20px;
+    font-size: 16px;
+    color: #3D6A7B;
+    line-height: 20px;
+    background-color: #FDB8EC;
+    cursor: pointer;
+}
+.ttMapSelector .header .tabName.onUse{
+    border: 2px solid #98FCDA;
+    color: #6A3D7B;
+    background-color: #B8FDEC;
+    border-bottom-color: #FFF;
+    border-top-color: #28AC3A;
+}
+.line_selector{
+    position: relative;
+}
+.line_selector .allLine{
+    color: #FFF;
+    font-size: 110%;
+    width: 300px;
+    max-width: 300px;
+    float: left;
+    left: 20px;
+    top: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.line_selector .allLine .lineName{
+    height: 24px;
+    line-height: 22px;
+    border-top: 0px solid transparent;
+    padding-left: 10px;
+}
+.line_selector .allLine .lineName.select{
+    border-right: 0px solid transparent;
+}
+.line_selector .allStation{
+    color: #FFF;
+    font-size: 110%;
+    width: 210px;
+    text-align: center;
+    max-width: 210px;
+    float: left;
+    left: 320px;
+    top: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.line_selector .allStation .stationName{
+    border-bottom: 1px solid #FFF;
+    height: 24px;
+    line-height: 22px;
+    margin: 0px 30px;
+}
+.line_selector .allStation .stationName:hover{
+    background-color: rgba(255,255,255,0.4);
+}
+@media (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi){ 
+    .line_selector .allLine, .line_selector .allStation{
+        font-size: 130%;
+    }
+    .line_selector .allStation .stationName, .line_selector .allLine .lineName{
+        height: 40px;
+        line-height: 38px;
+    }
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi){ 
+    .line_selector .allLine, .line_selector .allStation{
+        font-size: 160%;
+    }
+    .line_selector .allStation .stationName, .line_selector .allLine .lineName{
+        height: 50px;
+        line-height: 48px;
+    }
+}
+
+.transStationWalkTimeWindow .contentBox{
+    margin: 10px;
+}
+.transStationWalkTimeWindow .buttonBox{
+    margin: 10px;
+}
+.transStationWalkTimeWindow .buttonBox button{
+    margin-right: 10px;
+}
+.transStationWalkTimeWindow .stationName{
+    color:#307F98;
+    font-weight:bold;
+}
+.transStationWalkTimeWindow .minute{
+    width: 40px;
+    text-align: right;
+    font-size: 120%;
+}
+
+/* All common CSS */
+.tt_display_none{display: none;}
