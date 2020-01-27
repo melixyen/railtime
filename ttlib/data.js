@@ -1849,6 +1849,37 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     }
                 ]
             }, {//TRA to TRTC
+                id: 'tra_xibu,trtc_1',
+                fromToLine: ["tra_xibu","trtc_1"],
+                sect: ['taipei','keelung','taoyuan','hsinchu'],
+                route: [
+                    {
+                        bypassStationReg: '^trtc_br0[0-8]$|^trtc_01[0-1]$|^trtc_009$',
+                        line: ["tra_xibu", "trtc_3", "trtc_1"],
+                        transStation: ["songshan1", "nanjingfx1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_br0[0-8]$|^trtc_01[0-1]$|^trtc_009$|^trtc_br1[2-4]$',
+                        line: ["tra_xibu", "trtc_5", "trtc_1"],
+                        transStation: ["nangang1", "nangangexpo1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_br2[0-3]$|^trtc_031$|^trtc_br1[6-9]$',
+                        line: ["tra_xibu", "trtc_5", "trtc_1"],
+                        transStation: ["nangang1", "zhongxiaofx1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_br2[2-3]$|^trtc_031$',
+                        line: ["tra_xibu", "trtc_5", "trtc_1"],
+                        transStation: ["taipei1", "zhongxiaofx1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_br2[0-3]$|^trtc_031$|^trtc_br1[2-9]$|^trtc_01[0-1]$|^trtc_009$',
+                        line: ["tra_xibu", "trtc_2", "trtc_1"],
+                        transStation: ["taipei2", "daan1"]
+                    }
+                ]
+            }, {
                 id: 'tra_xibu,trtc_3',
                 fromToLine: ["tra_xibu","trtc_3"],
                 sect: ['taipei','keelung','taoyuan','hsinchu'],
@@ -2084,6 +2115,29 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     }
                 ]
             }, {//TYMETRO to TRTC
+                id: 'tymetro_1,trtc_1',
+                fromToLine: ["tymetro_1","trtc_1"],
+                sect: ['taipei','taoyuan'],
+                route: [
+                    {
+                        line: ["tymetro_1", "trtc_3", "trtc_1"],
+                        transStation: ["taipei7", "nanjingfx1"]
+                    },
+                    {
+                        line: ["tymetro_1", "trtc_2", "trtc_1"],
+                        transStation: ["taipei5", "daan1"]
+                    },
+                    {
+                        line: ["tymetro_1", "trtc_5", "trtc_1"],
+                        transStation: ["taipei6", "zhongxiaofx1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_br0[1-8]$|^trtc_009$|^trtc_01[0-1]$|^trtc_br1[2-4]$',
+                        line: ["tymetro_1", "trtc_5", "trtc_1"],
+                        transStation: ["taipei6", "nangangexpo1"]
+                    }
+                ]
+            }, {
                 id: 'tymetro_1,trtc_3',
                 fromToLine: ["tymetro_1","trtc_3"],
                 sect: ['taipei','taoyuan'],
@@ -2751,6 +2805,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 			['banqiao1','taipei1','nangang1']
                 		]
                 	}, {
+                		regLine: "^trtc_1|^tra_",
+                		transStation: [
+                			['songshan1','taipei1','nangang1']
+                		]
+                	}, {
                 		regLine: "^trtc_3$|^trtc_4|^tra_",
                 		transStation: [['taipei2','songshan1']]
                 	}, {
@@ -2772,6 +2831,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 		regLine: "^trtc_5|^tra_",
                 		transStation: [
                 			['banqiao1','taipei1']
+                		]
+                	}, {
+                		regLine: "^trtc_1|^tra_",
+                		transStation: [
+                			['songshan1','taipei1','nangang1']
                 		]
                 	}, {
                 		regLine: "^trtc_3$|^trtc_4|^tra_",
