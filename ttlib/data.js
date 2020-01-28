@@ -2027,6 +2027,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         bypassStationReg: '^trtc_132$|^trtc_089$|^trtc_134$|^trtc_041$|^trtc_04[5-8]$',
                         line: ["tra_xibu", "trtc_3", "trtc_4"],
                         transStation: ["songshan1","sjnanjing1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_0|^trtc_13[0-9]$|^trtc_17[4-8]$',
+                        line: ["tra_xibu", "trtc_6", "trtc_4"],
+                        transStation: ["banqiao3","touqianzhang1"]
                     }
                 ]
             }, {
