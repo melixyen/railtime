@@ -2042,6 +2042,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         bypassStationReg: '^trtc_y1[2-9]$|^trtc_y20$',
                         line: ["tra_xibu", "trtc_2", "trtc_3", "trtc_6"],
                         transStation: ["taipei1","cksmh1","dapinglin1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_y1[5-9]$|^trtc_y20$|^trtc_036$',
+                        line: ["tra_xibu", "trtc_2", "trtc_3", "trtc_4", "trtc_6"],
+                        transStation: ["taipei1","cksmh1","guting1","jingan1"]
                     }
                 ]
             }, {//TRA to TTYMETRO
@@ -2250,10 +2255,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: ["dongmen1","jingan1"]
                     },
                     {
+                        bypassBothStationReg: '^trtc_047$|^trtc_y0[8-9]$|^trtc_y1[0-2]|^trtc_099$|^trtc_10[0-3]$|^trtc_011$|^trtc_134$|^trtc_042$',
                         line: ["trtc_2", "trtc_5", "trtc_6"],
                         transStation: ["taipei3","xinpu1"]
                     },
                     {
+                        bypassBothStationReg: '^trtc_047$|^trtc_y0[8-9]$|^trtc_y1[0-2]|^trtc_099$|^trtc_10[0-3]$|^trtc_011$|^trtc_134$|^trtc_042$',
                         line: ["trtc_2", "trtc_5", "trtc_6"],
                         transStation: ["taipei3","banqiao2"]
                     }
@@ -2279,10 +2286,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: ["guting1","jingan1"]
                     },
                     {
+                        bypassBothStationReg: '^trtc_047$|^trtc_y0[8-9]$|^trtc_y1[0-2]|^trtc_03[3-9]$|^trtc_04[0-3]$',
                         line: ["trtc_3", "trtc_5", "trtc_6"],
                         transStation: ["ximen1","xinpu1"]
                     },
                     {
+                        bypassBothStationReg: '^trtc_047$|^trtc_y0[8-9]$|^trtc_y1[0-2]|^trtc_03[3-9]$|^trtc_04[0-3]$',
                         line: ["trtc_3", "trtc_5", "trtc_6"],
                         transStation: ["ximen1","banqiao2"]
                     }
@@ -2313,6 +2322,14 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     {
                         line: ["trtc_5", "trtc_6"],
                         transStation: ["banqiao2"]
+                    },
+                    {
+                        line: ["trtc_5", "trtc_4", "trtc_3", "trtc_6"],
+                        transStation: ["zhongxiaoxs1","guting1","dapinglin1"]
+                    },
+                    {
+                        line: ["trtc_5", "trtc_3", "trtc_6"],
+                        transStation: ["ximen1","dapinglin1"]
                     },
                     {
                         bypassStationReg: '^trtc_y1[4-9]$|^trtc_y20$',
