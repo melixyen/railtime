@@ -2222,7 +2222,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: ["nanjingfx1","dapinglin1"]
                     },
                     {
-                        bypassStationReg: '^trtc_036$|^trtc_047$|^trtc_y0[8-9]$|^trtc_y1[0-6]$|',
+                        bypassStationReg: '^trtc_036$|^trtc_047$|^trtc_y0[8-9]$|^trtc_y1[0-6]$',
                         line: ["trtc_1", "trtc_3", "trtc_4", "trtc_6"],
                         transStation: ["nanjingfx1","sjnanjing1","touqianzhang1"]
                     },
@@ -2250,7 +2250,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: ["cksmh1","dapinglin1"]
                     },
                     {
-                        bypassStationReg: '^trtc_036$|^trtc_047$|^trtc_y0[8-9]$|^trtc_y1[0-6]$|',
+                        bypassStationReg: '^trtc_036$|^trtc_047$|^trtc_y0[8-9]$',
                         line: ["trtc_2", "trtc_4", "trtc_6"],
                         transStation: ["mqxl1","touqianzhang1"]
                     },
