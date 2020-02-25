@@ -1214,20 +1214,28 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     id: 'banqiao2', name: "板橋",
                     changeLine: ["trtc_5", "trtc_6"],
                     changeStation: ['trtc_082','trtc_y16'],
+                    video: {
+                        "trtc_082": {width:560, height:315, src:'https://www.youtube.com/embed/Ez6tgxrpD9s'},
+                        "trtc_y16": {width:560, height:315, src:'https://www.youtube.com/embed/NozFAD2lGis'}
+                    },
                     walkMinute: 11
                 }, {
                     id: 'banqiao3', name: "板橋",
                     changeLine: ["tra_xibu", "trtc_6"],
                     changeStation: ['tra_1011','trtc_y16'],
                     video: {
-                        "tra_1011": {width:420, height:315, src:'https://www.youtube.com/embed/awJa3LJQfNs'},
-                        "trtc_y16": {width:420, height:315, src:'https://www.youtube.com/embed/Kj4rfjSkeVU'}
+                        "tra_1011": {width:560, height:315, src:'https://www.youtube.com/embed/awJa3LJQfNs'},
+                        "trtc_y16": {width:560, height:315, src:'https://www.youtube.com/embed/Kj4rfjSkeVU'}
                     },
-                    walkMinute: 9
+                    walkMinute: 8
                 }, {
                     id: 'xinpu1', name: "新埔",
                     changeLine: ["trtc_5", "trtc_6"],
                     changeStation: ['trtc_083','trtc_y17'],
+                    video: {
+                        "trtc_083": {width:560, height:315, src:'https://www.youtube.com/embed/FV8D4MvxJRc'},
+                        "trtc_y17": {width:560, height:315, src:'https://www.youtube.com/embed/NX5BQNQ---o'}
+                    },
                     walkMinute: 9
                 }, {
                     id: 'mqxl1', name: "民權西路",
@@ -1283,12 +1291,18 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     id: 'touqianzhang1', name: "頭前庄",
                     changeLine: ["trtc_4", "trtc_6"],
                     changeStation: ['trtc_123','trtc_123'],
+                    video: {
+                        "trtc_123": {width:560, height:315, src:'https://www.youtube.com/embed/jcqOqz8gpV0'}
+                    },
                     walkMinute: 5
                 }, {
                     id: 'jingan1', name: "景安",
                     changeLine: ["trtc_4", "trtc_6"],
                     changeStation: ['trtc_047','trtc_047'],
-                    walkMinute: 6
+                    video: {
+                        "trtc_047": {width:560, height:315, src:'https://www.youtube.com/embed/tDKgheERteg'}
+                    },
+                    walkMinute: 8
                 }, {
                     id: 'dapinglin1', name: "大坪林",
                     changeLine: ["trtc_3", "trtc_6"],
