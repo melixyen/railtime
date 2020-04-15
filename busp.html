@@ -667,6 +667,37 @@ body {
 	}
 }
 
+/* Vue Component CSS */
+.copyTinyURLink{
+	width: 100%;
+	box-sizing: border-box;
+	padding: 3px 0;
+}
+.copyTinyURLink > div{
+	display: inline-block;
+}
+.copyTinyURLink > div > input{
+	max-width: 400px;
+}
+.copyTinyURLink > div.copyBtnArea{
+	display:inline-block;
+	padding: 0 3px;
+}
+.copyTinyURLink .btn{
+	display: inline-block;
+	height: 24px;
+	line-height: 24px;
+	margin: 1px 2px;
+	padding: 0 10px;
+	border: 2px solid rgb(33, 186, 247);
+	border-radius: 20px;
+	color: #17041f;
+	background-color: rgb(174, 228, 238);
+	text-align: center;
+	cursor: pointer;
+	overflow: hidden;
+}
+
 /* Vue CSS Start */
 .fade-leave-active {
 	display: none;
@@ -856,6 +887,7 @@ var languagePakc = {
 			STR088: '偵測站牌',
 			STR089: '從地圖看所有站牌',
 			STR090: '語音播放站名',
+			STR091: '複製',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -955,6 +987,7 @@ var languagePakc = {
 			STR088: 'Detect Stop',
 			STR089: 'List stops in map',
 			STR090: 'Speak stop name',
+			STR091: 'Copy',
 			zxx: 'En'
 	}
 }
@@ -968,6 +1001,23 @@ VueDuoGuo.setConfig({
 	path: languagePakc,
 	global: "_LANG"
 })
+
+Vue.component('tiny_url_copy', {
+		template: `
+			<div class="copyTinyURLink">
+				<div><input type="text" class="tinyURLinkInput" v-model="url" readonly /></div>
+				<div class="copyBtnArea"><div class="btn" v-on:click="copyFn">{{_LANG.STR091}}</div></div>
+			</div>
+		`,
+		props: ['url'],
+		methods: {
+			copyFn: function(){
+				var dom = this.$el.querySelector('input');
+				dom.select();
+				document.execCommand('copy');
+			}
+		}
+});
 
 var BB = (function(TT){
 	var _DEFINE_PARAM_BUS_STATION = 'busStation';
@@ -1778,6 +1828,7 @@ var BB = (function(TT){
 			'<div class="textA">{{_LANG.STR039}}</div>' +
 			'<div style="height:20px;"></div>' +
 			'<div class="hyperlinkShow" style="word-break:break-all;" v-html="makeURL()"></div>' +
+			'<tiny_url_copy :url="link"></tiny_url_copy>' +
 			'<div style="height:20px;"></div>' +
 			//'<div class="QRPanel" v-show="!flagDisplayQRImage"><div class="btn1" v-on:click="genStationQR()">{{_LANG.STR052}}</div></div>' +
 			'<div v-if="flagDisplayQRImage"><div class="textB">{{_LANG.STR042}}</div></div>' +
@@ -2302,6 +2353,7 @@ var BB = (function(TT){
 				'<div class="btn1" v-show="aryArriveTime.length>1" v-on:click="stopsInMap()">{{_LANG.STR089}}</div>' +
 				'<div class="btn1 base64_voicePlayerIcon" style="width:30px;" v-on:click="stopVoice()"></div>' +
 				'<div v-if="flagCreateQRShow">' +
+					'<tiny_url_copy :url="tinyurl"></tiny_url_copy>' +
 					'<div class="QRShow" v-html="htmlQR" style="cursor:pointer;display:inline-block;"></div>' +
 					'<br><br>' +
 					'<div class="QRShow" v-html="htmlOrigQR" style="cursor:pointer;display:inline-block;"></div>' +
@@ -2320,6 +2372,7 @@ var BB = (function(TT){
 			flagCreateQRShow: false,
 			htmlQR: '',
 			htmlOrigQR: '',
+			tinyurl: '',
 			onReload: false
 		}},
 		methods: {
@@ -2358,6 +2411,7 @@ var BB = (function(TT){
 					dataURL = canvas.toDataURL();
 				})
 				tinyURL(location.href, function(res){
+					me.tinyurl = res.url;
 					genStationQR(res.url, false, function(canvas){
 						data3URL = canvas.toDataURL();
 						me.htmlQR = '<img src="' + data3URL + '" width="300" height="300"></img>';
