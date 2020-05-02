@@ -771,7 +771,7 @@ var counterFn = function(cbFn){
 	xhr.addEventListener("load", function(e){
         counterObj = JSON.parse(e.target.responseText);
     });
-	xhr.open('GET', 'https://melixapi.000webhostapp.com/webtool/counter.php?page=busp', true);
+	xhr.open('GET', 'https://melixapi1.000webhostapp.com/webtool/counter.php?page=busp', true);
 	xhr.send();
 	if(typeof(cbFn)=='function') cbFn(counterObj);
 };
@@ -1303,7 +1303,7 @@ var BB = (function(TT){
 	}
 
 	function tinyURL(url, cbFn){
-		var api = 'https://melixapi.000webhostapp.com/webtool/util.php?fun=tinyurl&url=';
+		var api = 'https://melixapi1.000webhostapp.com/webtool/util.php?fun=tinyurl&url=';
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener("load", function(e){
 			if(typeof(cbFn)=='function') cbFn(JSON.parse(e.target.responseText));
@@ -1321,7 +1321,7 @@ var BB = (function(TT){
 		if(voicePlayerURL.isLoading) return false;
 		BB.mask('Wait for speaking...'); voicePlayerURL.isLoading = true;
 		
-		fetch('https://melixapi.000webhostapp.com/webtool/ttsvoice.php?text=' + encodeURIComponent(text)).then(function(e){
+		fetch('https://melixapi1.000webhostapp.com/webtool/ttsvoice.php?text=' + encodeURIComponent(text)).then(function(e){
 			return e.json();
 		}).then(function(json){
 			voicePlayerControl(json.url);
