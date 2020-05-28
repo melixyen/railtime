@@ -778,8 +778,10 @@ var counterFn = function(cbFn){
 counterFn();
 
 var TT = $trainTaiwanLib;
-TT.ptx.AppID = atob('M2FhNWNkN2RmMTQwNGU1ZmJhYzA2N2JmMDAzODg3Yjc=');
-TT.ptx.AppKey = atob("TFprbHRGcjhvSkxGenFpUmU1RmdCeUgxYUFZ");
+// TT.ptx.AppID = atob('M2FhNWNkN2RmMTQwNGU1ZmJhYzA2N2JmMDAzODg3Yjc=');
+// TT.ptx.AppKey = atob("TFprbHRGcjhvSkxGenFpUmU1RmdCeUgxYUFZ");
+TT.ptx.AppID = atob('MzA0OTExZjlhY2QwNGUwMzkyNGYzNGNmYzJkNDNiZWY=');
+TT.ptx.AppKey = atob("MzVDTkpFYXRSSHlsdGdoU043SGNMblpYSkpJ");
 
 var languagePakc = {
 	"Zh": {
@@ -2341,7 +2343,7 @@ var BB = (function(TT){
 						'<div class="stationDisplayName" v-html="tet2(station)"></div>' +
 					'</div>' +
 					'<div class="list divTable">' +
-						'<div v-for="(bus, bidx) in station.time" class="divTableRow">' +
+						'<div v-for="(bus, bidx) in station.time" class="divTableRow" v-bind:style="styleBusStop(bus)">' +
 							'<div class="divTableCell item number"><span style="cursor:pointer;" v-html="getBusDataName(bus)" v-on:click="popBus(bus, station)"></span></div>' +
 							'<div class="divTableCell item timeState" v-html="getBusDataInfo(bus)"></div>' +
 						'</div>' +
@@ -2435,6 +2437,14 @@ var BB = (function(TT){
 				BB.showBusRoutePop.StationTargetID = station.StationTargetID;
 				BB.showBusRoutePop.cities = station.cities;
 				location.hash = '/show/line';
+			},
+			styleBusStop: function(bus){
+				var st = bus.StopStatus, ss = '';
+					console.log(st);
+				if(st>=2){
+					ss = 'opacity:0.5;filter: grayscale(80%);'
+				}
+				return ss;
 			},
 			readAllStation: function(cbFn){
 				var arySBS = JSON.parse(JSON.stringify(this.showBusStation));
