@@ -1860,17 +1860,7 @@ var BB = (function(TT){
 				}
 			},
 			makeURL: function(){
-				var me = this;
-				var url = makeShowURL(this.StationStopName, this.StationID, BB.now.cities);
-				if(this.StationTargetID){
-					url = makeShowURL([{name:this.StationStopName, id:this.StationID, cities:BB.now.cities, ts:this.StationTargetID}]);
-				}
-				this.link = url;
-				tinyURL(url, function(res){
-					me.link = res.url;
-					me.genStationQR();
-				})
-				return '<a href="' + url + '" target="_blank">' + _LANG.STR063 + ' (' + this.StationStopName + ')' + '</a>';
+				return '<a href="' + this.link + '" target="_blank">' + _LANG.STR063 + ' (' + this.StationStopName + ')' + '</a>';
 			},
 			genStationQR: function(){
 				var me = this;
@@ -1885,6 +1875,18 @@ var BB = (function(TT){
 			openSaveQR: function(){
 				window.open(this.dataURL, "_new");
 			}
+		},
+		mounted: function(){
+				var me = this;
+				var url = makeShowURL(this.StationStopName, this.StationID, BB.now.cities);
+				if(this.StationTargetID){
+					url = makeShowURL([{name:this.StationStopName, id:this.StationID, cities:BB.now.cities, ts:this.StationTargetID}]);
+				}
+				this.link = url;
+				tinyURL(url, function(res){
+					me.link = res.url;
+					me.genStationQR();
+				})
 		}
 	}
 
