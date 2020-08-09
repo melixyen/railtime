@@ -1525,7 +1525,8 @@ TT.teachImp = (function(){
 			'<a href="?q=4" target="_blank">四軌模式，台鐵每小時六快六慢，輕軌五分鐘一班，最大化基隆班次</a><br><br>' +
 			'<a href="?q=14" target="_blank">四軌模式，台鐵每小時八快四慢，輕軌五分鐘一班，基隆十五分鐘一班車</a><br><br>' +
 			'<a href="?q=24" target="_blank">四軌模式，台鐵每小時四班太魯閣普悠瑪往花東，輕軌五分鐘一班，基隆不再停靠台鐵</a><br><br>' +
-			'<a href="?q=5" target="_blank">台鐵四軌化，區間車五分鐘一班，基隆十分鐘有兩班到台北和南港的車</a><br><br>'
+			'<a href="?q=5" target="_blank">台鐵四軌化，區間車五分鐘一班，基隆十分鐘有兩班到台北和南港的車</a><br><br>' +
+			'<a href="?q=6" target="_blank">基隆只剩輕軌，火車不進基隆</a><br><br>'
 		TT.popupArea.pop2(html);
 	},
 	me.showStation1005 = function(){
@@ -2280,14 +2281,14 @@ TT.parseModule = (function(){
 
 TT.createMenuBar = function(){
 	
-	var tpl = Vue.compile('<div id="menuBarRenderDiv">' +
+	var tpl = Vue.compile(`<div id="menuBarRenderDiv" v-bind:style="(flagShowRailSwitch) ? 'background-color:#faf0ea;' : ''">` +
 		'<div class="menuBar">' +
 			'<div v-on:click="railSwitch()" class="menuItem menuItem2 railSwitch">切換軌道模式</div>' +
 			'<div v-on:click="vSimulate()" class="setItem setItem2 hiasd" v-bind:class="ren(\'sim\')">基隆輕軌暨台鐵基隆台北模擬器</div>' +
 			'<div v-on:click="vParam()" class="setItem setItem2" v-bind:class="ren(\'param\')">設定參數</div>' +
 			'<div v-on:click="back()" class="menuItem menuItem2 back">回到接軌時刻</div>' +
 		'</div>' +
-		'<div class="railSwitchArea" v-show="flagShowRailSwitch" style="padding:0px 10px;border-radius:5px; display:inline-block;overflow:hidden; transition:all 0.3s ease-in-out; min-width:1400px;">' +
+		'<div class="railSwitchArea" v-show="flagShowRailSwitch" style="padding:0px 10px;border-radius:5px; display:inline-block;overflow:hidden; transition:all 0.3s ease-in-out; min-width:140px;">' +
 			'<div class="setItem" v-bind:class="getButtonCls(6)" v-on:click="setRailMode(6)">基隆只剩輕軌</div>' +
 			'<div class="setItem" v-bind:class="getButtonCls(4)" v-on:click="setRailMode(4)">台鐵南港至八堵間四軌化、基隆輕軌雙軌化</div>' +
 			'<div class="setItem" v-bind:class="getButtonCls(3)" v-on:click="setRailMode(3)">第三軌給基隆輕軌專用，新增南港展覽館、樟樹灣及北五堵做交會車站</div>' +
@@ -2317,6 +2318,11 @@ TT.createMenuBar = function(){
 				return '';
 			},
 			setRailMode: function(n){
+				var flagAfterDoAction = false;
+				if(TT.panelTimeArea && TT.panelTimeArea.flagGo){//若是啟動中則先停車
+					TT.panelTimeArea.sim4Rail();
+					flagAfterDoAction = true;
+				}
 				if(n) TT.rail.mode = n;
 				this.railMode = TT.rail.mode;
 				TT.showDescription = false;
@@ -2325,6 +2331,7 @@ TT.createMenuBar = function(){
 				TT.map.reDrawMap();
 				this.flagShowRailSwitch = false;
 				TT.timeTableArea.updateTimeTableRawData(TT.makeAllRouteTimeTable(7));
+				if(flagAfterDoAction) TT.panelTimeArea.sim4Rail();
 			},
 			railSwitch: function(){
 				var dom = this.$el.querySelector('.railSwitchArea');
@@ -2333,7 +2340,8 @@ TT.createMenuBar = function(){
 				if(this.flagShowRailSwitch){
 					dom.style.height = '0px';
 					setTimeout(function(){
-						dom.style.height = '40px';
+						dom.style.minHeight = '40px';
+						dom.style.height = 'auto';
 					},10);
 				}
 			},
@@ -2412,6 +2420,7 @@ TT.createTimeArea = function(){
 		},
 		mounted: function(){
 			var me = this;
+			TT.panelTimeArea = this;
 			if(TT.autoPlayTrain){
 				setTimeout(function(){me.sim4Rail()},1000);
 				TT.autoPlayTrain = false;
