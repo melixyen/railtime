@@ -568,7 +568,7 @@ var TT = {
 		'目標為將台鐵兩條主幹線路線容量提升至單向每小時十二班，輕軌方面每小時可有三班台鐵列車、三班輕軌開入基隆外，依運量需求 ，開行北五堵站往返南港區間車，可讓該區間輕軌每小時最高開行十二班車，加上火車的十二班車，單向每小時可達廿四班車。',
 		
 		'發行單位: <span style="background-color: #BBB;"><span style="color:blue;">極</span><span style="color:#FEFE11;">光</span><span style="color:#005530;">駭</span><span style="color:red;">客</span></span><span>&nbsp;Melix Yen (melixyen@gmail.com)</span><span style="padding-left: 50px;">' +
-			"更新日期: 2018/06/20</span>"
+			"更新日期: 2020/08/09</span>"
 	],
 	car: [
 		{"id": "carK", "name": "輕軌", "ename": "Keelung LRT", "color": "#2EA42B", trainType: "k", zIndex: 104},
@@ -772,7 +772,7 @@ var TT = {
 			trainType: "p", line: "e", dir: 1,
 			from: "tra_1002", to: "tra_1008",
 			tag: "瑞芳-中壢",
-			time: [43,47,52,56,"58w61",64,70,75,"82~85"]
+			time: [43,47,52,56,"58w62",64,70,75,"82~85"]
 		}, {
 			mod: "y_2",
 			trainType: "p", line: "e", dir: 0,
@@ -812,6 +812,18 @@ var TT = {
 			tag: "基隆-新竹",
 			time: [46,49,53,57,62,66,"68w72",74,80,85,"92~95"]
 		}, {
+			mod: "p_7",
+			trainType: "p", line: "w", dir: 1,
+			from: "tra_1003", to: "tra_1008",
+			tag: "七堵-新竹",
+			time: [42,47,51,53,55,61,66,"73~75"]
+		}, {
+			mod: "p_9",
+			trainType: "p", line: "w", dir: 1,
+			from: "tra_1003", to: "tra_1008",
+			tag: "七堵-新竹",
+			time: [57,62,66,"68w72",74,80,85,"92~95"]
+		}, {
 			mod: "p_2",
 			trainType: "p", line: "w", dir: 0,
 			from: "tra_1008", to: "tra_1001",
@@ -829,6 +841,18 @@ var TT = {
 			from: "tra_1008", to: "tra_1001",
 			tag: "新竹-基隆",
 			time: [45,52,57,63,"65w69",71,75,"80~81",85,89,92]
+		}, {
+			mod: "p_8",
+			trainType: "p", line: "w", dir: 0,
+			from: "tra_1008", to: "tra_1003",
+			tag: "新竹-七堵",
+			time: [45,52,57,63,"65w69",71,75,80]
+		}, {
+			mod: "p_a",
+			trainType: "p", line: "w", dir: 0,
+			from: "tra_1008", to: "tra_1003",
+			tag: "新竹-七堵",
+			time: [45,52,57,63,"65w69",71,75,80]
 		},
 		//++++基隆輕軌
 		{
@@ -1280,6 +1304,16 @@ TT.processFirst = function(initFlag){
 			['p_3',6],['p_3',16],['p_3',26],['p_3',36],['p_3',46],['p_3',56],
 			['p_4',1],['p_4',11],['p_4',21],['p_4',31],['p_4',41],['p_4',51]
 		];
+	}else if(TT.rail.mode==6){
+		stb = TT.fn.getStationByID('tra_1005');//汐止
+		stb.platform = ['1a1b', '2a2b', '3c3d'];
+		stb.platMain = ['1b', '2a', '3c', '3d'];
+		TT.trainGoTime = [
+			["p_7",2], ["e_1",7], ["y_1",3], ["w_1",20], ["y_5",13], ["t_1",32], ["y_3",23], ["w_1",40], ["p_9",37], ["r_1",51], ["y_5",43], ["w_1",60],
+			["r_2",0], ["y_2",5], ["w_2",10], ["y_6",15], ["e_2",20], ["p_a",25], ["w_2",30], ["y_4",35], ["t_2",40], ["p_a",45], ["w_2",50], ["y_6",55],
+			["k_1",0], ["k_1",5], ["k_1",10], ["k_1",15], ["k_1",20], ["k_1",25], ["k_1",30], ["k_1",35], ["k_1",40], ["k_1",45], ["k_1",50], ["k_1",55],
+			["k_2",2], ["k_2",7], ["k_2",12], ["k_2",17], ["k_2",22], ["k_2",27],  ["k_2",32], ["k_2",37], ["k_2",42], ["k_2",47], ["k_2",52], ["k_2",57]
+		];
 	}
 	
 	if(TT.showDescription==14){//rail.mode==4 , 15分鐘內快中慢三輪制
@@ -1659,7 +1693,7 @@ TT.makeRouteTimeTable = function(startHour){
 			}
 			
 			if(flagWait){
-				if(stid=='tra_1007' || (stid=='tra_1005' && TT.rail.mode==4) || stid=='tra_1003'){
+				if(stid=='tra_1007' || (stid=='tra_1005' && (TT.rail.mode==4 || TT.rail.mode==6)) || stid=='tra_1003'){
 					platform = (tmpT.dir==1) ? '1a' : '2b';
 				}else if(stid=='tra_1006'){
 					platform = (tmpT.dir==1) ? '2a' : '1b';
@@ -2215,6 +2249,7 @@ TT.parseModule = (function(){
         			case '3':
         			case '4':
         			case '5':
+        			case '6':
         				rt = parseInt(objA.guideKLRT);
         			break;
         			case '14':
@@ -2253,6 +2288,7 @@ TT.createMenuBar = function(){
 			'<div v-on:click="back()" class="menuItem menuItem2 back">回到接軌時刻</div>' +
 		'</div>' +
 		'<div class="railSwitchArea" v-show="flagShowRailSwitch" style="padding:0px 10px;border-radius:5px; display:inline-block;overflow:hidden; transition:all 0.3s ease-in-out; min-width:1400px;">' +
+			'<div class="setItem" v-bind:class="getButtonCls(6)" v-on:click="setRailMode(6)">基隆只剩輕軌</div>' +
 			'<div class="setItem" v-bind:class="getButtonCls(4)" v-on:click="setRailMode(4)">台鐵南港至八堵間四軌化、基隆輕軌雙軌化</div>' +
 			'<div class="setItem" v-bind:class="getButtonCls(3)" v-on:click="setRailMode(3)">第三軌給基隆輕軌專用，新增南港展覽館、樟樹灣及北五堵做交會車站</div>' +
 			'<div class="setItem" v-bind:class="getButtonCls(2)" v-on:click="setRailMode(2)">第三軌給基隆輕軌專用，只新建南港展覽館站</div>' +
@@ -2672,6 +2708,7 @@ TT.genRouteOnMap = function(canvasID, stAry){
 		c.platformAry.map(function(p){
 			var offsetA = 0;
 			platformBoxAry.push([c.pos[0]*TT.stBlockWidth + platformLeftMargin, p.top, p.num]);
+			if(p.comp=='TRA' && TT.rail.mode==6 && c.id=='tra_1001') return true;
 			if(p.comp=='TRA' && c.id!='tra_1002'){
 				if(p.ary[0] && !p.ary[0].main){
 					platfomDrawLineAry.push([c.pos[0]*TT.stBlockWidth + lineLeftRightMargin, p.platformElTop.leftRail]);
@@ -2707,13 +2744,13 @@ TT.genRouteOnMap = function(canvasID, stAry){
 	cc.lineTo(TT.stBlockWidth*horCount, 0.5+dir0TraMainHeight);
 	cc.stroke();
 	
-	if(TT.rail.mode<5){//5為不蓋基隆輕軌模式
+	if(TT.rail.mode<5 || TT.rail.mode==6){//5為不蓋基隆輕軌模式
 		cc.beginPath();
 		cc.moveTo(TT.stBlockWidth*2, 0.5+r.baseKLRTHeight);
 		cc.fillStyle = r.colorKLRT;
 		cc.strokeStyle = r.colorKLRT;
 		cc.lineTo(TT.stBlockWidth*klrtCount - klrtEndOffset, 0.5+r.baseKLRTHeight);
-		if(TT.rail.mode==4){//有蓋第四軌時基隆輕軌才為雙軌化
+		if(TT.rail.mode==4 || TT.rail.mode==6){//有蓋第四軌時基隆輕軌才為雙軌化
 			cc.lineWidth = r.lineMainWidth;
 			cc.moveTo(TT.stBlockWidth*2, 0.5+dir0KlrtMainHeight);
 			cc.lineTo(TT.stBlockWidth*klrtCount - klrtEndOffset, 0.5+(r.baseKLRTHeight - (r.platformRailMargin*2 + r.platformHeight + r.lineMainWidth)));
@@ -2811,27 +2848,49 @@ TT.genRouteOnMap = function(canvasID, stAry){
 	
 	//4.畫七堵到八堵間基隆輕軌連接線
 	if(TT.rail.mode<5){//5為不蓋基隆輕軌模式
-	cc.beginPath();
-	cc.fillStyle = r.colorKLRT;
-	cc.strokeStyle = r.colorKLRT;
-	cc.lineWidth = r.lineWidth;
-	
-	var line1X = stQidu.pos[0] * TT.stBlockWidth + lineLeftRightMargin + platformSlaveLineWidth,
-		line1Y = (TT.rail.mode==4 || true) ? stQidu.platformAry[stQidu.platformAry.length-1].platformElTop.rightRail : stQidu.platformAry[stQidu.platformAry.length-1].platformElTop.leftRail,
-		line2Y = stQidu.platformAry[stQidu.platformAry.length-1].platformElTop.leftRail;
-	
-	var line1XEnd = stBadu.pos[0] * TT.stBlockWidth + lineLeftRightMargin,
-		line1YEnd = stBadu.platformAry[2].platformElTop.rightRail - r.lineWidth,
-		line2YEnd = stBadu.platformAry[2].platformElTop.leftRail + r.lineWidth;
-	
-	cc.moveTo(line1X, line1Y);
-	cc.lineTo(line1XEnd, line1YEnd);
-	cc.lineTo(horCount*TT.stBlockWidth, line1YEnd);
-	
-	cc.moveTo(line1X, line2Y);
-	cc.lineTo(line1XEnd, line2YEnd);
-	cc.lineTo(horCount*TT.stBlockWidth, line2YEnd);
-	cc.stroke();
+		cc.beginPath();
+		cc.fillStyle = r.colorKLRT;
+		cc.strokeStyle = r.colorKLRT;
+		cc.lineWidth = r.lineWidth;
+		
+		var line1X = stQidu.pos[0] * TT.stBlockWidth + lineLeftRightMargin + platformSlaveLineWidth,
+			line1Y = (TT.rail.mode==4 || true) ? stQidu.platformAry[stQidu.platformAry.length-1].platformElTop.rightRail : stQidu.platformAry[stQidu.platformAry.length-1].platformElTop.leftRail,
+			line2Y = stQidu.platformAry[stQidu.platformAry.length-1].platformElTop.leftRail;
+		
+		var line1XEnd = stBadu.pos[0] * TT.stBlockWidth + lineLeftRightMargin,
+			line1YEnd = stBadu.platformAry[2].platformElTop.rightRail - r.lineWidth,
+			line2YEnd = stBadu.platformAry[2].platformElTop.leftRail + r.lineWidth;
+		
+		cc.moveTo(line1X, line1Y);
+		cc.lineTo(line1XEnd, line1YEnd);
+		cc.lineTo(horCount*TT.stBlockWidth, line1YEnd);
+		
+		cc.moveTo(line1X, line2Y);
+		cc.lineTo(line1XEnd, line2YEnd);
+		cc.lineTo(horCount*TT.stBlockWidth, line2YEnd);
+		cc.stroke();
+	}else if(TT.rail.mode==6){//6為基隆只剩輕軌模式
+		cc.beginPath();
+		cc.fillStyle = r.colorKLRT;
+		cc.strokeStyle = r.colorKLRT;
+		cc.lineWidth = r.lineWidth*2;
+		
+		var line1X = stQidu.pos[0] * TT.stBlockWidth + lineLeftRightMargin + platformSlaveLineWidth,
+			line1Y = stQidu.platformAry[stQidu.platformAry.length-1].platformElTop.rightRail,
+			line2Y = stQidu.platformAry[stQidu.platformAry.length-1].platformElTop.leftRail;
+		
+		var line1XEnd = stBadu.pos[0] * TT.stBlockWidth + lineLeftRightMargin,
+			line1YEnd = stBadu.platformAry[2].platformElTop.rightRail,
+			line2YEnd = stBadu.platformAry[2].platformElTop.leftRail;
+		
+		cc.moveTo(line1X, line1Y);
+		cc.lineTo(line1XEnd, line1YEnd);
+		cc.lineTo(horCount*TT.stBlockWidth, line1YEnd);
+		
+		cc.moveTo(line1X, line2Y);
+		cc.lineTo(line1XEnd, line2YEnd);
+		cc.lineTo(horCount*TT.stBlockWidth, line2YEnd);
+		cc.stroke();
 	}
 	
 	
@@ -2862,7 +2921,9 @@ TT.createMap = function(){
 		'完工後基隆每小時可維持六班往台北的列車，四班為區間車，兩班為自強號，另有六班往南港的區間車；<span style="color:#2020FE;">東部幹線台北一小時可發四班快車，南港站加發兩班快車，以及兩班宜蘭線區間車</span>大幅堤升東部幹線運能。' +
 		'此方案雖可加密至基隆輕軌四軌化目標，但有南港與七堵快慢車東西線交錯之困擾，且不適合興趣樟樹灣及北五堵站。<span style="color:#CE2020;">八堵至南港間五分鐘一班區間車，八堵往來台北十分鐘一班區間車</span>，台北站五分鐘一班車一快一慢交叉發車。' +
 		'<span style="color:#2EA42B;">基隆南港區間車使用立體軌道穿越至南港1月台，整備5分鐘後回頭往基隆，</span>南港站普悠瑪號使用第3月台整備；<span style="color:#CE2020;">基隆站設計為每列車發車後下一分鐘反向列車進站，區間車交錯使用月台兩側折返。</span>',
-		false,false,false,false,false,//10
+		
+		'基隆輕軌改為獨立運轉，基隆不再有台鐵列車進入，轉乘一律至八堵到南港間各站轉乘，基隆可獲得五分鐘一班輕軌。區間車並不會因此減少，只是<span style="color:#2020FE;">改由七堵或瑞芳到開</span>，繼續運行此段。',
+		false,false,false,false,//10
 		false,false,false,//13
 		'南港到汐科間新建第四軌，汐科到五堵間於台五甲線大同路上高架新建 TRAM TRAIN 雙軌軌道，並可能於<span style="color:#CE2020;">汐止站前廣場新建第三月台作為基隆輕軌專用月台</span>，汐科和五堵則用原台鐵月台改造。五堵至八堵間新建雙軌，不經過百福車站，另外新增北五堵及六堵站。' +
 		'<span style="color:#2020FE;">台北車站台鐵也可每五分鐘發一班車，採每十五分鐘一輪兩快一慢車，每小時四循環</span>。基隆出發的台鐵區間車30分鐘一班，區間快車30分鐘一班，每小時有四班車可直達台北，另有四班基隆輕軌可至南港，頻率與機場捷運相等。' +
