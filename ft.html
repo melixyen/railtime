@@ -1369,7 +1369,7 @@ TT.makeMainAreaRenderDiv = function(){
                 '<th>{{LANG.sptr022}}</th><th>{{LANG.sptr024}}</th><th>{{LANG.sptr023}}</th><th>{{LANG.sptr025}}</th><th>{{LANG.sptr032}}</th><th>{{LANG.sptr027}}</th>' +
             '</tr>' +
             '<tr v-for="(train,idx) in trainTimeAry">' +
-                '<td>{{train.EndingStationName}}</td>' +
+                '<td>{{train.EndingStationName.Zh_tw}}</td>' +
                 '<td>{{train.TrainNo}}</td>' +
                 '<td v-html="getCarClass(train)"></td>' +
                 '<td>{{train.DepartureTime}}</td>' +
@@ -1412,7 +1412,7 @@ TT.makeMainAreaRenderDiv = function(){
                 '<th>{{LANG.sptr022}}</th><th>{{LANG.sptr024}}</th><th>{{LANG.sptr023}}</th><th>{{LANG.sptr025}}</th><th v-html="targetStationName()">{{LANG.sptr026}}</th><th>{{LANG.sptr027}}</th>' +
             '</tr>' +
             '<tr v-for="(train,idx) in trainTimeAry">' +
-                '<td>{{train.EndingStationName}}</td>' +
+                '<td>{{train.EndingStationName.Zh_tw}}</td>' +
                 '<td>{{train.TrainNo}}</td>' +
                 '<td v-html="getCarClass(train)"></td>' +
                 '<td>{{train.DepartureTime}}</td>' +
@@ -1481,7 +1481,7 @@ TT.makeMainAreaRenderDiv = function(){
                         if(ctlist.isCanTakeFirstTrain){
                             car = TT.fn.getTRA_carClassName(ctlist.nearTrain.TrainTypeID);
                             if(!car || car=='') car = ctlist.nearTrain.TrainTypeName.Zh_tw;
-                            esName = (TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID)) ? TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID).name : ctlist.nearTrain.EndingStationName;
+                            esName = (TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID)) ? TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID).name : ctlist.nearTrain.EndingStationName.Zh_tw;
                             if(ctlist.nearTrain.delayTime){
                                 delayStr = '<br><br>' + LANG.sptr014.replace('{TrainNO}', ctlist.nearTrain.TrainNo).replace('{CarClass}', car).replace('{es}', esName).replace('{min}', ctlist.nearTrain.delayTime);
                             }
@@ -1494,14 +1494,14 @@ TT.makeMainAreaRenderDiv = function(){
                             var fc = ctlist.canTakeTrainTime[0];
                             car = TT.fn.getTRA_carClassName(ctlist.nearTrain.TrainTypeID);
                             if(!car || car=='') car = ctlist.nearTrain.TrainTypeName.Zh_tw;
-                            esName = (TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID)) ? TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID).name : ctlist.nearTrain.EndingStationName;
+                            esName = (TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID)) ? TT.fn.getStationByID('tra_' + ctlist.nearTrain.EndingStationID).name : ctlist.nearTrain.EndingStationName.Zh_tw;
                             rt = '<div class="no">' + LANG.sptr009.replace('{time}',ctlist.nearTrain.DepartureTime).replace('{TrainNO}', ctlist.nearTrain.TrainNo).replace('{CarClass}', car).replace('{es}', esName).replace('{st}', targetStationObj.name) + '</div>';
                             rt = rt.replace('<fn1>', '<a style="color:#040436;" href="' + jgURL + '" target="_new">').replace('</fn1>','</a>');
                             rt += '<br>';
                             if(fc){
                                 var car2 = TT.fn.getTRA_carClassName(fc.TrainTypeID);
                                 if(!car2 || car2=='') car2 = fc.TrainTypeName.Zh_tw;
-                                var esName2 = (TT.fn.getStationByID('tra_' + fc.EndingStationID)) ? TT.fn.getStationByID('tra_' + fc.EndingStationID).name : fc.EndingStationName;
+                                var esName2 = (TT.fn.getStationByID('tra_' + fc.EndingStationID)) ? TT.fn.getStationByID('tra_' + fc.EndingStationID).name : fc.EndingStationName.Zh_tw;
                                 if(fc.delayTime){
                                     delayStr = '<br><br>' + LANG.sptr014.replace('{TrainNO}', fc.TrainNo).replace('{CarClass}', car2).replace('{es}', esName2).replace('{min}', fc.delayTime);
                                 }
