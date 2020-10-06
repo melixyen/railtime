@@ -473,6 +473,11 @@ body {
 	color:#cc9a0f;
 }
 
+.tinyURLinkInput{
+	position: relative;
+	top: -10px;
+}
+
 
 
 @media screen and (max-width: 679px) {
@@ -1120,26 +1125,6 @@ var BB = (function(TT){
 	})();
 	function genQR(url){
         return "http://chart.apis.google.com/chart?cht=qr&chl="+ encodeURIComponent(url) +"&chs=240x240";
-	}
-	function genStationQRByGoogle(url, name, cbFn){
-		var pw = 300, ph = 300;
-		name = name || 'QR Code BUS Stop Information';
-		var canvas = document.createElement('canvas');
-		var ctx = canvas.getContext('2d'),
-			image = new Image();
-		image.crossOrigin = "anonymous";
-		
-		image.onload = function(){
-			canvas.width = pw;
-    		canvas.height = ph;
-			ctx.font="20px Arial";
-    		ctx.drawImage(this, 30, 0, 240, 240);
-			var txWidth = ctx.measureText(name).width;
-			var txX = (txWidth > pw) ? 0 : Math.ceil((pw-txWidth)/2);
-    		ctx.fillText(name, txX, 270);
-			cbFn(canvas);
-		}
-		image.src = genQR(url);
 	}
 	function genStationQR(url, name, cbFn){
 		var pw = 300, ph = 300;
@@ -2412,12 +2397,14 @@ var BB = (function(TT){
 			getQR: function(){
 				var me = this;
 				var dataURL = '', data3URL = '';
-				genStationQR(location.href, false, function(canvas){
+				var firstStop = BB.now.showBusStation[0];
+				var stName = firstStop.name || firstStop.stationName;
+				genStationQR(location.href, stName, function(canvas){
 					dataURL = canvas.toDataURL();
 				})
 				tinyURL(location.href, function(res){
 					me.tinyurl = res.url;
-					genStationQR(res.url, false, function(canvas){
+					genStationQR(res.url, stName, function(canvas){
 						data3URL = canvas.toDataURL();
 						me.htmlQR = '<img src="' + data3URL + '" width="300" height="300"></img>';
 					});
