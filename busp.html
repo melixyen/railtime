@@ -2334,6 +2334,9 @@ var BB = (function(TT){
 							'<div class="divTableCell item number"><span style="cursor:pointer;" v-html="getBusDataName(bus)" v-on:click="popBus(bus, station)"></span></div>' +
 							'<div class="divTableCell item timeState" v-html="getBusDataInfo(bus)"></div>' +
 						'</div>' +
+						'<div>' +
+							'<div style="cursor:pointer; font-size:20px; padding:4px; display:inline-block;" v-on:click="addBookmark(station)">🔖 </div>' +
+						'</div>' +
 					'</div>' +
 				'</div>' +
 				'<div v-if="(aryArriveTime.length==0)" class="textA">{{_LANG.STR057}}</div>' +
@@ -2368,6 +2371,14 @@ var BB = (function(TT){
 		methods: {
 			tet2: function(station){
 				return '<div class="">' + station.StationName + '</div>';
+			},
+			addBookmark: function(station){
+				var ret = bookmark.add(station.StationName, station.StationID, station.cities, station.StationTargetID);
+				if(!ret){
+					BB.alert(_LANG.STR044);
+				}else{
+					BB.alert(_LANG.STR045);
+				}
 			},
 			getBusMoreInfo: function(bus){
 				var ary = this.aryStation;
@@ -2429,7 +2440,6 @@ var BB = (function(TT){
 			},
 			styleBusStop: function(bus){
 				var st = bus.StopStatus, ss = '';
-					console.log(st);
 				if(st>=2){
 					ss = 'opacity:0.5;filter: grayscale(80%);'
 				}
