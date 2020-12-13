@@ -60,7 +60,7 @@ if(!window.Promise || !window.fetch){
             }
             return rt;
         })(),
-        usePTX: false,
+        usePTX: true,
         zxcv: 1
     }
     
