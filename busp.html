@@ -183,20 +183,20 @@ body {
 	margin: 0;
 }
 
-#makeArea .busCityCodeButton{
+.makeCSSArea .busCityCodeButton{
 	position: relative;
 }
-#makeArea .busCityCodeButton.isEn{
+.makeCSSArea .busCityCodeButton.isEn{
 	font-size: 12px;
 }
-#makeArea .busCityCodeButton .smallText{
+.makeCSSArea .busCityCodeButton .smallText{
 	position: absolute;
 	bottom: 2px;
 	height: 12px;
 	line-height: 12px;
 	font-size: 12px;
 }
-#makeArea .busFindRouteCSSInput{
+.makeCSSArea .busFindRouteCSSInput{
 	width: 500px;
 	max-width: 85%;
 	height: 30px;
@@ -896,6 +896,11 @@ var languagePakc = {
 			STR089: '從地圖看所有站牌',
 			STR090: '語音播放站名',
 			STR091: '複製',
+			STR092: '查詢兩站間公車路線',
+			STR093: '偵測出發區域站牌',
+			STR094: '偵測到達區域站牌',
+			STR095: '取得座標',
+			STR096: '列出直達路線',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -996,6 +1001,11 @@ var languagePakc = {
 			STR089: 'List stops in map',
 			STR090: 'Speak stop name',
 			STR091: 'Copy',
+			STR092: 'Find between 2 stop bus',
+			STR093: 'Detect from area stop',
+			STR094: 'Detect arrive area stop',
+			STR095: 'Get position',
+			STR096: 'List direct bus',
 			zxx: 'En'
 	}
 }
@@ -2073,6 +2083,7 @@ var BB = (function(TT){
 		template: '<div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity?as=direct\'}">' + '<div class="btn1">{{_LANG.STR061}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">{{_LANG.STR003}}</div>' + '</router-link></div>' +
+				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/between/buscity\'}">' + '<div class="btn1">{{_LANG.STR092}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1">{{_LANG.STR046}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1">{{_LANG.STR058}}</div>' + '</router-link></div>' +
 				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demo101()">{{_LANG.STR066}}</div>' + '</div>' +
@@ -2127,7 +2138,7 @@ var BB = (function(TT){
 		}
 	}
 	var makeArea = {
-		template: '<div id="makeArea">' + 
+		template: '<div id="makeArea" class="makeCSSArea">' + 
 			'<div class="makeContent">' +
 			'<transition name="fade">' +
 				'<router-view></router-view>' +
@@ -2706,6 +2717,138 @@ var BB = (function(TT){
 			}
 		}
 	};
+
+
+
+	// ============= Between 2 stop find route ============
+	var betweenPosition = {
+		template: `
+			<div>
+				<div class="frame1">
+					<div>{{_LANG.STR093}}</div>
+					<div class="btn5" v-on:click="openMap(250, 'gpsFrom')">{{_LANG.STR083}}</div>
+					<div><span>lat:{{gpsFrom.lat}} , lng:{{gpsFrom.lng}}</span></div>
+				</div>
+				<div class="frame1">
+					<div>{{_LANG.STR094}}</div>
+					<div class="btn5" v-on:click="openMap(250, 'gpsTo')">{{_LANG.STR083}}</div>
+					<div><span>lat:{{gpsTo.lat}} , lng:{{gpsTo.lng}}</span></div>
+				</div>
+				<div class="frame1">
+					<div>{{_LANG.STR018}}</div>
+					<div class="btn5" v-on:click="searchRoute">{{_LANG.STR092}}</div>
+					<div v-if="!!busData.mappingStops">
+						<div>
+							<table>
+								<tr v-for="bt in busData.mappingStops">
+									<td>{{bt.RouteUID}}</td>
+									<td>{{bt.busInfo.RouteName.Zh_tw}}</td>
+									<td>{{bt.from.StopName.Zh_tw}}</td>
+									<td>{{bt.to.StopName.Zh_tw}}</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div style="height: 80px;">
+				</div>
+			</div>
+		`,
+		data: function(){return {
+			gpsFrom: {lat:0, lng:0},
+			gpsTo: {lat:0, lng:0},
+			busData: {}
+		}},
+		methods: {
+			openMap: function(meter, nodeKey){
+				var me = this;
+				meter = meter || 250;
+				BB.geoTagMap.initMap({
+					parent: this,
+					fun: 'selectStation',
+					showGetGPS: true,
+					far: meter,
+					cbFn: function(bm){
+						Object.assign(me[nodeKey], bm);
+					}
+				});
+			},
+			searchRoute: function(){
+				TT.ptx.router.bus.findDirectBus(this.gpsFrom,this.gpsTo).then((e)=>{
+					// Object.assign(this.busData, e);
+					for(var k in e){
+						this.$set(this.busData, k, e[k]);
+					}
+				})
+			}
+		},
+		mounted: function(){
+			BB.betweenPosition = this;
+		}
+	}
+	var betweenArea = {
+		template: `
+			<div class="makeCSSArea">
+				<div>{{_LANG.STR092}}</div>
+				<transition name="fade">
+					<router-view></router-view>'
+				</transition>
+				<div class="stepControlArea bs_no_select" v-show="flagShowStepControl">
+					<div class="btnStep" v-bind:class="getControlCSS('prev')" v-on:click="goPrev()">{{_LANG.STR007}}</div>
+					<div class="btnStep" v-bind:class="getControlCSS('next')" v-on:click="goNext()">{{_LANG.STR008}}</div>
+				</div>
+			</div>
+		`,
+		data: function(){return {
+			busCitySelArea: BB.now.busCitySelArea,
+			flagShowStepControl: true,
+			flagDisablePrev: false,
+			flagDisableNext: false,
+			pageStep: 'buscity',
+			routeAry: ['buscity', 'position']
+		}},
+		methods: {
+			findRoute: function(step){
+				var rot = this.routeAry;
+				var idx = rot.indexOf(step);
+				var rt = {}
+				if(rot[idx+1]) rt.nextPath = rot[idx+1];
+				if(rot[idx-1]) rt.prevPath = rot[idx-1];
+				return rt;
+			},
+			goNext: function(){
+				var path = this.findRoute(this.pageStep).nextPath;
+				if(path === false || typeof(path)=='undefined') return false;
+				location.hash = location.hash.replace(this.pageStep,path);
+			},
+			goPrev: function(){
+				var path = this.findRoute(this.pageStep).prevPath;
+				console.log(path);
+				if(path === false || typeof(path)=='undefined') return false;
+				location.hash = location.hash.replace(this.pageStep,path);
+			},
+			getControlCSS: function(step){
+				var rt = '';
+				if(step=='prev' && this.flagDisablePrev) rt = 'disabled';
+				if(step=='next' && this.flagDisableNext) rt = 'disabled';
+				return rt;
+			}
+		},
+		mounted: function(){
+			BB.betweenArea = this;
+		},
+		watch: {
+			'$route': function(vroute){
+				var pathAry = vroute.path.replace('/','').split('/');
+				var pageStep = (pathAry[1]) ? pathAry[1] : '';
+				// this.flagShowStepControl = !!(pathAry.length>1) && !(/busmakeurl|busbookmark|busgroupbookmark/.test(pageStep));
+				this.flagDisablePrev = !!(/buscity/.test(pageStep));
+				// this.flagDisableNext = !(/buscity|busfindroute|busarrivetime/.test(pageStep));
+				this.pageStep = pageStep;
+				scrollToTop();
+			}
+		}
+	}
 	
 	var aboutArea = {
 		template: '<div>' + '<div v-html="getAboutInfo()"></div>' +
@@ -3194,6 +3337,7 @@ var BB = (function(TT){
 			'<div style="display:inline-flex;">' +
 				'<div class="btn1" v-on:click="flagShowMap=false;">{{_LANG.STR084}}</div>' +
 				'<div class="btn1" v-on:click="updateCenterStop()" v-show="initDataCfg && initDataCfg.fun==\'selectStation\'">{{_LANG.STR088}}</div>' +
+				'<div class="btn1" v-on:click="getPositionData()" v-show="initDataCfg && initDataCfg.showGetGPS">{{_LANG.STR095}}</div>' +
 			'</div>' +
 			'<div id="geotaggooglemap" style="width:100%; height:calc(100% - 60px);"></div>' +
 		'</div>',
@@ -3374,6 +3518,16 @@ var BB = (function(TT){
 					marker.setMap(null);
 				}
 			},
+			getPositionData: function(){
+				var map = this.map;
+				this.lat = map.getCenter().lat();
+				this.lng = map.getCenter().lng();
+				var rt = {lat:this.lat, lng:this.lng};
+				if(this.initDataCfg && typeof(this.initDataCfg.cbFn)=='function'){
+					this.initDataCfg.cbFn(rt);
+				}
+				this.flagShowMap = false;
+			},
 			reMadeStopList: function(){
 				this.flagShowMap = true;
 				this.updateCenterStop();
@@ -3431,6 +3585,12 @@ var BB = (function(TT){
 				{path: 'busmakeurl', component: busMakeURL},
 				{path: 'busbookmark', component: busBookmark},
 				{path: 'busgroupbookmark', component: busGroupBookmark}
+			]
+		},
+		{path: '/between', component: betweenArea,
+			children: [
+				{path: 'busCity', component: busCity},
+				{path: 'position', component: betweenPosition}
 			]
 		},
 		//{path: '/bus2city', name: 'bus2city', component: busCity},
