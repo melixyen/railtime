@@ -899,7 +899,7 @@ var languagePakc = {
 			STR092: '查詢兩站間公車路線',
 			STR093: '偵測出發區域站牌',
 			STR094: '偵測到達區域站牌',
-			STR095: '取得座標',
+			STR095: '取座標',
 			STR096: '列出直達路線',
 			zxx: 'Zh'
 	},
@@ -2755,11 +2755,17 @@ var BB = (function(TT){
 			</div>
 		`,
 		data: function(){return {
-			gpsFrom: {lat:0, lng:0},
-			gpsTo: {lat:0, lng:0},
+			// gpsFrom: {lat:0, lng:0},
+			// gpsTo: {lat:0, lng:0},
+			gpsFrom: {lat:25.0684681, lng:121.6624092},
+			gpsTo: {lat:25.06158903, lng:121.6459569},
 			busData: {}
 		}},
 		methods: {
+			makeURL: function(name, id, cities, ts) {
+				var url = makeShowURL([{name:getStopDisplayName(stnObj), id:StationID, cities:BB.now.cities, ts:StationTargetID}]);
+				console.log(url);
+			},
 			openMap: function(meter, nodeKey){
 				var me = this;
 				meter = meter || 250;
@@ -2779,6 +2785,10 @@ var BB = (function(TT){
 					for(var k in e){
 						this.$set(this.busData, k, e[k]);
 					}
+
+					this.busData.mappingStops.forEach((c)=>{
+						
+					})
 				})
 			}
 		},
@@ -3339,7 +3349,10 @@ var BB = (function(TT){
 				'<div class="btn1" v-on:click="updateCenterStop()" v-show="initDataCfg && initDataCfg.fun==\'selectStation\'">{{_LANG.STR088}}</div>' +
 				'<div class="btn1" v-on:click="getPositionData()" v-show="initDataCfg && initDataCfg.showGetGPS">{{_LANG.STR095}}</div>' +
 			'</div>' +
-			'<div id="geotaggooglemap" style="width:100%; height:calc(100% - 60px);"></div>' +
+			'<div style="position:relative;width:100%; height:calc(100% - 60px);">' +
+				'<div id="geotaggooglemap" style="width:100%; height:calc(100%);"></div>' +
+				'<div style="position:absolute; top:50%; left:50%; width:9px; height:9px; border-radius:5px; background-color:#ef2304;" v-show="initDataCfg && initDataCfg.showGetGPS"></div>' +
+			'</div>' +
 		'</div>',
 		el: '#geoTagMap',
 		data: {
