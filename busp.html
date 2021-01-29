@@ -2762,8 +2762,15 @@ var BB = (function(TT){
 			busData: {}
 		}},
 		methods: {
+			getCities: function(){
+				var backAry = [];
+				BB.now.busCitySelArea.forEach(function(c){
+					backAry = backAry.concat(getCityAreaData(c).aryCityCode);
+				});
+				return backAry;
+			},
 			makeURL: function(name, id, cities, ts) {
-				var url = makeShowURL([{name:getStopDisplayName(stnObj), id:StationID, cities:BB.now.cities, ts:StationTargetID}]);
+				var url = makeShowURL([{name:getStopDisplayName(stnObj), id:StationID, cities:this.getCities(), ts:StationTargetID}]);
 				console.log(url);
 			},
 			openMap: function(meter, nodeKey){
@@ -2780,7 +2787,7 @@ var BB = (function(TT){
 				});
 			},
 			searchRoute: function(){
-				TT.ptx.router.bus.findDirectBus(this.gpsFrom,this.gpsTo).then((e)=>{
+				TT.ptx.router.bus.findDirectBus(this.gpsFrom,this.gpsTo,this.getCities()).then((e)=>{
 					// Object.assign(this.busData, e);
 					for(var k in e){
 						this.$set(this.busData, k, e[k]);
