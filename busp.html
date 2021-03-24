@@ -903,6 +903,7 @@ var languagePakc = {
 			STR094: '偵測到達區域站牌',
 			STR095: '取座標',
 			STR096: '列出直達路線',
+			STR097: '首頁',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -1008,6 +1009,7 @@ var languagePakc = {
 			STR094: 'Detect arrive area stop',
 			STR095: 'Get position',
 			STR096: 'List direct bus',
+			STR097: 'Home',
 			zxx: 'En'
 	}
 }
@@ -1135,6 +1137,13 @@ var BB = (function(TT){
 			groupRemove: fnGroupRemove
 		}
 	})();
+	function fastFindArea(ary){
+		location.hash = '/make';
+		setTimeout(()=>{
+			BB.now.busCitySelArea = ary;
+			location.hash = '/make/busfindroute?as=direct';
+		}, 200)
+	}
 	function genQR(url){
         return "http://chart.apis.google.com/chart?cht=qr&chl="+ encodeURIComponent(url) +"&chs=240x240";
 	}
@@ -3575,6 +3584,11 @@ var BB = (function(TT){
 
 	var indexArea = {
 		template: '<div>' +
+			`
+			<div style="margin-top:20px;">
+				<div class="btn5" v-on:click="tpeFast()">台北公車速查 (Taipei Bus)</div>
+			</div>
+			` +
 			'<div class="textA" v-html="firstText()">' + '</div>' +
 			'<div v-html="_LANG.CM_APP_USE_P"></div>' +
 		'</div>', 
@@ -3583,6 +3597,9 @@ var BB = (function(TT){
 		methods: {
 			firstText: function(){
 				return _LANG.STR049.replace('{title}',_LANG.CM_TITLE).replace('{btnA}',_LANG.STR001);
+			},
+			tpeFast: function(){
+				fastFindArea(["TPE"]);
 			}
 		}
 	};
@@ -3624,8 +3641,8 @@ var BB = (function(TT){
 	});
 
 	var menuBarTpl =  Vue.compile('<div id="menuBar" class="bs_no_select">' +
-			'<router-link :to="{path: \'/make\'}">' +
-				'<div class="menuBtn1">{{_LANG.STR001}}</div>' +
+			'<router-link :to="FUNC_PATH_1">' +
+				'<div class="menuBtn1">{{FUNC_BTN_1}}</div>' +
 			'</router-link>' +
 			'<router-link :to="{path: \'/about\'}">' +
 				'<div class="menuBtn1">{{_LANG.STR002}}</div>' +
@@ -3635,6 +3652,20 @@ var BB = (function(TT){
 	BB.menuBar = Vue.component('vcmp_menu_bar', {
 		render: menuBarTpl.render,
 		staticRenderFns: menuBarTpl.staticRenderFns,
+		computed: {
+			FUNC_PATH_1: function(){
+				const tp = '/make';
+				var p = (this.$route.path==tp) ? '/' : '/make';
+				return {path: p};
+			},
+			FUNC_BTN_1: function(){
+				var rt = _LANG.STR001;
+				if(this.$route.path=='/make'){
+					rt = _LANG.STR097;
+				}
+				return rt;
+			}
+		},
 		methods: {
 			changeLang: function(){
 				var ln = Vue.duoguo.lang;
