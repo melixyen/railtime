@@ -316,7 +316,7 @@ body {
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <!--<script type="text/javascript" src="./libs/vue.js"></script>-->
-<script type="text/javascript" src="https://melixyen.github.io/rocptx/dist/ptx.min.js"></script>
+<script type="text/javascript" src="https://melixyen.github.io/rocptx/dist/ptx.js"></script>
 <script type="text/javascript">
 //jsSHA function start
 (function(G){function r(d,b,c){var h=0,a=[],f=0,g,m,k,e,l,p,q,t,w=!1,n=[],u=[],v,r=!1;c=c||{};g=c.encoding||"UTF8";v=c.numRounds||1;if(v!==parseInt(v,10)||1>v)throw Error("numRounds must a integer >= 1");if("SHA-1"===d)l=512,p=z,q=H,e=160,t=function(a){return a.slice()};else throw Error("Chosen SHA variant is not supported");k=A(b,g);m=x(d);this.setHMACKey=function(a,f,b){var c;if(!0===w)throw Error("HMAC key already set");if(!0===r)throw Error("Cannot set HMAC key after calling update");
@@ -372,6 +372,7 @@ var LANG = {
 var v2Sv3 = rocptx.id.tra.getPTXV3byV2;
 var v3Sv2 = rocptx.id.tra.getPTXV2byV3;
 var TT = {
+    access_token: '',
     dimMaxNum: 19,
     dimBaseFontBigZommRate: 1,
     data: {
@@ -1195,7 +1196,8 @@ TT.pubData = {
         ShaObj.setHMACKey(AppKey, 'TEXT');
         ShaObj.update('x-date: ' + GMTString);
         var HMAC = ShaObj.getHMAC('B64');
-        var Authorization = 'hmac username=\"' + AppID + '\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"' + HMAC + '\"';
+        // var Authorization = 'hmac username=\"' + AppID + '\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"' + HMAC + '\"';
+        var Authorization = 'Bearer ' + TT.access_token;
 
         return { 'Authorization': Authorization, 'X-Date': GMTString};
     },
@@ -1240,13 +1242,13 @@ TT.pubData = {
     getStationLiveInfo: function(stid, cbFn){
         stid = (stid) ? stid.replace('tra_','') : '1008';
         cbFn = cbFn || function(data){console.info(data);};
-        var url = 'https://ptx.transportdata.tw/MOTC/v2/Rail/TRA/LiveBoard/Station/' + v2Sv3(stid) + '?$top=30&$format=JSON';
+        var url = rocptx.common.traURL  + '/LiveBoard/Station/' + v2Sv3(stid) + '?$top=30&$format=JSON';
         this.getURL(url, cbFn);
     },
     getStationTodayTime: function(stid, cbFn){
         stid = (stid) ? stid.replace('tra_','') : '1008';
         cbFn = cbFn || function(data){console.info(data);};
-        var url = 'https://ptx.transportdata.tw/MOTC/v2/Rail/TRA/DailyTimetable/Station/' + v2Sv3(stid) + '/' + TT.goingData.today + '?$top=3000&$format=JSON';
+        var url = rocptx.common.traURL  + '/DailyTimetable/Station/' + v2Sv3(stid) + '/' + TT.goingData.today + '?$top=3000&$format=JSON';
         this.getURL(url, cbFn);
     }
 }
@@ -1992,8 +1994,11 @@ TT.initFn = function(){
             }
         }
     }
-    TT.mainArea = TT.makeMainAreaRenderDiv();
-	TT.popupArea = TT.popupArea();
+    rocptx.initToken(atob('bWVsaXh5ZW4tNGE3MDA1YWQtMWE0Ny00NDAx'), atob("MjlhOTM4MzUtNDM4OS00M2EyLTljOGMtMzBmYjgyMDdmZTA2")).then((e) => {
+        TT.access_token = e.access_token;
+        TT.mainArea = TT.makeMainAreaRenderDiv();
+	    TT.popupArea = TT.popupArea();
+    });
 }
 </script>
 <!-- -->
