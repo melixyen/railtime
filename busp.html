@@ -785,10 +785,6 @@ var counterFn = function(cbFn){
 counterFn();
 
 var TT = $trainTaiwanLib;
-// TT.ptx.AppID = atob('M2FhNWNkN2RmMTQwNGU1ZmJhYzA2N2JmMDAzODg3Yjc=');
-// TT.ptx.AppKey = atob("TFprbHRGcjhvSkxGenFpUmU1RmdCeUgxYUFZ");
-rocptx.AppID = atob('bWVsaXh5ZW4tNGE3MDA1YWQtMWE0Ny00NDAx');
-rocptx.AppKey = atob("MjlhOTM4MzUtNDM4OS00M2EyLTljOGMtMzBmYjgyMDdmZTA2");
 
 var languagePakc = {
 	"Zh": {
@@ -3693,12 +3689,14 @@ var BB = (function(TT){
 			'<div id="geoTagMap" class="pop"></div>' +
 			'<div id="statusBar"></div>' +
 		'</div>');
-		BB.main = new Vue({
-			router: BB.mainRoute,
-			render: tpl.render,
-			el: '#main'
-		});
-		makeShowBusRoutePop();
+		rocptx.initToken(atob('bWVsaXh5ZW4tNGE3MDA1YWQtMWE0Ny00NDAx'), atob("MjlhOTM4MzUtNDM4OS00M2EyLTljOGMtMzBmYjgyMDdmZTA2")).then((e) => {
+			BB.main = new Vue({
+				router: BB.mainRoute,
+				render: tpl.render,
+				el: '#main'
+			});
+			makeShowBusRoutePop();
+		})
 	}
 	return BB;
 })(TT);
