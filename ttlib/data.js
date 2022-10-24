@@ -20,6 +20,8 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
         			{"id": "110D", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "110E", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "110F", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "110G", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "110H", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1110", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
         			{"id": "1111", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
         			{"id": "1114", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
