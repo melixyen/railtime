@@ -2795,6 +2795,71 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 }
             });
         },
+        getTRA_TDX_JSON: function(w, successFn, errorFn){
+            // w to Date
+            var aryDay = [];
+            var today = '';
+            var currT = Date.now();
+            for (var i=0; i<7; i++) {
+                var nowT = new Date(currT + i * 86400000);
+                var didx = nowT.getDay();
+                var year = nowT.getFullYear();
+                var xMonth = (nowT.getMonth() + 1).toString(); if (xMonth.length==1) xMonth = '0' + xMonth;
+                var xDay = nowT.getDate().toString(); if (xDay.length==1) xDay = '0' + xDay;
+                today = year + '-' + xMonth + '-' + xDay;
+                aryDay[didx] = today;
+            }
+            TT.ptx.tra.v3._DailyTrainTimetable_TrainDate(aryDay[+w]).then((e)=>{
+                var rt = {
+                    UpdateTime: e.data.SrcUpdateTime,
+                    TrainInfos: []
+                }
+                e.data.TrainTimetables.forEach((c) => {
+                    var st = c.StopTimes;
+                    var ti = c.TrainInfo;
+                    var timeAry = st.map((s) => {
+                        var tmpB = {
+                            ARRTime: (s.ArrivalTime.split(':') == 1) ? s.ArrivalTime + ':00' : s.ArrivalTime,
+                            DEPTime: (s.DepartureTime.split(':') == 1) ? s.DepartureTime + ':00' : s.DepartureTime,
+                            Order: s.StopSequence.toString(),
+                            Route: "",
+                            Station: TT.ptx.tra.v3Sv2(s.StationID),
+                            v3id: s.StationID
+                        }
+                        return tmpB;
+                    });
+                    var tmpA = {
+                        Bike: (!!ti.BikeFlag) ? "Y" : "N",
+                        BreastFead: (!!ti.BreastFeedFlag) ? "Y" : "N",
+                        CarClass: ti.TrainTypeID, // Has
+                        Cripple: "N",
+                        Dinning: (!!ti.DiningFlag) ? "Y" : "N",
+                        Everyday: (ti.Note == '每日行駛。') ? "Y" : "N",
+                        ExtraTrain: (!!ti.ExtraTrainFlag) ? "Y" : "N",
+                        FoodSrv: "N",
+                        Line: (ti.TripLine) ? ti.TripLine.toString() : '',
+                        LineDir: ti.Direction.toString(), // Has
+                        Note: ti.Note,
+                        NoteEng: "",
+                        OverNightStn: ti.OverNightStationID,
+                        Package: (!!ti.PackageServiceFlag) ? "Y" : "N",
+                        Route: "",
+                        Train: ti.TrainNo, // Has 4715
+                        Type: ti.TrainTypeCode,
+                        TimeInfo: timeAry, // Has
+                        TimeInfos: timeAry // Has
+                    };
+
+                    rt.TrainInfos.push(tmpA);
+                })
+                console.log(rt);
+                successFn(rt);
+            }).catch((e)=> {
+                if(typeof(errorFn)=='function'){
+                    errorFn();
+                }
+            })
+        },
         getTRA_weekJSON: function(w, cbFn){
             if(!w) w = TT.defined.defaultTRAWeekday;
             var url = 'w' + w + '.json';
@@ -2820,7 +2885,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     }
             }
             setTimeout(function(){
-                TT.fn.getTRA_JSON(url, successFn, errorFn);
+                if(TT.defined.usePTX){
+                    TT.fn.getTRA_TDX_JSON(w, successFn, errorFn);
+                }else{
+                    TT.fn.getTRA_JSON(url, successFn, errorFn);
+                }
             },100);
         },
         getTRA_TimeTable2Data: function(weekString, cbFn){
