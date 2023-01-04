@@ -1144,6 +1144,7 @@ var TT = (function(){
                         onrendered: function(imgA) {
                             if(imgA && imgA.toDataURL){
                                 window.open(imgA.toDataURL("image/png"));
+                                console.log(imgA.toDataURL("image/png"));
                             }else{
                                 TT.msg.show('截圖失敗，可能是瀏覽器長寬不足截下整張圖片');
                             }
