@@ -13,25 +13,72 @@
 <style type="text/css">
 @charset "utf-8";
 
+:root {
+	--main-bg-color: #c0f4f7;
+	--main-frame-border: #99c8f1;
+
+	--color-text-a: #111;
+	--color-text-b: #9c33bd;
+	--color-text-r1: #EF2020;
+	--color-text-c: #105217;
+
+	--btn-1-border-color: #21baf7;
+	--btn-1-bg-color: #aee4ee;
+	--btn-1-font-color: #17041f;
+	--btn-1-font-color2: #920D39;
+	--btn-1-bg-selected-color: #550857;
+	--btn-1-font-selected-color: #fcfcfc;
+	--btn-5-border-color: #de21f7;
+	--btn-5-bg-color: #f5e3f5;
+
+	--btn-success-border-color: #33d41a;
+	--btn-success-bg-color: #c3f8df;
+	--btn-success-font-color: #17041f;
+	--btn-danger-border-color: #f12054;
+	--btn-danger-bg-color: transparent;
+	--btn-danger-font-color: #882211;
+	--btn-keyboard-border-color: #209AF1;
+	--btn-menu-border-color: #8D21C0;
+	--btn-menu-bg-color: #ECF8BE;
+	--btn-menu-font-color: #5e5e5e;
+	--btn-map-bg-color: #b30707;
+	--btn-map-font-color: #E7EE8E;
+
+	--btn-step-border-color: #6d6e6e;
+	--btn-step-bg-color: #c9cccc;
+	--btn-step-font-color: #403f41;
+	--step-control-bg-color: #BAE;
+
+	--ques-tip-font-color: #fefefe;
+	--ques-tip-bg-color: #2222ee;
+
+	--make-list-box-head-font-color: #2c1010;
+	--make-list-box-head-bg-color: rgba(255,255,255,0.4);
+	--make-list-box-resulg-bg-color-odd: #b4edef;
+	--make-list-box-stop-select-font-color: #FCEC89;
+	--make-list-box-stop-select-bg-color: #44111a;
+	--make-list-box-stop-over-bg-color: #083a32;
+}
+
 body {
 	font-family: "Arial", "Microsoft JhengHei";
 	font-size: large;
 	margin: 0px;
-	background-color: rgb(192, 244, 247);
+	background-color: var(--main-bg-color);
 }
 
 /* Common CSS Area Start*/
 .textA {
 	font-size: 20px;
-	color: #111;
+	color: var(--color-text-a);
 }
 .textB {
 	font-size: 16px;
-	color: #8c10a9;
+	color: var(--color-text-b);
 }
 .textR1 {
 	font-size: 20px;
-	color: #EF2020;
+	color: var(--color-text-r1);
 }
 .floatLeft, .floatLeftInnerDiv > div{
 	float: left;
@@ -42,7 +89,7 @@ body {
 	padding: 10px;
 	width: calc(100% - 40px);
 	max-width: 1000px;
-	border: 4px solid #93a1f1;
+	border: 4px solid var(--main-frame-border);
 	display: inline-block;
 }
 
@@ -52,30 +99,30 @@ body {
 	line-height: 40px;
 	margin: 8px 10px;
 	padding: 0 10px;
-	border: 2px solid rgb(33, 186, 247);
+	border: 2px solid var(--btn-1-border-color);
 	border-radius: 20px;
 	font-size: Large;
-	color: #17041f;
-	background-color: rgb(174, 228, 238);
+	color: var(--btn-1-font-color);
+	background-color: var(--btn-1-bg-color);
 	text-align: center;
 	cursor: pointer;
 	overflow: hidden;
 }
 .btn1.btnNoSupport{
-	color: #920D39;
+	color: var(--btn-1-font-color2);
 }
 .btn1.selected{
-	color: #fcfcfc;
-	background-color: #550857;
+	color: var(--btn-1-font-selected-color);
+	background-color: var(--btn-1-bg-selected-color);
 }
 
 .btn5{
 	font-size: 16px;
 	margin: 8px 10px;
 	padding: 5px 10px;
-	border: 2px solid #de21f7;
-	color: #17041f;
-	background-color: #f5e3f5;
+	border: 2px solid var(--btn-5-border-color);
+	color: var(--btn-1-font-color);
+	background-color: var(--btn-5-bg-color);
 }
 
 .btnStep{
@@ -84,11 +131,11 @@ body {
 	line-height: 40px;
 	margin: 8px 10px;
 	padding: 0 10px;
-	border: 2px solid rgb(109, 110, 110);
+	border: 2px solid var(--btn-step-border-color);
 	border-radius: 6px;
 	font-size: 18px;
-	color: #403f41;
-	background-color: rgb(201, 204, 204);
+	color: var(--btn-step-font-color);
+	background-color: var(--btn-step-bg-color);
 	text-align: center;
 	cursor: pointer;
 	overflow: hidden;
@@ -104,8 +151,8 @@ body {
 	z-index: 4;
 	bottom: 0px;
 	left: 0px;
-	border-top: 1px solid #BAE;
-	background-color: rgb(192, 244, 247);
+	border-top: 1px solid var(--step-control-bg-color);
+	background-color: var(--main-bg-color);
 }
 .textA, .textB, .textR1, .btn1, .btnStep, .bookmarkOut,
 .bs_no_select{
@@ -124,8 +171,8 @@ body {
 .divDPIB {display:inline-block;}
 
 .quesTip{
-	color: #FEFEFE;
-	background-color: #22E;
+	color: var(--ques-tip-font-color);
+	background-color: var(--ques-tip-bg-color);
 	border-radius: 50px;
 	display: inline-block;
 	text-align: center;
@@ -149,21 +196,19 @@ body {
 #menuBar {
 	min-height: 50px;
 	padding: 5px 0;
-	display: inline-block;
+	display: flex;
 }
 .menuBtn1 {
-	display: inline-block;
 	height: 40px;
 	line-height: 40px;
-	max-width: calc(32vw - 44px);
-	width: calc(31vw - 44px);
+	flex: 1;
 	margin: 2px 10px;
 	padding: 0 10px;
-	border: 2px solid #8D21C0;
+	border: 2px solid var(--btn-menu-border-color);
 	border-radius: 5px;
 	font-size: Large;
-	color: #5e5e5e;
-	background-color: #ECF8BE;
+	color: var(--btn-menu-font-color);
+	background-color: var(--btn-menu-bg-color);
 	text-align: center;
 	cursor: pointer;
 	overflow: hidden;
@@ -224,8 +269,9 @@ body {
 	overflow: hidden;
 }
 #makeArea .busFindRouteFrame .clearFrame > div{
-	border: 2px solid rgb(241, 32, 84);
-	color: #821;
+	border: 2px solid var(--btn-danger-border-color);
+	background-color: var(--btn-danger-bg-color);
+	color: var(--btn-danger-font-color);
 	padding: 0 12px;
 	font-size: 24px;
 }
@@ -240,11 +286,11 @@ body {
 	font-size: 24px;
 }
 #makeArea .busFindRouteFrame .keyboardFrame .keyboardGroup > div{
-	border: 2px solid #209AF1;
+	border: 2px solid var(--btn-keyboard-border-color);
 }
 
 #makeArea .busFindResultListBox{
-	border: 1px solid #46BCC0;
+	border: 1px solid var(--main-frame-border);
 	width: calc(100% - 50px);
 	display: inline-block;
 	margin-bottom: 10px;
@@ -252,12 +298,12 @@ body {
 #makeArea .busFindResultListBox .head{
 	font-size: 18px;
 	display: inline-block;
-	color: #2c1010;
+	color: var(--make-list-box-head-font-color);
 	padding: 10px;
 	margin: 5px;
 	width: calc(100% - 40px);
 	cursor: pointer;
-	background-color: rgba(255,255,255,0.4);
+	background-color: var(--make-list-box-head-bg-color);
 	border: 1px solid transparent;
 	border-radius: 20px;
 }
@@ -265,7 +311,7 @@ body {
 	padding-right: 30px;
 }
 #makeArea .busFindResultListBox .fromTo{
-	color: #105217;
+	color: var(--color-text-c);
 	padding: 0 10px;
 }
 #makeArea .busFindResultListBox .dash1{
@@ -276,7 +322,7 @@ body {
 }
 #makeArea .busFindResultListBox .manageBy, #makeArea .busFindResultListBox .slinText{
 	font-size: 14px;
-	color: #9c33bd;
+	color: var(--color-text-b);
 }
 #makeArea .busFindResultListBox .manageBy{
 	padding: 0 0 0 20px;
@@ -289,12 +335,12 @@ body {
 	margin: 2px 3px;
 }
 #makeArea .busFindResultListBox .stop:nth-child(odd){
-	background-color: #b4edef;
+	background-color: var(--make-list-box-resulg-bg-color-odd);
 }
 #makeArea .busFindResultListBox .stop .stopIndex{
 	padding: 0 10px 0 0;
 	min-width: 40px;
-	color: #29A;
+	color: var(--color-text-c);
 	text-align: right;
 }
 #makeArea .busFindResultListBox .stop .stopName{
@@ -304,12 +350,12 @@ body {
 	cursor: pointer;
 }
 #makeArea .busFindResultListBox .stop .stopName.onSelect{
-	background-color: rgb(68, 17, 26);
-	color: #FCEC89;
+	background-color: var(--make-list-box-stop-select-bg-color);
+	color: var(--make-list-box-stop-select-font-color);
 }
 #makeArea .busFindResultListBox .stop .stopName.overSelect{
-	background-color: rgb(8, 58, 50);
-	color: #FCEC89;
+	background-color: var(--make-list-box-stop-over-bg-color);
+	color: var(--make-list-box-stop-select-font-color);
 }
 #makeArea .busFindResultListBox .stop .StopUID, #makeArea .busFindResultListBox .stop .StationID{
 	padding: 0 10px;
@@ -321,12 +367,12 @@ body {
 	height: 100%;
 }
 #makeArea .busFindResultListBox .stopOpenMap .stopMap{
-	color: #E7EE8E;
+	color: var(--btn-map-font-color);
 	border: 1px solid transparent;
 	padding: 0 5px;
 	border-radius: 10px;
 	display: inline-block;
-	background-color: #b30707;
+	background-color: var(--btn-map-bg-color);
 	height: 36px;
 	line-height: 36px;
 }
@@ -334,9 +380,9 @@ body {
 	height: 36px;
 	line-height: 36px;
 	margin: 5px 10px;
-	border: 2px solid rgb(51, 212, 26);
-	background-color: rgb(195, 248, 223);
-	color: #17041f;
+	border: 2px solid var(--btn-success-border-color);
+	background-color: var(--btn-success-bg-color);
+	color: var(--btn-success-font-color);
 	border-radius: 20px;
 	padding: 0 10px;
 	cursor: pointer;
@@ -366,7 +412,7 @@ body {
 }
 #makeArea .busArriveTimeFrame .name, #makeArea .busArriveTimeFrame .info, #makeArea .busArriveTimeFrame .stopUID{
 	padding: 5px calc(1vw + 4px);
-	border-bottom: 1px solid #99e;
+	border-bottom: 1px solid var(--main-frame-border);
 	word-wrap: break-word;
 	word-break: break-all;
 }
@@ -493,8 +539,6 @@ body {
 	.menuBtn1{
 		margin: 2px 5px;
 		padding: 0 5px;
-		max-width: calc(31vw - 20px);
-		width: calc(31vw - 20px);
 	}
 	#makeArea{ font-size: 14px; }
 	#makeArea .busFindResultListBox, #makeArea .busFindResultListBox .head{
@@ -3637,11 +3681,11 @@ var BB = (function(TT){
 	});
 
 	var menuBarTpl =  Vue.compile('<div id="menuBar" class="bs_no_select">' +
-			'<router-link :to="FUNC_PATH_1">' +
-				'<div class="menuBtn1">{{FUNC_BTN_1}}</div>' +
+			'<router-link :to="FUNC_PATH_1" class="menuBtn1">' +
+				'<div class="menuBtn1a">{{FUNC_BTN_1}}</div>' +
 			'</router-link>' +
-			'<router-link :to="{path: \'/about\'}">' +
-				'<div class="menuBtn1">{{_LANG.STR002}}</div>' +
+			'<router-link :to="{path: \'/about\'}" class="menuBtn1">' +
+				'<div class="menuBtn1a">{{_LANG.STR002}}</div>' +
 			'</router-link>' +
 			'<div class="menuBtn1" v-on:click="changeLang()">Language</div>' +
 	'</div>');
