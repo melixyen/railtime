@@ -16,11 +16,38 @@
 :root {
 	--main-bg-color: #c0f4f7;
 	--main-frame-border: #99c8f1;
+	--main-link-font-color: #229;
+	--main-func-font-color: #24e;
+	/* 動態站牌公車狀態色碼 */
+	--main-bus-display-minute-font-color: #1020EF;
+	--main-bus-display-may-bg-color: #DB0F20;
+	--main-bus-display-may-font-color: #eee;
+	--main-bus-display-other-font-color: #cc9a0f;
+	--main-mask-bg-color: rgba(210,210,210,0.6);
+	--main-mask-text-font-color: #EF7879;
+
+	--pop-bg-color: #eee;
+	--pop-guide-bar-border-color: #aa9;
+	--pop-guide-item-border-color: #867;
+	--pop-guide-item-open-bg-color: #79c;
+	/* 站牌經過指定區間背景色 */
+	--pop-show-bus-route-now-bg-color: #2cd;
+	--pop-show-bus-route-over-bg-color: #bff0ee;
+	--pop-show-bus-route-target-bg-color: #d2b7f0;
+	/* 車牌 */
+	--pop-show-bus-route-crap-bg-color: #388D13;
+	--pop-show-bus-route-crap-font-color: #f3f3f3;
 
 	--color-text-a: #111;
 	--color-text-b: #9c33bd;
 	--color-text-r1: #EF2020;
 	--color-text-c: #105217;
+
+	/* 動態站牌 */
+	--show-area-station-a-color: #217; /* 站名，框線，番號 */
+	--show-area-station-name-font-color: #99F0ba;
+	--show-area-station-dir-0-font-color: #008000;
+	--show-area-station-dir-1-font-color: #ff0000;
 
 	--btn-1-border-color: #21baf7;
 	--btn-1-bg-color: #aee4ee;
@@ -431,7 +458,7 @@ body {
 .bookmark .bookmarkList .name{
 	max-width: 50%;
 	padding:0 10px;
-	color: #229;
+	color: var(--main-link-font-color);
 	text-decoration: underline;
 }
 .bookmark .bookmarkList .name > span{
@@ -439,7 +466,7 @@ body {
 }
 .bookmark .bookmarkList .func{
 	padding: 0 3px;
-	color: #24e;
+	color: var(--main-func-font-color);
 	cursor: pointer;
 	min-width: 50px;
 }
@@ -454,14 +481,14 @@ body {
 
 
 #showArea .stationDisplayTitle{
-	background-color: #217;
+	background-color: var(--show-area-station-a-color);
 	position: relative;
 }
 #showArea .stationDisplayMore{
 	display: inline-block;
 	width: 28px;
 	height: 28px;
-	background-color: #ABE;
+	background-color: #ABE; /* 地圖按鈕被景色 */
 	position: absolute;
 	z-index: 3;
 	cursor: pointer;
@@ -472,7 +499,7 @@ body {
 #showArea .stationDisplayName{
 	font-size:24px;
 	text-align:center;
-	color: #99F0ba;
+	color: var(--show-area-station-name-font-color);
 	height:32px; line-height:32px;
 	display: inline-block;
 	width: calc(100% - 30px);
@@ -481,7 +508,7 @@ body {
 #showArea .allIn .list{
 	padding:8px;
 	margin-bottom: 12px;
-	border: 2px solid #217;
+	border: 2px solid var(--show-area-station-a-color);
 	border-top: none;
 }
 #showArea .allIn .list .item{
@@ -489,12 +516,12 @@ body {
 	line-height: 32px;
 	font-size: 20px;
 	max-width: 48%;
-	border-bottom: 1px solid #8CE;
+	border-bottom: 1px solid var(--main-frame-border);
 }
 #showArea .allIn .list .item:last-child{
 	padding-right: 0;
 }
-#showArea .allIn .list .item.number{ color:#217;}
+#showArea .allIn .list .item.number{ color: var(--show-area-station-a-color);}
 #showArea .allIn .list .item.number .str{
 	position:relative;
 	padding-right: 22px;
@@ -507,18 +534,20 @@ body {
 	padding-left: 5px;
 	max-width: 100px;
 }
-.busRouteDir0Color, #showArea .allIn .list .item.number .str .dir0{ color:green; }
-.busRouteDir1Color, #showArea .allIn .list .item.number .str .dir1{ color:red; }
+.busRouteDir0Color, #showArea .allIn .list .item.number .str .dir0{ color:var(--show-area-station-dir-0-font-color); }
+.busRouteDir1Color, #showArea .allIn .list .item.number .str .dir1{ color:var(--show-area-station-dir-1-font-color); }
 #showArea .allIn .list .item.timeState { min-width: 100px; }
 
 .busDisplayArriveMinute{
-	color: #1020EF;
+	color: var(--main-bus-display-minute-font-color);
 }
 .busDisplayMayArrive{
-	background-color:#DB0F20; color:#EEE; padding: 2px 5px;
+	background-color:var(--main-bus-display-may-bg-color);
+	color:var(--main-bus-display-may-font-color);
+	padding: 2px 5px;
 }
 .busDusplayOtherStatus{
-	color:#cc9a0f;
+	color:var(--main-bus-display-other-font-color);
 }
 
 .tinyURLinkInput{
@@ -587,7 +616,7 @@ body {
     height: 100%;
     top: 0px;
     left: 0px;
-    background-color: rgba(210,210,210,0.6);
+    background-color: var(--main-mask-bg-color);
     text-align: center;
     z-index: 105;
     -webkit-align-items: center;
@@ -598,7 +627,7 @@ body {
 .mask .text{
     position: relative;
     font-size: 24px;
-    color: #EF7879;
+    color: var(--main-mask-text-font-color);
 }
 .mask.show{
     display: -webkit-flex;
@@ -609,7 +638,7 @@ body {
 	width: 100vw; height: 100vh;
 	position: fixed;
 	top: 0px; left: 0px;
-	background-color: #EEE;
+	background-color: var(--pop-bg-color);
     z-index: 103;
     -webkit-align-items: center;
     align-items: center;
@@ -628,7 +657,7 @@ body {
 	min-height: 98vh;
 	width: 100%;
 }
-#showBusRoutePop .guideBar{padding: 1px 5px 6px; border-bottom: 1px solid #aa9;}
+#showBusRoutePop .guideBar{padding: 1px 5px 6px; border-bottom: 1px solid var(--pop-guide-bar-border-color);}
 #showBusRoutePop .guideBarFlex{
 	display: inline-flex;
 	width: 100%;
@@ -638,7 +667,7 @@ body {
 	height: 22px; line-height: 22px;
 	padding: 8px;
 	margin: 3px;
-	border: 2px solid #867;
+	border: 2px solid var(--pop-guide-item-border-color);
 	cursor: pointer;
 	text-align: center;
 	font-size:20px;
@@ -656,7 +685,7 @@ body {
 	line-height: 18px;
 }
 #showBusRoutePop .guideBarFlex .btnItem.open{
-	background-color: #79C;
+	background-color: var(--pop-guide-item-open-bg-color);
 }
 #showBusRoutePop .content .row {
 	font-size: 20px;
@@ -669,7 +698,7 @@ body {
 	text-align: right;
 }
 #showBusRoutePop .content .row.link .stop > span{
-	color: #229;
+	color: var(--main-link-font-color);
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -677,21 +706,21 @@ body {
 	opacity: 0.7;
 }
 #showBusRoutePop .content .row.now {
-	background-color: #2cd;
+	background-color: var(--pop-show-bus-route-now-bg-color);
 }
 #showBusRoutePop .content .row.over {
-	background-color: #bff0ee;
+	background-color: var(--pop-show-bus-route-over-bg-color);
 }
 #showBusRoutePop .content .row.target {
-	background-color: #d2b7f0;
+	background-color: var(--pop-show-bus-route-target-bg-color);
 }
 #showBusRoutePop .content .row .status{
 	font-size: 12px;
 	display: inline;
 }
 #showBusRoutePop .content .row .status .carp{
-	background-color: #388D13;
-	color: #F3F3F3;
+	background-color: var(--pop-show-bus-route-crap-bg-color);
+	color: var(--pop-show-bus-route-crap-font-color);
 	display: inline-block;
 	padding: 1px 3px;
 	height: 14px; line-height: 14px;
