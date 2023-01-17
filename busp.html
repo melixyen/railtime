@@ -220,10 +220,24 @@ body {
 	position: relative;
 }
 
-#menuBar {
-	min-height: 50px;
-	padding: 5px 0;
+#conbase {
+	height: 100vh;
+	height: calc(var(--vh, 1vh) * 100);
+	overflow: hidden;
 	display: flex;
+	flex-direction: column;
+}
+
+#conbase .conScroll {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+#menuBar {
+	height: 50px;
+	min-height: 50px;
+	display: flex;
+	overflow: hidden;
 }
 .menuBtn1 {
 	height: 40px;
@@ -249,12 +263,46 @@ body {
 	width: 100%;
 	margin-bottom: 105px;
 }
-#makeArea .aloneLineRouteLinkA > a{
-	display: inline-block;
-	margin: 10px;
+#makeArea .aloneLineMainFunc {
+	width: 100%;
+	max-width: 1200px;
+	display: grid;
+	grid-template-columns: 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
+	grid-template-rows: 1fr;
+	grid-gap: 0.2rem;
 }
-#makeArea .aloneLineRouteLinkA > a > .btn1{
+#makeArea .aloneLineMainFunc .aloneLineRouteLinkA > a{
+	width: 100%;
+	text-decoration: none;
+}
+#makeArea .aloneLineMainFunc .aloneLineRouteLinkA > a > .btn1{
 	margin: 0;
+	box-sizing: border-box;
+	width: 100%;
+	height: 8rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@media screen and (min-width: 1px) and (max-width: 679px) {
+	#makeArea .aloneLineMainFunc {
+		grid-template-columns: 0.5fr 0.5fr;
+	}
+	#makeArea .aloneLineMainFunc .aloneLineRouteLinkA > a > .btn1{
+		height: 5rem;
+	}
+	#makeArea .aloneLineMainFunc .aloneLineRouteLinkA > a > .btn1 > div{
+		line-height: 1.5rem;
+	}
+}
+@media screen and (min-width: 680px) and (max-width: 909px) {
+	#makeArea .aloneLineMainFunc {
+		grid-template-columns: 0.5fr 0.5fr;
+	}
+	#makeArea .aloneLineMainFunc .aloneLineRouteLinkA > a > .btn1{
+		height: auto;
+	}
 }
 
 .makeCSSArea .busCityCodeButton{
@@ -474,7 +522,7 @@ body {
 #textlentry {
 	position: absolute;
 	font-size: 14px;
-	right: 0px;
+	right: 1000px;
 	top: 0;
 	opacity: 0.1;
 }
@@ -967,7 +1015,7 @@ var languagePakc = {
 			STR089: '從地圖看所有站牌',
 			STR090: '語音播放站名',
 			STR091: '複製',
-			STR092: '查詢兩站間公車路線',
+			STR092: '查詢兩地點間公車路線',
 			STR093: '偵測出發區域站牌',
 			STR094: '偵測到達區域站牌',
 			STR095: '取座標',
@@ -1073,7 +1121,7 @@ var languagePakc = {
 			STR089: 'List stops in map',
 			STR090: 'Speak stop name',
 			STR091: 'Copy',
-			STR092: 'Find between 2 stop bus',
+			STR092: 'Find bus which between 2 place',
 			STR093: 'Detect from area stop',
 			STR094: 'Detect arrive area stop',
 			STR095: 'Get position',
@@ -2161,11 +2209,13 @@ var BB = (function(TT){
 
 	var makeIndex = {
 		template: '<div>' +
-				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity?as=direct\'}">' + '<div class="btn1">{{_LANG.STR061}}</div>' + '</router-link></div>' +
-				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1">{{_LANG.STR003}}</div>' + '</router-link></div>' +
-				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/between/buscity\'}">' + '<div class="btn1">{{_LANG.STR092}}</div>' + '</router-link></div>' +
-				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1">{{_LANG.STR046}}</div>' + '</router-link></div>' +
-				'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1">{{_LANG.STR058}}</div>' + '</router-link></div>' +
+				'<div class="aloneLineMainFunc">' +
+					'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity?as=direct\'}">' + '<div class="btn1"><div>{{_LANG.STR061}}</div></div>' + '</router-link></div>' +
+					'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/buscity\'}">' + '<div class="btn1"><div>{{_LANG.STR003}}</div></div>' + '</router-link></div>' +
+					'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/between/buscity\'}">' + '<div class="btn1"><div>{{_LANG.STR092}}</div></div>' + '</router-link></div>' +
+					'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busbookmark\'}">' + '<div class="btn1"><div>{{_LANG.STR046}}</div></div>' + '</router-link></div>' +
+					'<div class="aloneLineRouteLinkA"><router-link :to="{path: \'/make/busgroupbookmark\'}">' + '<div class="btn1"><div>{{_LANG.STR058}}</div></div>' + '</router-link></div>' +
+				'</div>' +
 				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demo101()">{{_LANG.STR066}}</div>' + '</div>' +
 				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="demoBXS()">{{_LANG.STR067}}</div>' + '</div>' +
 				'<div class="aloneLineRouteLinkA">' + '<div class="btn5" v-on:click="cloudXizhi()">複合運用 : 汐止雲端車站</div>' + '</div>' +
@@ -3711,7 +3761,7 @@ var BB = (function(TT){
 
 	var menuBarTpl =  Vue.compile('<div id="menuBar" class="bs_no_select">' +
 			'<router-link :to="FUNC_PATH_1" class="menuBtn1">' +
-				'<div class="menuBtn1a">{{FUNC_BTN_1}}</div>' +
+				'<div class="menuBtn1a">{{getFunBtn1Name()}}</div>' +
 			'</router-link>' +
 			'<router-link :to="{path: \'/about\'}" class="menuBtn1">' +
 				'<div class="menuBtn1a">{{_LANG.STR002}}</div>' +
@@ -3727,13 +3777,6 @@ var BB = (function(TT){
 				var p = (this.$route.path==tp) ? '/' : '/make';
 				return {path: p};
 			},
-			FUNC_BTN_1: function(){
-				var rt = _LANG.STR001;
-				if(this.$route.path=='/make'){
-					rt = _LANG.STR097;
-				}
-				return rt;
-			}
 		},
 		methods: {
 			changeLang: function(){
@@ -3742,6 +3785,9 @@ var BB = (function(TT){
 				else if(Vue.duoguo.lang=='En'){ln = 'Zh';}
 
 				Vue.duoguo.change(ln);
+			},
+			getFunBtn1Name: function(){
+				return (this.$route.path=='/make') ? _LANG.STR097 : _LANG.STR001;
 			}
 		}
 	});
@@ -3756,8 +3802,12 @@ var BB = (function(TT){
 			}
 		}
 		var tpl = Vue.compile('<div id="main">' + 
-			'<vcmp_menu_bar id="menuBar"></vcmp_menu_bar>' +
-			'<router-view></router-view>' +
+			'<div id="conbase">' +
+				'<vcmp_menu_bar id="menuBar"></vcmp_menu_bar>' +
+				'<div class="conScroll">' +
+					'<router-view></router-view>' +
+				'</div>' +
+			'</div>' +
 			'<div id="showBusRoutePop" class="pop"></div>' +
 			'<div id="geoTagMap" class="pop"></div>' +
 			'<div id="statusBar"></div>' +
@@ -3770,7 +3820,18 @@ var BB = (function(TT){
 			});
 			makeShowBusRoutePop();
 		})
+		BB.getRealVH();
 	}
+
+	BB.getRealVH = function() {
+		// **** 計算 vh 修正值 ****
+		let vh = window.innerHeight * 0.01;
+		document.documentElement.style.setProperty('--vh', `${vh}px`);
+	}
+
+	window.addEventListener('resize', function(e){
+		BB.getRealVH();
+	})
 	return BB;
 })(TT);
 
