@@ -7,8 +7,8 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
         	defined: {
         		"CarClass": [
         			{"id": "1100", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
-        			{"id": "1101", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
-        			{"id": "1102", "name": "太魯閣號", "ename": "Tze-Chiang Limited Express(Tarko)", "color": "#FD8A10"},
+        			{"id": "1101", "name": "太魯閣號", "ename": "Tze-Chiang Limited Express(Tarko)", "color": "#FD8A10"},
+        			{"id": "1102", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1103", "name": "自強", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1106", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "1107", "name": "普悠瑪號", "ename": "Tze-Chiang Limited Express(Puyuma)", "color": "#ff0030"},
@@ -22,6 +22,8 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
         			{"id": "110F", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "110G", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
         			{"id": "110H", "name": "自強號", "ename": "Tze-Chiang Limited Express", "color": "#fd7a10"},
+        			{"id": "110K", "name": "自強(3000)", "ename": "Tze-Chiang Limited Express(3000)", "color": "#fd7a10"},
+        			{"id": "110M", "name": "自強(3000)", "ename": "Tze-Chiang Limited Express(3000)", "color": "#fd7a10"},
         			{"id": "1110", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
         			{"id": "1111", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
         			{"id": "1114", "name": "莒光", "ename": "Chu-Kuang Express", "color": "#ff1070"},
