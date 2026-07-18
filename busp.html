@@ -682,6 +682,27 @@ body {
     display: flex;
 }
 
+/* API rate limit / 等待資料 鎖定畫面 */
+#apiLock{
+    z-index: 110;
+}
+#apiLock .apiLockCount{
+    font-size: 32px;
+    padding: 8px 0;
+}
+#apiLock .apiLockWaitMsg{
+    font-size: 20px;
+    padding: 4px 0;
+}
+#apiLock .apiLockNote{
+    font-size: 15px;
+    color: #555;
+    padding: 4px 0;
+}
+#apiLock .apiLockAbandon{
+    margin-top: 14px;
+}
+
 .pop{
 	width: 100vw; height: 100vh;
 	position: fixed;
@@ -1021,6 +1042,12 @@ var languagePakc = {
 			STR095: '取座標',
 			STR096: '列出直達路線',
 			STR097: '首頁',
+			STR098: 'API 查詢額度已滿，暫停查詢',
+			STR099: '秒後自動繼續查詢',
+			STR100: '正在等候路線資料回應…',
+			STR101: '放棄等待',
+			STR102: '(背景自動更新已暫停，恢復後繼續)',
+			STR103: '路線起訖資料載入中…',
 			zxx: 'Zh'
 	},
 	"En": {
@@ -1127,6 +1154,12 @@ var languagePakc = {
 			STR095: 'Get position',
 			STR096: 'List direct bus',
 			STR097: 'Home',
+			STR098: 'API rate limit reached, queries paused',
+			STR099: 'sec. to resume automatically',
+			STR100: 'Waiting for bus route data…',
+			STR101: 'Stop waiting',
+			STR102: '(Background auto-refresh is paused and will resume later.)',
+			STR103: 'Route origin/destination data is loading…',
 			zxx: 'En'
 	}
 }
@@ -1467,9 +1500,11 @@ var BB = (function(TT){
 	}
 
 	var BB = {
-		mode: (TT.defined.GetP && TT.defined.GetP.a) ? TT.defined.GetP.a : 'make',//make , show , 
+		mode: (TT.defined.GetP && TT.defined.GetP.a) ? TT.defined.GetP.a : 'make',//make , show ,
 		cityArea: define_cityArea,
 		reloadInterval: 20000,
+		flagNearByOK: true,//NearBy 進階服務可用性，遇非 429 失敗時本 session 回降 City 版
+		nearByFar: 300,//NearBy 查詢半徑(公尺)，TDX 上限 1000
 		myLat: '25.06764',
 		myLng: '121.66127',
 		now: {
@@ -1497,6 +1532,118 @@ var BB = (function(TT){
 		var mask = document.getElementById('mask');
 		mask.className = mask.className.replace(' show','');
 	}
+
+	//========== TDX API 佇列與 rate limit 鎖定畫面 ==========
+	//所有經 TT.ptx.getURL 的查詢改為排入佇列逐一執行；收到 429 (rate limit) 時鎖定畫面
+	//倒數（預設 60 秒，回應有 Retry-After 時以其為準）後自動續跑佇列，鎖定期間背景 polling 均暫停。
+	//showWait/hideWait 供「使用者動作正在等 API」情境顯示提示與「放棄等待」按鈕。
+	BB.apiQueue = (function(){
+		var LOCK_SECONDS = 60;
+		var Q = {
+			locked: false,
+			lockRemain: 0,
+			waitObj: false//{message, onAbandon} 使用者動作等待中
+		};
+		var ary = [];
+		var running = false;
+		var lockTimer = 0;
+
+		function getDom(){ return document.getElementById('apiLock'); }
+		function renderLock(){
+			var dom = getDom();
+			if(!dom) return;
+			if(!Q.locked && !Q.waitObj){
+				dom.className = dom.className.replace(' show','');
+				return;
+			}
+			if(!/ show/.test(dom.className)) dom.className += ' show';
+			dom.querySelector('.apiLockMsg').innerHTML = (Q.locked) ? _LANG.STR098 : Q.waitObj.message;
+			dom.querySelector('.apiLockCount').innerHTML = (Q.locked) ? Q.lockRemain + ' ' + _LANG.STR099 : '';
+			dom.querySelector('.apiLockWaitMsg').innerHTML = (Q.locked && Q.waitObj) ? Q.waitObj.message : '';
+			dom.querySelector('.apiLockNote').innerHTML = (Q.locked) ? _LANG.STR102 : '';
+			var btn = dom.querySelector('.apiLockAbandon');
+			btn.innerHTML = _LANG.STR101;
+			btn.style.display = (Q.waitObj) ? 'inline-block' : 'none';
+		}
+		function isRateLimited(e){
+			var target = e && e.xhr && e.xhr.target;
+			if(!target) return false;
+			if(target.status === 429) return true;
+			return !!(typeof(target.response)=='string' && /API rate limit exceeded/i.test(target.response));
+		}
+		function getRetrySec(e){
+			try{
+				var ra = parseInt(e.xhr.target.getResponseHeader('retry-after'), 10);
+				if(ra > 0) return Math.min(ra + 1, LOCK_SECONDS);
+			}catch(err){/* header 不可讀時用預設秒數 */}
+			return LOCK_SECONDS;
+		}
+		function enterLock(sec){
+			Q.locked = true;
+			Q.lockRemain = sec;
+			renderLock();
+			clearInterval(lockTimer);
+			lockTimer = setInterval(function(){
+				Q.lockRemain--;
+				if(Q.lockRemain <= 0){
+					clearInterval(lockTimer);
+					Q.locked = false;
+					renderLock();
+					next();
+				}else{
+					renderLock();
+				}
+			}, 1000);
+		}
+		function next(){
+			if(running || Q.locked || ary.length==0) return;
+			var item = ary[0];
+			if(item.cancelled){ ary.shift(); next(); return; }
+			running = true;
+			item.run(function(data, e){
+				running = false;
+				if(isRateLimited(e)){//留在佇列頭，倒數結束後重試同一請求
+					enterLock(getRetrySec(e));
+					return;
+				}
+				ary.shift();
+				if(!item.cancelled && typeof(item.cbFn)=='function') item.cbFn(data, e);
+				next();
+			});
+		}
+		Q.push = function(runFn, cbFn){
+			var item = {run: runFn, cbFn: cbFn, cancelled: false};
+			ary.push(item);
+			next();
+			return item;
+		};
+		Q.showWait = function(message, onAbandon){
+			Q.waitObj = {message: message, onAbandon: onAbandon};
+			renderLock();
+		};
+		Q.hideWait = function(){
+			Q.waitObj = false;
+			renderLock();
+		};
+		Q.abandonWait = function(){
+			var w = Q.waitObj;
+			Q.hideWait();
+			if(w && typeof(w.onAbandon)=='function') w.onAbandon();
+		};
+		Q.init = function(){
+			var dom = getDom();
+			if(dom) dom.querySelector('.apiLockAbandon').addEventListener('click', Q.abandonWait);
+			//429 統一由佇列鎖定處理，關閉 ptx 內建的靜默退避重試
+			TT.ptx.rateLimitRetry.enabled = false;
+			var origGetURL = TT.ptx.getURL;
+			TT.ptx.getURL = function(url, cbFn){
+				Q.push(function(done){
+					origGetURL.call(TT.ptx, url, done);
+				}, cbFn);
+			};
+		};
+		return Q;
+	})();
 
 	var busCity = {//選擇主管機關縣市
 		template: '<div id="busCity" class="makeSub1">' +
@@ -2461,6 +2608,7 @@ var BB = (function(TT){
 	var showArea = {
 		template: '<div id="showArea">' +
 			'<div class="allOute">' +
+				'<div class="textB" v-if="!routeReady && aryArriveTime.length>0">{{_LANG.STR103}}</div>' +
 				'<div class="allIn" v-for="(station, stIdx) in aryArriveTime">' +
 					'<div class="stationDisplayTitle">' +
 						'<div class="stationDisplayMore" v-bind:title="_LANG.STR020">' +
@@ -2507,7 +2655,9 @@ var BB = (function(TT){
 			htmlQR: '',
 			htmlOrigQR: '',
 			tinyurl: '',
-			onReload: false
+			onReload: false,
+			routeReady: false,//Route 起訖靜態資料是否已補齊（延後載入）
+			routeFetching: false
 		}},
 		methods: {
 			tet2: function(station){
@@ -2532,7 +2682,7 @@ var BB = (function(TT){
 			},
 			getBusDataName: function(bus){
 				var dir = '';
-				var busRouteInfo = this.getBusMoreInfo(bus);
+				var busRouteInfo = this.getBusMoreInfo(bus) || {};
 				var fromStName = busRouteInfo.DepartureStopNameZh || '',
 					toStName = busRouteInfo.DestinationStopNameZh || '';
 				if(_LANG.zxx=='En'){
@@ -2577,6 +2727,10 @@ var BB = (function(TT){
 				BB.showBusRoutePop.StationID = station.StationID;
 				BB.showBusRoutePop.StationTargetID = station.StationTargetID;
 				BB.showBusRoutePop.cities = station.cities;
+				//路線明細要再查 API，若佇列排隊或 rate limit 鎖定中先出提示，可按放棄等待返回
+				BB.apiQueue.showWait(_LANG.STR100, function(){
+					BB.showBusRoutePop.back();
+				});
 				location.hash = '/show/line';
 			},
 			styleBusStop: function(bus){
@@ -2587,144 +2741,138 @@ var BB = (function(TT){
 				return ss;
 			},
 			readAllStation: function(cbFn){
+				//優化版：主站與 target 站用同一個 $filter 一次取回（每 city 由 2~3 次減為 1 次），
+				//Route 靜態資料不在此處抓，改由 fetchRouteData 延後補齊
 				var arySBS = JSON.parse(JSON.stringify(this.showBusStation));
-				var stAryCities = [];
-				var stRes = [];
 				var lastResult = [];
-				var tmpStatioinID = '', tmpStationTargetID = false, tmpCitiesAry = [], tmpStationPosition = false;
-				function goReadStation(){
-					tmpStationPosition = false;
-					if(arySBS.length>0){
-						var stObj = arySBS.shift();
-						stAryCities = stObj.cities.map(function(c){
-							return {city: c, StationID: stObj.id, StationTargetID: stObj.ts};
-						});
-						stRes = [];
-						tmpStatioinID = stObj.id;
-						if(stObj.ts) tmpStationTargetID = stObj.ts;
-						tmpCitiesAry = stObj.cities.slice();
-						getAllCityStation();
-					}else{
-						cbFn(lastResult);
-					}
+				function getStationMulti(aryID, city, gsCbFn){
+					var cityStr = TT.ptx.bus.getCityData(city).City;
+					var url = TT.ptx.common.busURL + '/Station/City/' + cityStr + '?' +
+						TT.ptx.filterFn(TT.ptx.filterParam('StationID','==',aryID,'or')) +
+						'&$top=3000&$format=JSON&' + TT.ptx.selectFieldFn(['Stops','StationUID','StationID','StationPosition']);
+					TT.ptx.getURL(url, gsCbFn);
 				}
-				function getAllCityStation(){
-					if(stAryCities.length>0){
-						var stCity = stAryCities.shift();
-						function runGetBusStation(aryFilter){
-							TT.ptx.bus.getBusStation(stCity.StationID, stCity.city, {
-								cbFn: function(data,e){
-									if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0 && data[0].Stops.length>0){
-										var aryRouteUID = [];
-										var dataStops = data[0].Stops;
-										tmpStationPosition = data[0].StationPosition;
-										if(aryFilter){
-											dataStops = dataStops.filter(function(c){
-												return !!(aryFilter.indexOf(c.RouteUID)!=-1);
-											})
-										}
-										var ary = dataStops.map(function(c){
-											c.CityCode = stCity.city;
-											c.StationID = stCity.StationID;
-											c.StationTargetID = stCity.StationTargetID;
-											aryRouteUID.push(c.RouteUID);
-											return c;
-										});
-										//二次工作，取得 Bus Route Data 合併進去
-										if(aryRouteUID.length>0){
-											TT.ptx.bus.getBusRoute(aryRouteUID, {cbFn: function(rData, re){
-												if(e.status==TT.ptx.statusCode.SUCCESS){
-													if(rData.find){
-														ary = ary.map(function(rot){
-															var tmpA = rData.find(function(el){return !!(el.RouteUID==rot.RouteUID)});
-															if(tmpA){//有相同的 RouteUID 則合併資料
-																for(var k in tmpA){
-																	if(!rot[k]) rot[k] = tmpA[k];
-																}
-															}
-															return rot;
-														})
-													}
-												}
-												stRes = stRes.concat(ary);
-												getAllCityStation();
-											}})
-										}else{
-											getAllCityStation();
-										}
-									}else{
-										getAllCityStation();
-									}
-								},
-								selectField: ['Stops','StationUID','StationID','StationPosition']
-							});
-						}
-						if(!stCity.StationTargetID){
-							runGetBusStation();
-						}else{
-							TT.ptx.bus.getBusStation(stCity.StationTargetID, stCity.city, {cbFn: function(data,e){
-								var aryFilter = [];
-								if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0 && data[0].Stops.length>0){
-									aryFilter = data[0].Stops.map(function(c){
-										return c.RouteUID;
-									});
-								}
-								runGetBusStation(aryFilter);
-							}});
-						}
-					}else{
-						lastResult.push({
-							StationID: tmpStatioinID,
-							StationTargetID: tmpStationTargetID,
-							cities: tmpCitiesAry,
-							StationPosition: tmpStationPosition,
-							data: stRes
-						});
-						goReadStation();
+				function goReadStation(){
+					if(arySBS.length==0){
+						cbFn(lastResult);
+						return;
 					}
+					var stObj = arySBS.shift();
+					var stAryCities = stObj.cities.slice();
+					var stRes = [];
+					var tmpStationPosition = false;
+					var aryID = [stObj.id.toString()];
+					if(stObj.ts) aryID.push(stObj.ts.toString());
+					function getAllCityStation(){
+						if(stAryCities.length==0){
+							lastResult.push({
+								StationID: stObj.id,
+								StationTargetID: stObj.ts || false,
+								cities: stObj.cities.slice(),
+								StationPosition: tmpStationPosition,
+								data: stRes
+							});
+							goReadStation();
+							return;
+						}
+						var city = stAryCities.shift();
+						getStationMulti(aryID, city, function(data, e){
+							if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0){
+								var mainSt = data.find(function(c){return c.StationID==stObj.id;});
+								var targetSt = (stObj.ts) ? data.find(function(c){return c.StationID==stObj.ts;}) : false;
+								if(mainSt && mainSt.Stops && mainSt.Stops.length>0){
+									if(!tmpStationPosition && mainSt.StationPosition) tmpStationPosition = mainSt.StationPosition;
+									var dataStops = mainSt.Stops;
+									if(stObj.ts){//有指定 target 站時只留兩站共有的路線
+										var aryFilter = (targetSt && targetSt.Stops) ? targetSt.Stops.map(function(c){return c.RouteUID;}) : [];
+										dataStops = dataStops.filter(function(c){
+											return !!(aryFilter.indexOf(c.RouteUID)!=-1);
+										});
+									}
+									var ary = dataStops.map(function(c){
+										c.CityCode = city;
+										c.StationID = stObj.id;
+										c.StationTargetID = stObj.ts || false;
+										return c;
+									});
+									stRes = stRes.concat(ary);
+								}
+							}
+							getAllCityStation();
+						});
+					}
+					getAllCityStation();
 				}
 				goReadStation();
 			},
+			fetchRouteData: function(){
+				//延後補齊 Route 靜態資料（起訖站名、票價說明），不佔首屏 API 額度
+				var me = this;
+				if(me.routeReady || me.routeFetching) return;
+				var byCity = {};
+				me.aryStation.forEach(function(st){
+					st.data.forEach(function(stop){
+						if(stop.DepartureStopNameZh) return;//已有資料（例如來自快取）
+						if(!byCity[stop.CityCode]) byCity[stop.CityCode] = [];
+						if(byCity[stop.CityCode].indexOf(stop.RouteUID)==-1) byCity[stop.CityCode].push(stop.RouteUID);
+					});
+				});
+				var cities = Object.keys(byCity);
+				if(cities.length==0){
+					me.routeReady = true;
+					return;
+				}
+				me.routeFetching = true;
+				function runCity(){
+					if(cities.length==0){
+						me.routeFetching = false;
+						me.routeReady = true;
+						me.aryStation = JSON.parse(JSON.stringify(me.aryStation));//觸發重繪帶出起訖站名
+						BB.now.showUseStationData = me.aryStation;
+						return;
+					}
+					var city = cities.shift();
+					TT.ptx.bus.getBusRoute(byCity[city], {cbFn: function(rData, e){
+						if(e.status==TT.ptx.statusCode.SUCCESS && rData.find){
+							me.aryStation.forEach(function(st){
+								st.data.forEach(function(stop){
+									var tmpA = rData.find(function(el){return !!(el.RouteUID==stop.RouteUID)});
+									if(tmpA){//有相同的 RouteUID 則合併資料
+										for(var k in tmpA){
+											if(!stop[k]) stop[k] = tmpA[k];
+										}
+									}
+								});
+							});
+						}
+						runCity();
+					}}, city);
+				}
+				runCity();
+			},
 			readAllTime: function(cbFn){
+				//到站時間更新：優先走進階 NearBy（單一請求同時涵蓋所有縣市），
+				//NearBy 非 429 失敗時本 session 回降 City 版逐城市查詢（429 由 apiQueue 鎖定重試，不會走到失敗分支）
 				cbFn = cbFn || function(){};
 				var aryStation = JSON.parse(JSON.stringify(this.aryStation));
-				var listCityStops = [];
-				var aryArriveTime = [];
-				var tmpStationID = '';
-				var tmpStationTargetID = false;
-				var tmpCities = [];
-				var tmpStationPosition = [];
 				var allStationArriveTime = [];
 				var showBusStation = this.showBusStation;
 				function getTargetStation(){
-					if(aryStation.length>0){
-						var stObj = aryStation.shift();
-						tmpStationID = stObj.StationID;
-						tmpCities = stObj.cities.slice();
-						tmpStationPosition = stObj.StationPosition;
-						tmpStationTargetID = stObj.StationTargetID;
-						listCityStops = procCityWithStation(stObj.data, 'array');
-						aryArriveTime = [];
-						getStopArriveTime();
-					}else{
+					if(aryStation.length==0){
 						cbFn(allStationArriveTime);
+						return;
 					}
-				}
-				function getStopArriveTime(){
-					if(listCityStops.length>0){
-						var city = listCityStops.shift();
-						var cityCode = city.CityCode, aryStopUID = city.StopUID;
-
-						TT.ptx.bus.getBusArriveTime(aryStopUID, cityCode, {cbFn: function(data,e){
-							if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0){
-								aryArriveTime = aryArriveTime.concat(data);
-							}
-							getStopArriveTime();
-						}})
-					}else{
+					var stObj = aryStation.shift();
+					var listCityStops = procCityWithStation(stObj.data, 'array');
+					var allStopUID = [];
+					listCityStops.forEach(function(c){
+						allStopUID = allStopUID.concat(c.StopUID);
+					});
+					var aryArriveTime = [];
+					function finishStation(){
 						var stName = (function(){
 							for(var i=0; i<showBusStation.length; i++){
-								if(showBusStation[i].id==tmpStationID){
+								if(showBusStation[i].id==stObj.StationID){
 									return showBusStation[i].name;
 								}
 							}
@@ -2734,14 +2882,44 @@ var BB = (function(TT){
 							return (a.RouteName.Zh_tw > b.RouteName.Zh_tw) ? 1: -1;
 						})
 						allStationArriveTime.push({
-							StationID: tmpStationID,
-							StationPosition: tmpStationPosition,
+							StationID: stObj.StationID,
+							StationPosition: stObj.StationPosition,
 							StationName: stName,
-							cities: tmpCities,
-							StationTargetID: tmpStationTargetID,
+							cities: stObj.cities.slice(),
+							StationTargetID: stObj.StationTargetID,
 							time: JSON.parse(JSON.stringify(aryArriveTime))
 						});
 						getTargetStation();
+					}
+					function getStopArriveTimeByCity(){//回降方案：City 版逐城市查詢
+						if(listCityStops.length==0){
+							finishStation();
+							return;
+						}
+						var city = listCityStops.shift();
+						TT.ptx.bus.getBusArriveTime(city.StopUID, city.CityCode, {cbFn: function(data,e){
+							if(e.status==TT.ptx.statusCode.SUCCESS && data.length>0){
+								aryArriveTime = aryArriveTime.concat(data);
+							}
+							getStopArriveTimeByCity();
+						}})
+					}
+					var pos = stObj.StationPosition;
+					if(BB.flagNearByOK && pos && pos.PositionLat && allStopUID.length>0){
+						TT.ptx.bus.getBusArriveTimeNearBy(pos.PositionLat, pos.PositionLon, allStopUID, {
+							far: BB.nearByFar,
+							cbFn: function(data, e){
+								if(e.status==TT.ptx.statusCode.SUCCESS){
+									aryArriveTime = data;
+									finishStation();
+								}else{//進階服務不可用（如權限異動），回降 City 版
+									BB.flagNearByOK = false;
+									getStopArriveTimeByCity();
+								}
+							}
+						});
+					}else{
+						getStopArriveTimeByCity();
 					}
 				}
 				getTargetStation();
@@ -2749,11 +2927,16 @@ var BB = (function(TT){
 			reloadPage: function(){
 				var reloadInterval = BB.reloadInterval;
 				var me = this;
-				me.onReload = true;
 				clearTimeout(this.reloadTimer);
+				if(BB.apiQueue.locked){//rate limit 鎖定中，暫停背景更新，解鎖後再繼續
+					me.reloadTimer = setTimeout(me.reloadPage, 5000);
+					return;
+				}
+				me.onReload = true;
 				this.readAllTime(function(data){
 					me.onReload = false;
 					me.aryArriveTime = data;
+					if(!me.routeReady) me.fetchRouteData();//首輪到站時間顯示後才補 Route 靜態資料
 					me.reloadTimer = setTimeout(me.reloadPage, reloadInterval);
 					if(BB.showBusRoutePop && BB.showBusRoutePop.flagShowBase){
 						BB.showBusRoutePop.getBusDynamicData();
@@ -3252,7 +3435,7 @@ var BB = (function(TT){
 				clearTimeout(me.reloadTimer);
 				me.reloadTimer = setTimeout(function(){
 					if(me.flagShowBase && me.flagAutoReload){
-						me.getBusDynamicData();
+						if(!BB.apiQueue.locked) me.getBusDynamicData();//rate limit 鎖定中暫停背景更新
 						me.dynamicReload();
 					}
 				}, BB.reloadInterval);
@@ -3302,6 +3485,7 @@ var BB = (function(TT){
 				}
 
 				TT.ptx.bus.getBusStopRoute(this.RouteUID, city, {cbFn: function(data,e){
+					BB.apiQueue.hideWait();//路線資料已回應，解除等待畫面
 					if(e.status==TT.ptx.statusCode.SUCCESS){
 						var tmpA, fmp = false, ffmp = false, stopMoveStep = 'ever';
 						for(var i=0; i<data.length; i++){
@@ -3441,6 +3625,7 @@ var BB = (function(TT){
 					this.getBusRoute();
 					scrollToTop();
 				}else{
+					BB.apiQueue.hideWait();//彈窗關閉（含瀏覽器返回）時一併解除等待畫面
 					this.aryRoute = [];
 					this.aryFullRoute = [];
 					this.busInfo = false;
@@ -3812,6 +3997,7 @@ var BB = (function(TT){
 			'<div id="geoTagMap" class="pop"></div>' +
 			'<div id="statusBar"></div>' +
 		'</div>');
+		BB.apiQueue.init();//掛上 API 佇列（接管 TT.ptx.getURL 與 429 處理），需在第一個查詢前完成
 		rocptx.initToken(atob('bWVsaXh5ZW4tNGE3MDA1YWQtMWE0Ny00NDAx'), atob("MjlhOTM4MzUtNDM4OS00M2EyLTljOGMtMzBmYjgyMDdmZTA2")).then((e) => {
 			BB.main = new Vue({
 				router: BB.mainRoute,
@@ -3842,6 +4028,13 @@ var BB = (function(TT){
 <body onload="BB.initFn()">
 	<div id="main"></div>
 	<div id="mask" class="mask"><div class="text"></div></div>
+	<div id="apiLock" class="mask"><div class="text">
+		<div class="apiLockMsg"></div>
+		<div class="apiLockCount"></div>
+		<div class="apiLockWaitMsg"></div>
+		<div class="apiLockNote"></div>
+		<div class="btn1 apiLockAbandon" style="display:none;"></div>
+	</div></div>
 	<div id="textlentry"></div>
 </body>
 </html>
