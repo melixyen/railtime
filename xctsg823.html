@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="新昌市民活動中心 公車動態看板">
+<meta name="theme-color" content="#c0f4f7">
+<title>新昌市民活動中心 公車動態</title>
+<style>
+:root{
+	/* 沿用 busp.html 配色 */
+	--bg:#c0f4f7;
+	--frame:#99c8f1;
+	--panel:#ffffff;
+	--panel2:#eaf9fb;
+	--line:#a8d8e2;
+	--text:#16242b;
+	--dim:#5b7480;
+	--link:#2229aa;
+	--min:#1020EF;          /* 分鐘數 */
+	--soon-bg:#DB0F20;      /* 即將抵達 */
+	--soon-fg:#eeeeee;
+	--other:#cc9a0f;        /* 其他狀態 */
+	--now-bg:#2cd8e6;       /* 本站 */
+	--over-bg:#bff0ee;
+	--dir0:#008000;
+	--dir1:#c31414;
+	--shadow:0 1px 4px rgba(20,60,80,.16);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{
+	font-family:"Microsoft JhengHei","PingFang TC","Noto Sans TC",Arial,sans-serif;
+	background:var(--bg); color:var(--text); font-size:16px; line-height:1.5;
+	overscroll-behavior-y:none;
+}
+button{font:inherit;color:inherit;}
+.wrap{
+	max-width:640px; margin:0 auto;
+	padding-left:calc(12px + env(safe-area-inset-left));
+	padding-right:calc(12px + env(safe-area-inset-right));
+}
+.hide{display:none !important;}
+
+/* 路線頁開啟時鎖住底層捲動：覆蓋層的非捲動區域（標題列、分頁列）被拖曳時，
+   iOS Safari 會把事件傳給底下的 body 造成背景跟著捲動 */
+html.popOpen, body.popOpen{overflow:hidden;}
+
+/* 所有可按區域：關掉文字選取，避免「按在字上輕微位移」被判定成選字而吃掉 click；
+   touch-action 去除行動裝置點擊延遲與手勢誤判 */
+.tapable{
+	-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;
+	-webkit-tap-highlight-color:transparent;
+	touch-action:manipulation;
+	cursor:pointer;
+}
+/* 卡片內所有子元素不接事件，點到哪裡都等於點到卡片本身 */
+.tapable *{pointer-events:none;}
+
+/* ---------- header ---------- */
+header{
+	position:sticky; top:0; z-index:10; background:var(--bg);
+	border-bottom:3px solid var(--frame);
+	padding-top:env(safe-area-inset-top);
+}
+header .wrap{display:flex;align-items:center;gap:10px;padding-top:9px;padding-bottom:9px;}
+header .st{flex:1;min-width:0;}
+header h1{font-size:clamp(18px,5.4vw,22px);margin:0;line-height:1.25;}
+header .sub{font-size:clamp(11px,3.2vw,12.5px);color:var(--dim);margin-top:1px;}
+.tick{
+	text-align:center; min-width:50px; flex:none;
+	font-size:11px; color:var(--dim); line-height:1.25;
+}
+.tick b{display:block;font-size:clamp(17px,5vw,21px);color:var(--link);font-variant-numeric:tabular-nums;}
+.tick.paused b{color:var(--other);}
+
+/* ---------- board ---------- */
+/* 手機直式：兩行版面（第一行 路線號/狀態，第二行 起訖說明），
+   桌機在 min-width:480px 的 media query 併回單行 */
+.board{padding:14px 0 4px;}
+.bus{
+	display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px;
+	background:var(--panel); border:2px solid var(--frame); border-radius:12px;
+	padding:12px 14px; margin-bottom:11px; min-height:64px;
+	box-shadow:var(--shadow); transition:background .12s, transform .08s;
+	text-align:left; width:100%;
+}
+.bus:active{transform:scale(.985);background:var(--panel2);}
+.bus.dim{opacity:.55;filter:grayscale(70%);}
+.bus .no{
+	flex:none; font-size:clamp(24px,7.4vw,30px); font-weight:bold;
+	min-width:clamp(62px,19vw,80px); letter-spacing:.5px; line-height:1.1;
+}
+.bus .st{flex:1;text-align:right;white-space:nowrap;min-width:0;}
+.bus .arrow{flex:none;color:var(--frame);font-size:22px;line-height:1;}
+.bus .mid{flex-basis:100%;order:9;min-width:0;}
+.bus .to{
+	display:block; font-size:clamp(12.5px,3.6vw,14px); color:var(--dim);
+	overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.bus .hint{display:block;font-size:11px;color:var(--dim);opacity:.7;margin-top:1px;}
+
+.mm{color:var(--min);font-size:clamp(26px,8vw,32px);font-weight:bold;font-variant-numeric:tabular-nums;line-height:1;}
+.mmu{color:var(--min);font-size:14px;}
+.soon{
+	background:var(--soon-bg); color:var(--soon-fg); border-radius:6px;
+	padding:4px 10px; font-weight:bold; font-size:clamp(15px,4.4vw,17px); display:inline-block;
+}
+.oth{color:var(--other);font-size:clamp(13.5px,4vw,15px);}
+.non{color:var(--dim);font-size:15px;}
+
+@media (hover:hover) and (pointer:fine){
+	.bus:hover{background:var(--panel2);}
+	#pop .tabs button:hover{background:var(--panel2);}
+}
+@media (min-width:480px){
+	.bus{flex-wrap:nowrap;gap:12px;padding:13px 15px;}
+	.bus .mid{flex:1;flex-basis:auto;order:0;}
+	.bus .st{flex:none;}
+}
+
+/* ---------- 路線頁 ---------- */
+/* 高度刻意「不」宣告 height:100vh / 100dvh：
+   fixed 元素的 containing block 本來就會隨 iOS Safari、Android Chrome 的
+   工具列（及 Android 導覽列）開合自動伸縮，top/bottom 撐開即為目前可見區。
+   若再加 height 會 over-constrained 使 bottom 失效，而 100vh 等於工具列
+   縮起時的 large viewport，工具列展開時底部就會被蓋住（經典 iOS 100vh bug）；
+   100dvh 雖正確但需 iOS 15.4+/Chrome 108+，且 iOS 在工具列收合動畫中不會
+   平滑更新而產生抖動。用長寫 top/right/bottom/left 而非 inset 簡寫，
+   以相容 Safari 14.1 以前的版本。 */
+#pop{
+	position:fixed; top:0; right:0; bottom:0; left:0;
+	z-index:30; background:var(--bg);
+	display:flex; flex-direction:column;
+}
+#pop .ph{
+	display:flex; align-items:center; gap:4px; flex:none;
+	background:var(--frame);
+	padding:6px 6px;
+	padding-top:calc(6px + env(safe-area-inset-top));
+	padding-left:calc(6px + env(safe-area-inset-left));
+	padding-right:calc(6px + env(safe-area-inset-right));
+}
+#pop .ph .back{
+	background:none; border:none; font-size:30px; line-height:1; color:var(--text);
+	min-width:48px; min-height:48px; flex:none;   /* 行動裝置最小觸控範圍 */
+	display:flex; align-items:center; justify-content:center;
+	border-radius:10px;
+}
+#pop .ph .back:active{background:rgba(255,255,255,.45);}
+#pop .ph .t{flex:1;min-width:0;font-size:clamp(19px,5.6vw,24px);font-weight:bold;text-align:center;line-height:1.2;}
+#pop .ph .t small{
+	display:block; font-size:clamp(11px,3.2vw,12.5px); font-weight:normal; opacity:.82;
+	overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+#pop .ph .tick{color:var(--text);min-width:48px;}
+#pop .ph .tick b{color:var(--text);}
+
+/* 子路線分頁：數量多時可橫向捲動，不擠壓版面 */
+#pop .tabs{
+	display:flex; gap:8px; flex:none; flex-wrap:nowrap;
+	padding:9px 12px;
+	padding-left:calc(12px + env(safe-area-inset-left));
+	padding-right:calc(12px + env(safe-area-inset-right));
+	background:var(--panel2); border-bottom:1px solid var(--line);
+	overflow-x:auto; -webkit-overflow-scrolling:touch;
+	scrollbar-width:none;
+}
+#pop .tabs::-webkit-scrollbar{display:none;}
+#pop .tabs button{
+	flex:none; border:2px solid var(--frame); background:var(--panel); border-radius:999px;
+	padding:7px 16px; font-size:clamp(13px,3.8vw,15px); min-height:40px; white-space:nowrap;
+}
+#pop .tabs button.on{background:var(--link);border-color:var(--link);color:#fff;}
+#pop .info{
+	flex:none; font-size:clamp(11.5px,3.3vw,13px); color:var(--dim);
+	padding:7px 14px;
+	padding-left:calc(14px + env(safe-area-inset-left));
+	padding-right:calc(14px + env(safe-area-inset-right));
+	background:var(--panel2); border-bottom:1px solid var(--line);
+}
+#pop .body{
+	flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;
+	overscroll-behavior:contain; background:var(--panel);
+	padding-bottom:calc(10px + env(safe-area-inset-bottom));
+}
+
+.stop{
+	display:flex; align-items:center; gap:11px; min-height:46px;
+	padding:8px 14px;
+	padding-left:calc(14px + env(safe-area-inset-left));
+	padding-right:calc(14px + env(safe-area-inset-right));
+	border-bottom:1px solid var(--line);
+}
+.stop:nth-child(even){background:var(--panel2);}
+.stop .sq{
+	min-width:26px;width:26px;height:26px;line-height:26px;text-align:center;flex:none;
+	font-size:12px;color:#fff;background:var(--frame);border-radius:50%;
+	font-variant-numeric:tabular-nums;
+}
+/* 長站名（如「捷運南港展覽館站(經貿一路)」）在窄螢幕折行而非撐破版面 */
+.stop .sn{flex:1;min-width:0;font-size:clamp(14.5px,4.2vw,16px);word-break:break-word;line-height:1.35;}
+.stop .ss{text-align:right;white-space:nowrap;flex:none;min-width:64px;}
+.stop.here{background:var(--now-bg);font-weight:bold;}
+.stop.here .sq{background:var(--link);}
+.stop.here .sn:after{
+	content:"本站"; font-size:11px; background:var(--link); color:#fff;
+	border-radius:4px; padding:1px 6px; margin-left:8px; vertical-align:2px;
+	font-weight:normal; white-space:nowrap;
+}
+.stop .mm{font-size:clamp(20px,6vw,24px);}
+.stop .soon{font-size:clamp(12.5px,3.6vw,14px);padding:2px 8px;}
+
+/* ---------- footer / 額度 ---------- */
+footer{
+	padding:12px; text-align:center; font-size:11.5px; color:var(--dim); line-height:1.8;
+	/* footer 在 .wrap 之外，橫式瀏海機需自行避開左右安全區與底部 home indicator */
+	padding-left:calc(12px + env(safe-area-inset-left));
+	padding-right:calc(12px + env(safe-area-inset-right));
+	padding-bottom:calc(16px + env(safe-area-inset-bottom));
+}
+footer .quota b{color:var(--link);font-variant-numeric:tabular-nums;}
+footer .quota.hot b{color:var(--soon-bg);}
+
+#lock{
+	position:fixed; top:0; right:0; bottom:0; left:0;
+	z-index:50; display:flex; align-items:center;
+	justify-content:center; padding:24px; text-align:center;
+	background:rgba(70,10,14,.86); color:#fff;
+}
+#lock .c{font-size:44px;font-weight:bold;font-variant-numeric:tabular-nums;margin:6px 0;}
+#lock .n{font-size:13px;opacity:.85;}
+.err{color:var(--soon-bg);font-size:13px;}
+</style>
+</head>
+<body>
+
+<header>
+	<div class="wrap">
+		<div class="st">
+			<h1>新昌市民活動中心</h1>
+			<div class="sub">新北市汐止區 · 公車動態看板</div>
+		</div>
+		<div class="tick" id="tick"><b>--</b>秒後更新</div>
+	</div>
+</header>
+
+<div class="wrap">
+	<div class="board" id="board"></div>
+</div>
+
+<footer>
+	<div class="quota" id="quota">API 用量 <b>0</b> / 5 次·分</div>
+	<div>每 20 秒更新一次 · 資料來源：交通部 TDX</div>
+	<div id="stamp"></div>
+</footer>
+
+<div id="pop" class="hide">
+	<div class="ph">
+		<button type="button" class="back tapable" id="back">&lsaquo;</button>
+		<div class="t" id="popNo"></div>
+		<div class="tick" id="popTick"><b>--</b>秒</div>
+	</div>
+	<div class="tabs" id="tabs"></div>
+	<div class="info" id="popInfo"></div>
+	<div class="body" id="popBody"></div>
+</div>
+
+<div id="lock" class="hide"><div>
+	<div>API 查詢額度已滿，暫停查詢</div>
+	<div class="c"><span id="lockN">0</span></div>
+	<div class="n">秒後自動恢復更新</div>
+</div></div>
+
+<script>
+"use strict";
+/* ============================================================================
+   新昌市民活動中心 公車動態看板（單檔案、不收任何參數）
+
+   額度策略（核心）：
+   每 20 秒只發「一個」EstimatedTimeOfArrival 請求，$filter 同時涵蓋本站的
+   兩條路線（823 / F902）。該回應已包含這兩條路線「所有站牌」的動態，
+   因此站牌看板與路線全程頁共用同一份資料，開路線頁不會產生任何額外請求。
+       → 穩定 3 requests / 分鐘（上限 5）
+   路線清單、站牌編號、全線站序等靜態資料已於製作時打過 API 後寫死於下方，
+   執行期完全不再查詢靜態資料。Token 亦快取於 localStorage，重整不重取。
+   ============================================================================ */
+
+/* ---------------- 寫死的靜態資料（2026-08-18 由 TDX 取得） ---------------- */
+var CITY = 'NewTaipei';
+var STATION = {
+	id: '1165603594',
+	name: '新昌市民活動中心',
+	lat: 25.067555,
+	lon: 121.664838
+};
+// 本站牌上的站位：哪條路線、對應的 StopUID（用來在全程站序中標示「本站」）
+var HERE = {
+	'NWT17525': 'NWT179151',   // 823
+	'NWT16990': 'NWT162461'    // F902
+};
+// 看板顯示順序
+var ROUTES = [
+{
+	uid:'NWT17525', name:'823', dep:'舊莊', des:'汐止', fare:'一段票',
+	first:'0530', last:'2300', hfirst:'0530', hlast:'2300',
+	subs:[
+	{uid:'NWT158693', name:'往汐止', dir:0, stops:[
+		['NWT198844','舊莊站',1],['NWT179131','舊莊公園',2],['NWT179132','金德橋頭',3],
+		['NWT179133','胡適國小',4],['NWT179134','福山巖祖師廟',5],['NWT179135','白雲國小',6],
+		['NWT179136','福山里活動中心',7],['NWT179137','南港橋頭',8],
+		['NWT179138','捷運南港展覽館站(經貿一路)',9],['NWT179139','捷運南港展覽館站(南港路)',10],
+		['NWT179140','橫科',11],['NWT179141','富信飯店',12],['NWT179142','遠東世界中心',13],
+		['NWT179143','東方科學園區',14],['NWT179144','連興街口',15],['NWT179145','汐止農會',16],
+		['NWT179146','汐止區行政中心(仁愛路)',17],['NWT179148','秀峰國小',18],
+		['NWT179149','福安街口',19],['NWT179150','水碓',20],['NWT179151','新昌市民活動中心',21]
+	]},
+	{uid:'NWT158693', name:'往舊莊', dir:1, stops:[
+		['NWT179152','汐止火車站(忠孝東路)',1],['NWT179153','秀峰高中(忠孝東路)',2],
+		['NWT179154','汐止行政中心',3],['NWT179155','汐止農會',4],['NWT179156','連興街口',5],
+		['NWT179157','東方科學園區',6],['NWT179158','遠東世界中心',7],['NWT179159','天良電視台',8],
+		['NWT179160','橫科',9],['NWT179161','捷運南港展覽館站(南港路)',10],['NWT179162','橫科',11],
+		['NWT179163','福山里活動中心',12],['NWT179164','白雲國小',13],['NWT179165','福山巖祖師廟',14],
+		['NWT179166','胡適國小',15],['NWT179167','金德橋頭',16],['NWT179168','舊莊公園',17],
+		['NWT191886','舊莊站',18]
+	]}
+	]
+},
+{
+	uid:'NWT16990', name:'F902', dep:'汐止火車站', des:'汐止火車站(公園)', fare:'',
+	first:'0630', last:'2030', hfirst:'0630', hlast:'2030',
+	subs:[
+	{uid:'NWT158117', name:'F902', dir:0, stops:[
+		['NWT192809','汐止火車站',1],['NWT162430','東方鴻社區',2],['NWT162431','新昌市民活動中心',3],
+		['NWT162432','水碓',4],['NWT162433','福安街口',5],['NWT162434','秀峰國小',6],
+		['NWT162435','汐止區公所(仁愛路)',7],['NWT162436','汐止農會',8],['NWT162437','連興街口',9],
+		['NWT162438','莊敬街口',10],['NWT162439','汐碇路口',11],['NWT162440','白雲土地公廟',12],
+		['NWT162441','水源路二段72巷口',13],['NWT162442','台北小別墅',14],
+		['NWT162443','白雲社區活動中心',15],['NWT219536','水源路二段125巷',16],
+		['NWT162444','白雲里',17],['NWT162445','柳燕橋',18],['NWT162446','逸林園',19],
+		['NWT162447','柳燕橋',20],['NWT162448','白雲里',21],['NWT162449','白雲社區活動中心',22],
+		['NWT162450','水源路二段72巷口',23],['NWT162451','白雲土地公廟',24],['NWT162452','汐碇路口',25],
+		['NWT162453','莊敬街口',26],['NWT162454','青山國中',27],['NWT162455','莊敬街5號',28],
+		['NWT162456','自強里活動中心',29],['NWT162457','汐止區公所(仁愛路)',30],
+		['NWT162458','秀峰國小',31],['NWT162459','福安街口',32],['NWT162460','水碓',33],
+		['NWT162461','新昌市民活動中心',34],['NWT162462','汐止火車站(公園)',35]
+	]},
+	{uid:'NWT162237', name:'F902新興路', dir:0, stops:[
+		['NWT192809','汐止火車站',1],['NWT162430','東方鴻社區',2],['NWT162431','新昌市民活動中心',3],
+		['NWT162432','水碓',4],['NWT162433','福安街口',5],['NWT162434','秀峰國小',6],
+		['NWT162435','汐止區公所(仁愛路)',7],['NWT219533','自強里活動中心',8],
+		['NWT219534','莊敬街5號',9],['NWT219535','青山國中',10],['NWT162438','莊敬街口',11],
+		['NWT162439','汐碇路口',12],['NWT162440','白雲土地公廟',13],
+		['NWT162441','水源路二段72巷口',14],['NWT162442','台北小別墅',15],
+		['NWT162443','白雲社區活動中心',16],['NWT219536','水源路二段125巷',17],
+		['NWT162444','白雲里',18],['NWT162445','柳燕橋',19],['NWT162446','逸林園',20],
+		['NWT162447','柳燕橋',21],['NWT162448','白雲里',22],['NWT162449','白雲社區活動中心',23],
+		['NWT162450','水源路二段72巷口',24],['NWT162451','白雲土地公廟',25],['NWT162452','汐碇路口',26],
+		['NWT162453','莊敬街口',27],['NWT162454','青山國中',28],['NWT162455','莊敬街5號',29],
+		['NWT162456','自強里活動中心',30],['NWT162457','汐止區公所(仁愛路)',31],
+		['NWT162458','秀峰國小',32],['NWT162459','福安街口',33],['NWT162460','水碓',34],
+		['NWT162461','新昌市民活動中心',35],['NWT162462','汐止火車站(公園)',36]
+	]}
+	]
+}
+];
+
+/* ---------------- 設定 ---------------- */
+var TOKEN_URL = 'https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token';
+var API_BASE  = 'https://tdx.transportdata.tw/api/basic/v2/Bus';
+var CLIENT_ID     = atob('bWVsaXh5ZW4tNGE3MDA1YWQtMWE0Ny00NDAx');
+var CLIENT_SECRET = atob('MjlhOTM4MzUtNDM4OS00M2EyLTljOGMtMzBmYjgyMDdmZTA2');
+var INTERVAL = 20000;   // 更新間隔（毫秒）→ 3 次/分
+var LOCK_SEC = 60;      // 收到 429 時的鎖定秒數
+var STOP_STATUS = ['','未發車','交管不停靠','末班車已過','今日未營運'];
+
+/* ---------------- 狀態 ---------------- */
+var eta = {};           // 'RouteUID|StopUID' -> ETA 紀錄
+var nextAt = 0;
+var timer = 0, tickTimer = 0, lockTimer = 0;
+var locked = false, lockLeft = 0;
+var busy = false;                 // 單一 in-flight 保護，避免重複發送
+var reqLog = [];                  // 近 60 秒的請求時間戳（用量顯示）
+var openRoute = null;             // 目前開啟的路線
+var openSub = 0;                  // 目前子路線索引
+var lastOK = 0;
+
+function $(id){ return document.getElementById(id); }
+function esc(s){
+	return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+		return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+	});
+}
+
+/* ---------------- Token（快取於 localStorage，重整不重取） ---------------- */
+function getToken(){
+	try{
+		var c = JSON.parse(localStorage.getItem('xctsg_tk') || 'null');
+		if(c && c.t && Date.now() < c.e) return Promise.resolve(c.t);
+	}catch(e){}
+	return fetch(TOKEN_URL, {
+		method: 'POST',
+		headers: {'content-type':'application/x-www-form-urlencoded'},
+		body: 'grant_type=client_credentials&client_id=' + encodeURIComponent(CLIENT_ID)
+			+ '&client_secret=' + encodeURIComponent(CLIENT_SECRET)
+	}).then(function(r){
+		if(!r.ok) throw new Error('token ' + r.status);
+		return r.json();
+	}).then(function(j){
+		var exp = Date.now() + ((j.expires_in || 86400) - 300) * 1000;
+		try{ localStorage.setItem('xctsg_tk', JSON.stringify({t:j.access_token, e:exp})); }catch(e){}
+		return j.access_token;
+	});
+}
+function dropToken(){ try{ localStorage.removeItem('xctsg_tk'); }catch(e){} }
+
+/* ---------------- 額度用量顯示 ---------------- */
+function logRequest(){
+	var now = Date.now();
+	reqLog.push(now);
+	reqLog = reqLog.filter(function(t){ return now - t < 60000; });
+	renderQuota();
+}
+function renderQuota(){
+	var now = Date.now();
+	reqLog = reqLog.filter(function(t){ return now - t < 60000; });
+	var q = $('quota');
+	q.innerHTML = 'API 用量 <b>' + reqLog.length + '</b> / 5 次·分';
+	q.className = 'quota' + (reqLog.length >= 5 ? ' hot' : '');
+}
+
+/* ---------------- 鎖定（429） ---------------- */
+function enterLock(sec){
+	locked = true; lockLeft = sec;
+	$('lock').classList.remove('hide'); $('lockN').textContent = lockLeft;
+	clearInterval(lockTimer);
+	lockTimer = setInterval(function(){
+		lockLeft--;
+		$('lockN').textContent = lockLeft;
+		if(lockLeft <= 0){
+			clearInterval(lockTimer); locked = false;
+			$('lock').classList.add('hide');
+			load();
+		}
+	}, 1000);
+}
+
+/* ---------------- 唯一的動態查詢 ---------------- */
+function load(){
+	clearTimeout(timer);
+	if(locked || busy || document.hidden){ schedule(); return; }
+	busy = true;
+
+	var filter = ROUTES.map(function(r){ return "RouteUID eq '" + r.uid + "'"; }).join(' or ');
+	var url = API_BASE + '/EstimatedTimeOfArrival/City/' + CITY + '?'
+		+ encodeURI('$filter=' + filter) + '&$top=500&$format=JSON';
+
+	getToken().then(function(tk){
+		logRequest();
+		return fetch(url, {headers:{authorization:'Bearer ' + tk}});
+	}).then(function(r){
+		if(r.status === 429){ busy = false; enterLock(LOCK_SEC); return null; }
+		if(r.status === 401){ dropToken(); busy = false; schedule(); return null; }
+		if(!r.ok) throw new Error('API ' + r.status);
+		return r.json();
+	}).then(function(data){
+		busy = false;
+		if(!data) return;
+		eta = {};
+		data.forEach(function(e){ eta[e.RouteUID + '|' + e.StopUID] = e; });
+		lastOK = Date.now();
+		updateBoard();
+		updateStops();
+		$('stamp').textContent = '最後更新 ' + new Date(lastOK).toLocaleTimeString('zh-TW', {hour12:false});
+		schedule();
+	}).catch(function(err){
+		busy = false;
+		$('stamp').innerHTML = '<span class="err">更新失敗：' + esc(err.message) + '，稍後重試</span>';
+		schedule();
+	});
+}
+function schedule(){
+	clearTimeout(timer);
+	nextAt = Date.now() + INTERVAL;
+	timer = setTimeout(load, INTERVAL);
+}
+
+/* ---------------- 到站狀態 ---------------- */
+function statusHTML(rec, big){
+	if(!rec) return '<span class="non">—</span>';
+	if(rec.EstimateTime >= 0){
+		var min = Math.floor(rec.EstimateTime / 60);
+		if(min > 0) return '<span class="mm">' + min + '</span><span class="mmu"> 分</span>';
+		return '<span class="soon">進站中</span>';
+	}
+	if(rec.StopStatus > 0 && STOP_STATUS[rec.StopStatus]){
+		return '<span class="oth">' + STOP_STATUS[rec.StopStatus] + '</span>';
+	}
+	return '<span class="non">—</span>';
+}
+function isDim(rec){ return !!(rec && !(rec.EstimateTime >= 0) && rec.StopStatus >= 2); }
+
+/* ---------------- 站牌看板 ----------------
+   卡片只在啟動時建立一次，之後每 20 秒僅更新狀態欄位。
+   （若每次都重建 DOM，使用者按到一半按鈕會被換掉而吃掉點擊） */
+var boardCells = [];
+
+function buildBoard(){
+	var box = $('board');
+	box.innerHTML = '';
+	boardCells = [];
+	ROUTES.forEach(function(r){
+		var btn = document.createElement('button');
+		btn.type = 'button';
+		btn.className = 'bus tapable';
+		// DOM 順序固定為 no / mid / st / arrow：
+		// 手機用 CSS order 把 mid 推到第二行，桌機還原成單行
+		btn.innerHTML =
+			'<span class="no">' + esc(r.name) + '</span>' +
+			'<span class="mid">' +
+				'<span class="to">' + esc(r.dep) + ' — ' + esc(r.des) + '</span>' +
+				'<span class="hint">點看全程各站動態</span>' +
+			'</span>' +
+			'<span class="st"></span>' +
+			'<span class="arrow">&rsaquo;</span>';
+		btn.addEventListener('click', function(){ showRoute(r); });
+		box.appendChild(btn);
+		boardCells.push({r:r, el:btn, st:btn.querySelector('.st')});
+	});
+	updateBoard();
+}
+function updateBoard(){
+	boardCells.forEach(function(c){
+		var rec = eta[c.r.uid + '|' + HERE[c.r.uid]];
+		c.st.innerHTML = statusHTML(rec);
+		c.el.classList.toggle('dim', isDim(rec));
+	});
+}
+
+/* ---------------- 路線全程頁（不發任何請求，用同一份資料） ---------------- */
+function showRoute(r){
+	openRoute = r;
+	// 預設顯示包含本站的子路線
+	openSub = 0;
+	for(var i=0; i<r.subs.length; i++){
+		var hit = r.subs[i].stops.some(function(s){ return s[0] === HERE[r.uid]; });
+		if(hit){ openSub = i; break; }
+	}
+	$('popNo').innerHTML = esc(r.name) + '<small>' + esc(r.dep) + ' — ' + esc(r.des) + '</small>';
+	$('popInfo').innerHTML =
+		'平日 ' + fmtTime(r.first) + '~' + fmtTime(r.last) +
+		' · 假日 ' + fmtTime(r.hfirst) + '~' + fmtTime(r.hlast) +
+		(r.fare ? ' · ' + esc(r.fare) : '');
+	renderTabs();
+	buildStops();
+	$('pop').classList.remove('hide');
+	document.documentElement.classList.add('popOpen');
+	document.body.classList.add('popOpen');
+	history.pushState({pop:1}, '');
+}
+function fmtTime(s){ return s ? s.substr(0,2) + ':' + s.substr(2,2) : '—'; }
+
+function renderTabs(){
+	var box = $('tabs');
+	box.innerHTML = '';
+	openRoute.subs.forEach(function(sub, i){
+		var b = document.createElement('button');
+		b.type = 'button';
+		b.className = 'tapable' + ((i === openSub) ? ' on' : '');
+		b.textContent = sub.name;
+		b.addEventListener('click', function(){
+			openSub = i; renderTabs(); buildStops();
+		});
+		box.appendChild(b);
+	});
+}
+
+/* 站序列表同樣「建立一次、之後只更新狀態」，
+   否則每 20 秒重建會把使用者的捲動位置彈回頂端 */
+var stopCells = [];
+
+function buildStops(){
+	if(!openRoute) return;
+	var sub = openRoute.subs[openSub];
+	var hereUID = HERE[openRoute.uid];
+	var body = $('popBody');
+	body.innerHTML = '';
+	stopCells = [];
+	sub.stops.forEach(function(s){
+		var row = document.createElement('div');
+		row.className = 'stop' + (s[0] === hereUID ? ' here' : '');
+		row.innerHTML =
+			'<span class="sq">' + s[2] + '</span>' +
+			'<span class="sn">' + esc(s[1]) + '</span>' +
+			'<span class="ss"></span>';
+		body.appendChild(row);
+		stopCells.push({uid:s[0], ss:row.querySelector('.ss')});
+	});
+	updateStops();
+	var h = body.querySelector('.stop.here');
+	setTimeout(function(){
+		body.scrollTop = h ? Math.max(0, h.offsetTop - body.clientHeight / 2) : 0;
+	}, 30);
+}
+function updateStops(){
+	if(!openRoute) return;
+	stopCells.forEach(function(c){
+		c.ss.innerHTML = statusHTML(eta[openRoute.uid + '|' + c.uid]);
+	});
+}
+
+function closePop(byHistory){
+	openRoute = null;
+	stopCells = [];
+	$('pop').classList.add('hide');
+	document.documentElement.classList.remove('popOpen');
+	document.body.classList.remove('popOpen');
+	if(!byHistory) history.back();
+}
+
+/* ---------------- 倒數 ---------------- */
+function tick(){
+	var left = Math.max(0, Math.ceil((nextAt - Date.now()) / 1000));
+	var txt = locked ? '暫停' : (busy ? '更新中' : left);
+	var cls = 'tick' + (locked ? ' paused' : '');
+	$('tick').innerHTML = '<b>' + txt + '</b>' + (locked || busy ? '' : '秒後更新');
+	$('tick').className = cls;
+	$('popTick').innerHTML = '<b>' + txt + '</b>' + (locked || busy ? '' : '秒');
+	$('popTick').className = cls;
+	renderQuota();
+}
+
+/* ---------------- 啟動 ---------------- */
+buildBoard();
+load();
+tickTimer = setInterval(tick, 500);
+
+$('back').addEventListener('click', function(){ closePop(false); });
+window.addEventListener('popstate', function(){
+	if(!$('pop').classList.contains('hide')) closePop(true);
+});
+document.addEventListener('visibilitychange', function(){
+	// 切到背景就停止輪詢，回到前景立刻更新一次（避免背景空耗額度）
+	if(document.hidden){ clearTimeout(timer); }
+	else if(!locked && Date.now() - lastOK > 5000){ load(); }
+});
+</script>
+</body>
+</html>
