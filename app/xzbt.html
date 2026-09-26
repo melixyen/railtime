@@ -760,6 +760,11 @@ body {
 <script type="text/javascript" src="../ttlib/data.js"></script>
 <script type="text/javascript" src="../ttlib/ptx.js"></script>
 <script type="text/javascript">
+//TDX proxy 開關：要直連 TDX 時把網址改成空字串 ''
+var TDX_PROXY_URL = 'https://tdx.jiapi.net';
+if (TDX_PROXY_URL && window.rocptx) rocptx.proxy.enable(TDX_PROXY_URL);
+</script>
+<script type="text/javascript">
 /*
 	ptx 過濾模式
 	StationID eq '2737'，同座標站牌會有一個 StationID 值相同，跨縣市通用
@@ -791,8 +796,10 @@ var counterFn = function(cbFn){
 counterFn();
 
 var TT = $trainTaiwanLib;
+if(!rocptx.proxy.enabled){
 rocptx.AppID = atob('bWVsaXh5ZW4tNGE3MDA1YWQtMWE0Ny00NDAx');
 rocptx.AppKey = atob("MjlhOTM4MzUtNDM4OS00M2EyLTljOGMtMzBmYjgyMDdmZTA2");
+}
 
 var languagePakc = {
 	"Zh": {

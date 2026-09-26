@@ -367,8 +367,9 @@ var ROUTES = [
 ];
 
 /* ---------------- 設定 ---------------- */
+var TDX_PROXY_URL = 'https://tdx.jiapi.net'; // TDX proxy 開關：要直連 TDX 時改成空字串 ''
 var TOKEN_URL = 'https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token';
-var API_BASE  = 'https://tdx.transportdata.tw/api/basic/v2/Bus';
+var API_BASE  = (TDX_PROXY_URL || 'https://tdx.transportdata.tw') + '/api/basic/v2/Bus';
 var CLIENT_ID     = atob('bWVsaXh5ZW4tNGE3MDA1YWQtMWE0Ny00NDAx');
 var CLIENT_SECRET = atob('MjlhOTM4MzUtNDM4OS00M2EyLTljOGMtMzBmYjgyMDdmZTA2');
 var INTERVAL = 20000;   // 更新間隔（毫秒）→ 3 次/分
@@ -395,6 +396,7 @@ function esc(s){
 
 /* ---------------- Token（快取於 localStorage，重整不重取） ---------------- */
 function getToken(){
+	if(TDX_PROXY_URL) return Promise.resolve('FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF');//proxy 代管金鑰，不送自己的 CLIENT_ID/SECRET
 	try{
 		var c = JSON.parse(localStorage.getItem('xctsg_tk') || 'null');
 		if(c && c.t && Date.now() < c.e) return Promise.resolve(c.t);

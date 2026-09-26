@@ -330,7 +330,7 @@
 
 	var defineProperty = _objectDp.f;
 	var _wksDefine = function (name) {
-	  var $Symbol = _core.Symbol || (_core.Symbol = _global.Symbol || {});
+	  var $Symbol = _core.Symbol || (_core.Symbol = _library ? {} : _global.Symbol || {});
 	  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: _wksExt.f(name) });
 	};
 
@@ -7045,9 +7045,87 @@
 	  }
 
 	  run();
-	} //給 rocptx.req 用：若傳入的是字串（例如 CLI 參數、JSON.stringify 過的設定），自動 JSON.parse 成物件；
-	//已是物件或未提供（undefined/null）則原樣通過，讓呼叫端可以直接傳 JS 物件或 JSON 字串兩種形式
+	} //========== 自架 TDX proxy ==========
+	//rocptx.proxy.enable(url) 後，getURL / getPromiseURL 在送出請求前把 TDX 官方網域強制換成 proxy 網址
+	//（路徑與參數不變），涵蓋所有模組、rocptx.req 與換 token 請求；非 TDX 網域的請求不受影響。
+	//library 不內建任何 proxy 網址，啟用時必須由呼叫端提供。
+	//proxy.headers 為走 proxy 的請求額外附加的 header（預設為空），在預設 header 之後合併，同名時覆蓋；
+	//例如 Node 端沒有 Origin，可由呼叫端自行帶入 proxy 允許的 Origin（瀏覽器會忽略 Origin 等禁止設定的 header）。
 
+
+	var TDX_ORIGIN = 'https://tdx.transportdata.tw';
+
+	function normalizeProxyURL(url, fnName) {
+	  if (typeof url != 'string' || !/^https?:\/\/[^\/?#]+/i.test(url)) throw 'rocptx.proxy.' + fnName + ': url must be an http(s) URL string';
+	  return url.replace(/\/+$/, '');
+	} //是否為 TDX 官方網域的網址（避免誤判 tdx.transportdata.tw.example.com 之類的網域）
+
+
+	function isTDXURL(url) {
+	  if (typeof url != 'string') return false;
+	  var next = url.charAt(TDX_ORIGIN.length);
+	  return url.slice(0, TDX_ORIGIN.length).toLowerCase() == TDX_ORIGIN && (!next || next == '/' || next == '?');
+	} //送出前套用 proxy：以實際網址 open，並回傳要送出的 header（走 proxy 時合併 proxy.headers）。
+	//先合併成單一物件再 setRequestHeader，因為瀏覽器 XHR 對同名 header 是串接而非覆蓋；比對名稱不分大小寫
+
+
+	function openWithProxy(fm, method, url, headerObj) {
+	  var merged = Object.assign({}, headerObj);
+	  var useProxy = proxy$1.isActiveFor(url);
+	  fm.open(method, useProxy ? proxy$1.resolveURL(url) : url);
+	  if (!useProxy) return merged;
+	  var extra = proxy$1.headers || {};
+
+	  for (var k in extra) {
+	    if (extra[k] === undefined || extra[k] === null) continue;
+
+	    for (var m in merged) {
+	      if (m.toLowerCase() == k.toLowerCase()) delete merged[m];
+	    }
+
+	    merged[k] = extra[k];
+	  }
+
+	  return merged;
+	}
+
+	var proxy$1 = {
+	  enabled: false,
+	  url: '',
+	  headers: {},
+	  //啟用 proxy，必須指定 proxy 網址；options.headers 可同時設定 proxy.headers（未提供則保留原設定）
+	  enable: function enable(url, options) {
+	    var nextURL = normalizeProxyURL(url, 'enable');
+
+	    if (options && options.headers !== undefined) {
+	      if (!options.headers || _typeof(options.headers) != 'object' || Array.isArray(options.headers)) throw 'rocptx.proxy.enable: options.headers must be an object';
+	      proxy$1.headers = Object.assign({}, options.headers);
+	    }
+
+	    proxy$1.url = nextURL;
+	    proxy$1.enabled = true;
+	    return proxy$1;
+	  },
+	  disable: function disable() {
+	    proxy$1.enabled = false;
+	    return proxy$1;
+	  },
+	  //更換 proxy 網址，不改變啟用狀態
+	  setURL: function setURL(url) {
+	    proxy$1.url = normalizeProxyURL(url, 'setURL');
+	    return proxy$1;
+	  },
+	  //回傳實際要送出的網址：啟用時把 TDX 官方網域換成 proxy 網址，否則原樣回傳
+	  resolveURL: function resolveURL(url) {
+	    if (!proxy$1.isActiveFor(url)) return url;
+	    return String(proxy$1.url).replace(/\/+$/, '') + url.slice(TDX_ORIGIN.length);
+	  },
+	  //此網址送出時是否會走 proxy
+	  isActiveFor: function isActiveFor(url) {
+	    return !!(proxy$1.enabled && proxy$1.url && isTDXURL(url));
+	  }
+	}; //給 rocptx.req 用：若傳入的是字串（例如 CLI 參數、JSON.stringify 過的設定），自動 JSON.parse 成物件；
+	//已是物件或未提供（undefined/null）則原樣通過，讓呼叫端可以直接傳 JS 物件或 JSON 字串兩種形式
 
 	function parseIfJSONString(value, label) {
 	  if (typeof value != 'string') return value;
@@ -7253,6 +7331,7 @@
 	var ptx = {
 	  statusCode: CM.statusCode,
 	  timeout: 30000,
+	  proxy: proxy$1,
 	  //TDX rate limit（429）自動重試設定：
 	  //maxWaitSeconds 為重試總等待預算秒數（TDX 配額為固定 60 秒窗口，最慢 60 秒內必恢復，故預設 60），
 	  //預算耗盡仍失敗才回傳失敗；delays 為無 Retry-After 時各次重試前的等待毫秒退避序列（用完後沿用最後一值）；
@@ -7418,9 +7497,8 @@
 	      fm.addEventListener("error", reqListener);
 	      fm.addEventListener("abort", reqListener);
 	      fm.addEventListener("timeout", reqListener);
-	      fm.open('GET', url);
+	      var headerObj = openWithProxy(fm, 'GET', url, ptx.GetAuthorizationHeaderTDX());
 	      fm.timeout = ptx.timeout;
-	      var headerObj = ptx.GetAuthorizationHeaderTDX();
 
 	      for (var k in headerObj) {
 	        fm.setRequestHeader(k, headerObj[k]);
@@ -7477,9 +7555,8 @@
 	        fm.addEventListener("abort", reqListener);
 	        fm.addEventListener("timeout", reqListener);
 	        var method = cfg.method || 'GET';
-	        fm.open(method, url);
+	        var headerObj = openWithProxy(fm, method, url, cfg.head || ptx.GetAuthorizationHeaderTDX());
 	        fm.timeout = cfg.timeout || ptx.timeout;
-	        var headerObj = cfg.head || ptx.GetAuthorizationHeaderTDX();
 
 	        for (var k in headerObj) {
 	          fm.setRequestHeader(k, headerObj[k]);
@@ -7940,6 +8017,11 @@
 	      name: "北投",
 	      estring: "beitou"
 	    }, {
+	      id: "trtc_r22a",
+	      StationID: ["R22A"],
+	      name: "新北投",
+	      estring: "xinbeitou"
+	    }, {
 	      id: "trtc_063",
 	      StationID: ["R21"],
 	      name: "奇岩",
@@ -8216,6 +8298,11 @@
 	      StationID: ["G03"],
 	      name: "七張",
 	      estring: "qizhang"
+	    }, {
+	      id: "trtc_g03a",
+	      StationID: ["G03A"],
+	      name: "小碧潭",
+	      estring: "xiaobitan"
 	    }, {
 	      id: "trtc_034",
 	      StationID: ["G02"],
@@ -8645,6 +8732,12 @@
 	      name: "環北",
 	      estring: "huanbei",
 	      sect: 'taoyuan'
+	    }, {
+	      id: "tymc_a22",
+	      StationID: ["A22"],
+	      name: "老街溪",
+	      estring: "laojieriverstation",
+	      sect: 'taoyuan'
 	    }],
 	    line: [{
 	      id: "tymc_1",
@@ -8653,7 +8746,7 @@
 	      trainSect: ["taipei", "taoyuan"],
 	      color: "#8e47ad",
 	      dir: "1",
-	      station: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12", "A13", "A14a", "A15", "A16", "A17", "A18", "A19", "A20", "A21"]
+	      station: ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12", "A13", "A14a", "A15", "A16", "A17", "A18", "A19", "A20", "A21", "A22"]
 	    }]
 	  },
 	  ntmc: {
@@ -8922,6 +9015,12 @@
 	      name: "南岡山",
 	      estring: "gangshansouth",
 	      sect: 'kaohsiung'
+	    }, {
+	      id: "krtc_rk1",
+	      StationID: ["RK1"],
+	      name: "岡山車站",
+	      estring: "gangshanstation",
+	      sect: 'kaohsiung'
 	    }, //Orange Line (O5 美麗島與 R10 同站，收在 krtc_r10)
 	    {
 	      id: "krtc_o01",
@@ -9026,7 +9125,7 @@
 	      trainSect: ["kaohsiung"],
 	      color: "#d30547",
 	      dir: "0",
-	      station: ["R3", "R4", "R4A", "R5", "R6", "R7", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15", "R16", "R17", "R18", "R19", "R20", "R21", "R22", "R22A", "R23", "R24"]
+	      station: ["R3", "R4", "R4A", "R5", "R6", "R7", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15", "R16", "R17", "R18", "R19", "R20", "R21", "R22", "R22A", "R23", "R24", "RK1"]
 	    }, {
 	      id: 'krtc_o',
 	      LineID: 'O',
@@ -9059,121 +9158,381 @@
 	    station_ary: [//G Line
 	    {
 	      id: "tmrt_103a",
-	      StationID: ["103a"],
+	      StationID: ["G0"],
 	      name: "北屯總站",
 	      estring: "beitunmainstationbeitunzhongzhan",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_103",
-	      StationID: ["103"],
+	      StationID: ["G3"],
 	      name: "舊社",
 	      estring: "jiushe",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_104",
-	      StationID: ["104"],
+	      StationID: ["G4"],
 	      name: "松竹",
 	      estring: "songzhu",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_105",
-	      StationID: ["105"],
+	      StationID: ["G5"],
 	      name: "四維國小",
 	      estring: "sihweielementaryschoolsiweiguoxiao",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_106",
-	      StationID: ["106"],
+	      StationID: ["G6"],
 	      name: "文心崇德",
 	      estring: "wenxinchongde",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_107",
-	      StationID: ["107"],
+	      StationID: ["G7"],
 	      name: "文心中清",
 	      estring: "wenxinzhongqing",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_108",
-	      StationID: ["108"],
+	      StationID: ["G8"],
 	      name: "文華高中",
 	      estring: "wenhuaseniorhighschoolwenhuagaozhong",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_109",
-	      StationID: ["109"],
+	      StationID: ["G8a"],
 	      name: "文心櫻花",
 	      estring: "wenxinyinghua",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_110",
-	      StationID: ["110"],
+	      StationID: ["G9"],
 	      name: "市政府",
 	      estring: "taichungcityhallshizhengfu",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_111",
-	      StationID: ["111"],
+	      StationID: ["G10"],
 	      name: "水安宮",
 	      estring: "shuiantempleshuiangong",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_112",
-	      StationID: ["112"],
+	      StationID: ["G10a"],
 	      name: "文心森林公園",
 	      estring: "wenxinforestpark",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_113",
-	      StationID: ["113"],
+	      StationID: ["G11"],
 	      name: "南屯",
 	      estring: "nantun",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_114",
-	      StationID: ["114"],
+	      StationID: ["G12"],
 	      name: "豐樂公園",
 	      estring: "fengleparkfenglegongyuan",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_115",
-	      StationID: ["115"],
+	      StationID: ["G13"],
 	      name: "大慶",
 	      estring: "daqing",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_116",
-	      StationID: ["116"],
+	      StationID: ["G14"],
 	      name: "九張犁",
 	      estring: "jiuzhangli",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_117",
-	      StationID: ["117"],
+	      StationID: ["G15"],
 	      name: "九德",
 	      estring: "jiude",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_118",
-	      StationID: ["118"],
+	      StationID: ["G16"],
 	      name: "烏日",
 	      estring: "wuri",
 	      sect: 'taichung'
 	    }, {
 	      id: "tmrt_119",
-	      StationID: ["119"],
+	      StationID: ["G17"],
 	      name: "高鐵臺中站",
 	      estring: "hSRtaichungstationgaotietaizhongzhan",
 	      sect: 'taichung'
 	    }],
 	    line: [{
-	      id: "tymc_G",
+	      id: "tmrt_g",
 	      LineID: "G",
 	      name: "烏日文心北屯線",
 	      trainSect: ["taichung"],
 	      color: "#84BD00",
 	      dir: "0",
-	      station: ["103a", "103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113", "114", "115", "116", "117", "118", "119"]
+	      station: ["G0", "G3", "G4", "G5", "G6", "G7", "G8", "G8a", "G9", "G10", "G10a", "G11", "G12", "G13", "G14", "G15", "G16", "G17"]
+	    }]
+	  },
+	  klrt: {
+	    sect_ary: ['kaohsiung'],
+	    station_ary: [//Circular Light Rail
+	    {
+	      id: "klrt_c1",
+	      StationID: ["C1"],
+	      name: "籬仔內",
+	      estring: "lizihnei",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c2",
+	      StationID: ["C2"],
+	      name: "凱旋瑞田",
+	      estring: "kaisyuanrueitian",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c3",
+	      StationID: ["C3"],
+	      name: "前鎮之星",
+	      estring: "cianjhenstar",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c4",
+	      StationID: ["C4"],
+	      name: "凱旋中華",
+	      estring: "kaisyuanjhonghua",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c5",
+	      StationID: ["C5"],
+	      name: "夢時代",
+	      estring: "dreammall",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c6",
+	      StationID: ["C6"],
+	      name: "經貿園區",
+	      estring: "commerceandtradepark",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c7",
+	      StationID: ["C7"],
+	      name: "軟體園區",
+	      estring: "softwaretechnologypark",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c8",
+	      StationID: ["C8"],
+	      name: "高雄展覽館",
+	      estring: "kaohsiungexhibitioncenter",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c9",
+	      StationID: ["C9"],
+	      name: "旅運中心",
+	      estring: "cruiseterminal",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c10",
+	      StationID: ["C10"],
+	      name: "光榮碼頭",
+	      estring: "glorypier",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c11",
+	      StationID: ["C11"],
+	      name: "真愛碼頭",
+	      estring: "lovepier",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c12",
+	      StationID: ["C12"],
+	      name: "駁二大義",
+	      estring: "dayipier2",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c13",
+	      StationID: ["C13"],
+	      name: "駁二蓬萊",
+	      estring: "penglaipier2",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c14",
+	      StationID: ["C14"],
+	      name: "哈瑪星",
+	      estring: "hamasen",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c15",
+	      StationID: ["C15"],
+	      name: "壽山公園站",
+	      estring: "shoushanpark",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c16",
+	      StationID: ["C16"],
+	      name: "文武聖殿站",
+	      estring: "wenwutemple",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c17",
+	      StationID: ["C17"],
+	      name: "鼓山區公所站",
+	      estring: "gushandistrictoffice",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c18",
+	      StationID: ["C18"],
+	      name: "鼓山",
+	      estring: "gushan",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c19",
+	      StationID: ["C19"],
+	      name: "馬卡道",
+	      estring: "makadao",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c20",
+	      StationID: ["C20"],
+	      name: "臺鐵美術館",
+	      estring: "tramuseumoffinearts",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c21a",
+	      StationID: ["C21A"],
+	      name: "內惟藝術中心",
+	      estring: "neiweiartscenter",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c21",
+	      StationID: ["C21"],
+	      name: "美術館",
+	      estring: "kaohsiungmuseumoffinearts",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c22",
+	      StationID: ["C22"],
+	      name: "聯合醫院",
+	      estring: "kaohsiungmunicipalunitedhospital",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c23",
+	      StationID: ["C23"],
+	      name: "龍華國小",
+	      estring: "longhuaelementaryschool",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c24",
+	      StationID: ["C24"],
+	      name: "愛河之心",
+	      estring: "heartofloveriver",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c25",
+	      StationID: ["C25"],
+	      name: "新上國小",
+	      estring: "sinshangelementaryschool",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c26",
+	      StationID: ["C26"],
+	      name: "大順民族",
+	      estring: "dashunminzu",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c27",
+	      StationID: ["C27"],
+	      name: "灣仔內(大順鼎山)",
+	      estring: "wanzihneidashundingshan",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c28",
+	      StationID: ["C28"],
+	      name: "高雄高工",
+	      estring: "kaohsiungindustrialhighschool",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c29",
+	      StationID: ["C29"],
+	      name: "樹德家商",
+	      estring: "shutehomeeconomicscommercialhighschool",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c30",
+	      StationID: ["C30"],
+	      name: "科工館",
+	      estring: "scienceandtechnologymuseum",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c31",
+	      StationID: ["C31"],
+	      name: "聖功醫院",
+	      estring: "stjosephhospital",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c32",
+	      StationID: ["C32"],
+	      name: "凱旋公園站",
+	      estring: "kaisyuanpark",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c33",
+	      StationID: ["C33"],
+	      name: "衛生局站",
+	      estring: "departmentofhealth",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c34",
+	      StationID: ["C34"],
+	      name: "五權國小站",
+	      estring: "wucyuanelementaryschool",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c35",
+	      StationID: ["C35"],
+	      name: "凱旋武昌站",
+	      estring: "kaisyuanwuchang",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c36",
+	      StationID: ["C36"],
+	      name: "凱旋二聖站",
+	      estring: "kaisyuanersheng",
+	      sect: "kaohsiung"
+	    }, {
+	      id: "klrt_c37",
+	      StationID: ["C37"],
+	      name: "輕軌機廠站",
+	      estring: "lrtdepot",
+	      sect: "kaohsiung"
+	    }],
+	    line: [{
+	      id: "klrt_c",
+	      LineID: "C",
+	      route: [{
+	        dir: 0,
+	        Direction: 0,
+	        work: [{
+	          RouteID: "C",
+	          from: "C1",
+	          to: "C1"
+	        }]
+	      }, {
+	        dir: 1,
+	        Direction: 1,
+	        work: [{
+	          RouteID: "C",
+	          from: "C1",
+	          to: "C1"
+	        }]
+	      }],
+	      name: "環狀輕軌",
+	      trainSect: ["kaohsiung"],
+	      color: "#88bd45",
+	      dir: "0",
+	      isLoop: true,
+	      station: ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", "C11", "C12", "C13", "C14", "C15", "C16", "C17", "C18", "C19", "C20", "C21A", "C21", "C22", "C23", "C24", "C25", "C26", "C27", "C28", "C29", "C30", "C31", "C32", "C33", "C34", "C35", "C36", "C37"]
 	    }]
 	  },
 	  thsr: {
@@ -9528,6 +9887,12 @@
 	      v3id: "1070",
 	      name: "鶯歌",
 	      estring: "yingge",
+	      sect: "taipei"
+	    }, {
+	      id: "tra_1075",
+	      v3id: "1075",
+	      name: "鳳鳴",
+	      estring: "fengming",
 	      sect: "taipei"
 	    }, {
 	      id: "tra_1015",

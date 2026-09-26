@@ -28,6 +28,11 @@
 <script type="text/javascript" src="ttlib/fn_tymetro.js"></script>
 <script type="text/javascript" src="ttlib/ptx.js"></script>
 <script type="text/javascript">
+//TDX proxy 開關：要直連 TDX 時把網址改成空字串 ''
+var TDX_PROXY_URL = 'https://tdx.jiapi.net';
+if (TDX_PROXY_URL && window.rocptx) rocptx.proxy.enable(TDX_PROXY_URL);
+</script>
+<script type="text/javascript">
 //進度: 完成 getTRA_timeRangeByFromTo，可尋找某一時段間往來兩站的班次
 //      完成 getTRA_timeRangeByFromTo 資料加上 getFromToTime , 接下來製作 TRTC 兩站時間查詢
 //      完成 getTRTC_allTimeByFromTo 查全部兩站時間, 接下來製作時間範圍內查證
@@ -48,8 +53,10 @@
 //      完成 getRoute_mapSystemOfFromToLine 跨出地區從系統上尋找路由
 //      新增 getRoute_filterSameRoute 過濾不必要的路由 giveRoute_transStationOtherData
 //		新增 getTRA_linkRouteV1 及 getTRA_linkMap 做自動化路由搜尋
+if(!rocptx.proxy.enabled){
 rocptx.AppID = atob('bWVsaXh5ZW4tNGE3MDA1YWQtMWE0Ny00NDAx');
 rocptx.AppKey = atob("MjlhOTM4MzUtNDM4OS00M2EyLTljOGMtMzBmYjgyMDdmZTA2");
+}
 var TT = (function(){
 
     var TT = $trainTaiwanLib;
