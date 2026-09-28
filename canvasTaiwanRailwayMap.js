@@ -867,7 +867,7 @@
                     color: "#cb2c30",
                     nameTag: {
                         fontColor: '#FFF',
-                        id:'trtc_R01', 
+                        id:'trtc_r01', 
                         ox: 40, 
                         oy: 0
                     },
@@ -882,7 +882,7 @@
                         {type: 'station', id: 'trtc_042'},
                         {type: 'station', id: 'trtc_134'},
                         {type: 'station', id: 'trtc_103'},
-                        {type: 'station', id: 'trtc_R01'},
+                        {type: 'station', id: 'trtc_r01'},
                         {type: 'move', id: 'trtc_064'},
                         {type: 'station', id: 'trtc_065'}
                     ],
@@ -916,7 +916,7 @@
                         "trtc_101": {x: 290, y: 150, name: '信義安和', stationClass: 4 },
                         "trtc_100": {x: 370, y: 150, name: '台北101/世貿', stationClass: 4 },
                         "trtc_099": {x: 435, y: 150, name: '象山', stationClass: 3 },
-                        "trtc_R01": {x: 500, y: 150, name: '廣慈/奉天宮', stationClass: 3, noClick: true}
+                        "trtc_r01": {x: 500, y: 150, name: '廣慈/奉天宮', stationClass: 3}
                     }
                 }, {
                     id: "trtc_3",
@@ -1369,46 +1369,46 @@
                     name: "[新北]三鶯線",
                     color: "#79bce8",
                     isPlanLine: false,
-                    isNoClickLine: true,
+                    isNoClickLine: false,
                     hasPlanLineRange: [
-                        ['ntmetro_LB12', 'ntmetro_LB14']
+                        ['trtc_lb12', 'ntmetro_LB14']
                     ],
                     nameTag: {
                         fontColor: '#425',
-                        id:'ntmetro_LB04',
+                        id:'trtc_lb04',
                         ox: -40,
                         oy: 22
                     },
                     dir: "0",
                     line: [
                         {type: 'station', id: 'trtc_076'},
-                        {type: 'station', id: 'ntmetro_LB02'},
-                        {type: 'station', id: 'ntmetro_LB03'},
-                        {type: 'station', id: 'ntmetro_LB06'},
-                        {type: 'station', id: 'ntmetro_LB07'},
-                        {type: 'station', id: 'ntmetro_LB08'},
-                        {type: 'station', id: 'ntmetro_LB09'},
-                        {type: 'station', id: 'ntmetro_LB10'},
-                        {type: 'turn', id: 'ntmetro_LB10', ox: 30, oy: 25},
-                        {type: 'turn', id: 'ntmetro_LB10', ox: 300, oy: 25},
-                        {type: 'station', id: 'ntmetro_LB11'},
-                        {type: 'station', id: 'ntmetro_LB12'},
+                        {type: 'station', id: 'trtc_lb02'},
+                        {type: 'station', id: 'trtc_lb03'},
+                        {type: 'station', id: 'trtc_lb06'},
+                        {type: 'station', id: 'trtc_lb07'},
+                        {type: 'station', id: 'trtc_lb08'},
+                        {type: 'station', id: 'trtc_lb09'},
+                        {type: 'station', id: 'trtc_lb10'},
+                        {type: 'turn', id: 'trtc_lb10', ox: 30, oy: 25},
+                        {type: 'turn', id: 'trtc_lb10', ox: 300, oy: 25},
+                        {type: 'station', id: 'trtc_lb11'},
+                        {type: 'station', id: 'trtc_lb12'},
                         {type: 'station', id: 'ntmetro_LB13'},
                         {type: 'station', id: 'ntmetro_LB14'}
                     ],
                     station: {
                         "trtc_076": {x: -300, y: 330, name: '頂埔', stationClass: 4, noDraw: true},
-                        "ntmetro_LB02": {x: -260, y: 355, name: '媽祖田', stationClass: 4},
-                        "ntmetro_LB03": {x: -260, y: 380, name: '長壽山', stationClass: 4},
-                        "ntmetro_LB04": {x: -300, y: 380, name: '橫溪', stationClass: 4},
-                        "ntmetro_LB05": {x: -340, y: 380, name: '龍埔', stationClass: 4},
-                        "ntmetro_LB06": {x: -390, y: 380, name: '三峽', stationClass: 4},
-                        "ntmetro_LB07": {x: -390, y: 355, name: '臺北大學', stationClass: 4},
-                        "ntmetro_LB08": {x: -480, y: 335, name: '鶯歌車站', stationClass: 3, company: true},
-                        "ntmetro_LB09": {x: -480, y: 380, name: '陶瓷老街', stationClass: 4},
-                        "ntmetro_LB10": {x: -460, y: 405, name: '國華', stationClass: 4},
-                        "ntmetro_LB11": {x: -160, y: 460, name: '永吉公園', stationClass: 4},
-                        "ntmetro_LB12": {x: -90, y: 535, name: '鶯桃福德', stationClass: 4},
+                        "trtc_lb02": {x: -260, y: 355, name: '媽祖田', stationClass: 4},
+                        "trtc_lb03": {x: -260, y: 380, name: '長壽山', stationClass: 4},
+                        "trtc_lb04": {x: -300, y: 380, name: '橫溪', stationClass: 4},
+                        "trtc_lb05": {x: -340, y: 380, name: '龍埔', stationClass: 4},
+                        "trtc_lb06": {x: -390, y: 380, name: '三峽', stationClass: 4},
+                        "trtc_lb07": {x: -390, y: 355, name: '臺北大學', stationClass: 4},
+                        "trtc_lb08": {x: -480, y: 335, name: '鶯歌車站', stationClass: 3},
+                        "trtc_lb09": {x: -480, y: 380, name: '陶瓷老街', stationClass: 4},
+                        "trtc_lb10": {x: -460, y: 405, name: '國華', stationClass: 4},
+                        "trtc_lb11": {x: -160, y: 460, name: '永吉公園', stationClass: 4},
+                        "trtc_lb12": {x: -90, y: 535, name: '鶯桃福德', stationClass: 4},
                         "ntmetro_LB13": {x: -60, y: 575, name: '豎啣埤', stationClass: 4, isPlanStation:true},
                         "ntmetro_LB14": {x: -30, y: 638, name: '大湳', stationClass: 3, company: true, isPlanStation:true}
                     }
@@ -1752,6 +1752,12 @@
             if(lineData['planLine']){
                     for(var i=0; i<lineData['planLine'].length; i++){
                         if(lineData['planLine'][i].station[st]) return lineData['planLine'][i].station[st];
+                    }
+            }
+            //車站 id 前綴與所在營運單位不同時（例如新北三鶯線以 trtc_ 為 id），從所有營運單位尋找
+            for(var k in lineData){
+                    for(var i=0; i<lineData[k].length; i++){
+                        if(lineData[k][i].station[st]) return lineData[k][i].station[st];
                     }
             }
         }

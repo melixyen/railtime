@@ -654,7 +654,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 					var mrtPTXAry = [];
 					routeAry.forEach(function(ary){
 						ary.forEach(function(c){
-							if(c.company=='trtc'){
+							if(c.company=='trtc' && TT.fn.checkTRTC_ptxHasStation(c.takeRange[0], c.line) && TT.fn.checkTRTC_ptxHasStation(c.takeRange[1], c.line)){
 								mrtPTXAry.push({company: c.company, line: c.line, takeRange: c.takeRange});
 							}
 						});
@@ -3035,6 +3035,17 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             if(ptxTime!=false){
                 return ptxTime;
             }
+        	if(line=='trtc_7'){
+                return TT.fn.getTRTC_headwayCalc_stationTime(stationID, line, dir, w);//三鶯線讀不到 TDX 時刻表時用班距推算
+            }
+            if(stationID == 'trtc_r01'){//廣慈/奉天宮讀不到 TDX 時刻表時，用象山站時刻表推算，兩站行車 2 分鐘
+                var xsTime = TT.fn.getTRTC_stationTime('trtc_099', line, dir, w);
+                if(!xsTime) return false;
+                var xsOffsetSec = (dir.toString()=='0') ? -120 : 120;
+                return xsTime.map(function(t){
+                    return TT.fn.transSec2Time((TT.fn.transTime2Sec(t) + xsOffsetSec + 86400) % 86400);
+                });
+            }
             //若上面抓的到 ptx time table 則優先回應
             var rnwTime = TT.fn.getTRTC_rnw_stationTime(stationID, line, dir, w);
             if(rnwTime!=false){
@@ -3090,6 +3101,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             
             function offsetTimeFn(timeTB, offsetMin){
                 var tmpTime, spliceNum=0, rt=new Array();
+                timeTB = timeTB.slice();//複製一份，避免改到快取中其他車站的時刻表
                 for(var i=0; i<timeTB.length; i++){
                     tmpTime = TT.fn.transTime2Sec(timeTB[i]);
                     tmpTime = tmpTime + (offsetMin*60);
@@ -3205,7 +3217,40 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
         },
         getTRTC_ptx_stationTime: function(stationID, line, dir, w){
         	if(!TT.defined.usePTX) return false;
+        	if(!TT.fn.checkTRTC_ptxHasStation(stationID, line)) return false;
         	return TT.ptx.trtc.getFormatStationTime(stationID, line, dir, w);
+        },
+        checkTRTC_ptxHasStation: function(stationID, line){//rocptx 沒有的路線或車站不能交給它查
+        	if(!TT.ptx || !TT.ptx.trtc) return false;
+        	return !!(TT.ptx.trtc.getLineData(line) && TT.ptx.trtc.getStationIDAry(stationID));
+        },
+        getTRTC_headwayCalc_stationTime: function(stationID, line, dir, w){
+            //依班距推算時刻表：首末班由起點站 06:00 至 24:00 發車，平日尖峰(06:30~08:30、17:30~19:30) 6 分鐘一班，其餘 8 分鐘一班
+            if(!w && w!==0) w = TT.defined.defaultTRAWeekday;
+            w = parseInt(w,10);
+            var lineData = TT.fn.getTRTC_lineData(line);
+            if(!lineData) return false;
+            var baseStation = lineData.station[0];
+            var offsetObj = TT.data.trtc.offset_time[line] && TT.data.trtc.offset_time[line][baseStation];
+            if(!offsetObj || offsetObj[stationID]===undefined) return false;
+            var isStartDir = (dir.toString()==lineData.dir.toString());
+            var lastOffset = offsetObj[lineData.station[lineData.station.length-1]];
+            var runSec = (isStartDir ? offsetObj[stationID] : lastOffset - offsetObj[stationID]) * 60;
+            var isWeekday = (w>=1 && w<=5);
+            var peakAry = [[6.5*3600, 8.5*3600], [17.5*3600, 19.5*3600]];
+            function headwayOf(sec){
+                if(isWeekday){
+                    for(var i=0; i<peakAry.length; i++){
+                        if(sec >= peakAry[i][0] && sec < peakAry[i][1]) return 6*60;
+                    }
+                }
+                return 8*60;
+            }
+            var rt = new Array();
+            for(var t=6*3600; t<=24*3600; t+=headwayOf(t)){
+                rt.push(TT.fn.transSec2Time((t + runSec) % 86400));
+            }
+            return rt;
         },
         getTRTC_timeTable2Data: function(cbFn){
             function doBack(json){
@@ -3372,6 +3417,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 if(line=='trtc_4') baseStation = 'trtc_048';
                 if(line=='trtc_5') baseStation = 'trtc_097';
                 if(line=='trtc_6') baseStation = 'trtc_036';
+                if(line=='trtc_7') baseStation = 'trtc_076';
                 var lineA = TT.data.trtc.offset_time[line][baseStation];
                 var aOffset = lineA[a];
                 var bOffset = lineA[b];

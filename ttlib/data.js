@@ -629,6 +629,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 {id:"trtc_101", name: "信義安和", estring: "xinyianhe"},
                 {id:"trtc_100", name: "台北101/世貿", estring: "taipei101worldtradecentertaipei101shimao"},
                 {id:"trtc_099", name: "象山", estring: "xiangshan"},
+                {id:"trtc_r01", name: "廣慈/奉天宮", estring: "guangcifengtiantemple"},
                 //ZhongHeXinLu Line
                 {id:"trtc_048", name: "南勢角", estring: "nanshijiao"},
                 {id:"trtc_047", name: "景安", estring: "jingan"},
@@ -680,7 +681,19 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 {id:"trtc_y16", name: "板橋（環狀）", estring: "banqiao"},
                 {id:"trtc_y17", name: "新埔民生", estring: "xinpuminsheng"},
                 {id:"trtc_y19", name: "幸福", estring: "xingfu"},
-                {id:"trtc_y20", name: "新北產業園區", estring: "xinbeichanyeyuanqui"}
+                {id:"trtc_y20", name: "新北產業園區", estring: "xinbeichanyeyuanqui"},
+                //Sanying Line (新北捷運三鶯線，LB01 為頂埔 trtc_076)
+                {id:"trtc_lb02", name: "媽祖田", estring: "mazutian"},
+                {id:"trtc_lb03", name: "長壽山", estring: "changshoushan"},
+                {id:"trtc_lb04", name: "橫溪", estring: "hengxi"},
+                {id:"trtc_lb05", name: "龍埔", estring: "longpu"},
+                {id:"trtc_lb06", name: "三峽", estring: "sanxia"},
+                {id:"trtc_lb07", name: "台北大學", estring: "taipeidaxuentpu"},
+                {id:"trtc_lb08", name: "鶯歌車站", estring: "yinggestation"},
+                {id:"trtc_lb09", name: "陶瓷老街", estring: "taocilaojieceramicsoldstreet"},
+                {id:"trtc_lb10", name: "國華", estring: "guohua"},
+                {id:"trtc_lb11", name: "永吉公園", estring: "yongjigongyuanyongjipark"},
+                {id:"trtc_lb12", name: "鶯桃福德", estring: "yingtaofude"}
             ],
             line: [
                 {
@@ -695,6 +708,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     color: "#ffdb00",
                     dir: "0",
                     station: ["trtc_036","trtc_y08","trtc_y09","trtc_y10","trtc_047","trtc_y12","trtc_y13","trtc_y14","trtc_y15","trtc_y16","trtc_y17","trtc_123","trtc_y19","trtc_y20"]
+                }, {
+                    id: "trtc_7",
+                    name: "三鶯線(LB)",
+                    color: "#79bce8",
+                    dir: "0",
+                    station: ["trtc_076","trtc_lb02","trtc_lb03","trtc_lb04","trtc_lb05","trtc_lb06","trtc_lb07","trtc_lb08","trtc_lb09","trtc_lb10","trtc_lb11","trtc_lb12"]
                 }, {
                     id: "trtc_5",
                     name: "板南線(5)",
@@ -719,11 +738,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         waitingNextMinute: 4
                     }, {
                         dir: "1",
-                        station: "trtc_101~trtc_099",
+                        station: "trtc_101~trtc_r01",
                         transAt: "trtc_011",
                         waitingNextMinute: 4
                     }],
-                    station: ["trtc_071","trtc_070","trtc_069","trtc_068","trtc_067","trtc_066","trtc_064","trtc_063","trtc_062","trtc_061","trtc_060","trtc_059","trtc_058","trtc_057","trtc_056","trtc_055","trtc_054","trtc_053","trtc_051","trtc_050","trtc_042","trtc_134","trtc_103","trtc_011","trtc_101","trtc_100","trtc_099"]
+                    station: ["trtc_071","trtc_070","trtc_069","trtc_068","trtc_067","trtc_066","trtc_064","trtc_063","trtc_062","trtc_061","trtc_060","trtc_059","trtc_058","trtc_057","trtc_056","trtc_055","trtc_054","trtc_053","trtc_051","trtc_050","trtc_042","trtc_134","trtc_103","trtc_011","trtc_101","trtc_100","trtc_099","trtc_r01"]
                 }, {
                     id: "trtc_3",
                     name: "松山新店線(3)",
@@ -771,6 +790,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         "LineDir": "0", "trtc_036":0,"trtc_y08":3,"trtc_y09":5,"trtc_y10":7,"trtc_047":9,"trtc_y12":12,"trtc_y13":15,"trtc_y14":16,"trtc_y15":19,"trtc_y16":21,"trtc_y17":25,"trtc_123":28,"trtc_y19":30,"trtc_y20":33
                     }
                 },
+                "trtc_7": {
+                    "trtc_076": {//新北捷運公告三鶯線各站行車時間
+                        "LineDir": "0", "trtc_076":0,"trtc_lb02":2,"trtc_lb03":5,"trtc_lb04":7,"trtc_lb05":10,"trtc_lb06":13,"trtc_lb07":16,"trtc_lb08":21,"trtc_lb09":23,"trtc_lb10":25,"trtc_lb11":29,"trtc_lb12":32
+                    }
+                },
                 "trtc_5": {
                     "trtc_097": {
                         "LineDir": "1", "trtc_031":-2, "trtc_097":0, "trtc_096":2, "trtc_095":4, "trtc_094":6, "trtc_093":8, "trtc_092":9, "trtc_091":11, "trtc_010":12, "trtc_089":15, "trtc_088":16, "trtc_051":18, "trtc_086":21
@@ -780,7 +804,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 "trtc_2": {
                     "trtc_071": {
                         "LineDir": "1", "trtc_071":0, "trtc_070":3, "trtc_069":6, "trtc_068":9, "trtc_067":11, "trtc_066":13, "trtc_064":16, "trtc_063":18, "trtc_062":19, "trtc_061":21, "trtc_060":23, "trtc_059":24, "trtc_058":26, "trtc_057":28, "trtc_056":31, "trtc_055":33, "trtc_054":34, "trtc_053":35, "trtc_051":37
-                            , "trtc_050":39, "trtc_042":41, "trtc_134":44, "trtc_103":46, "trtc_011":47, "trtc_101":49, "trtc_100":51, "trtc_099":53
+                            , "trtc_050":39, "trtc_042":41, "trtc_134":44, "trtc_103":46, "trtc_011":47, "trtc_101":49, "trtc_100":51, "trtc_099":53, "trtc_r01":55
                     }
                 },
                 "trtc_3": {
@@ -1315,6 +1339,16 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         "trtc_036": {width:420, height:315, src:'https://www.youtube.com/embed/daFQkzy4NuY'}
                     },
                     walkMinute: 3
+                }, {
+                    id: 'dingpu1', name: "頂埔",//板南線地下三樓出站，經轉乘電扶梯到三鶯線三樓月台，實測約 3~4 分鐘
+                    changeLine: ["trtc_5", "trtc_7"],
+                    changeStation: ['trtc_076','trtc_076'],
+                    walkMinute: 5
+                }, {
+                    id: 'yingge1', name: "鶯歌",//台鐵跨站站房出站，經約 130 公尺風雨走廊到三鶯線鶯歌車站再上高架月台
+                    changeLine: ["tra_xibu", "trtc_7"],
+                    changeStation: ['tra_1014','trtc_lb08'],
+                    walkMinute: 7
                 }, {
                     id: 'changgengyiyuan1', name: "長庚醫院",
                     changeLine: ["tymetro_1", "tymetro_1"],
@@ -2072,6 +2106,26 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: ["taipei1","cksmh1","guting1","jingan1"]
                     }
                 ]
+            }, {
+                id: 'tra_xibu,trtc_7',
+                fromToLine: ["tra_xibu","trtc_7"],
+                sect: ['taipei','keelung','taoyuan','hsinchu'],
+                route: [
+                    {
+                        line: ["tra_xibu", "trtc_7"],
+                        transStation: ["yingge1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_lb0[89]$|^trtc_lb1[0-2]$',
+                        line: ["tra_xibu", "trtc_5", "trtc_7"],
+                        transStation: ["banqiao1","dingpu1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_lb0[89]$|^trtc_lb1[0-2]$',
+                        line: ["tra_xibu", "trtc_5", "trtc_7"],
+                        transStation: ["taipei1","dingpu1"]
+                    }
+                ]
             }, {//TRA to TTYMETRO
                 id: 'tra_xibu,tymetro_1',
                 fromToLine: ["tra_xibu","tymetro_1"],
@@ -2278,12 +2332,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: ["dongmen1","jingan1"]
                     },
                     {
-                        bypassBothStationReg: '^trtc_047$|^trtc_y0[8-9]$|^trtc_y1[0-2]|^trtc_099$|^trtc_10[0-3]$|^trtc_011$|^trtc_134$|^trtc_042$',
+                        bypassBothStationReg: '^trtc_047$|^trtc_y0[8-9]$|^trtc_y1[0-2]|^trtc_099$|^trtc_r01$|^trtc_10[0-3]$|^trtc_011$|^trtc_134$|^trtc_042$',
                         line: ["trtc_2", "trtc_5", "trtc_6"],
                         transStation: ["taipei3","xinpu1"]
                     },
                     {
-                        bypassBothStationReg: '^trtc_047$|^trtc_y0[8-9]$|^trtc_y1[0-2]|^trtc_099$|^trtc_10[0-3]$|^trtc_011$|^trtc_134$|^trtc_042$',
+                        bypassBothStationReg: '^trtc_047$|^trtc_y0[8-9]$|^trtc_y1[0-2]|^trtc_099$|^trtc_r01$|^trtc_10[0-3]$|^trtc_011$|^trtc_134$|^trtc_042$',
                         line: ["trtc_2", "trtc_5", "trtc_6"],
                         transStation: ["taipei3","banqiao2"]
                     }
@@ -2368,6 +2422,85 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     {
                         line: ["trtc_4", "trtc_4"],
                         transStation: ["daqiaotou1"]
+                    }
+                ]
+            }, {//Sanying Line 三鶯線
+                id: 'trtc_5,trtc_7',
+                fromToLine: ["trtc_5","trtc_7"],
+                sect: ['taipei'],
+                route: [
+                    {
+                        line: ["trtc_5", "trtc_7"],
+                        transStation: ["dingpu1"]
+                    }
+                ]
+            }, {
+                id: 'trtc_2,trtc_7',
+                fromToLine: ["trtc_2","trtc_7"],
+                sect: ['taipei'],
+                route: [
+                    {
+                        line: ["trtc_2", "trtc_5", "trtc_7"],
+                        transStation: ["taipei3","dingpu1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_05[1-9]$|^trtc_06[0-9]$|^trtc_07[0-1]$',
+                        line: ["trtc_2", "trtc_3", "trtc_5", "trtc_7"],
+                        transStation: ["cksmh1","ximen1","dingpu1"]
+                    }
+                ]
+            }, {
+                id: 'trtc_3,trtc_7',
+                fromToLine: ["trtc_3","trtc_7"],
+                sect: ['taipei'],
+                route: [
+                    {
+                        line: ["trtc_3", "trtc_5", "trtc_7"],
+                        transStation: ["ximen1","dingpu1"]
+                    }
+                ]
+            }, {
+                id: 'trtc_4,trtc_7',
+                fromToLine: ["trtc_4","trtc_7"],
+                sect: ['taipei'],
+                route: [
+                    {
+                        line: ["trtc_4", "trtc_5", "trtc_7"],
+                        transStation: ["zhongxiaoxs1","dingpu1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_055$|^trtc_13[0-2]$|^trtc_12[1-8]$|^trtc_17[4-9]$|^trtc_180$',
+                        line: ["trtc_4", "trtc_3", "trtc_5", "trtc_7"],
+                        transStation: ["guting1","ximen1","dingpu1"]
+                    }
+                ]
+            }, {
+                id: 'trtc_1,trtc_7',
+                fromToLine: ["trtc_1","trtc_7"],
+                sect: ['taipei'],
+                route: [
+                    {
+                        line: ["trtc_1", "trtc_5", "trtc_7"],
+                        transStation: ["zhongxiaofx1","dingpu1"]
+                    },
+                    {
+                        bypassStationReg: '^trtc_br0[1-8]$|^trtc_009$|^trtc_01[0-1]$|^trtc_br1[2-4]$',
+                        line: ["trtc_1", "trtc_5", "trtc_7"],
+                        transStation: ["nangangexpo1","dingpu1"]
+                    }
+                ]
+            }, {
+                id: 'trtc_6,trtc_7',
+                fromToLine: ["trtc_6","trtc_7"],
+                sect: ['taipei'],
+                route: [
+                    {
+                        line: ["trtc_6", "trtc_5", "trtc_7"],
+                        transStation: ["banqiao2","dingpu1"]
+                    },
+                    {
+                        line: ["trtc_6", "trtc_5", "trtc_7"],
+                        transStation: ["xinpu1","dingpu1"]
                     }
                 ]
             }, {//TYMETRO to TRTC
@@ -2467,6 +2600,16 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     {
                         line: ["tymetro_1", "trtc_6"],
                         transStation: ["xbcyyq1"]
+                    }
+                ]
+            }, {
+                id: 'tymetro_1,trtc_7',
+                fromToLine: ["tymetro_1","trtc_7"],
+                sect: ['taipei','taoyuan'],
+                route: [
+                    {
+                        line: ["tymetro_1", "trtc_5", "trtc_7"],
+                        transStation: ["taipei6", "dingpu1"]
                     }
                 ]
             }, {//TYMETRO Route
@@ -3060,7 +3203,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 id: 'trtc_trans_tra_east',
                 rType: 'cross',//direct , trans 
                 company: ['trtc','tra'],// cross company serial
-                regLine: "^trtc_1$|^trtc_2$|^trtc_3$|^trtc_4|^trtc_5$|^trtc_6$|^tra_yilan$|^tra_beihui$|^tra_huadong$|^tra_pingxi$|^tra_liujia$",
+                regLine: "^trtc_1$|^trtc_2$|^trtc_3$|^trtc_4|^trtc_5$|^trtc_6$|^trtc_7$|^tra_yilan$|^tra_beihui$|^tra_huadong$|^tra_pingxi$|^tra_liujia$",
                 lineIsSame: {
                     "tra_xibu": "^tra_yilan$|^tra_beihui$|^tra_huadong$|^tra_pingxi$|^tra_liujia$"
                 },
@@ -3081,6 +3224,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 			['banqiao3','taipei1']
                 		]
                 	}, {
+                		regLine: "^trtc_7|^tra_",
+                		transStation: [
+                			['yingge1','banqiao1','taipei1']
+                		]
+                	}, {
                 		regLine: "^trtc_3$|^trtc_4|^tra_",
                 		transStation: [['taipei2','songshan1']]
                 	}, {
@@ -3093,7 +3241,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 id: 'trtc_trans_tra_west',
                 rType: 'cross',//direct , trans 
                 company: ['trtc','tra'],// cross company serial
-                regLine: "^trtc_1$|^trtc_2$|^trtc_3$|^trtc_4|^trtc_5$|^trtc_6$|^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_pingdong|^tra_shalun$|^tra_hai$|^tra_jiji$",
+                regLine: "^trtc_1$|^trtc_2$|^trtc_3$|^trtc_4|^trtc_5$|^trtc_6$|^trtc_7$|^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_pingdong|^tra_shalun$|^tra_hai$|^tra_jiji$",
                 lineIsSame: {
                     "tra_xibu": "^tra_shan$|^tra_zhjy$|^tra_jygx$|^tra_pingdong$|^tra_shalun$|^tra_hai$|^tra_jiji$"
                 },
@@ -3112,6 +3260,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 		regLine: "^trtc_6|^tra_",
                 		transStation: [
                 			['banqiao3','taipei1']
+                		]
+                	}, {
+                		regLine: "^trtc_7|^tra_",
+                		transStation: [
+                			['yingge1','banqiao1','taipei1']
                 		]
                 	}, {
                 		regLine: "^trtc_3$|^trtc_4|^tra_",
