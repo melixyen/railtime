@@ -1251,50 +1251,6 @@
                         "trtc_179": {x: -480, y: -20, name: '迴龍', stationClass: 3, noDraw: true}
                     }
                 }, {
-                    id: "trtc_sanying",
-                    name: "[北捷]三鶯線(?)",
-                    color: "#79bce8",
-                    isPlanLine: true,
-                    nameTag: {
-                        fontColor: '#425',
-                        id:'trtc_lb04', 
-                        ox: -40, 
-                        oy: 22
-                    },
-                    dir: "0",
-                    line: [
-                        {type: 'station', id: 'trtc_076'},
-                        {type: 'station', id: 'trtc_lb02'},
-                        {type: 'station', id: 'trtc_lb03'},
-                        {type: 'station', id: 'trtc_lb06'},
-                        {type: 'station', id: 'trtc_lb07'},
-                        {type: 'station', id: 'trtc_lb08'},
-                        {type: 'station', id: 'trtc_lb09'},
-                        {type: 'station', id: 'trtc_lb10'},
-                        {type: 'turn', id: 'trtc_lb10', ox: 30, oy: 25},
-                        {type: 'turn', id: 'trtc_lb10', ox: 300, oy: 25},
-                        {type: 'station', id: 'trtc_lb11'},
-                        {type: 'station', id: 'trtc_lb12'},
-                        {type: 'station', id: 'trtc_lb13'},
-                        {type: 'station', id: 'trtc_lb14'}
-                    ],
-                    station: {
-                        "trtc_076": {x: -300, y: 330, name: '頂埔', stationClass: 4, noDraw: true},
-                        "trtc_lb02": {x: -260, y: 355, name: '媽祖田', stationClass: 4, noClick: true},
-                        "trtc_lb03": {x: -260, y: 380, name: '挖子', stationClass: 4, noClick: true},
-                        "trtc_lb04": {x: -300, y: 380, name: '橫溪', stationClass: 4, noClick: true},
-                        "trtc_lb05": {x: -340, y: 380, name: '龍埔', stationClass: 4, noClick: true},
-                        "trtc_lb06": {x: -390, y: 380, name: '三峽', stationClass: 4, noClick: true},
-                        "trtc_lb07": {x: -390, y: 355, name: '臺北大學', stationClass: 4, noClick: true},
-                        "trtc_lb08": {x: -480, y: 335, name: '鶯歌', stationClass: 3, company: true, noClick: true},
-                        "trtc_lb09": {x: -480, y: 380, name: '陶瓷老街', stationClass: 4, noClick: true},
-                        "trtc_lb10": {x: -460, y: 405, name: '國華', stationClass: 4, noClick: true},
-                        "trtc_lb11": {x: -160, y: 460, name: '永吉公園', stationClass: 4, noClick: true},
-                        "trtc_lb12": {x: -90, y: 535, name: '鶯桃福德', stationClass: 4, noClick: true},
-                        "trtc_lb13": {x: -60, y: 575, name: '豎啣埤', stationClass: 4, noClick: true},
-                        "trtc_lb14": {x: -30, y: 638, name: '大湳', stationClass: 3, noClick: true, company: true}
-                    }
-                }, {
                     id: "trtc_minxi",
                     name: "[北捷]民汐線(?)",
                     color: "#25aae1",
@@ -1346,9 +1302,6 @@
                     color: "#ff4d00",
                     isPlanLine: false,
                     isNoClickLine: true,
-                    hasPlanLineRange: [
-                        ['ntmetro_V28', 'ntmetro_V26']
-                    ],
                     nameTag: {
                         fontColor: '#FFF',
                         id:'ntmetro_V02', 
@@ -1378,15 +1331,15 @@
                         "ntmetro_V09": {x: -530, y: -385, name: '濱海沙崙', stationClass: 5},
                         "ntmetro_V10": {x: -560, y: -365, name: '淡海新市鎮', stationClass: 5},
                         "ntmetro_V11": {x: -560, y: -345, name: '崁頂', stationClass: 5},
-                        "ntmetro_V28": {x: -490, y: -365, name: '台北海洋大學', stationClass: 5, isPlanStation:true},
-                        "ntmetro_V27": {x: -490, y: -345, name: '沙崙', stationClass: 5, isPlanStation:true},
-                        "ntmetro_V26": {x: -490, y: -325, name: '淡水漁人碼頭', stationClass: 5, isPlanStation:true}
+                        "ntmetro_V28": {x: -490, y: -365, name: '台北海洋大學', stationClass: 5},
+                        "ntmetro_V27": {x: -490, y: -345, name: '沙崙', stationClass: 5},
+                        "ntmetro_V26": {x: -490, y: -325, name: '淡水漁人碼頭', stationClass: 5}
                     }
                 }, {
                     id: "ntmetro_ankeng",
                     name: "[新北]安坑輕軌",
                     color: "#c3b091",
-                    isPlanLine: true,
+                    isPlanLine: false,
                     isNoClickLine: true,
                     nameTag: {
                         fontColor: '#FFF',
@@ -1410,6 +1363,54 @@
                         "ntmetro_K3": {x: 65, y: 530, name: '台北小城', stationClass: 5},
                         "ntmetro_K2": {x: 125, y: 530, name: '玫瑰中國城', stationClass: 5},
                         "ntmetro_K1": {x: 175, y: 530, name: '雙城', stationClass: 5}
+                    }
+                }, {
+                    id: "ntmetro_sanying",
+                    name: "[新北]三鶯線",
+                    color: "#79bce8",
+                    isPlanLine: false,
+                    isNoClickLine: true,
+                    hasPlanLineRange: [
+                        ['ntmetro_LB12', 'ntmetro_LB14']
+                    ],
+                    nameTag: {
+                        fontColor: '#425',
+                        id:'ntmetro_LB04',
+                        ox: -40,
+                        oy: 22
+                    },
+                    dir: "0",
+                    line: [
+                        {type: 'station', id: 'trtc_076'},
+                        {type: 'station', id: 'ntmetro_LB02'},
+                        {type: 'station', id: 'ntmetro_LB03'},
+                        {type: 'station', id: 'ntmetro_LB06'},
+                        {type: 'station', id: 'ntmetro_LB07'},
+                        {type: 'station', id: 'ntmetro_LB08'},
+                        {type: 'station', id: 'ntmetro_LB09'},
+                        {type: 'station', id: 'ntmetro_LB10'},
+                        {type: 'turn', id: 'ntmetro_LB10', ox: 30, oy: 25},
+                        {type: 'turn', id: 'ntmetro_LB10', ox: 300, oy: 25},
+                        {type: 'station', id: 'ntmetro_LB11'},
+                        {type: 'station', id: 'ntmetro_LB12'},
+                        {type: 'station', id: 'ntmetro_LB13'},
+                        {type: 'station', id: 'ntmetro_LB14'}
+                    ],
+                    station: {
+                        "trtc_076": {x: -300, y: 330, name: '頂埔', stationClass: 4, noDraw: true},
+                        "ntmetro_LB02": {x: -260, y: 355, name: '媽祖田', stationClass: 4},
+                        "ntmetro_LB03": {x: -260, y: 380, name: '長壽山', stationClass: 4},
+                        "ntmetro_LB04": {x: -300, y: 380, name: '橫溪', stationClass: 4},
+                        "ntmetro_LB05": {x: -340, y: 380, name: '龍埔', stationClass: 4},
+                        "ntmetro_LB06": {x: -390, y: 380, name: '三峽', stationClass: 4},
+                        "ntmetro_LB07": {x: -390, y: 355, name: '臺北大學', stationClass: 4},
+                        "ntmetro_LB08": {x: -480, y: 335, name: '鶯歌車站', stationClass: 3, company: true},
+                        "ntmetro_LB09": {x: -480, y: 380, name: '陶瓷老街', stationClass: 4},
+                        "ntmetro_LB10": {x: -460, y: 405, name: '國華', stationClass: 4},
+                        "ntmetro_LB11": {x: -160, y: 460, name: '永吉公園', stationClass: 4},
+                        "ntmetro_LB12": {x: -90, y: 535, name: '鶯桃福德', stationClass: 4},
+                        "ntmetro_LB13": {x: -60, y: 575, name: '豎啣埤', stationClass: 4, isPlanStation:true},
+                        "ntmetro_LB14": {x: -30, y: 638, name: '大湳', stationClass: 3, company: true, isPlanStation:true}
                     }
                 }
             ],
@@ -1459,7 +1460,7 @@
                         "tymetro_a11": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-160, name: '坑口', stationClass: 3},
                         "tymetro_a12": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-130, name: '機場第一航廈', stationClass: 3},
                         "tymetro_a13": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-100, name: '機場第二航廈', stationClass: 3},
-                        "tymetro_a14": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-70, name: '機場第三航廈', stationClass: 3, noClick: true},
+                        "tymetro_a14": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-70, name: '機場第三航廈', stationClass: 3, noClick: true, isPlanStation:true},
                         "tymetro_a14a": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y-40, name: '機場旅館', stationClass: 4},
                         "tymetro_a15": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+60, name: '大園', stationClass: 4},
                         "tymetro_a16": {x: pos.tauoyuan.x-310, y: pos.tauoyuan.y+90, name: '橫山', stationClass: 4},
@@ -1529,7 +1530,8 @@
                     id: "crtc_1",
                     name: "[中捷]綠線",
                     color: "#008739",
-                    isPlanLine: true,
+                    isPlanLine: false,
+                    isNoClickLine: true,
                     nameTag: {
                         fontColor: '#FFF',
                         id:'crtc_g17', 
@@ -1552,24 +1554,24 @@
                         {type: 'station', id: 'crtc_g17'}
                     ],
                     station: {
-                        "crtc_g01": {x: pos.taichung.x+150, y: pos.taichung.y-115, name: '北屯機廠', stationClass: 4, noClick: true },
-                        "crtc_g03": {x: pos.taichung.x+150, y: pos.taichung.y-85, name: '下舊社', stationClass: 4, noClick: true },
+                        "crtc_g01": {x: pos.taichung.x+150, y: pos.taichung.y-115, name: '北屯總站', stationClass: 4, noClick: true },
+                        "crtc_g03": {x: pos.taichung.x+150, y: pos.taichung.y-85, name: '舊社', stationClass: 4, noClick: true },
                         "crtc_g04": {x: pos.taichung.x+80, y: pos.taichung.y-85, name: '松竹', stationClass: 3, noClick: true, company: true},
-                        "crtc_g05": {x: pos.taichung.x-64, y: pos.taichung.y-65, name: '二分埔', stationClass: 4, noClick: true },
+                        "crtc_g05": {x: pos.taichung.x-64, y: pos.taichung.y-65, name: '四維國小', stationClass: 4, noClick: true },
                         "crtc_g06": {x: pos.taichung.x-120, y: pos.taichung.y-65, name: '文心崇德', stationClass: 4, noClick: true },
-                        "crtc_g07": {x: pos.taichung.x-170, y: pos.taichung.y-65, name: '水湳', stationClass: 4, noClick: true },
+                        "crtc_g07": {x: pos.taichung.x-170, y: pos.taichung.y-65, name: '文心中清', stationClass: 4, noClick: true },
                         "crtc_g08": {x: pos.taichung.x-220, y: pos.taichung.y-65, name: '文華高中', stationClass: 4, noClick: true },
-                        "crtc_g08a": {x: pos.taichung.x-280, y: pos.taichung.y-35, name: '櫻花', stationClass: 4, noClick: true },
+                        "crtc_g08a": {x: pos.taichung.x-280, y: pos.taichung.y-35, name: '文心櫻花', stationClass: 4, noClick: true },
                         "crtc_g09": {x: pos.taichung.x-330, y: pos.taichung.y-10, name: '市政府', stationClass: 4, noClick: true },
-                        "crtc_g10": {x: pos.taichung.x-330, y: pos.taichung.y+15, name: '溝仔墘', stationClass: 4, noClick: true },
-                        "crtc_g10a": {x: pos.taichung.x-260, y: pos.taichung.y+40, name: '文心公園', stationClass: 4, noClick: true },
+                        "crtc_g10": {x: pos.taichung.x-330, y: pos.taichung.y+15, name: '水安宮', stationClass: 4, noClick: true },
+                        "crtc_g10a": {x: pos.taichung.x-260, y: pos.taichung.y+40, name: '文心森林公園', stationClass: 4, noClick: true },
                         "crtc_g11": {x: pos.taichung.x-190, y: pos.taichung.y+70, name: '南屯', stationClass: 4, noClick: true },
-                        "crtc_g12": {x: pos.taichung.x-145, y: pos.taichung.y+70, name: '麻茲埔', stationClass: 4, noClick: true },
+                        "crtc_g12": {x: pos.taichung.x-145, y: pos.taichung.y+70, name: '豐樂公園', stationClass: 4, noClick: true },
                         "crtc_g13": {x: pos.taichung.x-81, y: pos.taichung.y+70, name: '大慶', stationClass: 3, noClick: true, company: true},
                         "crtc_g14": {x: pos.taichung.x-81, y: pos.taichung.y+100, name: '九張犁', stationClass: 4, noClick: true },
                         "crtc_g15": {x: pos.taichung.x-81, y: pos.taichung.y+125, name: '九德', stationClass: 4, noClick: true },
                         "crtc_g16": {x: pos.taichung.x-81, y: pos.taichung.y+150, name: '烏日', stationClass: 3, noClick: true, company: true},
-                        "crtc_g17": {x: pos.taichung.x-212, y: pos.taichung.y+180, name: '新烏日', stationClass: 2, noClick: true, company: true}
+                        "crtc_g17": {x: pos.taichung.x-212, y: pos.taichung.y+180, name: '高鐵臺中', stationClass: 2, noClick: true, company: true}
                     }
                 }
             ],
