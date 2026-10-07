@@ -165,7 +165,7 @@
                         {type: 'station', id: 'tra_1013'},
                         {type: 'station', id: 'tra_1014'},
                         {type: 'turn', id: 'tra_1014', ox: 0, oy: 105},
-                        {type: 'station', id: 'tra_fengming'},
+                        {type: 'station', id: 'tra_1075'},
                         {type: 'station', id: 'tra_1015'},
                         {type: 'station', id: 'tra_1028'}
                     ],
@@ -188,7 +188,7 @@
                         "tra_1034": {x: -440, y: 255, name: '南樹林', stationClass: 4},
                         "tra_1013": {x: -440, y: 285, name: '山佳', stationClass: 4},
                         "tra_1014": {x: -440, y: 310, name: '鶯歌', stationClass: 3, company: true},
-                        "tra_fengming": {x: -240, y: 460, name: '鳳鳴', stationClass: 4, noClick: true},
+                        "tra_1075": {x: -240, y: 460, name: '鳳鳴', stationClass: 4},
                         "tra_1015": {x: pos.tauoyuan.x, y: pos.tauoyuan.y, name: '桃園', stationClass: 1, company: true},
                         "tra_1016": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+130, name: '內壢', stationClass: 4},
                         "tra_1017": {x: pos.tauoyuan.x, y: pos.tauoyuan.y+200, name: '中壢', stationClass: 2, company: true},
