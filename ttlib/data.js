@@ -2690,7 +2690,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     {
                         line: ['tra_jygx','tra_zhjy','tra_shan','tra_yilan','tra_beihui','tra_huadong','tra_pingxi'],
                         sect: ['taoyuan','hsinchu','miaoli','taichung','changhua','yunlin','chiayi','tainan','kaohsiung','pingdong'],
-                        station: ["tra_1032","tra_1012","tra_1013","tra_1014","tra_1075"],
+                        station: ["tra_1032","tra_1012","tra_1034","tra_1013","tra_1014","tra_1075"],
                         transStation: 'banqiaotra1'
                     }, {
                         line: ['tra_yilan','tra_beihui','tra_huadong','tra_pingxi'],
@@ -2731,11 +2731,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: 'songshantra1'
                     }, {
                         line: ['tra_shan'],
-                        station: ["tra_1009","tra_1032","tra_1012","tra_1013"],
+                        station: ["tra_1009","tra_1032","tra_1012","tra_1034","tra_1013"],
                         transStation: 'banqiaotra1'
                     }, {
                         line: ['tra_shan'],
-                        station: ["tra_1012","tra_1013","tra_1014","tra_1075"],
+                        station: ["tra_1012","tra_1034","tra_1013","tra_1014","tra_1075"],
                         transStation: 'taoyuantra1'
                     }, {
                         line: ['tra_shan'],
@@ -2782,11 +2782,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: 'songshantra1'
                     }, {
                         line: ['tra_zhjy'],
-                        station: ["tra_1009","tra_1032","tra_1012","tra_1013"],
+                        station: ["tra_1009","tra_1032","tra_1012","tra_1034","tra_1013"],
                         transStation: 'banqiaotra1'
                     }, {
                         line: ['tra_zhjy'],
-                        station: ["tra_1012","tra_1013","tra_1014","tra_1075"],
+                        station: ["tra_1012","tra_1034","tra_1013","tra_1014","tra_1075"],
                         transStation: 'taoyuantra1'
                     }, {
                         line: ['tra_zhjy'],
@@ -2837,11 +2837,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: 'songshantra1'
                     }, {
                         line: ['tra_jygx','tra_shalun'],
-                        station: ["tra_1009","tra_1032","tra_1012","tra_1013"],
+                        station: ["tra_1009","tra_1032","tra_1012","tra_1034","tra_1013"],
                         transStation: 'banqiaotra1'
                     }, {
                         line: ['tra_jygx','tra_shalun'],
-                        station: ["tra_1012","tra_1013","tra_1014","tra_1075"],
+                        station: ["tra_1012","tra_1034","tra_1013","tra_1014","tra_1075"],
                         transStation: 'taoyuantra1'
                     }, {
                         line: ['tra_jygx','tra_shalun'],
@@ -3001,11 +3001,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: 'songshantra1'
                     }, {
                         line: ['tra_pingdong'],
-                        station: ["tra_1009","tra_1032","tra_1012","tra_1013"],
+                        station: ["tra_1009","tra_1032","tra_1012","tra_1034","tra_1013"],
                         transStation: 'banqiaotra1'
                     }, {
                         line: ['tra_pingdong'],
-                        station: ["tra_1012","tra_1013","tra_1014","tra_1075"],
+                        station: ["tra_1012","tra_1034","tra_1013","tra_1014","tra_1075"],
                         transStation: 'taoyuantra1'
                     }, {
                         line: ['tra_pingdong'],
