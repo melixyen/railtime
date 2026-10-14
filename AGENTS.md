@@ -27,6 +27,7 @@
 ## 共用程式與資料
 - `ttlib/ptx.js`：[rocptx](https://github.com/melixyen/rocptx) 的 `dist/ptx.js` 原樣複製，更新時直接以新版覆蓋，不要在這裡修改。`ft.html` 則是直接從 `https://melixyen.github.io/rocptx/dist/ptx.js` 載入。
 - `ttlib/fn.js`、`ttlib/defined.js`、`ttlib/data.js`：接軌時刻共用函式、設定與資料。
+- 台鐵車站 ID 一律為 `tra_` + TDX v3 站碼（台北 `tra_1000`、高雄 `tra_4400`），`ttlib/data.js`、`canvasTaiwanRailwayMap.js`、`ft.html`、`klrt.html`、`group_train.html` 等手動維護的資料都已是 v3；TDX v2 / v3 API 也只接受 v3 站碼。不要再加入舊 v2 站碼：部分 v2 站碼與另一站的 v3 站碼數字相同（`1020` 在 v2 是富岡、在 v3 是板橋）。`klrt.html` 的 `tra_8102`～`tra_8108` 是基隆輕軌自訂 ID，不是台鐵站碼。
 - TDX proxy：各頁在載入 ptx.js 之後有一段 inline script，其中的 `TDX_PROXY_URL` 是開關，改成空字串 `''` 就恢復直連 TDX。走 proxy 時，各頁以 `rocptx.proxy.enabled` 判斷，不設定 AppID/AppKey、也不呼叫 `initToken`。
 - `w0.json` ~ `w6.json`：台鐵星期日到星期六的代表時刻表，`w0` 為星期日。由 `ttlib/fn.js` 的 `getTRA_TimeTable2Data` 讀取，使用的頁面有 `index.html`、`tratrtc.html`、`group_train.html`。
 - `ronnywang_trtc.json`：台北捷運時刻表；`time_tymetro.json`：桃園機場捷運時刻表。

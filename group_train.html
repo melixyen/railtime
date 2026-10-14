@@ -565,12 +565,23 @@ body {
 <script type="text/javascript" src="ttlib/data.js"></script>
 <script type="text/javascript" src="ttlib/fn.js"></script>
 <script type="text/javascript" src="ttlib/fn_tymetro.js"></script>
+<script type="text/javascript" src="ttlib/ptx.js"></script>
 <script type="text/javascript">
+//TDX proxy 開關：要直連 TDX 時把網址改成空字串 ''
+var TDX_PROXY_URL = 'https://tdx.jiapi.net';
+if (TDX_PROXY_URL && window.rocptx) rocptx.proxy.enable(TDX_PROXY_URL);
+</script>
+<script type="text/javascript">
+//台鐵時刻表預設由 TDX 讀取（TT.defined.usePTX），需要 ttlib/ptx.js 提供 TT.ptx
+if(!rocptx.proxy.enabled){
+rocptx.AppID = atob('bWVsaXh5ZW4tNGE3MDA1YWQtMWE0Ny00NDAx');
+rocptx.AppKey = atob("MjlhOTM4MzUtNDM4OS00M2EyLTljOGMtMzBmYjgyMDdmZTA2");
+}
 
 var TT = (function(){
 
     var TT = $trainTaiwanLib;
-    TT.stationGroupAry = ["tra_1008", "tra_1011", "tra_1015", "tra_1017", "tra_1025", "tra_1319", "tra_1120", "tra_1215", "tra_1228", "tra_1238","tra_1305","tra_1210","tra_1406","tra_1411","tra_1820","tra_1823","tra_1715","tra_1619","tra_1632","tra_1019","tra_1032","tra_1016"];
+    TT.stationGroupAry = ["tra_1000", "tra_1020", "tra_1080", "tra_1100", "tra_1210", "tra_3300", "tra_3360", "tra_4080", "tra_4220", "tra_4400","tra_3160","tra_3470","tra_5000","tra_5050","tra_7190","tra_7160","tra_7000","tra_6110","tra_6000","tra_1120","tra_1030","tra_1090"];
     TT.minGroupCount = 1;
     
     TT.defined.programAbout = {
@@ -591,7 +602,7 @@ var TT = (function(){
     function groupTrain(aryTime, from, to, cfg){
         cfg = cfg || {};
         var a = TT.fn.getTRA_stationID(from), b = TT.fn.getTRA_stationID(to);
-        var aryGroupTag = {}, aryList = [], stStepFlag = 0;//{id: 'tra_1001,tra_1002...', list: [trainInfo]}
+        var aryGroupTag = {}, aryList = [], stStepFlag = 0;//{id: 'tra_0900,tra_0920...', list: [trainInfo]}
         var idName = '', collsName = '', aryStations = [], rangeAryStations = [], rte = false;
         var filterTrainNumber = ['1','2'];
         var anyStopStation = [];
@@ -831,8 +842,8 @@ var TT = (function(){
             TT.ui.center.timeTable.controlDiv.depArrDiv = TT.ui.createTakeTimeFindDepArr({id: 'ttc_ADSelect', renderID: 'tt_timeTable_control'});
             TT.ui.center.timeTable.controlDiv.findButtonDiv = TT.ui.createTakeFindButton({id: 'ttc_findButton', renderID: 'tt_timeTable_control'});
             //Set default param
-            var defaultFromStation = (localDataFn.getItem('defaultFromStation')) ? localDataFn.getItem('defaultFromStation') : 'tra_1008',
-                defaultToStation = (localDataFn.getItem('defaultToStation')) ? localDataFn.getItem('defaultToStation') : 'tra_1238',
+            var defaultFromStation = (localDataFn.getItem('defaultFromStation')) ? localDataFn.getItem('defaultFromStation') : 'tra_1000',
+                defaultToStation = (localDataFn.getItem('defaultToStation')) ? localDataFn.getItem('defaultToStation') : 'tra_4400',
                 defaultSearchDay = new Date().getDay(),
                 defaultStartTime = (localDataFn.getItem('defaultStartTime')) ? localDataFn.getItem('defaultStartTime') : '07:00',
                 defaultEndTime = (localDataFn.getItem('defaultEndTime')) ? localDataFn.getItem('defaultEndTime') : '09:00';
@@ -1438,37 +1449,37 @@ var TT = (function(){
                         var selector = TT.ui.center.timeTable.controlDiv.stationSelectDiv;//.fnSetStart
                         switch(intM){
                             case 1:
-                                selector.fnSetStart('tra_1003');selector.fnSetEnd('tra_1025');
-                                this.saveAry = ["tra_1008", "tra_1011", "tra_1032", "tra_1015", "tra_1016", "tra_1017", "tra_1019", "tra_1025", "tra_1005"];
+                                selector.fnSetStart('tra_0930');selector.fnSetEnd('tra_1210');
+                                this.saveAry = ["tra_1000", "tra_1020", "tra_1030", "tra_1080", "tra_1090", "tra_1100", "tra_1120", "tra_1210", "tra_0960"];
                                 this.minGroupCount = 1;
                             break;
                             case 2:
-                                selector.fnSetStart('tra_1008');selector.fnSetEnd('tra_1238');
-                                this.saveAry = ["tra_1008", "tra_1011", "tra_1017", "tra_1305", "tra_1317", "tra_1319", "tra_1203", "tra_1028", "tra_1019"];
+                                selector.fnSetStart('tra_1000');selector.fnSetEnd('tra_4400');
+                                this.saveAry = ["tra_1000", "tra_1020", "tra_1100", "tra_3160", "tra_3230", "tra_3300", "tra_3390", "tra_1250", "tra_1120"];
                                 this.minGroupCount = 1;
                             break;
                             case 3:
-                                selector.fnSetStart('tra_1008');selector.fnSetEnd('tra_1715');
-                                this.saveAry = ["tra_1008", "tra_1804", "tra_1824", "tra_1816", "tra_1810", "tra_1820", "tra_1715"];
+                                selector.fnSetStart('tra_1000');selector.fnSetEnd('tra_7000');
+                                this.saveAry = ["tra_1000", "tra_7360", "tra_7150", "tra_7230", "tra_7290", "tra_7190", "tra_7000"];
                                 this.minGroupCount = 1;
                             break;
                             case 4:
-                                selector.fnSetStart('tra_1007');selector.fnSetEnd('tra_1319');
-                                this.saveAry = ["tra_1007", "tra_1120", "tra_1319", "tra_1032", "tra_1016", "tra_1019", "tra_1028", "tra_1017", "tra_1025"];
+                                selector.fnSetStart('tra_0990');selector.fnSetEnd('tra_3300');
+                                this.saveAry = ["tra_0990", "tra_3360", "tra_3300", "tra_1030", "tra_1090", "tra_1120", "tra_1250", "tra_1100", "tra_1210"];
                                 this.minGroupCount = 1;
                             break;
                             case 5:
-                                selector.fnSetStart('tra_1238');selector.fnSetEnd('tra_1215');
-                                this.saveAry = ["tra_1215", "tra_1238", "tra_1236", "tra_1233", "tra_1242", "tra_1225"];
+                                selector.fnSetStart('tra_4400');selector.fnSetEnd('tra_4080');
+                                this.saveAry = ["tra_4080", "tra_4400", "tra_4350", "tra_4310", "tra_4340", "tra_4170"];
                                 this.minGroupCount = 1;
                             break;
                             case 6:
-                                selector.fnSetStart('tra_1120');selector.fnSetEnd('tra_1025');
-                                this.saveAry = ["tra_1305", "tra_1319", "tra_1317", "tra_1314", "tra_1120", "tra_1318", "tra_1028"];
+                                selector.fnSetStart('tra_3360');selector.fnSetEnd('tra_1210');
+                                this.saveAry = ["tra_3160", "tra_3300", "tra_3230", "tra_3210", "tra_3360", "tra_3250", "tra_1250"];
                                 this.minGroupCount = 1;
                             break;
                             case 7:
-                                selector.fnSetStart('tra_1001');selector.fnSetEnd('tra_1008');
+                                selector.fnSetStart('tra_0900');selector.fnSetEnd('tra_1000');
                                 this.saveAry = [];
                                 this.minGroupCount = 1;
                             break;

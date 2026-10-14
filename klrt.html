@@ -588,20 +588,20 @@ var TT = {
 	//dir: 1是西部南下逆行，0是西部北上順行
 	//platMain 若為兩組數字代表南下逆跟北上順的主要月台，若為四組數字則前兩組為台鐵後兩組代表基隆輕軌的南下跟北上
 	station: [
-        {id:"tra_1001", name: "基隆", trainType: 'pkrewx', line: "kw", km: 0, platform: ["1a1b","2a2b"], platMain: ["1b","2a"], pos: [14,0]},
-        {id:"tra_1029", name: "三坑", trainType: "pk", line: "kw", km: 1.3, platform: ["1a1b"], platMain: ["1a","1b"], pos: [13,0]},
-        {id:"tra_1002", name: "八堵", trainType: "pkex", line: "kwe", km: 3.7, platform: ["1b","2a","3a3b"], platMain: ["3a","3b"], pos: [12,0]},
-        {id:"tra_1003", name: "七堵", trainType: "pkewxr", line: "kwe", km: 6, platform: ["1a1b","2a2b","3a3b","4a4b","5c5d"], platMain: ["1b","2a", "5c", "5d"], pos: [11,0]},
-        {id:"tra_1030", name: "百福", trainType: "p", line: "we", km: 8.7, platform: ["1a1b","2a"], platMain: ["1a","1b"], pos: [9,0]},
-        {id:"tra_1004", name: "五堵", trainType: "pk", line: "kwe", km: 11.7, platform: ["1a1b","2c2d"], platMain: ["1a","1b","2c","2d"], pos: [7,0]},
-        {id:"tra_1005", name: "汐止", trainType: "pkwx", line: "kwe", km: 13.1, platform: ["1a1b","2a2b","3c3d"], platMain: ["1b","2a","3c","3d"], pos: [6,0]},
-        {id:"tra_1031", name: "汐科", trainType: "pkx", line: "kwe", km: 14.6, platform: ["1a1b","2c2d"], platMain: ["1a","1b","2c","2d"], pos: [5,0]},
-        {id:"tra_1006", name: "南港", trainType: "pkewxtr", line: "kwe", km: 19.1, platform: ["4b","3a3b","2a2b","1a1b","5c5d"], platMain: ["2b","1a","5c","5d"], pos: [2,0]},
-        {id:"tra_1007", name: "松山", trainType: "pewxtr", line: "we", km: 21.9, platform: ["1a1b","2a2b"], platMain: ["1b","2a"], pos: [1,0]},
-        {id:"tra_1008", name: "台北", trainType: "pewxtr", line: "we", km: 28.3, platform: ["3a3b","4a4b"], platMain: ["3b","4a"], pos: [0,0]},
-        //{id:"tra_1802", name: "暖暖", trainType: "p", line: "e", platform: ["1b","2a"], platMain: ["1b","2a"], pos: [12,1], rotate: true},
-        //{id:"tra_1803", name: "四腳亭", trainType: "p", line: "e", platform: ["1a1b"], platMain: ["1a","1b"], pos: [12,2], rotate: true},
-        //{id:"tra_1804", name: "瑞芳", trainType: "pex", line: "e", platform: ["1a1b","2a2b"], platMain: ["1b","2a"], pos: [12,3], rotate: true},
+        {id:"tra_0900", name: "基隆", trainType: 'pkrewx', line: "kw", km: 0, platform: ["1a1b","2a2b"], platMain: ["1b","2a"], pos: [14,0]},
+        {id:"tra_0910", name: "三坑", trainType: "pk", line: "kw", km: 1.3, platform: ["1a1b"], platMain: ["1a","1b"], pos: [13,0]},
+        {id:"tra_0920", name: "八堵", trainType: "pkex", line: "kwe", km: 3.7, platform: ["1b","2a","3a3b"], platMain: ["3a","3b"], pos: [12,0]},
+        {id:"tra_0930", name: "七堵", trainType: "pkewxr", line: "kwe", km: 6, platform: ["1a1b","2a2b","3a3b","4a4b","5c5d"], platMain: ["1b","2a", "5c", "5d"], pos: [11,0]},
+        {id:"tra_0940", name: "百福", trainType: "p", line: "we", km: 8.7, platform: ["1a1b","2a"], platMain: ["1a","1b"], pos: [9,0]},
+        {id:"tra_0950", name: "五堵", trainType: "pk", line: "kwe", km: 11.7, platform: ["1a1b","2c2d"], platMain: ["1a","1b","2c","2d"], pos: [7,0]},
+        {id:"tra_0960", name: "汐止", trainType: "pkwx", line: "kwe", km: 13.1, platform: ["1a1b","2a2b","3c3d"], platMain: ["1b","2a","3c","3d"], pos: [6,0]},
+        {id:"tra_0970", name: "汐科", trainType: "pkx", line: "kwe", km: 14.6, platform: ["1a1b","2c2d"], platMain: ["1a","1b","2c","2d"], pos: [5,0]},
+        {id:"tra_0980", name: "南港", trainType: "pkewxtr", line: "kwe", km: 19.1, platform: ["4b","3a3b","2a2b","1a1b","5c5d"], platMain: ["2b","1a","5c","5d"], pos: [2,0]},
+        {id:"tra_0990", name: "松山", trainType: "pewxtr", line: "we", km: 21.9, platform: ["1a1b","2a2b"], platMain: ["1b","2a"], pos: [1,0]},
+        {id:"tra_1000", name: "台北", trainType: "pewxtr", line: "we", km: 28.3, platform: ["3a3b","4a4b"], platMain: ["3b","4a"], pos: [0,0]},
+        //{id:"tra_7390", name: "暖暖", trainType: "p", line: "e", platform: ["1b","2a"], platMain: ["1b","2a"], pos: [12,1], rotate: true},
+        //{id:"tra_7380", name: "四腳亭", trainType: "p", line: "e", platform: ["1a1b"], platMain: ["1a","1b"], pos: [12,2], rotate: true},
+        //{id:"tra_7360", name: "瑞芳", trainType: "pex", line: "e", platform: ["1a1b","2a2b"], platMain: ["1b","2a"], pos: [12,3], rotate: true},
         {id:"tra_8102", name: "六堵", trainType: "k", line: "k", km: 7.8, platform: ["1c1d"], platMain: ["1c","1d"], pos: [10,0]},
         {id:"tra_8104", name: "北五堵", trainType: "k", line: "k", km: 9.7, platform: ["1c1d"], platMain: ["1c","1d"], pos: [8,0]},
         {id:"tra_8106", name: "樟樹灣", trainType: "k", line: "k", km: 15.5, platform: ["1c1d"], platMain: ["1c","1d"], pos: [4,0]},
@@ -636,30 +636,30 @@ var TT = {
 			dir: 0,
 			color: "#005000",
 			//linkStation: [
-				//{linkTo: "w", linkDir: 0, stationID: "tra_1002"},
-				//{linkTo: "k", linkDir: 0, stationID: "tra_1002"}
+				//{linkTo: "w", linkDir: 0, stationID: "tra_0920"},
+				//{linkTo: "k", linkDir: 0, stationID: "tra_0920"}
 			//],
-			stationAry: ["tra_1008","tra_1007","tra_1006","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003","tra_1002"]
+			stationAry: ["tra_1000","tra_0990","tra_0980","tra_0970","tra_0960","tra_0950","tra_0940","tra_0930","tra_0920"]
 		},
 		{
 			id: "w",
 			dir: 0,
 			color: "#000050",
 			//linkStation: [
-				//{linkTo: "e", linkDir: 0, stationID: "tra_1002"},
-				//{linkTo: "k", linkDir: 0, stationID: "tra_1002"}
+				//{linkTo: "e", linkDir: 0, stationID: "tra_0920"},
+				//{linkTo: "k", linkDir: 0, stationID: "tra_0920"}
 			//],
-			stationAry: ["tra_1008","tra_1007","tra_1006","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003","tra_1002","tra_1029","tra_1001"]
+			stationAry: ["tra_1000","tra_0990","tra_0980","tra_0970","tra_0960","tra_0950","tra_0940","tra_0930","tra_0920","tra_0910","tra_0900"]
 		},
 		{
 			id: "k",
 			dir: 0,
 			color: "#500000",
 			//linkStation: [
-				//{linkTo: "w", linkDir: 0, stationID: "tra_1002"},
-				//{linkTo: "e", linkDir: 0, stationID: "tra_1002"}
+				//{linkTo: "w", linkDir: 0, stationID: "tra_0920"},
+				//{linkTo: "e", linkDir: 0, stationID: "tra_0920"}
 			//],
-			stationAry: ["tra_1006","tra_8108","tra_8106","tra_1031","tra_1005","tra_1004","tra_8104","tra_8102","tra_1003","tra_1002","tra_1029","tra_1001"]
+			stationAry: ["tra_0980","tra_8108","tra_8106","tra_0970","tra_0960","tra_0950","tra_8104","tra_8102","tra_0930","tra_0920","tra_0910","tra_0900"]
 		}
 	],
 	startHour: 6,//早上六點開始計算出發
@@ -688,13 +688,13 @@ var TT = {
 		{
 			mod: "t_1",
 			trainType: "t", line: "e", dir: 1,
-			from: "tra_1002", to: "tra_1008",
+			from: "tra_0920", to: "tra_1000",
 			tag: "台東-樹林",
 			time: ["p32","p34","p36","p39","p40","p41",45,50,"57~60"]
 		}, {
 			mod: "t_2",
 			trainType: "t", line: "e", dir: 0,
-			from: "tra_1008", to: "tra_1002",
+			from: "tra_1000", to: "tra_0920",
 			tag: "樹林-台東",
 			time: [40,47,52,"p57","p58","p59","p62","p64","p65"]
 		},
@@ -702,13 +702,13 @@ var TT = {
 		{
 			mod: "r_1",
 			trainType: "r", line: "e", dir: 1,
-			from: "tra_1002", to: "tra_1008",
+			from: "tra_0920", to: "tra_1000",
 			tag: "花蓮-樹林",
 			time: [51,"p54","p56","p59","p60","p61",65,70,"77~80"]
 		}, {
 			mod: "r_2",
 			trainType: "r", line: "e", dir: 0,
-			from: "tra_1008", to: "tra_1002",
+			from: "tra_1000", to: "tra_0920",
 			tag: "樹林-花蓮",
 			time: [0,7,12,"p17","p18","p19","p21","p24",26]
 		},
@@ -716,13 +716,13 @@ var TT = {
 		{
 			mod: "e_1",
 			trainType: "e", line: "e", dir: 1,
-			from: "tra_1002", to: "tra_1008",
+			from: "tra_0920", to: "tra_1000",
 			tag: "花蓮-樹林",
 			time: ["p7",9,"p13","p17","p18","p20",25,30,"37~40"]
 		}, {
 			mod: "e_2",
 			trainType: "e", line: "e", dir: 0,
-			from: "tra_1008", to: "tra_1002",
+			from: "tra_1000", to: "tra_0920",
 			tag: "樹林-花蓮",
 			time: [20,27,32,"p36","p38","p40","p44",48,"p51"]
 		},
@@ -730,13 +730,13 @@ var TT = {
 		{
 			mod: "w_1",
 			trainType: "w", line: "e", dir: 1,
-			from: "tra_1003", to: "tra_1008",
+			from: "tra_0930", to: "tra_1000",
 			tag: "七堵-潮州",
 			time: [0,"p4","p8",10,"p12","p16",20,"27~30"]
 		}, {
 			mod: "w_2",
 			trainType: "w", line: "w", dir: 0,
-			from: "tra_1008", to: "tra_1003",
+			from: "tra_1000", to: "tra_0930",
 			tag: "潮州-七堵",
 			time: [10,17,"p21","p25",27,"p29","p32",35]
 		},
@@ -744,13 +744,13 @@ var TT = {
 		{
 			mod: "x_1",
 			trainType: "x", line: "w", dir: 1,
-			from: "tra_1001", to: "tra_1008",
+			from: "tra_0900", to: "tra_1000",
 			tag: "基隆-彰化",
 			time: [31,"p33","p37",40,"p43","p47",49,"p51",56,60,"67~70"]
 		}, {
 			mod: "x_2",
 			trainType: "x", line: "w", dir: 0,
-			from: "tra_1008", to: "tra_1001",
+			from: "tra_1000", to: "tra_0900",
 			tag: "彰化-基隆",
 			time: [30,37,42,"p47",49,"p51","p54",58,"p62","p65",67]
 		},
@@ -758,37 +758,37 @@ var TT = {
 		{
 			mod: "y_1",
 			trainType: "p", line: "e", dir: 1,
-			from: "tra_1002", to: "tra_1008",
+			from: "tra_0920", to: "tra_1000",
 			tag: "蘇澳-樹林",
 			time: [3,"7w11",15,19,22,24,30,35,"42~45"]
 		}, {
 			mod: "y_3",
 			trainType: "p", line: "e", dir: 1,
-			from: "tra_1002", to: "tra_1008",
+			from: "tra_0920", to: "tra_1000",
 			tag: "蘇澳-樹林",
 			time: [23,27,32,36,"38w42",44,50,55,"62~65"]
 		}, {
 			mod: "y_5",
 			trainType: "p", line: "e", dir: 1,
-			from: "tra_1002", to: "tra_1008",
+			from: "tra_0920", to: "tra_1000",
 			tag: "瑞芳-中壢",
 			time: [43,47,52,56,"58w62",64,70,75,"82~85"]
 		}, {
 			mod: "y_2",
 			trainType: "p", line: "e", dir: 0,
-			from: "tra_1008", to: "tra_1002",
+			from: "tra_1000", to: "tra_0920",
 			tag: "樹林-蘇澳",
 			time: [15,22,27,33,"36w39",42,46,51,55]
 		}, {
 			mod: "y_4",
 			trainType: "p", line: "e", dir: 0,
-			from: "tra_1008", to: "tra_1002",
+			from: "tra_1000", to: "tra_0920",
 			tag: "樹林-蘇澳",
 			time: [35,42,47,53,"56w59",61,65,"70~71",75]
 		}, {
 			mod: "y_6",
 			trainType: "p", line: "e", dir: 0,
-			from: "tra_1008", to: "tra_1002",
+			from: "tra_1000", to: "tra_0920",
 			tag: "中壢-瑞芳",
 			time: [55,62,67,73,"75w79",81,85,"90~91",95]
 		},
@@ -796,61 +796,61 @@ var TT = {
 		{
 			mod: "p_1",
 			trainType: "p", line: "w", dir: 1,
-			from: "tra_1001", to: "tra_1008",
+			from: "tra_0900", to: "tra_1000",
 			tag: "基隆-新竹",
 			time: [6,9,13,17,22,26,"28w32",34,40,45,"52~55"]
 		}, {
 			mod: "p_3",
 			trainType: "p", line: "w", dir: 1,
-			from: "tra_1001", to: "tra_1008",
+			from: "tra_0900", to: "tra_1000",
 			tag: "基隆-新竹",
 			time: [27,30,34,"38w42",47,51,53,55,61,66,"73~75"]
 		}, {
 			mod: "p_5",
 			trainType: "p", line: "w", dir: 1,
-			from: "tra_1001", to: "tra_1008",
+			from: "tra_0900", to: "tra_1000",
 			tag: "基隆-新竹",
 			time: [46,49,53,57,62,66,"68w72",74,80,85,"92~95"]
 		}, {
 			mod: "p_7",
 			trainType: "p", line: "w", dir: 1,
-			from: "tra_1003", to: "tra_1008",
+			from: "tra_0930", to: "tra_1000",
 			tag: "七堵-新竹",
 			time: [42,47,51,53,55,61,66,"73~75"]
 		}, {
 			mod: "p_9",
 			trainType: "p", line: "w", dir: 1,
-			from: "tra_1003", to: "tra_1008",
+			from: "tra_0930", to: "tra_1000",
 			tag: "七堵-新竹",
 			time: [57,62,66,"68w72",74,80,85,"92~95"]
 		}, {
 			mod: "p_2",
 			trainType: "p", line: "w", dir: 0,
-			from: "tra_1008", to: "tra_1001",
+			from: "tra_1000", to: "tra_0900",
 			tag: "新竹-基隆",
 			time: [5,12,17,23,"25w29",31,35,"40~41",45,49,52]
 		}, {
 			mod: "p_4",
 			trainType: "p", line: "w", dir: 0,
-			from: "tra_1008", to: "tra_1001",
+			from: "tra_1000", to: "tra_0900",
 			tag: "新竹-基隆",
 			time: [25,32,37,43,45,47,51,"56w60",64,68,71]
 		}, {
 			mod: "p_6",
 			trainType: "p", line: "w", dir: 0,
-			from: "tra_1008", to: "tra_1001",
+			from: "tra_1000", to: "tra_0900",
 			tag: "新竹-基隆",
 			time: [45,52,57,63,"65w69",71,75,"80~81",85,89,92]
 		}, {
 			mod: "p_8",
 			trainType: "p", line: "w", dir: 0,
-			from: "tra_1008", to: "tra_1003",
+			from: "tra_1000", to: "tra_0930",
 			tag: "新竹-七堵",
 			time: [45,52,57,63,"65w69",71,75,80]
 		}, {
 			mod: "p_a",
 			trainType: "p", line: "w", dir: 0,
-			from: "tra_1008", to: "tra_1003",
+			from: "tra_1000", to: "tra_0930",
 			tag: "新竹-七堵",
 			time: [45,52,57,63,"65w69",71,75,80]
 		},
@@ -858,25 +858,25 @@ var TT = {
 		{
 			mod: "k_1",
 			trainType: "k", line: "k", dir: 1,
-			from: "tra_1001", to: "tra_1006",
+			from: "tra_0900", to: "tra_0980",
 			tag: "基隆-南港",
 			time: [0,3,7,10,13,15,18,20,22,23,27,29]
 		}, {
 			mod: "k_2",
 			trainType: "k", line: "k", dir: 0,
-			from: "tra_1006", to: "tra_1001",
+			from: "tra_0980", to: "tra_0900",
 			tag: "南港-基隆",
 			time: [0,2,6,7,9,11,14,16,19,22,26,29]
 		}, {
 			mod: "k_3",
 			trainType: "k", line: "k", dir: 1,
-			from: "tra_8104", to: "tra_1006",
+			from: "tra_8104", to: "tra_0980",
 			tag: "北五堵-南港",
 			time: [0,3,5,7,8,12,14]
 		}, {
 			mod: "k_4",
 			trainType: "k", line: "k", dir: 0,
-			from: "tra_1006", to: "tra_8104",
+			from: "tra_0980", to: "tra_8104",
 			tag: "南港-北五堵",
 			time: [0,2,6,7,9,11,14]
 		}
@@ -892,13 +892,13 @@ var TT = {
 		{
 			mod: "t_1",
 			trainType: "t", line: "e", dir: 1,
-			from: "tra_1002", to: "tra_1008",
+			from: "tra_0920", to: "tra_1000",
 			tag: "台東-樹林",
 			time: ["p32","p34","p36","p39","p40","p41",45,50,"57~60"]
 		}, {
 			mod: "t_2",
 			trainType: "t", line: "e", dir: 0,
-			from: "tra_1008", to: "tra_1002",
+			from: "tra_1000", to: "tra_0920",
 			tag: "樹林-台東",
 			time: [40,47,52,"p57","p58","p59","p62","p64","p65"]
 		},
@@ -906,13 +906,13 @@ var TT = {
 		{
 			mod: "r_1",
 			trainType: "r", line: "e", dir: 1,
-			from: "tra_1002", to: "tra_1008",
+			from: "tra_0920", to: "tra_1000",
 			tag: "花蓮-彰化",
 			time: [51,"p54","p56","p59","p60","p61",65,70,"77~80"]
 		}, {
 			mod: "r_2",
 			trainType: "r", line: "e", dir: 0,
-			from: "tra_1008", to: "tra_1002",
+			from: "tra_1000", to: "tra_0920",
 			tag: "彰化-花蓮",
 			time: [0,7,12,"p17","p18","p19","p21","p24",26]
 		},
@@ -920,13 +920,13 @@ var TT = {
 		{
 			mod: "e_1",
 			trainType: "e", line: "e", dir: 1,
-			from: "tra_1002", to: "tra_1008",
+			from: "tra_0920", to: "tra_1000",
 			tag: "花蓮-樹林",
 			time: ["p7",9,"p13","p17","p18","p20",25,30,"37~40"]
 		}, {
 			mod: "e_2",
 			trainType: "e", line: "e", dir: 0,
-			from: "tra_1008", to: "tra_1002",
+			from: "tra_1000", to: "tra_0920",
 			tag: "樹林-花蓮",
 			time: [20,27,32,"p36","p38","p40","p44",48,"p51"]
 		},
@@ -934,13 +934,13 @@ var TT = {
 		{
 			mod: "w_1",
 			trainType: "w", line: "e", dir: 1,
-			from: "tra_1003", to: "tra_1008",
+			from: "tra_0930", to: "tra_1000",
 			tag: "七堵-潮州",
 			time: [0,"p4","p8",10,"p12","p16",20,"27~30"]
 		}, {
 			mod: "w_2",
 			trainType: "w", line: "w", dir: 0,
-			from: "tra_1008", to: "tra_1003",
+			from: "tra_1000", to: "tra_0930",
 			tag: "潮州-七堵",
 			time: [10,17,"p21","p25",27,"p29","p32",35]
 		},
@@ -948,25 +948,25 @@ var TT = {
 		{
 			mod: "y_1",
 			trainType: "p", line: "e", dir: 1,
-			from: "tra_1002", to: "tra_1008",
+			from: "tra_0920", to: "tra_1000",
 			tag: "蘇澳-樹林",
 			time: [28,"32w37",42,46,48,50,56,61,"68~70"]
 		}, {
 			mod: "y_3",
 			trainType: "p", line: "e", dir: 1,
-			from: "tra_1002", to: "tra_1008",
+			from: "tra_0920", to: "tra_1000",
 			tag: "蘇澳-樹林",
 			time: [52,56,61,65,67,69,75,80,"87~89"]
 		}, {
 			mod: "y_2",
 			trainType: "p", line: "e", dir: 0,
-			from: "tra_1008", to: "tra_1002",
+			from: "tra_1000", to: "tra_0920",
 			tag: "樹林-蘇澳",
 			time: [15,22,27,33,36,38,42,"46w50",54]
 		}, {
 			mod: "y_4",
 			trainType: "p", line: "e", dir: 0,
-			from: "tra_1008", to: "tra_1002",
+			from: "tra_1000", to: "tra_0920",
 			tag: "樹林-蘇澳",
 			time: [25,32,37,43,46,48,52,57,61]
 		},
@@ -974,19 +974,19 @@ var TT = {
 		{
 			mod: "p_1",
 			trainType: "p", line: "w", dir: 1,
-			from: "tra_1001", to: "tra_1008",
+			from: "tra_0900", to: "tra_1000",
 			tag: "基隆-新竹",
 			time: [10,14,18,22,27,31,33,35,41,46,"53~55"]
 		}, {
 			mod: "p_2",
 			trainType: "p", line: "w", dir: 0,
-			from: "tra_1008", to: "tra_1001",
+			from: "tra_1000", to: "tra_0900",
 			tag: "新竹-基隆",
 			time: [0,7,12,18,21,23,27,31,35,39,43]
 		}, {
 			mod: "p_4",
 			trainType: "p", line: "w", dir: 0,
-			from: "tra_1008", to: "tra_1001",
+			from: "tra_1000", to: "tra_0900",
 			tag: "新竹-基隆",
 			time: [0,7,12,18,21,23,27,"32w35",39,43,47]
 		},
@@ -994,28 +994,28 @@ var TT = {
 		{
 			mod: "k_1",
 			trainType: "k", line: "k", dir: 1,
-			from: "tra_1001", to: "tra_1006",
+			from: "tra_0900", to: "tra_0980",
 			tag: "基隆-南港",
 			//time: [0,3,7,10,13,15,18,20,23,"24w26",30,31]
 			time: [0,3,7,10,13,15,18,20,23,"24w25",30,32]
 		}, {
 			mod: "k_2",
 			trainType: "k", line: "k", dir: 0,
-			from: "tra_1006", to: "tra_1001",
+			from: "tra_0980", to: "tra_0900",
 			tag: "南港-基隆",
 			//time: [0,2,5,7,9,11,14,16,19,22,26,29]
 			time: [0,2,7,9,"11w12",14,17,19,22,25,29,32]
 		}, {
 			mod: "k_3",
 			trainType: "k", line: "k", dir: 1,
-			from: "tra_8104", to: "tra_1006",
+			from: "tra_8104", to: "tra_0980",
 			tag: "北五堵-南港",
 			//time: [0,3,5,8,"9w11",15,16]
 			time: [0,3,5,8,"9w10",15,17]
 		}, {
 			mod: "k_4",
 			trainType: "k", line: "k", dir: 0,
-			from: "tra_1006", to: "tra_8104",
+			from: "tra_0980", to: "tra_8104",
 			tag: "南港-北五堵",
 			//time: [0,2,5,7,9,11,14]
 			time: [0,2,7,9,"11w12",14,17]
@@ -1172,22 +1172,22 @@ TT.processFirst = function(initFlag){
 	}
 	if(TT.rail.mode==3){//三軌化來調整月台，基隆輕軌停靠站六堵改百福，改造百福站 2月台
 		var kr = TT.getLine('k'), stb;
-		kr.stationAry = ["tra_1006","tra_8108","tra_8106","tra_1031","tra_1005","tra_1004","tra_8104","tra_1030","tra_1003","tra_1002","tra_1029","tra_1001"];
-		stb = TT.fn.getStationByID('tra_1031');//汐科
+		kr.stationAry = ["tra_0980","tra_8108","tra_8106","tra_0970","tra_0960","tra_0950","tra_8104","tra_0940","tra_0930","tra_0920","tra_0910","tra_0900"];
+		stb = TT.fn.getStationByID('tra_0970');//汐科
 		stb.platform = ['1a1b', '2c'];
 		stb.platMain = ['1a', '1b', '2c', '2c'];
-		stb = TT.fn.getStationByID('tra_1005');//汐止
+		stb = TT.fn.getStationByID('tra_0960');//汐止
 		stb.platform = ['1a1b', '2c2d'];
 		stb.platMain = ['1a', '1b', '2c', '2d'];
-		stb = TT.fn.getStationByID('tra_1004');//五堵
+		stb = TT.fn.getStationByID('tra_0950');//五堵
 		stb.platform = ['1a1b', '2c'];
 		stb.platMain = ['1a', '1b', '2c', '2c'];
-		stb = TT.fn.getStationByID('tra_1030');//百福
+		stb = TT.fn.getStationByID('tra_0940');//百福
 		stb.platform = ['1a1b', '2c'];
 		stb.platMain = ['1a', '1b', '2c', '2c'];
 		stb.trainType = 'pk'; stb.line = 'kwe';
 		stb = TT.fn.getStationByID('tra_8102'); stb.platform = []; stb.platMain = [];//六堵
-		stb = TT.fn.getStationByID('tra_1003');//七堵
+		stb = TT.fn.getStationByID('tra_0930');//七堵
 		stb.platform = ["1a1b","2a2b","3a3b","4c4d"];
 		stb.platMain = ['1b', '2a', '4c', '4d'];
 		if(!TT.editTimeTableByPeople){
@@ -1196,24 +1196,24 @@ TT.processFirst = function(initFlag){
 		}
 	}else if(TT.rail.mode==2){
 		var kr = TT.getLine('k'), stb;
-		kr.stationAry = ["tra_1006","tra_8108","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003","tra_1002","tra_1029","tra_1001"];
+		kr.stationAry = ["tra_0980","tra_8108","tra_0970","tra_0960","tra_0950","tra_0940","tra_0930","tra_0920","tra_0910","tra_0900"];
 		stb = TT.fn.getStationByID('tra_8106');stb.platform = [];stb.platMain = [];//樟樹灣
-		stb = TT.fn.getStationByID('tra_1031');//汐科
+		stb = TT.fn.getStationByID('tra_0970');//汐科
 		stb.platform = ['1a1b', '2c'];
 		stb.platMain = ['1a', '1b', '2c', '2c'];
-		stb = TT.fn.getStationByID('tra_1005');//汐止
+		stb = TT.fn.getStationByID('tra_0960');//汐止
 		stb.platform = ['1a1b', '2c2d'];
 		stb.platMain = ['1a', '1b', '2c', '2d'];
-		stb = TT.fn.getStationByID('tra_1004');//五堵
+		stb = TT.fn.getStationByID('tra_0950');//五堵
 		stb.platform = ['1a1b', '2c'];
 		stb.platMain = ['1a', '1b', '2c', '2c'];
 		stb = TT.fn.getStationByID('tra_8104');stb.platform = [];stb.platMain = [];//北五堵
-		stb = TT.fn.getStationByID('tra_1030');//百福
+		stb = TT.fn.getStationByID('tra_0940');//百福
 		stb.platform = ['1a1b', '2c'];
 		stb.platMain = ['1a', '1b', '2c', '2c'];
 		stb.trainType = 'pk'; stb.line = 'kwe';
 		stb = TT.fn.getStationByID('tra_8102'); stb.platform = []; stb.platMain = [];//六堵
-		stb = TT.fn.getStationByID('tra_1003');//七堵
+		stb = TT.fn.getStationByID('tra_0930');//七堵
 		stb.platform = ["1a1b","2a2b","3a3b","4c4d"];
 		stb.platMain = ['1b', '2a', '4c', '4d'];
 		if(!TT.editTimeTableByPeople){
@@ -1244,53 +1244,53 @@ TT.processFirst = function(initFlag){
 	}else if(TT.rail.mode==5){
 		var kr = TT.getLine('k'), stb, lineObj;
 		kr.stationAry = [];
-		stb = TT.fn.getStationByID('tra_1006');//南港
+		stb = TT.fn.getStationByID('tra_0980');//南港
 		stb.platform = ["4b","3a3b","2a2b","1a1b"];
 		stb.platMain = ['2b', '1a'];
 		stb = TT.fn.getStationByID('tra_8108');stb.platform = ['1b', '2a2b'];stb.platMain = ['1b', '2a'];stb.trainType = "pkewxtr"; stb.line="kwe";//南港展覽館
 		stb = TT.fn.getStationByID('tra_8106');stb.platform = [];stb.platMain = [];//樟樹灣
-		stb = TT.fn.getStationByID('tra_1031');//汐科
+		stb = TT.fn.getStationByID('tra_0970');//汐科
 		stb.platform = ['1b', '2a'];
 		stb.platMain = ['1b', '2a'];
-		stb = TT.fn.getStationByID('tra_1005');//汐止
+		stb = TT.fn.getStationByID('tra_0960');//汐止
 		stb.platform = ['1a1b', '2a2b'];
 		stb.platMain = ['1b', '2a'];
-		stb = TT.fn.getStationByID('tra_1004');//五堵
+		stb = TT.fn.getStationByID('tra_0950');//五堵
 		stb.platform = ['1b', '2a'];
 		stb.platMain = ['1b', '2a'];
 		stb = TT.fn.getStationByID('tra_8104');stb.platform = [];stb.platMain = [];//北五堵
-		stb = TT.fn.getStationByID('tra_1030');//百福
+		stb = TT.fn.getStationByID('tra_0940');//百福
 		stb.platform = ['1b', '2a'];
 		stb.platMain = ['1b', '2a'];
 		stb.trainType = 'pk'; stb.line = 'kwe';
 		stb = TT.fn.getStationByID('tra_8102'); stb.platform = []; stb.platMain = [];//六堵
-		stb = TT.fn.getStationByID('tra_1003');//七堵
+		stb = TT.fn.getStationByID('tra_0930');//七堵
 		stb.platform = ["1a1b","2a2b","3a3b","4a4b"];
 		stb.platMain = ['1b', '2a'];
 		//修改 line 停靠站
 		lineObj = TT.getLine('w');
-		lineObj.stationAry = ["tra_1008","tra_1007","tra_1006","tra_8108","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003","tra_1002","tra_1029","tra_1001"];
+		lineObj.stationAry = ["tra_1000","tra_0990","tra_0980","tra_8108","tra_0970","tra_0960","tra_0950","tra_0940","tra_0930","tra_0920","tra_0910","tra_0900"];
 		lineObj = TT.getLine('e');
-		lineObj.stationAry = ["tra_1008","tra_1007","tra_1006","tra_8108","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003","tra_1002"];
+		lineObj.stationAry = ["tra_1000","tra_0990","tra_0980","tra_8108","tra_0970","tra_0960","tra_0950","tra_0940","tra_0930","tra_0920"];
 		TT.trainModuleTime = [];
 		var trm = TT.trainModuleTime;
-		trm.push({mod: "p_1", trainType: "p", line: "w", dir: 1, from: "tra_1001", to: "tra_1008", tag: "基隆-新竹", time: [0,3,7,11,15,19,21,23,28,30,35,"42~44"]});
-		trm.push({mod: "p_3", trainType: "n", line: "w", dir: 1, from: "tra_1001", to: "tra_1006", tag: "基隆-南港", time: [0,3,7,11,15,19,21,23,28,30]});
-		trm.push({mod: "y_1", trainType: "p", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "蘇澳-樹林", time: [7,11,15,19,21,23,28,30,35,"42~44"]});
-		trm.push({mod: "w_1", trainType: "w", line: "w", dir: 1, from: "tra_1001", to: "tra_1008", tag: "基隆-潮州", time: [0,"p3","p6",10,"p14","p18",20,"p22","p25","p27",30,"36~39"]});
-		trm.push({mod: "t_1", trainType: "t", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "台東-樹林", time: ["p32","p34","p36","p39","p40","p41","p44","p46",50,"57~60"]});
-		trm.push({mod: "t_3", trainType: "t", line: "e", dir: 1, from: "tra_1002", to: "tra_1006", tag: "台東-南港", time: ["p32","p34","p36","p39","p40","p41","p46",48]});
-		trm.push({mod: "r_1", trainType: "r", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "花蓮-樹林", time: [51,"p54","p56","p59","p60","p61","p64","p66",70,"77~80"]});
-		trm.push({mod: "x_1", trainType: "x", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "花蓮-彰化", time: ["p51",54,"p57","p59","p60","p61","p64",65,70,"77~80"]});
+		trm.push({mod: "p_1", trainType: "p", line: "w", dir: 1, from: "tra_0900", to: "tra_1000", tag: "基隆-新竹", time: [0,3,7,11,15,19,21,23,28,30,35,"42~44"]});
+		trm.push({mod: "p_3", trainType: "n", line: "w", dir: 1, from: "tra_0900", to: "tra_0980", tag: "基隆-南港", time: [0,3,7,11,15,19,21,23,28,30]});
+		trm.push({mod: "y_1", trainType: "p", line: "e", dir: 1, from: "tra_0920", to: "tra_1000", tag: "蘇澳-樹林", time: [7,11,15,19,21,23,28,30,35,"42~44"]});
+		trm.push({mod: "w_1", trainType: "w", line: "w", dir: 1, from: "tra_0900", to: "tra_1000", tag: "基隆-潮州", time: [0,"p3","p6",10,"p14","p18",20,"p22","p25","p27",30,"36~39"]});
+		trm.push({mod: "t_1", trainType: "t", line: "e", dir: 1, from: "tra_0920", to: "tra_1000", tag: "台東-樹林", time: ["p32","p34","p36","p39","p40","p41","p44","p46",50,"57~60"]});
+		trm.push({mod: "t_3", trainType: "t", line: "e", dir: 1, from: "tra_0920", to: "tra_0980", tag: "台東-南港", time: ["p32","p34","p36","p39","p40","p41","p46",48]});
+		trm.push({mod: "r_1", trainType: "r", line: "e", dir: 1, from: "tra_0920", to: "tra_1000", tag: "花蓮-樹林", time: [51,"p54","p56","p59","p60","p61","p64","p66",70,"77~80"]});
+		trm.push({mod: "x_1", trainType: "x", line: "e", dir: 1, from: "tra_0920", to: "tra_1000", tag: "花蓮-彰化", time: ["p51",54,"p57","p59","p60","p61","p64",65,70,"77~80"]});
 		
-		trm.push({mod: "p_2", trainType: "p", line: "w", dir: 0, from: "tra_1008", to: "tra_1001", tag: "新竹-基隆", time: [0,7,11,13,18,20,22,26,30,34,38,42]});
-		trm.push({mod: "p_4", trainType: "n", line: "w", dir: 0, from: "tra_1006", to: "tra_1001", tag: "南港-基隆", time: [11,13,18,20,22,26,30,34,38,42]});
-		trm.push({mod: "y_2", trainType: "p", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-蘇澳", time: [0,7,11,13,18,20,22,26,30,34]});
-		trm.push({mod: "w_2", trainType: "w", line: "w", dir: 0, from: "tra_1008", to: "tra_1001", tag: "潮州-基隆", time: [10,17,"p21","p22","p25",27,"p29","p33",37,"p40","p43",47]});
-		trm.push({mod: "t_2", trainType: "t", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-台東", time: [40,47,"p51","p52","p55","p56","p57","p60","p62","p64"]});
-		trm.push({mod: "t_4", trainType: "t", line: "e", dir: 0, from: "tra_1006", to: "tra_1002", tag: "南港-台東", time: [52,"p54","p57","p58","p59","p62","p64","p66"]});
-		trm.push({mod: "r_2", trainType: "r", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-花蓮", time: [0,7,"p11","p13","p17","p18","p19","p21","p24",26]});
-		trm.push({mod: "x_2", trainType: "x", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "彰化-花蓮", time: [0,7,11,"p13","p17","p18","p19","p21",24,"p27"]});
+		trm.push({mod: "p_2", trainType: "p", line: "w", dir: 0, from: "tra_1000", to: "tra_0900", tag: "新竹-基隆", time: [0,7,11,13,18,20,22,26,30,34,38,42]});
+		trm.push({mod: "p_4", trainType: "n", line: "w", dir: 0, from: "tra_0980", to: "tra_0900", tag: "南港-基隆", time: [11,13,18,20,22,26,30,34,38,42]});
+		trm.push({mod: "y_2", trainType: "p", line: "e", dir: 0, from: "tra_1000", to: "tra_0920", tag: "樹林-蘇澳", time: [0,7,11,13,18,20,22,26,30,34]});
+		trm.push({mod: "w_2", trainType: "w", line: "w", dir: 0, from: "tra_1000", to: "tra_0900", tag: "潮州-基隆", time: [10,17,"p21","p22","p25",27,"p29","p33",37,"p40","p43",47]});
+		trm.push({mod: "t_2", trainType: "t", line: "e", dir: 0, from: "tra_1000", to: "tra_0920", tag: "樹林-台東", time: [40,47,"p51","p52","p55","p56","p57","p60","p62","p64"]});
+		trm.push({mod: "t_4", trainType: "t", line: "e", dir: 0, from: "tra_0980", to: "tra_0920", tag: "南港-台東", time: [52,"p54","p57","p58","p59","p62","p64","p66"]});
+		trm.push({mod: "r_2", trainType: "r", line: "e", dir: 0, from: "tra_1000", to: "tra_0920", tag: "樹林-花蓮", time: [0,7,"p11","p13","p17","p18","p19","p21","p24",26]});
+		trm.push({mod: "x_2", trainType: "x", line: "e", dir: 0, from: "tra_1000", to: "tra_0920", tag: "彰化-花蓮", time: [0,7,11,"p13","p17","p18","p19","p21",24,"p27"]});
 		TT.trainGoTime = [
 			['p_1',1],['p_1',11],['p_1',31],['p_1',41], ['p_2',25],['p_2',15],['p_2',55],['p_2',45], ['y_1', 28],['y_1', 58],['y_2', 5],['y_2', 35],
 			['w_1',21],['w_1',51],['w_2',10],['w_2',40],
@@ -1305,7 +1305,7 @@ TT.processFirst = function(initFlag){
 			['p_4',1],['p_4',11],['p_4',21],['p_4',31],['p_4',41],['p_4',51]
 		];
 	}else if(TT.rail.mode==6){
-		stb = TT.fn.getStationByID('tra_1005');//汐止
+		stb = TT.fn.getStationByID('tra_0960');//汐止
 		stb.platform = ['1a1b', '2a2b', '3c3d'];
 		stb.platMain = ['1b', '2a', '3c', '3d'];
 		TT.trainGoTime = [
@@ -1318,14 +1318,14 @@ TT.processFirst = function(initFlag){
 	
 	if(TT.showDescription==14){//rail.mode==4 , 15分鐘內快中慢三輪制
 		var trm = TT.trainModuleTime;
-		trm.push({mod: "x_13", trainType: "x", line: "w", dir: 1, from: "tra_1001", to: "tra_1008", tag: "基隆-彰化", time: [31,"p33","p37",40,"p43","p47",49,51,57,62,"69~71"] });
-		trm.push({mod: "x_14", trainType: "x", line: "w", dir: 0, from: "tra_1008", to: "tra_1001", tag: "彰化-基隆", time: [0,7,12,18,20,"p22","p25",29,"p34","p36",38] });
-		trm.push({mod: "r_11", trainType: "r", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "花蓮-彰化", time: [51,"p54","p56","p59","p60","p61",65,70,"77~80"]});
-		trm.push({mod: "r_12", trainType: "r", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "彰化-花蓮", time: [0,7,12,"p17","p18","p19","p21","p24",26]});
-		trm.push({mod: "g_11", trainType: "g", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "花蓮-樹林", time: ["p22",24,"p28","p32",34,"p36",40,45,"52~55"]});
-		trm.push({mod: "g_12", trainType: "g", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-花蓮", time: [0,7,12,"p17",19,"p21","p25",29,"p32"]});
-		trm.push({mod: "y_16", trainType: "p", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-蘇澳", time: [55,62,67,73,"75w79",81,85,"90~91",95]});
-		trm.push({mod: "p_12", trainType: "p", line: "w", dir: 0, from: "tra_1008", to: "tra_1001", tag: "新竹-基隆", time: [5,12,17,23,"25w29",31,35,40,44,48,51]});
+		trm.push({mod: "x_13", trainType: "x", line: "w", dir: 1, from: "tra_0900", to: "tra_1000", tag: "基隆-彰化", time: [31,"p33","p37",40,"p43","p47",49,51,57,62,"69~71"] });
+		trm.push({mod: "x_14", trainType: "x", line: "w", dir: 0, from: "tra_1000", to: "tra_0900", tag: "彰化-基隆", time: [0,7,12,18,20,"p22","p25",29,"p34","p36",38] });
+		trm.push({mod: "r_11", trainType: "r", line: "e", dir: 1, from: "tra_0920", to: "tra_1000", tag: "花蓮-彰化", time: [51,"p54","p56","p59","p60","p61",65,70,"77~80"]});
+		trm.push({mod: "r_12", trainType: "r", line: "e", dir: 0, from: "tra_1000", to: "tra_0920", tag: "彰化-花蓮", time: [0,7,12,"p17","p18","p19","p21","p24",26]});
+		trm.push({mod: "g_11", trainType: "g", line: "e", dir: 1, from: "tra_0920", to: "tra_1000", tag: "花蓮-樹林", time: ["p22",24,"p28","p32",34,"p36",40,45,"52~55"]});
+		trm.push({mod: "g_12", trainType: "g", line: "e", dir: 0, from: "tra_1000", to: "tra_0920", tag: "樹林-花蓮", time: [0,7,12,"p17",19,"p21","p25",29,"p32"]});
+		trm.push({mod: "y_16", trainType: "p", line: "e", dir: 0, from: "tra_1000", to: "tra_0920", tag: "樹林-蘇澳", time: [55,62,67,73,"75w79",81,85,"90~91",95]});
+		trm.push({mod: "p_12", trainType: "p", line: "w", dir: 0, from: "tra_1000", to: "tra_0900", tag: "新竹-基隆", time: [5,12,17,23,"25w29",31,35,40,44,48,51]});
 		TT.trainGoTime = [
 			['x_13',30],['x_13',0], ['t_1',47], ['r_11',16],
 			['g_11',22], ['e_1',52], ['w_1',60], ['w_1',30],
@@ -1337,22 +1337,22 @@ TT.processFirst = function(initFlag){
 		];
 	}else if(TT.showDescription==24){
 		var trm = [];
-		trm.push({mod: "r_1", trainType: "r", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "花蓮-樹林", time: [51,"p54","p56","p59","p60","p61",65,70,"77~80"]});
-		trm.push({mod: "t_1", trainType: "t", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "台東-樹林", time: ["p32","p34","p36","p39","p40","p41",45,50,"57~60"]});
-		trm.push({mod: "y_1", trainType: "p", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "蘇澳-樹林", time: [23,27,32,36,"38w42",44,50,55,"62~65"]});
-		trm.push({mod: "y_3", trainType: "p", line: "e", dir: 1, from: "tra_1002", to: "tra_1008", tag: "瑞芳-新竹", time: [23,27,32,36,"38w42",44,50,55,"62~65"]});
-		trm.push({mod: "w_1", trainType: "w", line: "e", dir: 1, from: "tra_1003", to: "tra_1008", tag: "七堵-潮州", time: [0,"p4","p8",10,"p12","p16",20,"27~30"]});
-		trm.push({mod: "x_1", trainType: "x", line: "w", dir: 1, from: "tra_1003", to: "tra_1008", tag: "七堵-彰化", time: [40,"p43","p47",49,51,57,62,"69~71"] });
+		trm.push({mod: "r_1", trainType: "r", line: "e", dir: 1, from: "tra_0920", to: "tra_1000", tag: "花蓮-樹林", time: [51,"p54","p56","p59","p60","p61",65,70,"77~80"]});
+		trm.push({mod: "t_1", trainType: "t", line: "e", dir: 1, from: "tra_0920", to: "tra_1000", tag: "台東-樹林", time: ["p32","p34","p36","p39","p40","p41",45,50,"57~60"]});
+		trm.push({mod: "y_1", trainType: "p", line: "e", dir: 1, from: "tra_0920", to: "tra_1000", tag: "蘇澳-樹林", time: [23,27,32,36,"38w42",44,50,55,"62~65"]});
+		trm.push({mod: "y_3", trainType: "p", line: "e", dir: 1, from: "tra_0920", to: "tra_1000", tag: "瑞芳-新竹", time: [23,27,32,36,"38w42",44,50,55,"62~65"]});
+		trm.push({mod: "w_1", trainType: "w", line: "e", dir: 1, from: "tra_0930", to: "tra_1000", tag: "七堵-潮州", time: [0,"p4","p8",10,"p12","p16",20,"27~30"]});
+		trm.push({mod: "x_1", trainType: "x", line: "w", dir: 1, from: "tra_0930", to: "tra_1000", tag: "七堵-彰化", time: [40,"p43","p47",49,51,57,62,"69~71"] });
 		
-		trm.push({mod: "t_2", trainType: "t", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-台東", time: [40,47,52,"p57","p58","p59","p62","p64","p65"]});
-		trm.push({mod: "r_2", trainType: "r", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-花蓮", time: [0,7,12,"p17","p18","p19","p21","p24",26]});
-		trm.push({mod: "y_2", trainType: "p", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "樹林-蘇澳", time: [15,22,27,33,"36w39",42,46,51,55]});
-		trm.push({mod: "y_4", trainType: "p", line: "e", dir: 0, from: "tra_1008", to: "tra_1002", tag: "新竹-瑞芳", time: [15,22,27,33,"36w39",42,46,51,55]});
-		trm.push({mod: "w_2", trainType: "w", line: "w", dir: 0, from: "tra_1008", to: "tra_1003", tag: "潮州-七堵", time: [10,17,"p21","p25","27~28","p30","p34",38]});
-		trm.push({mod: "x_2", trainType: "x", line: "w", dir: 0, from: "tra_1008", to: "tra_1003", tag: "彰化-七堵", time: [0,7,12,18,20,"p22","p25",29]});
+		trm.push({mod: "t_2", trainType: "t", line: "e", dir: 0, from: "tra_1000", to: "tra_0920", tag: "樹林-台東", time: [40,47,52,"p57","p58","p59","p62","p64","p65"]});
+		trm.push({mod: "r_2", trainType: "r", line: "e", dir: 0, from: "tra_1000", to: "tra_0920", tag: "樹林-花蓮", time: [0,7,12,"p17","p18","p19","p21","p24",26]});
+		trm.push({mod: "y_2", trainType: "p", line: "e", dir: 0, from: "tra_1000", to: "tra_0920", tag: "樹林-蘇澳", time: [15,22,27,33,"36w39",42,46,51,55]});
+		trm.push({mod: "y_4", trainType: "p", line: "e", dir: 0, from: "tra_1000", to: "tra_0920", tag: "新竹-瑞芳", time: [15,22,27,33,"36w39",42,46,51,55]});
+		trm.push({mod: "w_2", trainType: "w", line: "w", dir: 0, from: "tra_1000", to: "tra_0930", tag: "潮州-七堵", time: [10,17,"p21","p25","27~28","p30","p34",38]});
+		trm.push({mod: "x_2", trainType: "x", line: "w", dir: 0, from: "tra_1000", to: "tra_0930", tag: "彰化-七堵", time: [0,7,12,18,20,"p22","p25",29]});
 		
-		trm.push({mod: "k_1", trainType: "k", line: "k", dir: 1, from: "tra_1001", to: "tra_1006", tag: "基隆-南港", time: [0,3,7,10,13,15,18,20,22,23,27,29]});
-		trm.push({mod: "k_2", trainType: "k", line: "k", dir: 0, from: "tra_1006", to: "tra_1001", tag: "南港-基隆", time: [0,2,6,7,9,11,14,16,19,22,26,29]});
+		trm.push({mod: "k_1", trainType: "k", line: "k", dir: 1, from: "tra_0900", to: "tra_0980", tag: "基隆-南港", time: [0,3,7,10,13,15,18,20,22,23,27,29]});
+		trm.push({mod: "k_2", trainType: "k", line: "k", dir: 0, from: "tra_0980", to: "tra_0900", tag: "南港-基隆", time: [0,2,6,7,9,11,14,16,19,22,26,29]});
 		
 		TT.trainGoTime = [
 			//['t_1', 62],['t_1', 22],['t_1', 42], ['y_1',13],['y_3',33],['y_3',53],
@@ -1669,42 +1669,42 @@ TT.makeRouteTimeTable = function(startHour){
 				dep = arr + 40;
 			}
 			
-			if(tmpT.dir==0 && stid=='tra_1008'){
+			if(tmpT.dir==0 && stid=='tra_1000'){
 				dep -= 20;
 				arr -=100;
 			}
 			
-			if(TT.rail.mode<5 && ((tmpT.line=='k' && stid=='tra_1006') || (/w|e/.test(tmpT.line) && stid=='tra_1008'))){
+			if(TT.rail.mode<5 && ((tmpT.line=='k' && stid=='tra_0980') || (/w|e/.test(tmpT.line) && stid=='tra_1000'))){
 				sortMin = dep;
 			}
 			
 			var platform = '';
-			if(tmpT.line=='k' && (!/^tra_810|^tra_1001|^tra_1029|^tra_1002/.test(stid))){
+			if(tmpT.line=='k' && (!/^tra_810|^tra_0900|^tra_0910|^tra_0920/.test(stid))){
 				platform = (tmpT.dir==1) ? stObj.platMain[2] : stObj.platMain[3];
 			}else{
 				platform = (tmpT.dir==1) ? stObj.platMain[0] : stObj.platMain[1];
 			}
 			
-			if(stid=='tra_1008' && tmpT.trainType=='p'){
+			if(stid=='tra_1000' && tmpT.trainType=='p'){
 				platform = (tmpT.dir==1) ? '3a' : '4b';
-			}else if(stid=='tra_1002' && tmpT.line=='e'){
+			}else if(stid=='tra_0920' && tmpT.line=='e'){
 				platform = (tmpT.dir==1) ? '1b' : '2a';
-			}else if(stid=='tra_1003' && (tmpT.from=='tra_1003' || tmpT.to=='tra_1003')){
+			}else if(stid=='tra_0930' && (tmpT.from=='tra_0930' || tmpT.to=='tra_0930')){
 				platform = (tmpT.dir==1) ? '3b' : '3a';
 			}
 			
 			if(flagWait){
-				if(stid=='tra_1007' || (stid=='tra_1005' && (TT.rail.mode==4 || TT.rail.mode==6)) || stid=='tra_1003'){
+				if(stid=='tra_0990' || (stid=='tra_0960' && (TT.rail.mode==4 || TT.rail.mode==6)) || stid=='tra_0930'){
 					platform = (tmpT.dir==1) ? '1a' : '2b';
-				}else if(stid=='tra_1006'){
+				}else if(stid=='tra_0980'){
 					platform = (tmpT.dir==1) ? '2a' : '1b';
-				}else if(stid=='tra_1008'){
+				}else if(stid=='tra_1000'){
 					platform = (tmpT.dir==1) ? '3a' : '4b';
 				}
 			}
 			
 			if(TT.rail.mode==5){
-				if(stid=='tra_1006'){
+				if(stid=='tra_0980'){
 					sortMin = dep;
 					if(idx==0){
 						platform = '3b';
@@ -1802,7 +1802,7 @@ TT.classTrain = function(data){
 			by = pObj['p' + platMain];
 			ax = x + intoStationMargin;
 			ay = pObj['p' + platMain];
-			if(data.line=='e' && c.stid=='tra_1002'){
+			if(data.line=='e' && c.stid=='tra_0920'){
 				platMain = (data.dir==1) ? '1b' : '2a';
 				if(data.dir==1){
 					by = pObj['p' + platMain];
@@ -1810,22 +1810,22 @@ TT.classTrain = function(data){
 					ay = pObj['p' + platMain];
 					by = pObj['p' + platMain];
 				}
-			}else if((data.from=='tra_1003' || data.to=='tra_1003') && c.stid=='tra_1003'){
+			}else if((data.from=='tra_0930' || data.to=='tra_0930') && c.stid=='tra_0930'){
 				platMain = (data.dir==1) ? '3b' : '3a';
 				ay = pObj['p' + platMain]; by = pObj['p' + platMain];
-			}else if(c.stid=='tra_1008'){
+			}else if(c.stid=='tra_1000'){
 				ay = y; by =y;
 			}
 			
 			if(TT.rail.mode==5){//不蓋基隆輕軌模式
-				if(/p|n/.test(data.trainType) && /tra_8108|tra_1031|tra_1005|tra_1004|tra_1030|tra_1003/.test(c.stid)){
+				if(/p|n/.test(data.trainType) && /tra_8108|tra_0970|tra_0960|tra_0950|tra_0940|tra_0930/.test(c.stid)){
 					if(data.dir==1){
 						y = TT.rail.baseHeight + TT.rail.eastSubTopOffset; ay = y; by = y;
 					}else{
 						y = TT.rail.baseHeight + TT.rail.westSubTopOffset; ay = y; by = y;
 					}
 				}
-				if((data.from=='tra_1006' || data.to=='tra_1006') && c.stid=='tra_1006'){
+				if((data.from=='tra_0980' || data.to=='tra_0980') && c.stid=='tra_0980'){
 					platMain = (data.dir==1) ? '3a' : '3b';
 					if(data.trainType=='n'){
 						platMain = '1b';
@@ -1852,10 +1852,10 @@ TT.classTrain = function(data){
 			st1X = 0, st2X = 0, movX = 0, movToID = '', specY = 0,
 			trainStep = (stPosAry[0].pass) ? 'running' : 'stop',//wait=>停靠站內時 , go=>dep ,  running=>兩站之間 , stop=>arr
 			tmpX = stPosAry[0].pos[0], tmpY = stPosAry[0].pos[1],
-			regQiduBadu = /^tra_1002|^tra_1003/,
-			regBaifuQidu = /^tra_1030|^tra_1003/,
-			regTS = /^tra_1007|^tra_1008/,
-			regKNnagang2ZhangShuWan = /^tra_1006|^tra_8108|^tra_8106|^tra_1031/,
+			regQiduBadu = /^tra_0920|^tra_0930/,
+			regBaifuQidu = /^tra_0940|^tra_0930/,
+			regTS = /^tra_0990|^tra_1000/,
+			regKNnagang2ZhangShuWan = /^tra_0980|^tra_8108|^tra_8106|^tra_0970/,
 			offsetDim = 0,
 			fnTransTime = TT.fn.transSec2Time,
 			md = {};
@@ -1911,7 +1911,7 @@ TT.classTrain = function(data){
 						if(/k|e/.test(data.line) && tmpY!=specY && regQiduBadu.test(st1.stid) && regQiduBadu.test(st2.stid) && (tim-st1.dep > st2.arr-tim-baseRate*2)){
 							specY = st2.beforePos[1]; tmpY = specY;
 						//}else if(data.trainType=='w' && tmpY!=specY && regBaifuQidu.test(st1.stid) && regBaifuQidu.test(st2.stid) ){
-						}else if(data.from=='tra_1003' && tmpY!=specY && regBaifuQidu.test(st1.stid) && regBaifuQidu.test(st2.stid) ){
+						}else if(data.from=='tra_0930' && tmpY!=specY && regBaifuQidu.test(st1.stid) && regBaifuQidu.test(st2.stid) ){
 							if((data.dir==0 && (tim-st1.dep > st2.arr-tim)) || data.dir==1  && (3*(tim-st1.dep) > st2.arr-tim)){
 								specY = st2.beforePos[1]; tmpY = specY;
 							}
@@ -1971,7 +1971,7 @@ TT.classTrain = function(data){
 			dom = document.createElement('div');
 		
 		if(TT.rail.mode==5){
-			if(data.trainType=='p' && (data.from=='tra_1006' || data.to=='tra_1006')){
+			if(data.trainType=='p' && (data.from=='tra_0980' || data.to=='tra_0980')){
 				carCls = 'carK';
 			}
 		}
@@ -2437,7 +2437,7 @@ TT.genStationOnMap = function(){
 		st = false;
 	
 	var makePlatform = function(st){
-		var flagIsCommonStation = !!(/^tra_1001|^tra_1029|^tra_1002/.test(st.id));
+		var flagIsCommonStation = !!(/^tra_0900|^tra_0910|^tra_0920/.test(st.id));
 		var aryP = [],
 			flagPlatformHasTRA = /w|e/.test(st.line),
 			flagPlatformHasKLRT = /k/.test(st.line) && !flagIsCommonStation,
@@ -2705,20 +2705,20 @@ TT.genRouteOnMap = function(canvasID, stAry){
 	stAry.map(function(c){
 		if(c.pos[1]==0){
 			horCount++;
-			if(!/^tra_1001|^tra_1029|^tra_1002/.test(c.id)){
+			if(!/^tra_0900|^tra_0910|^tra_0920/.test(c.id)){
 				klrtCount++;
 			}
 		}
 		stNameAry.push([c.name, c.pos[0]*TT.stBlockWidth]);
-		if(/^tra_1002|^tra_1003/.test(c.id)){
-			if(c.id=='tra_1002') stBadu = c;
-			if(c.id=='tra_1003') stQidu = c;
+		if(/^tra_0920|^tra_0930/.test(c.id)){
+			if(c.id=='tra_0920') stBadu = c;
+			if(c.id=='tra_0930') stQidu = c;
 		}
 		c.platformAry.map(function(p){
 			var offsetA = 0;
 			platformBoxAry.push([c.pos[0]*TT.stBlockWidth + platformLeftMargin, p.top, p.num]);
-			if(p.comp=='TRA' && TT.rail.mode==6 && c.id=='tra_1001') return true;
-			if(p.comp=='TRA' && c.id!='tra_1002'){
+			if(p.comp=='TRA' && TT.rail.mode==6 && c.id=='tra_0900') return true;
+			if(p.comp=='TRA' && c.id!='tra_0920'){
 				if(p.ary[0] && !p.ary[0].main){
 					platfomDrawLineAry.push([c.pos[0]*TT.stBlockWidth + lineLeftRightMargin, p.platformElTop.leftRail]);
 				}
@@ -2727,7 +2727,7 @@ TT.genRouteOnMap = function(canvasID, stAry){
 				}
 			}else if(TT.rail.mode<=3 && p.comp=='KLRT'){
 				if(p.ary[1] && p.build=='c'){
-					if(c.id=='tra_1003'){
+					if(c.id=='tra_0930'){
 						platfomDrawKLRT3LineQidu = ([c.pos[0]*TT.stBlockWidth + lineLeftRightMargin, p.platformElTop.rightRail]);
 					}else{
 						platfomDrawKLRT3LineAry.push([c.pos[0]*TT.stBlockWidth + lineLeftRightMargin, p.platformElTop.rightRail]);
@@ -3023,14 +3023,14 @@ TT.createMap = function(){
 				if(st.rotate){
 					rt = 'width:60px;position:absolute;left:0px;text-align:left;'
 				}
-				if(st.id=='tra_1005'){
+				if(st.id=='tra_0960'){
 					rt += 'color:#2e2fef;text-decoration: underline;';
 				}
 				return rt;
 			},
 			popStation: function(stid){
 				switch(stid){
-					case 'tra_1005':
+					case 'tra_0960':
 						TT.teachImp.showStation1005();
 					break;
 				}
@@ -3198,18 +3198,18 @@ TT.createTimeTableArea = function(cfg){
 			if(c.line=='k'){
 				if(c.dir==1){
 					h4Table[2].push(c);
-					stAry[2] = TT.getRailAry('k', 'tra_1001', 'tra_1006', 1, true);
+					stAry[2] = TT.getRailAry('k', 'tra_0900', 'tra_0980', 1, true);
 				}else{
 					h4Table[3].push(c);
-					stAry[3] = TT.getRailAry('k', 'tra_1006', 'tra_1001', 0, true);
+					stAry[3] = TT.getRailAry('k', 'tra_0980', 'tra_0900', 0, true);
 				}
 			}else{
 				if(c.dir==1){
 					h4Table[0].push(c);
-					stAry[0] = TT.getRailAry('w', 'tra_1001', 'tra_1008', 1, true);
+					stAry[0] = TT.getRailAry('w', 'tra_0900', 'tra_1000', 1, true);
 				}else{
 					h4Table[1].push(c);
-					stAry[1] = TT.getRailAry('w', 'tra_1008', 'tra_1001', 0, true);
+					stAry[1] = TT.getRailAry('w', 'tra_1000', 'tra_0900', 0, true);
 				}
 			}
 		});
@@ -3331,7 +3331,7 @@ TT.createTimeTableArea = function(cfg){
 						rt = '--' + '<span class="passTrainTime">' + TT.fn.transTime2HM(tmpTime.dep) + '</span>';
 					}else if(tmpTime.wait){
 						rt = '<div>' + TT.fn.transTime2HM(tmpTime.arr)+ '到</div>' + '<div>' + TT.fn.transTime2HM(tmpTime.dep) + '開</div>';
-					}else if(stid=='tra_1008'){
+					}else if(stid=='tra_1000'){
 						if(tc.dir==1){
 							rt = '<div>' + TT.fn.transTime2HM(tmpTime.arr)+ '到</div>' + '<div>' + TT.fn.transTime2HM(tmpTime.dep) + '開</div>';
 						}

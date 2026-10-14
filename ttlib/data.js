@@ -38,346 +38,346 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
         		]
         	},
             running_ary: [{
-                    id: 'eTemu', cate: 'express', CarClass: ['1107','1102'], dir: '0', area: 'e', range: ['tra_1012','tra_1632'], name: '東部幹線太魯閣號、普悠瑪號',
-                    rangeSplit: 'tra_1715',
+                    id: 'eTemu', cate: 'express', CarClass: ['1107','1102'], dir: '0', area: 'e', range: ['tra_1040','tra_6000'], name: '東部幹線太魯閣號、普悠瑪號',
+                    rangeSplit: 'tra_7000',
                     lineOf: ['tra_xibu','tra_yilan','tra_beihui','tra_huadong'],
-                    mustStop: ['tra_1012', 'tra_1011', 'tra_1008', 'tra_1007', 'tra_1715', 'tra_1619', 'tra_1632'],
-                    maybeStop: ['tra_1006','tra_1003','tra_1820','tra_1823','tra_1606','tra_1610','tra_1612','tra_1616','tra_1626'],
-                    lessStop: ['tra_1002','tra_1804', 'tra_1816', 'tra_1818','tra_1712','tra_1602','tra_1604','tra_1611','tra_1623','tra_1624','tra_1630']
+                    mustStop: ['tra_1040', 'tra_1020', 'tra_1000', 'tra_0990', 'tra_7000', 'tra_6110', 'tra_6000'],
+                    maybeStop: ['tra_0980','tra_0930','tra_7190','tra_7160','tra_6220','tra_6180','tra_6160','tra_6130','tra_6050'],
+                    lessStop: ['tra_0920','tra_7360', 'tra_7230', 'tra_7210','tra_7030','tra_6250','tra_6240','tra_6170','tra_6080','tra_6070','tra_6020']
                 }, {
-                    id: 'eZi', cate: 'express', CarClass: ['1100','1101','1103','1108','1109','110A','110B','110C','110D','110E','110F'], dir: '0', area: 'e', range: ['tra_1012','tra_1632'], name: '東部幹線自強號',
-                    rangeSplit: 'tra_1715',
+                    id: 'eZi', cate: 'express', CarClass: ['1100','1101','1103','1108','1109','110A','110B','110C','110D','110E','110F'], dir: '0', area: 'e', range: ['tra_1040','tra_6000'], name: '東部幹線自強號',
+                    rangeSplit: 'tra_7000',
                     lineOf: ['tra_xibu','tra_yilan','tra_beihui','tra_huadong'],
-                    mustStop: ['tra_1012', 'tra_1011', 'tra_1008', 'tra_1007','tra_1820','tra_1823', 'tra_1715', 'tra_1619', 'tra_1632'],
-                    maybeStop: ['tra_1003','tra_1804','tra_1816','tra_1818','tra_1826','tra_1705','tra_1712','tra_1602','tra_1604','tra_1611','tra_1623','tra_1624','tra_1630'],
-                    lessStop: ['tra_1009','tra_1006','tra_1005','tra_1002','tra_1808','tra_1810','tra_1709']
+                    mustStop: ['tra_1040', 'tra_1020', 'tra_1000', 'tra_0990','tra_7190','tra_7160', 'tra_7000', 'tra_6110', 'tra_6000'],
+                    maybeStop: ['tra_0930','tra_7360','tra_7230','tra_7210','tra_7130','tra_7090','tra_7030','tra_6250','tra_6240','tra_6170','tra_6080','tra_6070','tra_6020'],
+                    lessStop: ['tra_1010','tra_0980','tra_0960','tra_0920','tra_7310','tra_7290','tra_7060']
                 }, {
-                    id: 'eJv', cate: 'express', CarClass: ['1110','11111','1114','1115'], dir: '0', area: 'e', range: ['tra_1012','tra_1632'], name: '東部幹線莒光號',
-                    rangeSplit: 'tra_1715',
+                    id: 'eJv', cate: 'express', CarClass: ['1110','11111','1114','1115'], dir: '0', area: 'e', range: ['tra_1040','tra_6000'], name: '東部幹線莒光號',
+                    rangeSplit: 'tra_7000',
                     lineOf: ['tra_xibu','tra_yilan','tra_beihui','tra_huadong'],
-                    mustStop: ['tra_1012', 'tra_1011', 'tra_1008', 'tra_1007','tra_1804','tra_1816','tra_1818','tra_1820','tra_1823', 'tra_1715', 'tra_1619', 'tra_1632'],
-                    maybeStop: ['tra_1005','tra_1003','tra_1826','tra_1705','tra_1712','tra_1602','tra_1604','tra_1611','tra_1623','tra_1624','tra_1630'],
-                    lessStop: ['tra_1009','tra_1002','tra_1805','tra_1808','tra_1810','tra_1704','tra_1709','tra_1607','tra_1621','tra_1622']
+                    mustStop: ['tra_1040', 'tra_1020', 'tra_1000', 'tra_0990','tra_7360','tra_7230','tra_7210','tra_7190','tra_7160', 'tra_7000', 'tra_6110', 'tra_6000'],
+                    maybeStop: ['tra_0960','tra_0930','tra_7130','tra_7090','tra_7030','tra_6250','tra_6240','tra_6170','tra_6080','tra_6070','tra_6020'],
+                    lessStop: ['tra_1010','tra_0920','tra_7350','tra_7310','tra_7290','tra_7100','tra_7060','tra_6210','tra_6100','tra_6090']
                 }, {//西部對號
-                    id: 'wZi', cate: 'express', CarClass: ['1100','1101','1103','1108','1109','110A','110B','110C','110D','110E','110F'], dir: '1', area: 'w', range: ['tra_1003','tra_1411'], name: '西部幹線自強號',
+                    id: 'wZi', cate: 'express', CarClass: ['1100','1101','1103','1108','1109','110A','110B','110C','110D','110E','110F'], dir: '1', area: 'w', range: ['tra_0930','tra_5050'], name: '西部幹線自強號',
                     lineOf: ['tra_xibu','tra_shan','tra_zhjy','tra_jygx','tra_pingdong'],
-                    mustStop: ['tra_1003','tra_1007','tra_1008','tra_1011','tra_1015','tra_1017','tra_1025','tra_1305','tra_1317','tra_1319','tra_1120','tra_1210','tra_1215','tra_1228','tra_1242','tra_1238','tra_1402','tra_1406','tra_1411'],
-                    maybeStop: ['tra_1005','tra_1028','tra_1203','tra_1206','tra_1211','tra_1220','tra_1404'],
-                    lessStop: ['tra_1006','tra_1012','tra_1214','tra_1225','tra_1227','tra_1233']
+                    mustStop: ['tra_0930','tra_0990','tra_1000','tra_1020','tra_1080','tra_1100','tra_1210','tra_3160','tra_3230','tra_3300','tra_3360','tra_3470','tra_4080','tra_4220','tra_4340','tra_4400','tra_4440','tra_5000','tra_5050'],
+                    maybeStop: ['tra_0960','tra_1250','tra_3390','tra_3420','tra_3480','tra_4120','tra_4460'],
+                    lessStop: ['tra_0980','tra_1040','tra_4060','tra_4170','tra_4200','tra_4310']
                 }, {
-                    id: 'wJv', cate: 'express', CarClass: ['1110','11111','1114','1115'], dir: '1', area: 'w', range: ['tra_1003','tra_1411'], name: '西部幹線莒光號',
+                    id: 'wJv', cate: 'express', CarClass: ['1110','11111','1114','1115'], dir: '1', area: 'w', range: ['tra_0930','tra_5050'], name: '西部幹線莒光號',
                     lineOf: ['tra_xibu','tra_hai','tra_zhjy','tra_jygx','tra_pingdong'],
-                    mustStop: ['tra_1003','tra_1005','tra_1007','tra_1008','tra_1011','tra_1012','tra_1015','tra_1017','tra_1019','tra_1021','tra_1025','tra_1028',
-                        'tra_1105', 'tra_1109', 'tra_1110', 'tra_1112', 'tra_1114', 'tra_1115',
-                        'tra_1120','tra_1203','tra_1206','tra_1210','tra_1211','tra_1215','tra_1220','tra_1223','tra_1225','tra_1228','tra_1233','tra_1242','tra_1238','tra_1402','tra_1406','tra_1411'],
-                    maybeStop: ['tra_1023','tra_1207','tra_1213','tra_1214','tra_1227','tra_1404'],
-                    lessStop: ['tra_1014','tra_1107','tra_1117','tra_1214','tra_1226','tra_1231','tra_1232']
+                    mustStop: ['tra_0930','tra_0960','tra_0990','tra_1000','tra_1020','tra_1040','tra_1080','tra_1100','tra_1120','tra_1160','tra_1210','tra_1250',
+                        'tra_2130', 'tra_2170', 'tra_2180', 'tra_2200', 'tra_2220', 'tra_2230',
+                        'tra_3360','tra_3390','tra_3420','tra_3470','tra_3480','tra_4080','tra_4120','tra_4150','tra_4170','tra_4220','tra_4310','tra_4340','tra_4400','tra_4440','tra_5000','tra_5050'],
+                    maybeStop: ['tra_1180','tra_3430','tra_4050','tra_4060','tra_4200','tra_4460'],
+                    lessStop: ['tra_1070','tra_2150','tra_2250','tra_4060','tra_4190','tra_4290','tra_4300']
                 }, {//南迴線對號
-                    id: 'sZi', cate: 'express', CarClass: ['1100','1101','1103','1108','1109','110A','110B','110C','110D','110E','110F'], dir: '1', area: 's', range: ['tra_1242','tra_1632'], name: '南迴線自強號',
+                    id: 'sZi', cate: 'express', CarClass: ['1100','1101','1103','1108','1109','110A','110B','110C','110D','110E','110F'], dir: '1', area: 's', range: ['tra_4340','tra_6000'], name: '南迴線自強號',
                     lineOf: ['tra_jygx','tra_pingdong'],
-                    mustStop: ['tra_1242', 'tra_1238','tra_1402','tra_1406','tra_1411','tra_1418','tra_1508','tra_1514','tra_1516','tra_1632'],
-                    maybeStop: ['tra_1413','tra_1415','tra_1512'],
-                    lessStop: ['tra_1404','tra_1510','tra_1517']
+                    mustStop: ['tra_4340', 'tra_4400','tra_4440','tra_5000','tra_5050','tra_5120','tra_5190','tra_5220','tra_5230','tra_6000'],
+                    maybeStop: ['tra_5070','tra_5090','tra_5210'],
+                    lessStop: ['tra_4460','tra_5200','tra_5240']
                 }, {
-                    id: 'sJvFu', cate: 'express', CarClass: ['1110','11111','1114','1115','1120'], dir: '1', area: 's', range: ['tra_1242','tra_1632'], name: '南迴線莒光號、復興號',
+                    id: 'sJvFu', cate: 'express', CarClass: ['1110','11111','1114','1115','1120'], dir: '1', area: 's', range: ['tra_4340','tra_6000'], name: '南迴線莒光號、復興號',
                     lineOf: ['tra_jygx','tra_pingdong'],
-                    mustStop: ['tra_1242', 'tra_1238','tra_1402','tra_1406','tra_1411','tra_1418','tra_1508','tra_1512','tra_1514','tra_1516','tra_1632'],
-                    maybeStop: ['tra_1404','tra_1413','tra_1415','tra_1510','tra_1517'],
+                    mustStop: ['tra_4340', 'tra_4400','tra_4440','tra_5000','tra_5050','tra_5120','tra_5190','tra_5210','tra_5220','tra_5230','tra_6000'],
+                    maybeStop: ['tra_4460','tra_5070','tra_5090','tra_5200','tra_5240'],
                     lessStop: []
                 }, {
-                    id: 'eLocal1', cate: 'local', CarClass: ['1131'], dir: '0', area: 'e', range: ['tra_1012','tra_1827'], name: '宜蘭線區間車', stopAll: true,
+                    id: 'eLocal1', cate: 'local', CarClass: ['1131'], dir: '0', area: 'e', range: ['tra_1040','tra_7120'], name: '宜蘭線區間車', stopAll: true,
                     lineOf: ['tra_xibu','tra_yilan']
                 }, {
-                    id: 'eLocal2', cate: 'local', CarClass: ['1131'], dir: '0', area: 'e', range: ['tra_1820','tra_1715'], name: '北迴線區間車', stopAll: true,
+                    id: 'eLocal2', cate: 'local', CarClass: ['1131'], dir: '0', area: 'e', range: ['tra_7190','tra_7000'], name: '北迴線區間車', stopAll: true,
                     lineOf: ['tra_yilan','tra_beihui']
                 }, {
-                    id: 'eLocal3', cate: 'local', CarClass: ['1131'], dir: '0', area: 'e', range: ['tra_1715','tra_1632'], name: '臺東線區間車', stopAll: true, maybeStop: ['tra_1608'],//當stopAll 時 maybeStop 表示為不一定停靠
+                    id: 'eLocal3', cate: 'local', CarClass: ['1131'], dir: '0', area: 'e', range: ['tra_7000','tra_6000'], name: '臺東線區間車', stopAll: true, maybeStop: ['tra_6200'],//當stopAll 時 maybeStop 表示為不一定停靠
                     lineOf: ['tra_huadong']
                 }, {
-                    id: 'wLocal1', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1001','tra_1025'], name: '基隆新竹段區間車', stopAll: true,
+                    id: 'wLocal1', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_0900','tra_1210'], name: '基隆新竹段區間車', stopAll: true,
                     lineOf: ['tra_xibu']
                 }, {
-                    id: 'wLocal2', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1025','tra_1120'], name: '山線區間車', stopAll: true,
+                    id: 'wLocal2', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1210','tra_3360'], name: '山線區間車', stopAll: true,
                     lineOf: ['tra_xibu','tra_shan']
                 }, {
-                    id: 'wLocal3', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1025','tra_1120'], name: '海線區間車', stopAll: true,
+                    id: 'wLocal3', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1210','tra_3360'], name: '海線區間車', stopAll: true,
                     lineOf: ['tra_xibu','tra_hai']
                 }, {
-                    id: 'wLocal4', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1120','tra_1215'], name: '彰化嘉義段區間車', stopAll: true,
+                    id: 'wLocal4', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_3360','tra_4080'], name: '彰化嘉義段區間車', stopAll: true,
                     lineOf: ['tra_zhjy']
                 }, {
-                    id: 'wLocal5', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1215','tra_1411'], name: '嘉義潮州段區間車', stopAll: true,
+                    id: 'wLocal5', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_4080','tra_5050'], name: '嘉義潮州段區間車', stopAll: true,
                     lineOf: ['tra_jygx','tra_pingdong']
                 }, {
-                    id: 'wLocal6', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_1411','tra_1418'], name: '潮州枋寮段區間車', stopAll: true,
+                    id: 'wLocal6', cate: 'local', CarClass: ['1131'], dir: '1', area: 'w', range: ['tra_5050','tra_5120'], name: '潮州枋寮段區間車', stopAll: true,
                     lineOf: ['tra_pingdong']
                 }, {
-                    id: 'sLocal', cate: 'local', CarClass: ['1131'], dir: '1', area: 's', range: ['tra_1418','tra_1632'], name: '南迴線區間車', stopAll: true,
+                    id: 'sLocal', cate: 'local', CarClass: ['1131'], dir: '1', area: 's', range: ['tra_5120','tra_6000'], name: '南迴線區間車', stopAll: true,
                     lineOf: ['']
                 }, {
-                    id: 'subPX', cate: 'local', CarClass: ['1150','1131'], dir: '0', area: 'e', range: ['tra_2003','tra_1908'], name: '平溪線', stopAll: true,
+                    id: 'subPX', cate: 'local', CarClass: ['1150','1131'], dir: '0', area: 'e', range: ['tra_7362','tra_7336'], name: '平溪線', stopAll: true,
                     lineOf: ['tra_pingxi']
                 }, {
-                    id: 'subLJ', cate: 'local', CarClass: ['1131'], dir: '0', area: 'w', range: ['tra_1025','tra_2214'], name: '六家線', stopAll: true,
+                    id: 'subLJ', cate: 'local', CarClass: ['1131'], dir: '0', area: 'w', range: ['tra_1210','tra_1194'], name: '六家線', stopAll: true,
                     lineOf: ['tra_liujia']
                 }, {
-                    id: 'subNW', cate: 'local', CarClass: ['1150','1131'], dir: '0', area: 'w', range: ['tra_2203','tra_2210'], name: '內灣線', stopAll: true,
+                    id: 'subNW', cate: 'local', CarClass: ['1150','1131'], dir: '0', area: 'w', range: ['tra_1193','tra_1208'], name: '內灣線', stopAll: true,
                     lineOf: ['tra_liujia']
                 }, {
-                    id: 'subJJ', cate: 'local', CarClass: ['1150','1131'], dir: '1', area: 'w', range: ['tra_1207','tra_2707'], name: '集集線', stopAll: true,
+                    id: 'subJJ', cate: 'local', CarClass: ['1150','1131'], dir: '1', area: 'w', range: ['tra_3430','tra_3436'], name: '集集線', stopAll: true,
                     lineOf: ['tra_jiji']
                 }, {
-                    id: 'subSL', cate: 'local', CarClass: ['1150','1131'], dir: '1', area: 'w', range: ['tra_1228','tra_5102'], name: '沙崙線', stopAll: true,
+                    id: 'subSL', cate: 'local', CarClass: ['1150','1131'], dir: '1', area: 'w', range: ['tra_4220','tra_4272'], name: '沙崙線', stopAll: true,
                     lineOf: ['tra_jygx','tra_shalun']
             }],
         	sect_ary: ['pingdong','kaohsiung','tainan','chiayi','yunlin','changhua','taichung','miaoli','hsinchu','taoyuan','taipei','keelung',
                     'northeast','yilan','beihui','hualian','taidong'
             ],
             station_ary: [//big: e for big station of east(dongbu), w for big station of west(xibu), s for south link(nanhuei)
-                {id:"tra_1001", name: "基隆", estring: "keelung", sect: "keelung"},
-                {id:"tra_1029", name: "三坑", estring: "sankeng", sect: "keelung"},
-                {id:"tra_1002", name: "八堵", estring: "badu", sect: "keelung", big: 'e'},
-                {id:"tra_1003", name: "七堵", estring: "qidu", sect: "keelung", big: 'ew'},
-                {id:"tra_1030", name: "百福", estring: "baifu", sect: "keelung"},
-                {id:"tra_1004", name: "五堵", estring: "wudu", sect: "taipei"},
-                {id:"tra_1005", name: "汐止", estring: "xizhisijhih", sect: "taipei"},
-                {id:"tra_1031", name: "汐科", estring: "xikesike", sect: "taipei"},
-                {id:"tra_1006", name: "南港", estring: "nangang", sect: "taipei"},
-                {id:"tra_1007", name: "松山", estring: "songshan", sect: "taipei", big: 'ew', bigMaster: true},
-                {id:"tra_1008", name: "台北", estring: "taipeitaibei", sect: "taipei", big: 'ew', bigMaster: true},
-                {id:"tra_1009", name: "萬華", estring: "wanhua", sect: "taipei"},
-                {id:"tra_1011", name: "板橋", estring: "banqiao", sect: "taipei", big: 'ew', bigMaster: true},
-                {id:"tra_1032", name: "浮洲", estring: "fuzhou", sect: "taipei"},
-                {id:"tra_1012", name: "樹林", estring: "shulin", sect: "taipei", big: 'e'},
-                {id:"tra_1034", name: "南樹林", estring: "nanshulin", sect: "taipei"},
-                {id:"tra_1013", name: "山佳", estring: "shanjia", sect: "taipei"},
-                {id:"tra_1014", name: "鶯歌", estring: "yingge", sect: "taipei"},
+                {id:"tra_0900", name: "基隆", estring: "keelung", sect: "keelung"},
+                {id:"tra_0910", name: "三坑", estring: "sankeng", sect: "keelung"},
+                {id:"tra_0920", name: "八堵", estring: "badu", sect: "keelung", big: 'e'},
+                {id:"tra_0930", name: "七堵", estring: "qidu", sect: "keelung", big: 'ew'},
+                {id:"tra_0940", name: "百福", estring: "baifu", sect: "keelung"},
+                {id:"tra_0950", name: "五堵", estring: "wudu", sect: "taipei"},
+                {id:"tra_0960", name: "汐止", estring: "xizhisijhih", sect: "taipei"},
+                {id:"tra_0970", name: "汐科", estring: "xikesike", sect: "taipei"},
+                {id:"tra_0980", name: "南港", estring: "nangang", sect: "taipei"},
+                {id:"tra_0990", name: "松山", estring: "songshan", sect: "taipei", big: 'ew', bigMaster: true},
+                {id:"tra_1000", name: "台北", estring: "taipeitaibei", sect: "taipei", big: 'ew', bigMaster: true},
+                {id:"tra_1010", name: "萬華", estring: "wanhua", sect: "taipei"},
+                {id:"tra_1020", name: "板橋", estring: "banqiao", sect: "taipei", big: 'ew', bigMaster: true},
+                {id:"tra_1030", name: "浮洲", estring: "fuzhou", sect: "taipei"},
+                {id:"tra_1040", name: "樹林", estring: "shulin", sect: "taipei", big: 'e'},
+                {id:"tra_1050", name: "南樹林", estring: "nanshulin", sect: "taipei"},
+                {id:"tra_1060", name: "山佳", estring: "shanjia", sect: "taipei"},
+                {id:"tra_1070", name: "鶯歌", estring: "yingge", sect: "taipei"},
                 {id:"tra_1075", name: "鳳鳴", estring: "fengming", sect: "taipei"},
-                {id:"tra_1015", name: "桃園", estring: "taoyuan", sect: "taoyuan", big: 'w'},
-                {id:"tra_1016", name: "內壢", estring: "neili", sect: "taoyuan"},
-                {id:"tra_1017", name: "中壢", estring: "zhongli", sect: "taoyuan", big: 'w'},
-                {id:"tra_1037", name: "平鎮", estring: "pingzhen", sect: "taoyuan"},
-                {id:"tra_1018", name: "埔心", estring: "puxin", sect: "taoyuan"},
-                {id:"tra_1019", name: "楊梅", estring: "yangmei", sect: "taoyuan"},
-                {id:"tra_1020", name: "富岡", estring: "fugan", sect: "taoyuan"},
-                {id:"tra_1036", name: "新富", estring: "xinfu", sect: "taoyuan"},
-                {id:"tra_1033", name: "北湖", estring: "beihu", sect: "hsinchu"},
-                {id:"tra_1021", name: "湖口", estring: "hukou", sect: "hsinchu"},
-                {id:"tra_1022", name: "新豐", estring: "xinfeng", sect: "hsinchu"},
-                {id:"tra_1023", name: "竹北", estring: "zhubei", sect: "hsinchu"},
-                {id:"tra_1024", name: "北新竹", estring: "northhsinchubeixinzhu", sect: "hsinchu"},
-                {id:"tra_1025", name: "新竹", estring: "hsinchuxinzhu", sect: "hsinchu", big: 'w'},
-                {id:"tra_1035", name: "三姓橋", estring: "sanxingqiao", sect: "hsinchu"},
-                {id:"tra_1026", name: "香山", estring: "xiangshan", sect: "hsinchu"},
-                {id:"tra_1027", name: "崎頂", estring: "jidingciding", sect: "hsinchu"},
-                {id:"tra_1028", name: "竹南", estring: "zhunan", sect: "hsinchu", big: 'w'},
-                {id:"tra_1302", name: "造橋", estring: "zaoqiao", sect: "miaoli"},
-                {id:"tra_1304", name: "豐富", estring: "fengfu", sect: "miaoli"},
-                {id:"tra_1305", name: "苗栗", estring: "miaoli", sect: "miaoli", big: 'w'},
-                {id:"tra_1307", name: "南勢", estring: "nanshi", sect: "miaoli"},
-                {id:"tra_1308", name: "銅鑼", estring: "tongluo", sect: "miaoli"},
-                {id:"tra_1310", name: "三義", estring: "sanyi", sect: "miaoli"},
-                {id:"tra_1314", name: "泰安", estring: "taian", sect: "miaoli"},
-                {id:"tra_1315", name: "后里", estring: "houli", sect: "taichung"},
-                {id:"tra_1317", name: "豐原", estring: "fengyuan", sect: "taichung", big: 'w'},
-                {id:"tra_1325", name: "栗林", estring: "lilin", sect: "taichung"},
-                {id:"tra_1318", name: "潭子", estring: "tanzi", sect: "taichung"},
-                {id:"tra_1326", name: "頭家厝", estring: "toujiacuo", sect: "taichung"},
-                {id:"tra_1327", name: "松竹", estring: "toujiacuo", sect: "songzhu"},
-                {id:"tra_1323", name: "太原", estring: "taiyuan", sect: "taichung"},
-                {id:"tra_1328", name: "精武", estring: "jingwu", sect: "taichung"},
-                {id:"tra_1319", name: "台中", estring: "taizhongtaichung", sect: "taichung", big: 'w'},
-                {id:"tra_1329", name: "五權", estring: "wuquan", sect: "taichung"},
-                {id:"tra_1322", name: "大慶", estring: "daqing", sect: "taichung"},
-                {id:"tra_1320", name: "烏日", estring: "wuri", sect: "taichung"},
-                {id:"tra_1324", name: "新烏日", estring: "xinwuri", sect: "taichung"},
-                {id:"tra_1321", name: "成功", estring: "chenggong", sect: "taichung"},
-                {id:"tra_1120", name: "彰化", estring: "zhanghuachanghua", sect: "changhua", big: 'w'},
-                {id:"tra_1202", name: "花壇", estring: "huatan", sect: "changhua"},
-                {id:"tra_1240", name: "大村", estring: "dacundatsun", sect: "changhua"},
-                {id:"tra_1203", name: "員林", estring: "yuanlin", sect: "changhua", big: 'w'},
-                {id:"tra_1204", name: "永靖", estring: "yongjing", sect: "changhua"},
-                {id:"tra_1205", name: "社頭", estring: "shetou", sect: "changhua"},
-                {id:"tra_1206", name: "田中", estring: "tianzhong", sect: "changhua"},
-                {id:"tra_1207", name: "二水", estring: "ershuiershuei", sect: "changhua"},
-                {id:"tra_1208", name: "林內", estring: "linnei", sect: "yunlin"},
-                {id:"tra_1209", name: "石榴", estring: "shilioushihliou", sect: "yunlin"},
-                {id:"tra_1210", name: "斗六", estring: "douliou", sect: "yunlin", big: 'w'},
-                {id:"tra_1211", name: "斗南", estring: "dounan", sect: "yunlin"},
-                {id:"tra_1212", name: "石龜", estring: "shigueishihguei", sect: "yunlin"},
-                {id:"tra_1213", name: "大林", estring: "dalin", sect: "yunlin"},
-                {id:"tra_1214", name: "民雄", estring: "minxiong", sect: "chiayi"},
-                {id:"tra_1241", name: "嘉北", estring: "jiabei", sect: "chiayi"},
-                {id:"tra_1215", name: "嘉義", estring: "jiayichiayi", sect: "chiayi", big: 'w'},
-                {id:"tra_1217", name: "水上", estring: "shuishangshueishang", sect: "chiayi"},
-                {id:"tra_1218", name: "南靖", estring: "nanjing", sect: "chiayi"},
-                {id:"tra_1219", name: "後壁", estring: "houbi", sect: "tainan"},
-                {id:"tra_1220", name: "新營", estring: "xinyingsinying", sect: "tainan", big: 'w'},
-                {id:"tra_1221", name: "柳營", estring: "liouying", sect: "tainan"},
-                {id:"tra_1222", name: "林鳳營", estring: "linfengyinglinfongying", sect: "tainan"},
-                {id:"tra_1223", name: "隆田", estring: "longtian", sect: "tainan"},
-                {id:"tra_1224", name: "拔林", estring: "balin", sect: "tainan"},
-                {id:"tra_1225", name: "善化", estring: "shanghua", sect: "tainan"},
-                {id:"tra_1244", name: "南科", estring: "nanke", sect: "tainan"},
-                {id:"tra_1226", name: "新市", estring: "xinshisinshih", sect: "tainan"},
-                {id:"tra_1227", name: "永康", estring: "yungkangyongkang", sect: "tainan"},
-                {id:"tra_1239", name: "大橋", estring: "daqiaodaciao", sect: "tainan"},
-                {id:"tra_1228", name: "台南", estring: "tainan", sect: "tainan", big: 'w'},
-                {id:"tra_1229", name: "保安", estring: "baoan", sect: "tainan"},
-                {id:"tra_1243", name: "仁德", estring: "rende", sect: "tainan"},
-                {id:"tra_1230", name: "中州", estring: "zhongzhoujhongjhou", sect: "tainan"},
-                {id:"tra_1231", name: "大湖", estring: "dahu", sect: "kaohsiung"},
-                {id:"tra_1232", name: "路竹", estring: "luzhulujhu", sect: "kaohsiung"},
-                {id:"tra_1233", name: "岡山", estring: "ganshan", sect: "kaohsiung", big: 'w'},
-                {id:"tra_1234", name: "橋頭", estring: "qiaotou", sect: "kaohsiung"},
-                {id:"tra_1235", name: "楠梓", estring: "nanzi", sect: "kaohsiung"},
-                {id:"tra_1242", name: "新左營", estring: "xingzouying", sect: "kaohsiung", big: 's'},
-                {id:"tra_1236", name: "左營", estring: "zouying", sect: "kaohsiung"},
-                {id:"tra_1245", name: "內惟", estring: "neiwei", sect: "kaohsiung"},
-                {id:"tra_1246", name: "美術館", estring: "meishuguanmuseumoffinearts", sect: "kaohsiung"},
-                {id:"tra_1237", name: "鼓山", estring: "gushan", sect: "kaohsiung"},
-                {id:"tra_1247", name: "三塊厝", estring: "sankuaicuo", sect: "kaohsiung"},
-                {id:"tra_1238", name: "高雄", estring: "kaohsiunggaoxung", sect: "kaohsiung", big: 'ws'},
-                {id:"tra_1419", name: "民族", estring: "mingzhu", sect: "kaohsiung"},
-                {id:"tra_1420", name: "科工館", estring: "kegongguanscienceandtecnologymuseum", sect: "kaohsiung"},
-                {id:"tra_1421", name: "正義", estring: "zhengyi", sect: "kaohsiung"},
-                {id:"tra_1402", name: "鳳山", estring: "fongshanfengshan", sect: "kaohsiung", big: 'w'},
-                {id:"tra_1403", name: "後庄", estring: "hozhuang", sect: "kaohsiung"},
-                {id:"tra_1404", name: "九曲堂", estring: "jiuqutang", sect: "kaohsiung"},
-                {id:"tra_1405", name: "六塊厝", estring: "liukuaicuo", sect: "pingdong"},
-                {id:"tra_1406", name: "屏東", estring: "pingtungpingdong", sect: "pingdong", big: 'ws'},
-                {id:"tra_1407", name: "歸來", estring: "gueilai", sect: "pingdong"},
-                {id:"tra_1408", name: "麟洛", estring: "linluo", sect: "pingdong"},
-                {id:"tra_1409", name: "西勢", estring: "xishi", sect: "pingdong"},
-                {id:"tra_1410", name: "竹田", estring: "zhutian", sect: "pingdong"},
-                {id:"tra_1411", name: "潮州", estring: "chaozhouchaojhou", sect: "pingdong", big: 'ws'},
-                {id:"tra_1412", name: "崁頂", estring: "kanding", sect: "pingdong"},
-                {id:"tra_1413", name: "南州", estring: "nanzho", sect: "pingdong"},
-                {id:"tra_1414", name: "鎮安", estring: "zhengan", sect: "pingdong"},
-                {id:"tra_1415", name: "林邊", estring: "linbian", sect: "pingdong"},
-                {id:"tra_1416", name: "佳冬", estring: "jiadong", sect: "pingdong"},
-                {id:"tra_1417", name: "東海", estring: "donghai", sect: "pingdong"},
-                {id:"tra_1418", name: "枋寮", estring: "fangliao", sect: "pingdong"},
-                {id:"tra_1802", name: "暖暖", estring: "nuannuan", sect: "northeast"},
-                {id:"tra_1803", name: "四腳亭", estring: "sijiaoting", sect: "northeast"},
-                {id:"tra_1804", name: "瑞芳", estring: "ruifang", sect: "northeast", big: 'e'},
-                {id:"tra_1805", name: "猴硐", estring: "houdong", sect: "northeast"},
-                {id:"tra_1806", name: "三貂嶺", estring: "sandiaoling", sect: "northeast"},
-                {id:"tra_1807", name: "牡丹", estring: "mudan", sect: "northeast"},
-                {id:"tra_1808", name: "雙溪", estring: "shuangxi", sect: "northeast"},
-                {id:"tra_1809", name: "貢寮", estring: "gongliao", sect: "northeast"},
-                {id:"tra_1810", name: "福隆", estring: "fulong", sect: "northeast"},
-                {id:"tra_1811", name: "石城", estring: "shicheng", sect: "yilan"},
-                {id:"tra_1812", name: "大里", estring: "dali", sect: "yilan"},
-                {id:"tra_1813", name: "大溪", estring: "daxidasi", sect: "yilan"},
-                {id:"tra_1814", name: "龜山", estring: "gueishan", sect: "yilan"},
-                {id:"tra_1815", name: "外澳", estring: "waiao", sect: "yilan"},
-                {id:"tra_1816", name: "頭城", estring: "toucheng", sect: "yilan", big: 'e'},
-                {id:"tra_1817", name: "頂埔", estring: "dingpu", sect: "yilan"},
-                {id:"tra_1818", name: "礁溪", estring: "jiaoxijiaohsi", sect: "yilan"},
-                {id:"tra_1819", name: "四城", estring: "sicheng", sect: "yilan"},
-                {id:"tra_1820", name: "宜蘭", estring: "yilan", sect: "yilan", big: 'e'},
-                {id:"tra_1821", name: "二結", estring: "erjie", sect: "yilan"},
-                {id:"tra_1822", name: "中里", estring: "zhongli", sect: "yilan"},
-                {id:"tra_1823", name: "羅東", estring: "luodong", sect: "yilan", big: 'e'},
-                {id:"tra_1824", name: "冬山", estring: "dongshan", sect: "yilan"},
-                {id:"tra_1825", name: "新馬", estring: "xinmasinma", sect: "yilan"},
-                {id:"tra_1826", name: "蘇澳新", estring: "suaoxinsuaosin", sect: "yilan", big: 'e'},
-                {id:"tra_1827", name: "蘇澳", estring: "suao", sect: "yilan"},
-                {id:"tra_1703", name: "永樂", estring: "yongle", sect: "beihui"},
-                {id:"tra_1704", name: "東澳", estring: "dongao", sect: "beihui"},
-                {id:"tra_1705", name: "南澳", estring: "nanao", sect: "beihui", big: 'e'},
-                {id:"tra_1706", name: "武塔", estring: "wuta", sect: "beihui"},
-                {id:"tra_1708", name: "漢本", estring: "hanben", sect: "beihui"},
-                {id:"tra_1709", name: "和平", estring: "heping", sect: "beihui"},
-                {id:"tra_1710", name: "和仁", estring: "heren", sect: "beihui"},
-                {id:"tra_1711", name: "崇德", estring: "chongde", sect: "hualian"},
-                {id:"tra_1712", name: "新城", estring: "xinchengsincheng", sect: "hualian", big: 'e'},
-                {id:"tra_1713", name: "景美", estring: "jingmei", sect: "hualian"},
-                {id:"tra_1714", name: "北埔", estring: "beipu", sect: "hualian"},
-                {id:"tra_1715", name: "花蓮", estring: "hualienhualian", sect: "hualian", big: 'e'},//sect:hualian
-                {id:"tra_1602", name: "吉安", estring: "jian", sect: "hualian"},
-                {id:"tra_1604", name: "志學", estring: "zhixue", sect: "hualian"},
-                {id:"tra_1605", name: "平和", estring: "pinghe", sect: "hualian"},
-                {id:"tra_1606", name: "壽豐", estring: "shoufeng", sect: "hualian"},
-                {id:"tra_1607", name: "豐田", estring: "fengtian", sect: "hualian"},
-                {id:"tra_1608", name: "林榮新光", estring: "lingrongzinguanglingrongshinkong", sect: "hualian"},
-                {id:"tra_1609", name: "南平", estring: "nanping", sect: "hualian"},
-                {id:"tra_1610", name: "鳳林", estring: "fenglinfonglin", sect: "hualian"},
-                {id:"tra_1611", name: "萬榮", estring: "wanrong", sect: "hualian"},
-                {id:"tra_1612", name: "光復", estring: "guangfu", sect: "hualian"},
-                {id:"tra_1613", name: "大富", estring: "dafu", sect: "hualian"},
-                {id:"tra_1614", name: "富源", estring: "fuyuan", sect: "hualian"},
-                {id:"tra_1616", name: "瑞穗", estring: "ruisui", sect: "hualian"},
-                {id:"tra_1617", name: "三民", estring: "sanmin", sect: "hualian"},
-                {id:"tra_1619", name: "玉里", estring: "yuli", sect: "hualian", big: 'e'},
-                {id:"tra_1621", name: "東里", estring: "dongli", sect: "hualian"},
-                {id:"tra_1622", name: "東竹", estring: "dongzhu", sect: "hualian"},
-                {id:"tra_1623", name: "富里", estring: "fuli", sect: "hualian"},
-                {id:"tra_1624", name: "池上", estring: "chishang", sect: "taidong"},
-                {id:"tra_1625", name: "海端", estring: "haiduan", sect: "taidong"},
-                {id:"tra_1626", name: "關山", estring: "guanshan", sect: "taidong"},
-                {id:"tra_1628", name: "瑞和", estring: "ruihe", sect: "taidong"},
-                {id:"tra_1629", name: "瑞源", estring: "ruiyuan", sect: "taidong"},
-                {id:"tra_1630", name: "鹿野", estring: "luye", sect: "taidong"},
-                {id:"tra_1631", name: "山里", estring: "shanli", sect: "taidong"},
-                {id:"tra_1632", name: "台東", estring: "taitungtaidong", sect: "taidong", big: 'es'},
+                {id:"tra_1080", name: "桃園", estring: "taoyuan", sect: "taoyuan", big: 'w'},
+                {id:"tra_1090", name: "內壢", estring: "neili", sect: "taoyuan"},
+                {id:"tra_1100", name: "中壢", estring: "zhongli", sect: "taoyuan", big: 'w'},
+                {id:"tra_1105", name: "平鎮", estring: "pingzhen", sect: "taoyuan"},
+                {id:"tra_1110", name: "埔心", estring: "puxin", sect: "taoyuan"},
+                {id:"tra_1120", name: "楊梅", estring: "yangmei", sect: "taoyuan"},
+                {id:"tra_1130", name: "富岡", estring: "fugan", sect: "taoyuan"},
+                {id:"tra_1140", name: "新富", estring: "xinfu", sect: "taoyuan"},
+                {id:"tra_1150", name: "北湖", estring: "beihu", sect: "hsinchu"},
+                {id:"tra_1160", name: "湖口", estring: "hukou", sect: "hsinchu"},
+                {id:"tra_1170", name: "新豐", estring: "xinfeng", sect: "hsinchu"},
+                {id:"tra_1180", name: "竹北", estring: "zhubei", sect: "hsinchu"},
+                {id:"tra_1190", name: "北新竹", estring: "northhsinchubeixinzhu", sect: "hsinchu"},
+                {id:"tra_1210", name: "新竹", estring: "hsinchuxinzhu", sect: "hsinchu", big: 'w'},
+                {id:"tra_1220", name: "三姓橋", estring: "sanxingqiao", sect: "hsinchu"},
+                {id:"tra_1230", name: "香山", estring: "xiangshan", sect: "hsinchu"},
+                {id:"tra_1240", name: "崎頂", estring: "jidingciding", sect: "hsinchu"},
+                {id:"tra_1250", name: "竹南", estring: "zhunan", sect: "hsinchu", big: 'w'},
+                {id:"tra_3140", name: "造橋", estring: "zaoqiao", sect: "miaoli"},
+                {id:"tra_3150", name: "豐富", estring: "fengfu", sect: "miaoli"},
+                {id:"tra_3160", name: "苗栗", estring: "miaoli", sect: "miaoli", big: 'w'},
+                {id:"tra_3170", name: "南勢", estring: "nanshi", sect: "miaoli"},
+                {id:"tra_3180", name: "銅鑼", estring: "tongluo", sect: "miaoli"},
+                {id:"tra_3190", name: "三義", estring: "sanyi", sect: "miaoli"},
+                {id:"tra_3210", name: "泰安", estring: "taian", sect: "miaoli"},
+                {id:"tra_3220", name: "后里", estring: "houli", sect: "taichung"},
+                {id:"tra_3230", name: "豐原", estring: "fengyuan", sect: "taichung", big: 'w'},
+                {id:"tra_3240", name: "栗林", estring: "lilin", sect: "taichung"},
+                {id:"tra_3250", name: "潭子", estring: "tanzi", sect: "taichung"},
+                {id:"tra_3260", name: "頭家厝", estring: "toujiacuo", sect: "taichung"},
+                {id:"tra_3270", name: "松竹", estring: "toujiacuo", sect: "songzhu"},
+                {id:"tra_3280", name: "太原", estring: "taiyuan", sect: "taichung"},
+                {id:"tra_3290", name: "精武", estring: "jingwu", sect: "taichung"},
+                {id:"tra_3300", name: "台中", estring: "taizhongtaichung", sect: "taichung", big: 'w'},
+                {id:"tra_3310", name: "五權", estring: "wuquan", sect: "taichung"},
+                {id:"tra_3320", name: "大慶", estring: "daqing", sect: "taichung"},
+                {id:"tra_3330", name: "烏日", estring: "wuri", sect: "taichung"},
+                {id:"tra_3340", name: "新烏日", estring: "xinwuri", sect: "taichung"},
+                {id:"tra_3350", name: "成功", estring: "chenggong", sect: "taichung"},
+                {id:"tra_3360", name: "彰化", estring: "zhanghuachanghua", sect: "changhua", big: 'w'},
+                {id:"tra_3370", name: "花壇", estring: "huatan", sect: "changhua"},
+                {id:"tra_3380", name: "大村", estring: "dacundatsun", sect: "changhua"},
+                {id:"tra_3390", name: "員林", estring: "yuanlin", sect: "changhua", big: 'w'},
+                {id:"tra_3400", name: "永靖", estring: "yongjing", sect: "changhua"},
+                {id:"tra_3410", name: "社頭", estring: "shetou", sect: "changhua"},
+                {id:"tra_3420", name: "田中", estring: "tianzhong", sect: "changhua"},
+                {id:"tra_3430", name: "二水", estring: "ershuiershuei", sect: "changhua"},
+                {id:"tra_3450", name: "林內", estring: "linnei", sect: "yunlin"},
+                {id:"tra_3460", name: "石榴", estring: "shilioushihliou", sect: "yunlin"},
+                {id:"tra_3470", name: "斗六", estring: "douliou", sect: "yunlin", big: 'w'},
+                {id:"tra_3480", name: "斗南", estring: "dounan", sect: "yunlin"},
+                {id:"tra_3490", name: "石龜", estring: "shigueishihguei", sect: "yunlin"},
+                {id:"tra_4050", name: "大林", estring: "dalin", sect: "yunlin"},
+                {id:"tra_4060", name: "民雄", estring: "minxiong", sect: "chiayi"},
+                {id:"tra_4070", name: "嘉北", estring: "jiabei", sect: "chiayi"},
+                {id:"tra_4080", name: "嘉義", estring: "jiayichiayi", sect: "chiayi", big: 'w'},
+                {id:"tra_4090", name: "水上", estring: "shuishangshueishang", sect: "chiayi"},
+                {id:"tra_4100", name: "南靖", estring: "nanjing", sect: "chiayi"},
+                {id:"tra_4110", name: "後壁", estring: "houbi", sect: "tainan"},
+                {id:"tra_4120", name: "新營", estring: "xinyingsinying", sect: "tainan", big: 'w'},
+                {id:"tra_4130", name: "柳營", estring: "liouying", sect: "tainan"},
+                {id:"tra_4140", name: "林鳳營", estring: "linfengyinglinfongying", sect: "tainan"},
+                {id:"tra_4150", name: "隆田", estring: "longtian", sect: "tainan"},
+                {id:"tra_4160", name: "拔林", estring: "balin", sect: "tainan"},
+                {id:"tra_4170", name: "善化", estring: "shanghua", sect: "tainan"},
+                {id:"tra_4180", name: "南科", estring: "nanke", sect: "tainan"},
+                {id:"tra_4190", name: "新市", estring: "xinshisinshih", sect: "tainan"},
+                {id:"tra_4200", name: "永康", estring: "yungkangyongkang", sect: "tainan"},
+                {id:"tra_4210", name: "大橋", estring: "daqiaodaciao", sect: "tainan"},
+                {id:"tra_4220", name: "台南", estring: "tainan", sect: "tainan", big: 'w'},
+                {id:"tra_4250", name: "保安", estring: "baoan", sect: "tainan"},
+                {id:"tra_4260", name: "仁德", estring: "rende", sect: "tainan"},
+                {id:"tra_4270", name: "中州", estring: "zhongzhoujhongjhou", sect: "tainan"},
+                {id:"tra_4290", name: "大湖", estring: "dahu", sect: "kaohsiung"},
+                {id:"tra_4300", name: "路竹", estring: "luzhulujhu", sect: "kaohsiung"},
+                {id:"tra_4310", name: "岡山", estring: "ganshan", sect: "kaohsiung", big: 'w'},
+                {id:"tra_4320", name: "橋頭", estring: "qiaotou", sect: "kaohsiung"},
+                {id:"tra_4330", name: "楠梓", estring: "nanzi", sect: "kaohsiung"},
+                {id:"tra_4340", name: "新左營", estring: "xingzouying", sect: "kaohsiung", big: 's'},
+                {id:"tra_4350", name: "左營", estring: "zouying", sect: "kaohsiung"},
+                {id:"tra_4360", name: "內惟", estring: "neiwei", sect: "kaohsiung"},
+                {id:"tra_4370", name: "美術館", estring: "meishuguanmuseumoffinearts", sect: "kaohsiung"},
+                {id:"tra_4380", name: "鼓山", estring: "gushan", sect: "kaohsiung"},
+                {id:"tra_4390", name: "三塊厝", estring: "sankuaicuo", sect: "kaohsiung"},
+                {id:"tra_4400", name: "高雄", estring: "kaohsiunggaoxung", sect: "kaohsiung", big: 'ws'},
+                {id:"tra_4410", name: "民族", estring: "mingzhu", sect: "kaohsiung"},
+                {id:"tra_4420", name: "科工館", estring: "kegongguanscienceandtecnologymuseum", sect: "kaohsiung"},
+                {id:"tra_4430", name: "正義", estring: "zhengyi", sect: "kaohsiung"},
+                {id:"tra_4440", name: "鳳山", estring: "fongshanfengshan", sect: "kaohsiung", big: 'w'},
+                {id:"tra_4450", name: "後庄", estring: "hozhuang", sect: "kaohsiung"},
+                {id:"tra_4460", name: "九曲堂", estring: "jiuqutang", sect: "kaohsiung"},
+                {id:"tra_4470", name: "六塊厝", estring: "liukuaicuo", sect: "pingdong"},
+                {id:"tra_5000", name: "屏東", estring: "pingtungpingdong", sect: "pingdong", big: 'ws'},
+                {id:"tra_5010", name: "歸來", estring: "gueilai", sect: "pingdong"},
+                {id:"tra_5020", name: "麟洛", estring: "linluo", sect: "pingdong"},
+                {id:"tra_5030", name: "西勢", estring: "xishi", sect: "pingdong"},
+                {id:"tra_5040", name: "竹田", estring: "zhutian", sect: "pingdong"},
+                {id:"tra_5050", name: "潮州", estring: "chaozhouchaojhou", sect: "pingdong", big: 'ws'},
+                {id:"tra_5060", name: "崁頂", estring: "kanding", sect: "pingdong"},
+                {id:"tra_5070", name: "南州", estring: "nanzho", sect: "pingdong"},
+                {id:"tra_5080", name: "鎮安", estring: "zhengan", sect: "pingdong"},
+                {id:"tra_5090", name: "林邊", estring: "linbian", sect: "pingdong"},
+                {id:"tra_5100", name: "佳冬", estring: "jiadong", sect: "pingdong"},
+                {id:"tra_5110", name: "東海", estring: "donghai", sect: "pingdong"},
+                {id:"tra_5120", name: "枋寮", estring: "fangliao", sect: "pingdong"},
+                {id:"tra_7390", name: "暖暖", estring: "nuannuan", sect: "northeast"},
+                {id:"tra_7380", name: "四腳亭", estring: "sijiaoting", sect: "northeast"},
+                {id:"tra_7360", name: "瑞芳", estring: "ruifang", sect: "northeast", big: 'e'},
+                {id:"tra_7350", name: "猴硐", estring: "houdong", sect: "northeast"},
+                {id:"tra_7330", name: "三貂嶺", estring: "sandiaoling", sect: "northeast"},
+                {id:"tra_7320", name: "牡丹", estring: "mudan", sect: "northeast"},
+                {id:"tra_7310", name: "雙溪", estring: "shuangxi", sect: "northeast"},
+                {id:"tra_7300", name: "貢寮", estring: "gongliao", sect: "northeast"},
+                {id:"tra_7290", name: "福隆", estring: "fulong", sect: "northeast"},
+                {id:"tra_7280", name: "石城", estring: "shicheng", sect: "yilan"},
+                {id:"tra_7270", name: "大里", estring: "dali", sect: "yilan"},
+                {id:"tra_7260", name: "大溪", estring: "daxidasi", sect: "yilan"},
+                {id:"tra_7250", name: "龜山", estring: "gueishan", sect: "yilan"},
+                {id:"tra_7240", name: "外澳", estring: "waiao", sect: "yilan"},
+                {id:"tra_7230", name: "頭城", estring: "toucheng", sect: "yilan", big: 'e'},
+                {id:"tra_7220", name: "頂埔", estring: "dingpu", sect: "yilan"},
+                {id:"tra_7210", name: "礁溪", estring: "jiaoxijiaohsi", sect: "yilan"},
+                {id:"tra_7200", name: "四城", estring: "sicheng", sect: "yilan"},
+                {id:"tra_7190", name: "宜蘭", estring: "yilan", sect: "yilan", big: 'e'},
+                {id:"tra_7180", name: "二結", estring: "erjie", sect: "yilan"},
+                {id:"tra_7170", name: "中里", estring: "zhongli", sect: "yilan"},
+                {id:"tra_7160", name: "羅東", estring: "luodong", sect: "yilan", big: 'e'},
+                {id:"tra_7150", name: "冬山", estring: "dongshan", sect: "yilan"},
+                {id:"tra_7140", name: "新馬", estring: "xinmasinma", sect: "yilan"},
+                {id:"tra_7130", name: "蘇澳新", estring: "suaoxinsuaosin", sect: "yilan", big: 'e'},
+                {id:"tra_7120", name: "蘇澳", estring: "suao", sect: "yilan"},
+                {id:"tra_7110", name: "永樂", estring: "yongle", sect: "beihui"},
+                {id:"tra_7100", name: "東澳", estring: "dongao", sect: "beihui"},
+                {id:"tra_7090", name: "南澳", estring: "nanao", sect: "beihui", big: 'e'},
+                {id:"tra_7080", name: "武塔", estring: "wuta", sect: "beihui"},
+                {id:"tra_7070", name: "漢本", estring: "hanben", sect: "beihui"},
+                {id:"tra_7060", name: "和平", estring: "heping", sect: "beihui"},
+                {id:"tra_7050", name: "和仁", estring: "heren", sect: "beihui"},
+                {id:"tra_7040", name: "崇德", estring: "chongde", sect: "hualian"},
+                {id:"tra_7030", name: "新城", estring: "xinchengsincheng", sect: "hualian", big: 'e'},
+                {id:"tra_7020", name: "景美", estring: "jingmei", sect: "hualian"},
+                {id:"tra_7010", name: "北埔", estring: "beipu", sect: "hualian"},
+                {id:"tra_7000", name: "花蓮", estring: "hualienhualian", sect: "hualian", big: 'e'},//sect:hualian
+                {id:"tra_6250", name: "吉安", estring: "jian", sect: "hualian"},
+                {id:"tra_6240", name: "志學", estring: "zhixue", sect: "hualian"},
+                {id:"tra_6230", name: "平和", estring: "pinghe", sect: "hualian"},
+                {id:"tra_6220", name: "壽豐", estring: "shoufeng", sect: "hualian"},
+                {id:"tra_6210", name: "豐田", estring: "fengtian", sect: "hualian"},
+                {id:"tra_6200", name: "林榮新光", estring: "lingrongzinguanglingrongshinkong", sect: "hualian"},
+                {id:"tra_6190", name: "南平", estring: "nanping", sect: "hualian"},
+                {id:"tra_6180", name: "鳳林", estring: "fenglinfonglin", sect: "hualian"},
+                {id:"tra_6170", name: "萬榮", estring: "wanrong", sect: "hualian"},
+                {id:"tra_6160", name: "光復", estring: "guangfu", sect: "hualian"},
+                {id:"tra_6150", name: "大富", estring: "dafu", sect: "hualian"},
+                {id:"tra_6140", name: "富源", estring: "fuyuan", sect: "hualian"},
+                {id:"tra_6130", name: "瑞穗", estring: "ruisui", sect: "hualian"},
+                {id:"tra_6120", name: "三民", estring: "sanmin", sect: "hualian"},
+                {id:"tra_6110", name: "玉里", estring: "yuli", sect: "hualian", big: 'e'},
+                {id:"tra_6100", name: "東里", estring: "dongli", sect: "hualian"},
+                {id:"tra_6090", name: "東竹", estring: "dongzhu", sect: "hualian"},
+                {id:"tra_6080", name: "富里", estring: "fuli", sect: "hualian"},
+                {id:"tra_6070", name: "池上", estring: "chishang", sect: "taidong"},
+                {id:"tra_6060", name: "海端", estring: "haiduan", sect: "taidong"},
+                {id:"tra_6050", name: "關山", estring: "guanshan", sect: "taidong"},
+                {id:"tra_6040", name: "瑞和", estring: "ruihe", sect: "taidong"},
+                {id:"tra_6030", name: "瑞源", estring: "ruiyuan", sect: "taidong"},
+                {id:"tra_6020", name: "鹿野", estring: "luye", sect: "taidong"},
+                {id:"tra_6010", name: "山里", estring: "shanli", sect: "taidong"},
+                {id:"tra_6000", name: "台東", estring: "taitungtaidong", sect: "taidong", big: 'es'},
                 
-                {id:"tra_1502", name: "加祿", sect: "pingdong"},
-                {id:"tra_1503", name: "內獅", sect: "pingdong"},
-                {id:"tra_1504", name: "枋山", sect: "pingdong"},
-                {id:"tra_1507", name: "古莊", sect: "taidong"},
-                {id:"tra_1508", name: "大武", sect: "taidong"},
-                {id:"tra_1510", name: "瀧溪", sect: "taidong"},
-                {id:"tra_1512", name: "金崙", sect: "taidong"},
-                {id:"tra_1514", name: "太麻里", sect: "taidong"},
-                {id:"tra_1516", name: "知本", sect: "taidong"},
-                {id:"tra_1517", name: "康樂", sect: "taidong"},
+                {id:"tra_5130", name: "加祿", sect: "pingdong"},
+                {id:"tra_5140", name: "內獅", sect: "pingdong"},
+                {id:"tra_5160", name: "枋山", sect: "pingdong"},
+                {id:"tra_5180", name: "古莊", sect: "taidong"},
+                {id:"tra_5190", name: "大武", sect: "taidong"},
+                {id:"tra_5200", name: "瀧溪", sect: "taidong"},
+                {id:"tra_5210", name: "金崙", sect: "taidong"},
+                {id:"tra_5220", name: "太麻里", sect: "taidong"},
+                {id:"tra_5230", name: "知本", sect: "taidong"},
+                {id:"tra_5240", name: "康樂", sect: "taidong"},
                                                 
-                {id:"tra_1102", name: "談文", estring: "tanwen", sect: "miaoli"},
-                {id:"tra_1104", name: "大山", estring: "dashan", sect: "miaoli"},
-                {id:"tra_1105", name: "後龍", estring: "holong", sect: "miaoli", big: 'w'},
-                {id:"tra_1106", name: "龍港", estring: "longgang", sect: "miaoli"},
-                {id:"tra_1107", name: "白沙屯", estring: "baishatuen", sect: "miaoli"},
-                {id:"tra_1108", name: "新埔", estring: "xinpu", sect: "miaoli"},
-                {id:"tra_1109", name: "通霄", estring: "tongxiao", sect: "miaoli", big: 'w'},
-                {id:"tra_1110", name: "苑裡", estring: "yuanli", sect: "miaoli", big: 'w'},
-                {id:"tra_1111", name: "日南", estring: "rinan", sect: "taichung"},
-                {id:"tra_1112", name: "大甲", estring: "dajia", sect: "taichung", big: 'w'},
-                {id:"tra_1113", name: "臺中港", estring: "taizhonggang", sect: "taichung"},
-                {id:"tra_1114", name: "清水", estring: "qingshui", sect: "taichung", big: 'w'},
-                {id:"tra_1115", name: "沙鹿", estring: "lugang", sect: "taichung", big: 'w'},
-                {id:"tra_1116", name: "龍井", estring: "longjing", sect: "taichung"},
-                {id:"tra_1117", name: "大肚", estring: "dadu", sect: "taichung"},
-                {id:"tra_1118", name: "追分", estring: "zhuifen", sect: "taichung"},
-                {id:"tra_2003", name:"八斗子", estring:"badouzi", sect:"northeast"},
-                {id:"tra_6103", name:"海科館", estring:"haikeguan", sect:"northeast"},
-                {id:"tra_1903", name:"大華", estring:"dahua", sect:"northeast"},
-                {id:"tra_1904", name:"十分", estring:"shifenshihfen", sect:"northeast"},
-                {id:"tra_1905", name:"望古", estring:"wanggu", sect:"northeast"},
-                {id:"tra_1906", name:"嶺腳", estring:"lingjiao", sect:"northeast"},
-                {id:"tra_1907", name:"平溪", estring:"pingxipingsi", sect:"northeast"},
-                {id:"tra_1908", name:"菁桐", estring:"jingtong", sect:"northeast"},
-                {id:"tra_2212", name:"千甲", estring:"qianjia", sect:"hsinchu"},
-                {id:"tra_2213", name:"新莊", estring:"xinzhuang", sect:"hsinchu"},
-                {id:"tra_2203", name:"竹中", estring:"zhuzhong", sect:"hsinchu"},
-                {id:"tra_2214", name:"六家", estring:"liujia", sect:"hsinchu"},
-                {id:"tra_2204", name:"上員", estring:"shangyuan", sect:"hsinchu"},
-                {id:"tra_2211", name:"榮華", estring:"ronghua", sect:"hsinchu"},
-                {id:"tra_2205", name:"竹東", estring:"zhudong", sect:"hsinchu"},
-                {id:"tra_2206", name:"橫山", estring:"zhuzhong", sect:"hsinchu"},
-                {id:"tra_2207", name:"九讚頭", estring:"jiouzantou", sect:"hsinchu"},
-                {id:"tra_2208", name:"合興", estring:"hexinghesing", sect:"hsinchu"},
-                {id:"tra_2209", name:"富貴", estring:"fuguei", sect:"hsinchu"},
-                {id:"tra_2210", name:"內灣", estring:"neiwan", sect:"hsinchu"},
-                {id:"tra_2702", name:"源泉", estring:"yuanciyuanyuanquan", sect:"changhua"},
-                {id:"tra_2703", name:"濁水", estring:"zhuoshuijhoushuei", sect:"changhua"},
-                {id:"tra_2704", name:"龍泉", estring:"longquanlungcyuan", sect:"changhua"},
-                {id:"tra_2705", name:"集集", estring:"jiji", sect:"changhua"},
-                {id:"tra_2706", name:"水里", estring:"shuilishueili", sect:"changhua"},
-                {id:"tra_2707", name:"車埕", estring:"checheng", sect:"changhua"},
-                {id:"tra_5101", name:"長榮大學", estring:"changrongdaxuechangjungchristianuniversity", sect:"tainan"},
-                {id:"tra_5102", name:"沙崙", estring:"shalun", sect:"tainan"}
+                {id:"tra_2110", name: "談文", estring: "tanwen", sect: "miaoli"},
+                {id:"tra_2120", name: "大山", estring: "dashan", sect: "miaoli"},
+                {id:"tra_2130", name: "後龍", estring: "holong", sect: "miaoli", big: 'w'},
+                {id:"tra_2140", name: "龍港", estring: "longgang", sect: "miaoli"},
+                {id:"tra_2150", name: "白沙屯", estring: "baishatuen", sect: "miaoli"},
+                {id:"tra_2160", name: "新埔", estring: "xinpu", sect: "miaoli"},
+                {id:"tra_2170", name: "通霄", estring: "tongxiao", sect: "miaoli", big: 'w'},
+                {id:"tra_2180", name: "苑裡", estring: "yuanli", sect: "miaoli", big: 'w'},
+                {id:"tra_2190", name: "日南", estring: "rinan", sect: "taichung"},
+                {id:"tra_2200", name: "大甲", estring: "dajia", sect: "taichung", big: 'w'},
+                {id:"tra_2210", name: "臺中港", estring: "taizhonggang", sect: "taichung"},
+                {id:"tra_2220", name: "清水", estring: "qingshui", sect: "taichung", big: 'w'},
+                {id:"tra_2230", name: "沙鹿", estring: "lugang", sect: "taichung", big: 'w'},
+                {id:"tra_2240", name: "龍井", estring: "longjing", sect: "taichung"},
+                {id:"tra_2250", name: "大肚", estring: "dadu", sect: "taichung"},
+                {id:"tra_2260", name: "追分", estring: "zhuifen", sect: "taichung"},
+                {id:"tra_7362", name:"八斗子", estring:"badouzi", sect:"northeast"},
+                {id:"tra_7361", name:"海科館", estring:"haikeguan", sect:"northeast"},
+                {id:"tra_7331", name:"大華", estring:"dahua", sect:"northeast"},
+                {id:"tra_7332", name:"十分", estring:"shifenshihfen", sect:"northeast"},
+                {id:"tra_7333", name:"望古", estring:"wanggu", sect:"northeast"},
+                {id:"tra_7334", name:"嶺腳", estring:"lingjiao", sect:"northeast"},
+                {id:"tra_7335", name:"平溪", estring:"pingxipingsi", sect:"northeast"},
+                {id:"tra_7336", name:"菁桐", estring:"jingtong", sect:"northeast"},
+                {id:"tra_1191", name:"千甲", estring:"qianjia", sect:"hsinchu"},
+                {id:"tra_1192", name:"新莊", estring:"xinzhuang", sect:"hsinchu"},
+                {id:"tra_1193", name:"竹中", estring:"zhuzhong", sect:"hsinchu"},
+                {id:"tra_1194", name:"六家", estring:"liujia", sect:"hsinchu"},
+                {id:"tra_1201", name:"上員", estring:"shangyuan", sect:"hsinchu"},
+                {id:"tra_1202", name:"榮華", estring:"ronghua", sect:"hsinchu"},
+                {id:"tra_1203", name:"竹東", estring:"zhudong", sect:"hsinchu"},
+                {id:"tra_1204", name:"橫山", estring:"zhuzhong", sect:"hsinchu"},
+                {id:"tra_1205", name:"九讚頭", estring:"jiouzantou", sect:"hsinchu"},
+                {id:"tra_1206", name:"合興", estring:"hexinghesing", sect:"hsinchu"},
+                {id:"tra_1207", name:"富貴", estring:"fuguei", sect:"hsinchu"},
+                {id:"tra_1208", name:"內灣", estring:"neiwan", sect:"hsinchu"},
+                {id:"tra_3431", name:"源泉", estring:"yuanciyuanyuanquan", sect:"changhua"},
+                {id:"tra_3432", name:"濁水", estring:"zhuoshuijhoushuei", sect:"changhua"},
+                {id:"tra_3433", name:"龍泉", estring:"longquanlungcyuan", sect:"changhua"},
+                {id:"tra_3434", name:"集集", estring:"jiji", sect:"changhua"},
+                {id:"tra_3435", name:"水里", estring:"shuilishueili", sect:"changhua"},
+                {id:"tra_3436", name:"車埕", estring:"checheng", sect:"changhua"},
+                {id:"tra_4271", name:"長榮大學", estring:"changrongdaxuechangjungchristianuniversity", sect:"tainan"},
+                {id:"tra_4272", name:"沙崙", estring:"shalun", sect:"tainan"}
             ],
             line: [
             	{
@@ -388,13 +388,13 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             		dir: "1",
                     area: 'w',
                     link: {
-                        "tra_yilan": {station: "tra_1002", dir: "0"},
-                        "tra_shan": {station: "tra_1028", dir: "1"},
-                        "tra_hai": {station: "tra_1028", dir: "1"},
-                        "tra_liujia": {station: "tra_1025", dir: "0"}
+                        "tra_yilan": {station: "tra_0920", dir: "0"},
+                        "tra_shan": {station: "tra_1250", dir: "1"},
+                        "tra_hai": {station: "tra_1250", dir: "1"},
+                        "tra_liujia": {station: "tra_1210", dir: "0"}
                     },
-            		station: ["tra_1001","tra_1029","tra_1002","tra_1003","tra_1030","tra_1004","tra_1005","tra_1031","tra_1006","tra_1007","tra_1008","tra_1009","tra_1011","tra_1032","tra_1012","tra_1034","tra_1013","tra_1014","tra_1075",//taipei
-                        "tra_1015","tra_1016","tra_1017","tra_1037","tra_1018","tra_1019","tra_1020","tra_1036","tra_1033","tra_1021","tra_1022","tra_1023","tra_1024","tra_1025","tra_1035","tra_1026","tra_1027","tra_1028"]
+            		station: ["tra_0900","tra_0910","tra_0920","tra_0930","tra_0940","tra_0950","tra_0960","tra_0970","tra_0980","tra_0990","tra_1000","tra_1010","tra_1020","tra_1030","tra_1040","tra_1050","tra_1060","tra_1070","tra_1075",//taipei
+                        "tra_1080","tra_1090","tra_1100","tra_1105","tra_1110","tra_1120","tra_1130","tra_1140","tra_1150","tra_1160","tra_1170","tra_1180","tra_1190","tra_1210","tra_1220","tra_1230","tra_1240","tra_1250"]
             	}, {
             		id: "tra_shan",
                     name: "山線(竹南-彰化)",
@@ -403,11 +403,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             		dir: "1",
                     area: 'w',
                     link: {
-                        "tra_xibu": {station: "tra_1028", dir: "0"},
-                        "tra_zhjy": {station: "tra_1120", dir: "1"}
+                        "tra_xibu": {station: "tra_1250", dir: "0"},
+                        "tra_zhjy": {station: "tra_3360", dir: "1"}
                     },
-            		station: ["tra_1028","tra_1302","tra_1304","tra_1305","tra_1307","tra_1308","tra_1310","tra_1314","tra_1315","tra_1317", "tra_1325",
-                        "tra_1318","tra_1326","tra_1327","tra_1323","tra_1328","tra_1319","tra_1329","tra_1322","tra_1320","tra_1324","tra_1321","tra_1120"]
+            		station: ["tra_1250","tra_3140","tra_3150","tra_3160","tra_3170","tra_3180","tra_3190","tra_3210","tra_3220","tra_3230", "tra_3240",
+                        "tra_3250","tra_3260","tra_3270","tra_3280","tra_3290","tra_3300","tra_3310","tra_3320","tra_3330","tra_3340","tra_3350","tra_3360"]
             	}, {
             		id: "tra_zhjy",
                     name: "西部幹線(彰化-嘉義)",
@@ -416,12 +416,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             		dir: "1",
                     area: 'w',
                     link: {
-                        "tra_shan": {station: "tra_1120", dir: "0"},
-                        "tra_hai": {station: "tra_1120", dir: "0"},
-                        "tra_jiji": {station: "tra_1207", dir: "1"},
-                        "tra_jygx": {station: "tra_1215", dir: "1"}
+                        "tra_shan": {station: "tra_3360", dir: "0"},
+                        "tra_hai": {station: "tra_3360", dir: "0"},
+                        "tra_jiji": {station: "tra_3430", dir: "1"},
+                        "tra_jygx": {station: "tra_4080", dir: "1"}
                     },
-            		station: ["tra_1120","tra_1202","tra_1240","tra_1203","tra_1204","tra_1205","tra_1206","tra_1207","tra_1208","tra_1209","tra_1210","tra_1211","tra_1212","tra_1213","tra_1214","tra_1241","tra_1215"]
+            		station: ["tra_3360","tra_3370","tra_3380","tra_3390","tra_3400","tra_3410","tra_3420","tra_3430","tra_3450","tra_3460","tra_3470","tra_3480","tra_3490","tra_4050","tra_4060","tra_4070","tra_4080"]
             	}, {
             		id: "tra_jygx",
                     name: "西部幹線(嘉義-高雄)",
@@ -430,12 +430,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             		dir: "1",
                     area: 'w',
                     link: {
-                        "tra_zhjy": {station: "tra_1215", dir: "0"},
-                        "tra_pingdong": {station: "tra_1238", dir: "1"},
-                        "tra_shalun": {station: "tra_1230", dir: "1"}
+                        "tra_zhjy": {station: "tra_4080", dir: "0"},
+                        "tra_pingdong": {station: "tra_4400", dir: "1"},
+                        "tra_shalun": {station: "tra_4270", dir: "1"}
                     },
-            		station: ["tra_1215","tra_1217","tra_1218","tra_1219","tra_1220","tra_1221","tra_1222","tra_1223","tra_1224","tra_1225","tra_1244","tra_1226","tra_1227","tra_1239","tra_1228",
-                        "tra_1229","tra_1243","tra_1230","tra_1231","tra_1232","tra_1233","tra_1234","tra_1235","tra_1242","tra_1236","tra_1245","tra_1246","tra_1237","tra_1247","tra_1238"]
+            		station: ["tra_4080","tra_4090","tra_4100","tra_4110","tra_4120","tra_4130","tra_4140","tra_4150","tra_4160","tra_4170","tra_4180","tra_4190","tra_4200","tra_4210","tra_4220",
+                        "tra_4250","tra_4260","tra_4270","tra_4290","tra_4300","tra_4310","tra_4320","tra_4330","tra_4340","tra_4350","tra_4360","tra_4370","tra_4380","tra_4390","tra_4400"]
             	}, {
             		id: "tra_pingdong",
                     name: "屏東線",
@@ -443,12 +443,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     color: "#7D3810",
             		dir: "1",
                     area: 'w',
-                    innerNeedTransAt: 'tra_1411',
+                    innerNeedTransAt: 'tra_5050',
                     link: {
-                        "tra_jygx": {station: "tra_1238", dir: "0"}
+                        "tra_jygx": {station: "tra_4400", dir: "0"}
                     },
-            		station: ["tra_1238","tra_1419","tra_1420","tra_1421","tra_1402","tra_1403","tra_1404","tra_1405","tra_1406","tra_1407","tra_1408","tra_1409",
-                        "tra_1410","tra_1411","tra_1412","tra_1413","tra_1414","tra_1415","tra_1416","tra_1417","tra_1418"]
+            		station: ["tra_4400","tra_4410","tra_4420","tra_4430","tra_4440","tra_4450","tra_4460","tra_4470","tra_5000","tra_5010","tra_5020","tra_5030",
+                        "tra_5040","tra_5050","tra_5060","tra_5070","tra_5080","tra_5090","tra_5100","tra_5110","tra_5120"]
             	}, {
             		id: "tra_yilan",
                     name: "宜蘭線",
@@ -457,13 +457,13 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             		dir: "0",
                     area: 'e',
                     link: {
-                        "tra_xibu": {station: "tra_1002", dir: "1"},
-                        "tra_beihui": {station: "tra_1826", dir: "0"},
-                        "tra_pingxi": {station: "tra_1804", dir: "0"}
+                        "tra_xibu": {station: "tra_0920", dir: "1"},
+                        "tra_beihui": {station: "tra_7130", dir: "0"},
+                        "tra_pingxi": {station: "tra_7360", dir: "0"}
                     },
-                    //commonCrossLineStation: ["tra_1012","tra_1032","tra_1011","tra_1009","tra_1008","tra_1007","tra_1006","tra_1031","tra_1005","tra_1004","tra_1030","tra_1003"],
-            		station: ["tra_1002","tra_1802","tra_1803","tra_1804","tra_1805","tra_1806","tra_1807","tra_1808","tra_1809","tra_1810",//taipei
-                        "tra_1811","tra_1812","tra_1813","tra_1814","tra_1815","tra_1816","tra_1817","tra_1818","tra_1819","tra_1820","tra_1821","tra_1822","tra_1823","tra_1824","tra_1825","tra_1826","tra_1827"]
+                    //commonCrossLineStation: ["tra_1040","tra_1030","tra_1020","tra_1010","tra_1000","tra_0990","tra_0980","tra_0970","tra_0960","tra_0950","tra_0940","tra_0930"],
+            		station: ["tra_0920","tra_7390","tra_7380","tra_7360","tra_7350","tra_7330","tra_7320","tra_7310","tra_7300","tra_7290",//taipei
+                        "tra_7280","tra_7270","tra_7260","tra_7250","tra_7240","tra_7230","tra_7220","tra_7210","tra_7200","tra_7190","tra_7180","tra_7170","tra_7160","tra_7150","tra_7140","tra_7130","tra_7120"]
                 }, {
             		id: "tra_beihui",
                     name: "北迴線(蘇澳-花蓮)",
@@ -472,10 +472,10 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             		dir: "0",
                     area: 'e',
                     link: {
-                        "tra_yilan": {station: "tra_1826", dir: "1"},
-                        "tra_huadong": {station: "tra_1715", dir: "0"}
+                        "tra_yilan": {station: "tra_7130", dir: "1"},
+                        "tra_huadong": {station: "tra_7000", dir: "0"}
                     },
-            		station: ["tra_1826","tra_1703","tra_1704","tra_1705","tra_1706","tra_1708","tra_1709","tra_1710","tra_1711","tra_1712","tra_1713","tra_1714","tra_1715"]
+            		station: ["tra_7130","tra_7110","tra_7100","tra_7090","tra_7080","tra_7070","tra_7060","tra_7050","tra_7040","tra_7030","tra_7020","tra_7010","tra_7000"]
                 }, {
             		id: "tra_huadong",
                     name: "台東線",
@@ -484,10 +484,10 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             		dir: "0",
                     area: 'e',
                     link: {
-                        "tra_beihui": {station: "tra_1715", dir: "1"}
+                        "tra_beihui": {station: "tra_7000", dir: "1"}
                     },
-            		station: ["tra_1715","tra_1602","tra_1604","tra_1605","tra_1606","tra_1607","tra_1608","tra_1609","tra_1610","tra_1611","tra_1612","tra_1613","tra_1614","tra_1616","tra_1617","tra_1619",
-                        "tra_1621","tra_1622","tra_1623","tra_1624","tra_1625","tra_1626","tra_1628","tra_1629","tra_1630","tra_1631","tra_1632"]
+            		station: ["tra_7000","tra_6250","tra_6240","tra_6230","tra_6220","tra_6210","tra_6200","tra_6190","tra_6180","tra_6170","tra_6160","tra_6150","tra_6140","tra_6130","tra_6120","tra_6110",
+                        "tra_6100","tra_6090","tra_6080","tra_6070","tra_6060","tra_6050","tra_6040","tra_6030","tra_6020","tra_6010","tra_6000"]
                 }, {
             		id: "tra_hai",
                     name: "海線",
@@ -496,10 +496,10 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             		dir: "1",
                     area: 'w',
                     link: {
-                        "tra_xibu": {station: "tra_1028", dir: "0"},
-                        "tra_zhjy": {station: "tra_1120", dir: "1"}
+                        "tra_xibu": {station: "tra_1250", dir: "0"},
+                        "tra_zhjy": {station: "tra_3360", dir: "1"}
                     },
-            		station: ["tra_1028","tra_1102","tra_1104","tra_1105","tra_1106","tra_1107","tra_1108","tra_1109","tra_1110","tra_1111","tra_1112","tra_1113","tra_1114","tra_1115","tra_1116","tra_1117","tra_1118","tra_1120"]
+            		station: ["tra_1250","tra_2110","tra_2120","tra_2130","tra_2140","tra_2150","tra_2160","tra_2170","tra_2180","tra_2190","tra_2200","tra_2210","tra_2220","tra_2230","tra_2240","tra_2250","tra_2260","tra_3360"]
                 }, {
             		id: "tra_pingxi",
                     name: "平溪線",
@@ -507,11 +507,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     color: "#003030",
             		dir: "0",
                     area: 'e',
-                    protectStation: ["tra_1804"],
+                    protectStation: ["tra_7360"],
                     link: {
-                        "tra_yilan": {station: "tra_1804", dir: "1"}
+                        "tra_yilan": {station: "tra_7360", dir: "1"}
                     },
-            		station: ["tra_2003","tra_6103","tra_1804","tra_1805","tra_1806","tra_1903","tra_1904","tra_1905","tra_1906","tra_1907","tra_1908"]
+            		station: ["tra_7362","tra_7361","tra_7360","tra_7350","tra_7330","tra_7331","tra_7332","tra_7333","tra_7334","tra_7335","tra_7336"]
                 }, {
             		id: "tra_liujia",
                     name: "內灣／六家線",
@@ -519,19 +519,19 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     color: "#403090",
             		dir: "0",
                     area: 'w',
-                    protectStation: ["tra_1024","tra_1025"],
+                    protectStation: ["tra_1190","tra_1210"],
                     protectStationSect: {
-                        "tra_1024": "taoyuan,hsinchu"
+                        "tra_1190": "taoyuan,hsinchu"
                     },
                     subWorkingArea: {
-                    	transAt: "tra_2203",
+                    	transAt: "tra_1193",
                     	transStationID: "zhuzhongtra1",
-                    	station: ["tra_2204","tra_2211","tra_2205","tra_2206","tra_2207","tra_2208","tra_2209","tra_2210"]
+                    	station: ["tra_1201","tra_1202","tra_1203","tra_1204","tra_1205","tra_1206","tra_1207","tra_1208"]
                     },
                     link: {
-                        "tra_xibu": {station: "tra_1025", dir: "1"}
+                        "tra_xibu": {station: "tra_1210", dir: "1"}
                     },
-            		station: ["tra_1025","tra_1024","tra_2212","tra_2213","tra_2203","tra_2214","tra_2204","tra_2211","tra_2205","tra_2206","tra_2207","tra_2208","tra_2209","tra_2210"]
+            		station: ["tra_1210","tra_1190","tra_1191","tra_1192","tra_1193","tra_1194","tra_1201","tra_1202","tra_1203","tra_1204","tra_1205","tra_1206","tra_1207","tra_1208"]
                 }, {
             		id: "tra_jiji",
                     name: "集集線",
@@ -540,9 +540,9 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             		dir: "1",
                     area: 'w',
                     link: {
-                        "tra_zhjy": {station: "tra_1207", dir: "0"}
+                        "tra_zhjy": {station: "tra_3430", dir: "0"}
                     },
-            		station: ["tra_1207","tra_2702","tra_2703","tra_2704","tra_2705","tra_2706","tra_2707"]
+            		station: ["tra_3430","tra_3431","tra_3432","tra_3433","tra_3434","tra_3435","tra_3436"]
                 }, {
             		id: "tra_shalun",
                     name: "沙崙線",
@@ -550,11 +550,11 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     color: "#124060",
             		dir: "1",
                     area: 'w',
-                    protectStation: ["tra_1230"],
+                    protectStation: ["tra_4270"],
                     link: {
-                        "tra_jygx": {station: "tra_1230", dir: "0"}
+                        "tra_jygx": {station: "tra_4270", dir: "0"}
                     },
-            		station: ["tra_1230","tra_5101","tra_5102"]
+            		station: ["tra_4270","tra_4271","tra_4272"]
                 }
             ]
         },
@@ -922,236 +922,236 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 {
                     id: 'taidongtra1', name: "台東",
                     changeLine: ["tra_huadong", "tra_huadong"],
-                    changeStation: ['tra_1632','tra_1632'],
+                    changeStation: ['tra_6000','tra_6000'],
                     walkMinute: 4
                 }, {
                     id: 'yulitra1', name: "玉里",
                     changeLine: ["tra_huadong", "tra_huadong"],
-                    changeStation: ['tra_1619','tra_1619'],
+                    changeStation: ['tra_6110','tra_6110'],
                     walkMinute: 4
                 }, {
                     id: 'hualiantra1', name: "花蓮",
                     changeLine: ["tra_beihui", "tra_huadong"],
-                    changeStation: ['tra_1715','tra_1715'],
+                    changeStation: ['tra_7000','tra_7000'],
                     walkMinute: 4
                 }, {
                     id: 'xingcheng', name: "新城",
                     changeLine: ["tra_beihui", "tra_beihui"],
-                    changeStation: ['tra_1712','tra_1712'],
+                    changeStation: ['tra_7030','tra_7030'],
                     walkMinute: 2
                 }, {
                     id: 'nanaotra1', name: "南澳",
                     changeLine: ["tra_beihui", "tra_beihui"],
-                    changeStation: ['tra_1705','tra_1705'],
+                    changeStation: ['tra_7090','tra_7090'],
                     walkMinute: 2
                 }, {
                     id: 'suaoxintra1', name: "蘇澳新",
                     changeLine: ["tra_yilan", "tra_beihui"],
-                    changeStation: ['tra_1826','tra_1826'],
+                    changeStation: ['tra_7130','tra_7130'],
                     walkMinute: 4
                 }, {
                     id: 'luodongtra1', name: "羅東",
                     changeLine: ["tra_yilan", "tra_yilan"],
-                    changeStation: ['tra_1823','tra_1823'],
+                    changeStation: ['tra_7160','tra_7160'],
                     walkMinute: 4
                 }, {
                     id: 'yilantra1', name: "宜蘭",
                     changeLine: ["tra_yilan", "tra_yilan"],
-                    changeStation: ['tra_1820','tra_1820'],
+                    changeStation: ['tra_7190','tra_7190'],
                     walkMinute: 4
                 }, {
                     id: 'toucheng1', name: "頭城",
                     changeLine: ["tra_yilan", "tra_yilan"],
-                    changeStation: ['tra_1816','tra_1816'],
+                    changeStation: ['tra_7230','tra_7230'],
                     walkMinute: 4
                 }, {
                     id: 'ruifangtra1', name: "瑞芳",
                     changeLine: ["tra_yilan", "tra_pingxi"],
-                    changeStation: ['tra_1804','tra_1804'],
+                    changeStation: ['tra_7360','tra_7360'],
                     walkMinute: 4
                 }, {
                     id: 'badutra1', name: "八堵",
                     changeLine: ["tra_xibu", "tra_yilan"],
-                    changeStation: ['tra_1002','tra_1002'],
+                    changeStation: ['tra_0920','tra_0920'],
                     walkMinute: 3
                 }, {
                     id: 'qidutra1', name: "七堵",
                     changeLine: ["tra_xibu", "tra_xibu"],
-                    changeStation: ['tra_1003','tra_1003'],
+                    changeStation: ['tra_0930','tra_0930'],
                     walkMinute: 3
                 }, {
                     id: 'songshantra1', name: "松山",
                     changeLine: ["tra_xibu", "tra_xibu"],
-                    changeStation: ['tra_1007','tra_1007'],
+                    changeStation: ['tra_0990','tra_0990'],
                     walkMinute: 3
                 }, {
                     id: 'taipeitra1', name: "台北",
                     changeLine: ["tra_xibu", "tra_xibu"],
-                    changeStation: ['tra_1008','tra_1008'],
+                    changeStation: ['tra_1000','tra_1000'],
                     walkMinute: 3
                 }, {
                     id: 'banqiaotra1', name: "板橋",
                     changeLine: ["tra_xibu", "tra_xibu"],
-                    changeStation: ['tra_1011','tra_1011'],
+                    changeStation: ['tra_1020','tra_1020'],
                     walkMinute: 3
                 }, {
                     id: 'taoyuantra1', name: "桃園",
                     changeLine: ["tra_xibu", "tra_xibu"],
-                    changeStation: ['tra_1015','tra_1015'],
+                    changeStation: ['tra_1080','tra_1080'],
                     walkMinute: 3
                 }, {
                     id: 'zhonglitra1', name: "中壢",
                     changeLine: ["tra_xibu", "tra_xibu"],
-                    changeStation: ['tra_1017','tra_1017'],
+                    changeStation: ['tra_1100','tra_1100'],
                     walkMinute: 3
                 }, {
                     id: 'northhsinchutra1', name: "北新竹",
                     changeLine: ["tra_xibu", "tra_liujia"],
-                    changeStation: ['tra_1024','tra_1024'],
+                    changeStation: ['tra_1190','tra_1190'],
                     walkMinute: 4
                 }, {
                     id: 'hsinchutra1', name: "新竹",
                     changeLine: ["tra_xibu", "tra_liujia"],
-                    changeStation: ['tra_1025','tra_1025'],
+                    changeStation: ['tra_1210','tra_1210'],
                     walkMinute: 4
                 }, {
                     id: 'zhunantra1', name: "竹南",
                     changeLine: ["tra_xibu", "tra_shan"],
-                    changeStation: ['tra_1028','tra_1028'],
+                    changeStation: ['tra_1250','tra_1250'],
                     walkMinute: 3
                 }, {
-                    id: 'zhunantra2', name: "竹南", changeLine: ["tra_xibu", "tra_hai"], changeStation: ['tra_1028','tra_1028'], walkMinute: 3
+                    id: 'zhunantra2', name: "竹南", changeLine: ["tra_xibu", "tra_hai"], changeStation: ['tra_1250','tra_1250'], walkMinute: 3
                 }, {
-                    id: 'zhunantra3', name: "竹南", changeLine: ["tra_shan", "tra_hai"], changeStation: ['tra_1028','tra_1028'], walkMinute: 3
+                    id: 'zhunantra3', name: "竹南", changeLine: ["tra_shan", "tra_hai"], changeStation: ['tra_1250','tra_1250'], walkMinute: 3
                 }, {
                     id: 'miaolitra1', name: "苗栗",
                     changeLine: ["tra_shan", "tra_shan"],
-                    changeStation: ['tra_1305','tra_1305'],
+                    changeStation: ['tra_3160','tra_3160'],
                     walkMinute: 4
                 }, {
                     id: 'fengyuantra1', name: "豐原",
                     changeLine: ["tra_shan", "tra_shan"],
-                    changeStation: ['tra_1317','tra_1317'],
+                    changeStation: ['tra_3230','tra_3230'],
                     walkMinute: 4
                 }, {
                     id: 'taizhongtra1', name: "台中",
                     changeLine: ["tra_shan", "tra_shan"],
-                    changeStation: ['tra_1319','tra_1319'],
+                    changeStation: ['tra_3300','tra_3300'],
                     walkMinute: 4
                 }, {
                     id: 'zhanghuatra1', name: "彰化",
                     changeLine: ["tra_shan", "tra_zhjy"],
-                    changeStation: ['tra_1120','tra_1120'],
+                    changeStation: ['tra_3360','tra_3360'],
                     walkMinute: 4
                 }, {
-                    id: 'zhanghuatra2', name: "彰化", changeLine: ["tra_hai", "tra_zhjy"], changeStation: ['tra_1120','tra_1120'], walkMinute: 4
+                    id: 'zhanghuatra2', name: "彰化", changeLine: ["tra_hai", "tra_zhjy"], changeStation: ['tra_3360','tra_3360'], walkMinute: 4
                 }, {
-                    id: 'zhanghuatra3', name: "彰化", changeLine: ["tra_shan", "tra_hai"], changeStation: ['tra_1120','tra_1120'], walkMinute: 4
+                    id: 'zhanghuatra3', name: "彰化", changeLine: ["tra_shan", "tra_hai"], changeStation: ['tra_3360','tra_3360'], walkMinute: 4
                 }, {
                     id: 'yuanlintra1', name: "員林",
                     changeLine: ["tra_zhjy", "tra_zhjy"],
-                    changeStation: ['tra_1203','tra_1203'],
+                    changeStation: ['tra_3390','tra_3390'],
                     walkMinute: 4
                 }, {
                     id: 'douliutra1', name: "斗六",
                     changeLine: ["tra_zhjy", "tra_zhjy"],
-                    changeStation: ['tra_1210','tra_1210'],
+                    changeStation: ['tra_3470','tra_3470'],
                     walkMinute: 4
                 }, {
                     id: 'jiayitra1', name: "嘉義",
                     changeLine: ["tra_zhjy", "tra_jygx"],
-                    changeStation: ['tra_1215','tra_1215'],
+                    changeStation: ['tra_4080','tra_4080'],
                     walkMinute: 4
                 }, {
                     id: 'xinyingtra1', name: "新營",
                     changeLine: ["tra_jygx", "tra_jygx"],
-                    changeStation: ['tra_1220','tra_1220'],
+                    changeStation: ['tra_4120','tra_4120'],
                     walkMinute: 4
                 }, {
                     id: 'tainantra1', name: "台南",
                     changeLine: ["tra_jygx", "tra_shalun"],
-                    changeStation: ['tra_1228','tra_1228'],
+                    changeStation: ['tra_4220','tra_4220'],
                     walkMinute: 4
                 }, {
                     id: 'zhongzhoutra1', name: "中洲",
                     changeLine: ["tra_jygx", "tra_shalun"],
-                    changeStation: ['tra_1230','tra_1230'],
+                    changeStation: ['tra_4270','tra_4270'],
                     walkMinute: 4
                 }, {
                     id: 'gangshantra1', name: "岡山",
                     changeLine: ["tra_jygx", "tra_jygx"],
-                    changeStation: ['tra_1233','tra_1233'],
+                    changeStation: ['tra_4310','tra_4310'],
                     walkMinute: 4
                 }, {
                     id: 'gaoxungtra1', name: "高雄",
                     changeLine: ["tra_jygx", "tra_pingdong"],
-                    changeStation: ['tra_1238','tra_1238'],
+                    changeStation: ['tra_4400','tra_4400'],
                     walkMinute: 4
                 }, {
                     id: 'fongshantra1', name: "鳳山",
                     changeLine: ["tra_pingdong", "tra_pingdong"],
-                    changeStation: ['tra_1402','tra_1402'],
+                    changeStation: ['tra_4440','tra_4440'],
                     walkMinute: 1
                 }, {
                     id: 'pingdongtra1', name: "屏東",
                     changeLine: ["tra_pingdong", "tra_pingdong"],
-                    changeStation: ['tra_1406','tra_1406'],
+                    changeStation: ['tra_5000','tra_5000'],
                     walkMinute: 1
                 }, {
                     id: 'chaozhoutra1', name: "潮州",
                     changeLine: ["tra_pingdong", "tra_pingdong"],
-                    changeStation: ['tra_1411','tra_1411'],
+                    changeStation: ['tra_5050','tra_5050'],
                     walkMinute: 1
                 }, {
                     id: 'holongtra1', name: "後龍",
                     changeLine: ["tra_hai", "tra_hai"],
-                    changeStation: ['tra_1105','tra_1105'],
+                    changeStation: ['tra_2130','tra_2130'],
                     walkMinute: 1
                 }, {
                     id: 'tongxiaotra1', name: "通霄",
                     changeLine: ["tra_hai", "tra_hai"],
-                    changeStation: ['tra_1109','tra_1109'],
+                    changeStation: ['tra_2170','tra_2170'],
                     walkMinute: 1
                 }, {
                     id: 'yuanlitra1', name: "苑裡",
                     changeLine: ["tra_hai", "tra_hai"],
-                    changeStation: ['tra_1110','tra_1110'],
+                    changeStation: ['tra_2180','tra_2180'],
                     walkMinute: 1
                 }, {
                     id: 'dajiatra1', name: "大甲",
                     changeLine: ["tra_hai", "tra_hai"],
-                    changeStation: ['tra_1112','tra_1112'],
+                    changeStation: ['tra_2200','tra_2200'],
                     walkMinute: 1
                 }, {
                     id: 'qingshuitra1', name: "清水",
                     changeLine: ["tra_hai", "tra_hai"],
-                    changeStation: ['tra_1114','tra_1114'],
+                    changeStation: ['tra_2220','tra_2220'],
                     walkMinute: 1
                 }, {
                     id: 'shalutra1', name: "沙鹿",
                     changeLine: ["tra_hai", "tra_hai"],
-                    changeStation: ['tra_1115','tra_1115'],
+                    changeStation: ['tra_2230','tra_2230'],
                     walkMinute: 1
                 }, {
                     id: 'zhuzhongtra1', name: "竹中",
                     changeLine: ["tra_liujia", "tra_liujia"],
-                    changeStation: ['tra_2203','tra_2203'],
+                    changeStation: ['tra_1193','tra_1193'],
                     walkMinute: 3
                 }, {
                     id: 'nangang1', name: "南港",
                     changeLine: ["tra_xibu", "trtc_5"],
-                    changeStation: ['tra_1006','trtc_097'],
+                    changeStation: ['tra_0980','trtc_097'],
                     video: {
-                        "tra_1006": {width:420, height:315, src:'https://www.youtube.com/embed/AIQETgZdBKM'},
+                        "tra_0980": {width:420, height:315, src:'https://www.youtube.com/embed/AIQETgZdBKM'},
                         "trtc_097": {width:420, height:315, src:'https://www.youtube.com/embed/HNBdfyBxMa8'}
                     },
                     walkMinute: 5
                 }, {
                     id: 'songshan1', name: "松山",
                     changeLine: ["tra_xibu", "trtc_3"],
-                    changeStation: ['tra_1007','trtc_111'],
+                    changeStation: ['tra_0990','trtc_111'],
                     video: {
-                        "tra_1007": {width:420, height:315, src:'https://www.youtube.com/embed/CFX9EdLwT9A'},
+                        "tra_0990": {width:420, height:315, src:'https://www.youtube.com/embed/CFX9EdLwT9A'},
                         "trtc_111": {width:420, height:315, src:'https://www.youtube.com/embed/64ADnwMTLyQ'}
                     },
                     walkMinute: 6
@@ -1168,12 +1168,12 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 }, {
                     id: 'taipei1', name: "台北",
                     changeLine: ["tra_xibu", "trtc_5"],
-                    changeStation: ['tra_1008','trtc_051'],
+                    changeStation: ['tra_1000','trtc_051'],
                     walkMinute: 7
                 }, {
                     id: 'taipei2', name: "台北",
                     changeLine: ["tra_xibu", "trtc_2"],
-                    changeStation: ['tra_1008','trtc_051'],
+                    changeStation: ['tra_1000','trtc_051'],
                     walkMinute: 4
                 }, {
                     id: 'taipei3', name: "台北",
@@ -1183,9 +1183,9 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 }, {
                     id: 'taipei4', name: "台北",//機捷台鐵
                     changeLine: ["tra_xibu", "tymetro_1"],
-                    changeStation: ['tra_1008','tymetro_a01'],
+                    changeStation: ['tra_1000','tymetro_a01'],
                     video: {
-                        "tra_1008": {width:420, height:315, src:'https://www.youtube.com/embed/dxfIJJ0b_3o'},
+                        "tra_1000": {width:420, height:315, src:'https://www.youtube.com/embed/dxfIJJ0b_3o'},
                         "tymetro_a01": {width:420, height:315, src:'https://www.youtube.com/embed/ulOu7N85QRo'}
                     },
                     walkMinute: 7
@@ -1238,7 +1238,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 }, {
                     id: 'banqiao1', name: "板橋",
                     changeLine: ["tra_xibu", "trtc_5"],
-                    changeStation: ['tra_1011','trtc_082'],
+                    changeStation: ['tra_1020','trtc_082'],
                     walkMinute: 7
                 }, {
                     id: 'banqiao2', name: "板橋",
@@ -1252,9 +1252,9 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 }, {
                     id: 'banqiao3', name: "板橋",
                     changeLine: ["tra_xibu", "trtc_6"],
-                    changeStation: ['tra_1011','trtc_y16'],
+                    changeStation: ['tra_1020','trtc_y16'],
                     video: {
-                        "tra_1011": {width:560, height:315, src:'https://www.youtube.com/embed/awJa3LJQfNs'},
+                        "tra_1020": {width:560, height:315, src:'https://www.youtube.com/embed/awJa3LJQfNs'},
                         "trtc_y16": {width:560, height:315, src:'https://www.youtube.com/embed/Kj4rfjSkeVU'}
                     },
                     walkMinute: 8
@@ -1349,7 +1349,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 }, {
                     id: 'yingge1', name: "鶯歌",//台鐵跨站站房出站，經約 130 公尺風雨走廊到三鶯線鶯歌車站再上高架月台
                     changeLine: ["tra_xibu", "trtc_7"],
-                    changeStation: ['tra_1014','trtc_lb08'],
+                    changeStation: ['tra_1070','trtc_lb08'],
                     walkMinute: 7
                 }, {
                     id: 'changgengyiyuan1', name: "長庚醫院",
@@ -2690,23 +2690,23 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     {
                         line: ['tra_jygx','tra_zhjy','tra_shan','tra_yilan','tra_beihui','tra_huadong','tra_pingxi'],
                         sect: ['taoyuan','hsinchu','miaoli','taichung','changhua','yunlin','chiayi','tainan','kaohsiung','pingdong'],
-                        station: ["tra_1032","tra_1012","tra_1034","tra_1013","tra_1014","tra_1075"],
+                        station: ["tra_1030","tra_1040","tra_1050","tra_1060","tra_1070","tra_1075"],
                         transStation: 'banqiaotra1'
                     }, {
                         line: ['tra_yilan','tra_beihui','tra_huadong','tra_pingxi'],
-                        station: ["tra_1009","tra_1006","tra_1031","tra_1005","tra_1004"],
+                        station: ["tra_1010","tra_0980","tra_0970","tra_0960","tra_0950"],
                         transStation: 'songshantra1'
                     }, {
                         line: ['tra_yilan','tra_beihui','tra_huadong','tra_pingxi'],
-                        station: ["tra_1031","tra_1005","tra_1004","tra_1030","tra_1002","tra_1029","tra_1001"],
+                        station: ["tra_0970","tra_0960","tra_0950","tra_0940","tra_0920","tra_0910","tra_0900"],
                         transStation: 'qidutra1'
                     }, {
                         line: ['tra_yilan','tra_beihui','tra_huadong','tra_pingxi'],
-                        station: ["tra_1030","tra_1003","tra_1029","tra_1001"],
+                        station: ["tra_0940","tra_0930","tra_0910","tra_0900"],
                         transStation: 'badutra1'
                     }, {
                     	line: ['tra_shalun','tra_pingxi'],
-                        station: ["tra_1228"],
+                        station: ["tra_4220"],
                         transStation: 'tainantra1'
                     }
                     
@@ -2727,33 +2727,33 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: 'qidutra1'
                     }, {
                         line: ['tra_shan'],
-                        station: ["tra_1004","tra_1005","tra_1031","tra_1006"],
+                        station: ["tra_0950","tra_0960","tra_0970","tra_0980"],
                         transStation: 'songshantra1'
                     }, {
                         line: ['tra_shan'],
-                        station: ["tra_1009","tra_1032","tra_1012","tra_1034","tra_1013"],
+                        station: ["tra_1010","tra_1030","tra_1040","tra_1050","tra_1060"],
                         transStation: 'banqiaotra1'
                     }, {
                         line: ['tra_shan'],
-                        station: ["tra_1012","tra_1034","tra_1013","tra_1014","tra_1075"],
+                        station: ["tra_1040","tra_1050","tra_1060","tra_1070","tra_1075"],
                         transStation: 'taoyuantra1'
                     }, {
                         line: ['tra_shan'],
-                        station: ["tra_1016","tra_1037","tra_1018"],
+                        station: ["tra_1090","tra_1105","tra_1110"],
                         transStation: 'zhonglitra1'
                     }, {
                         line: ['tra_shan'],
-                        station: ["tra_1019","tra_1020","tra_1036"],
+                        station: ["tra_1120","tra_1130","tra_1140"],
                         sect: ['hsinchu'],
                         transStation: 'hsinchutra1'
                     }, {
                         line: ['tra_xibu','tra_liujia'],
-                        station: ["tra_1019","tra_1020","tra_1036"],
+                        station: ["tra_1120","tra_1130","tra_1140"],
                         sect: ['miaoli'],
                         transStation: 'miaolitra1'
                     }, {
                         line: ['tra_xibu','tra_liujia'],
-                        station: ["tra_1315","tra_1318"],
+                        station: ["tra_3220","tra_3250"],
                         transStation: 'fengyuantra1'
                     }, {
                         line: ['tra_xibu','tra_liujia'],
@@ -2778,23 +2778,23 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: 'qidutra1'
                     }, {
                         line: ['tra_zhjy'],
-                        station: ["tra_1004","tra_1005","tra_1031","tra_1006"],
+                        station: ["tra_0950","tra_0960","tra_0970","tra_0980"],
                         transStation: 'songshantra1'
                     }, {
                         line: ['tra_zhjy'],
-                        station: ["tra_1009","tra_1032","tra_1012","tra_1034","tra_1013"],
+                        station: ["tra_1010","tra_1030","tra_1040","tra_1050","tra_1060"],
                         transStation: 'banqiaotra1'
                     }, {
                         line: ['tra_zhjy'],
-                        station: ["tra_1012","tra_1034","tra_1013","tra_1014","tra_1075"],
+                        station: ["tra_1040","tra_1050","tra_1060","tra_1070","tra_1075"],
                         transStation: 'taoyuantra1'
                     }, {
                         line: ['tra_zhjy'],
-                        station: ["tra_1016","tra_1037","tra_1018"],
+                        station: ["tra_1090","tra_1105","tra_1110"],
                         transStation: 'zhonglitra1'
                     }, {
                         line: ['tra_zhjy'],
-                        station: ["tra_1019","tra_1020","tra_1036"],
+                        station: ["tra_1120","tra_1130","tra_1140"],
                         sect: ['hsinchu'],
                         transStation: 'hsinchutra1'
                     }, {
@@ -2803,7 +2803,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: 'zhanghuatra1'
                     }, {
                         line: ['tra_xibu','tra_liujia'],
-                        station: ["tra_1208","tra_1209"],
+                        station: ["tra_3450","tra_3460"],
                         sect: ['changhua'],
                         transStation: 'yuanlintra1'
                     }, {
@@ -2833,23 +2833,23 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: 'qidutra1'
                     }, {
                         line: ['tra_jygx','tra_shalun'],
-                        station: ["tra_1004","tra_1005","tra_1031","tra_1006"],
+                        station: ["tra_0950","tra_0960","tra_0970","tra_0980"],
                         transStation: 'songshantra1'
                     }, {
                         line: ['tra_jygx','tra_shalun'],
-                        station: ["tra_1009","tra_1032","tra_1012","tra_1034","tra_1013"],
+                        station: ["tra_1010","tra_1030","tra_1040","tra_1050","tra_1060"],
                         transStation: 'banqiaotra1'
                     }, {
                         line: ['tra_jygx','tra_shalun'],
-                        station: ["tra_1012","tra_1034","tra_1013","tra_1014","tra_1075"],
+                        station: ["tra_1040","tra_1050","tra_1060","tra_1070","tra_1075"],
                         transStation: 'taoyuantra1'
                     }, {
                         line: ['tra_jygx','tra_shalun'],
-                        station: ["tra_1016","tra_1037","tra_1018"],
+                        station: ["tra_1090","tra_1105","tra_1110"],
                         transStation: 'zhonglitra1'
                     }, {
                         line: ['tra_jygx','tra_shalun'],
-                        station: ["tra_1019","tra_1020","tra_1036"],
+                        station: ["tra_1120","tra_1130","tra_1140"],
                         sect: ['hsinchu'],
                         transStation: 'hsinchutra1'
                     }, {
@@ -2883,7 +2883,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: 'miaolitra1'
                     }, {
                         line: ['tra_zhjy'],
-                        station: ["tra_1315","tra_1314","tra_1310"],
+                        station: ["tra_3220","tra_3210","tra_3190"],
                         transStation: 'fengyuantra1'
                     }, {
                         line: ['tra_zhjy'],
@@ -2892,7 +2892,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     }, {
                         line: ['tra_shan'],
                         sect: ['changhua'],
-                        station: ["tra_1321","tra_1324"],
+                        station: ["tra_3350","tra_3340"],
                         transStation: 'zhanghuatra1'
                     }, {
                         line: ['tra_shan'],
@@ -2924,7 +2924,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: 'miaolitra1'
                     }, {
                         line: ['tra_jygx','tra_shalun'],
-                        station: ["tra_1315","tra_1314","tra_1310"],
+                        station: ["tra_3220","tra_3210","tra_3190"],
                         transStation: 'fengyuantra1'
                     }, {
                         line: ['tra_jygx','tra_shalun'],
@@ -2933,7 +2933,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     }, {
                         line: ['tra_jygx','tra_shalun'],
                         sect: ['changhua'],
-                        station: ["tra_1321","tra_1324"],
+                        station: ["tra_3350","tra_3340"],
                         transStation: 'zhanghuatra1'
                     }, {
                         line: ['tra_shan'],
@@ -2997,24 +2997,24 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         transStation: 'qidutra1'
                     }, {
                         line: ['tra_pingdong'],
-                        station: ["tra_1004","tra_1005","tra_1031","tra_1006"],
+                        station: ["tra_0950","tra_0960","tra_0970","tra_0980"],
                         transStation: 'songshantra1'
                     }, {
                         line: ['tra_pingdong'],
-                        station: ["tra_1009","tra_1032","tra_1012","tra_1034","tra_1013"],
+                        station: ["tra_1010","tra_1030","tra_1040","tra_1050","tra_1060"],
                         transStation: 'banqiaotra1'
                     }, {
                         line: ['tra_pingdong'],
-                        station: ["tra_1012","tra_1034","tra_1013","tra_1014","tra_1075"],
+                        station: ["tra_1040","tra_1050","tra_1060","tra_1070","tra_1075"],
                         transStation: 'taoyuantra1'
                     }, {
                         line: ['tra_pingdong'],
-                        station: ["tra_1016","tra_1037","tra_1018"],
+                        station: ["tra_1090","tra_1105","tra_1110"],
                         sect: ["taoyuan"],
                         transStation: 'zhonglitra1'
                     }, {
                         line: ['tra_pingdong'],
-                        station: ["tra_1019","tra_1020","tra_1036"],
+                        station: ["tra_1120","tra_1130","tra_1140"],
                         sect: ['hsinchu'],
                         transStation: 'hsinchutra1'
                     }, {
@@ -3111,19 +3111,19 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 rule: [
                     {
                         line: ['tra_beihui'],
-                        station: ["tra_1802","tra_1803","tra_1805","tra_1806"],
+                        station: ["tra_7390","tra_7380","tra_7350","tra_7330"],
                         transStation: 'ruifangtra1'
                     }, {
                         line: ['tra_beihui'],
-                        station: ["tra_1807","tra_1808","tra_1809","tra_1810","tra_1811","tra_1812","tra_1813","tra_1814","tra_1815","tra_1816","tra_1817","tra_1818","tra_1819"],
+                        station: ["tra_7320","tra_7310","tra_7300","tra_7290","tra_7280","tra_7270","tra_7260","tra_7250","tra_7240","tra_7230","tra_7220","tra_7210","tra_7200"],
                         transStation: 'yilantra1'
                     }, {
                         line: ['tra_beihui'],
-                        station: ["tra_1821","tra_1822","tra_1824","tra_1825"],
+                        station: ["tra_7180","tra_7170","tra_7150","tra_7140"],
                         transStation: 'luodongtra1'
                     }, {
                         line: ['tra_beihui'],
-                        station: ["tra_1827","tra_1825","tra_1824"],
+                        station: ["tra_7120","tra_7140","tra_7150"],
                         transStation: 'suaoxintra1'
                     }, {
                         line: ['tra_yilan','tra_pingxi'],
@@ -3144,19 +3144,19 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 rule: [
                     {
                         line: ['tra_huadong'],
-                        station: ["tra_1802","tra_1803","tra_1805","tra_1806"],
+                        station: ["tra_7390","tra_7380","tra_7350","tra_7330"],
                         transStation: 'ruifangtra1'
                     }, {
                         line: ['tra_huadong'],
-                        station: ["tra_1807","tra_1808","tra_1809","tra_1810","tra_1811","tra_1812","tra_1813","tra_1814","tra_1815","tra_1816","tra_1817","tra_1818","tra_1819"],
+                        station: ["tra_7320","tra_7310","tra_7300","tra_7290","tra_7280","tra_7270","tra_7260","tra_7250","tra_7240","tra_7230","tra_7220","tra_7210","tra_7200"],
                         transStation: 'yilantra1'
                     }, {
                         line: ['tra_huadong'],
-                        station: ["tra_1821","tra_1822","tra_1824","tra_1825"],
+                        station: ["tra_7180","tra_7170","tra_7150","tra_7140"],
                         transStation: 'luodongtra1'
                     }, {
                         line: ['tra_huadong'],
-                        station: ["tra_1827","tra_1825","tra_1824"],
+                        station: ["tra_7120","tra_7140","tra_7150"],
                         transStation: 'suaoxintra1'
                     }, {
                         line: ['tra_yilan','tra_pingxi'],
@@ -3165,7 +3165,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                     }, {
                         line: ['tra_yilan','tra_pingxi'],
                         sect: ['hualian'],
-                        station: ["tra_1624","tra_1625","tra_1626"],
+                        station: ["tra_6070","tra_6060","tra_6050"],
                         transStation: 'yulitra1'
                     }, {
                         line: ['tra_yilan','tra_pingxi'],

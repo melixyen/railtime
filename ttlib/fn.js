@@ -859,15 +859,15 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             }
             
             var notMainLineOfStation = {
-                "tra_pingxi": /^tra_1804$|^tra_1805$|^tra_1806$/,
-                "tra_shan": /^tra_1028$/,
-                "tra_zhjy": /^tra_1120$/,
-                "tra_jiji": /^tra_1207$/,
-                "tra_jygx": /^tra_1215$/,
-                "tra_pingdong": /^tra_1238$/,
-                "tra_yilan": /^tra_1002$/,
-                "tra_beihui": /^tra_1826$/,
-                "tra_huadong": /^tra_1715$/
+                "tra_pingxi": /^tra_7360$|^tra_7350$|^tra_7330$/,
+                "tra_shan": /^tra_1250$/,
+                "tra_zhjy": /^tra_3360$/,
+                "tra_jiji": /^tra_3430$/,
+                "tra_jygx": /^tra_4080$/,
+                "tra_pingdong": /^tra_4400$/,
+                "tra_yilan": /^tra_0920$/,
+                "tra_beihui": /^tra_7130$/,
+                "tra_huadong": /^tra_7000$/
             }
             
             if(TT.fn.getRoute_needRouteByFromTo(a,b)){
@@ -1757,7 +1757,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                         if(dir==TT.fn.getTRA_LineDirByFromTo(a,b) && st==b) nearAry.reverse();
                         var anst = (dir=='1') ? nearAry[0] : nearAry[1];
                     }
-                    if(st=='tra_1032' || st=='tra_1013' || st=='tra_1014') anst = 'tra_1011';
+                    if(st=='tra_1030' || st=='tra_1060' || st=='tra_1070') anst = 'tra_1020';
         			if(!anst) anst = nearAry[0];
                     return anst;
             }
@@ -2067,10 +2067,10 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
         						tHaiRoute = tmpAryRoute.map(function(c){return c;}); tHaiStation = tmpStationRoute.map(function(c){return c;});
         						if(flagFromHai && tmpAryRoute[1]=='tra_xibu' && fromObj.sect=='taichung'){
 									tHaiRoute.splice(1,0,'tra_shan'); lineLinkAry.push(tHaiRoute);
-									tHaiStation.splice(1,0,'tra_1120'); lineLinkStationAry.push(tHaiStation);
+									tHaiStation.splice(1,0,'tra_3360'); lineLinkStationAry.push(tHaiStation);
 								}else if(flagToIsHai && tmpAryRoute[tmpAryRoute.length-2]=='tra_xibu' && toObj.sect=='taichung'){
 									tHaiRoute.splice(-1,0,'tra_shan'); lineLinkAry.push(tHaiRoute);
-									tHaiStation.push('tra_1120'); lineLinkStationAry.push(tHaiStation);
+									tHaiStation.push('tra_3360'); lineLinkStationAry.push(tHaiStation);
 								}
         					}
         				}
@@ -2088,8 +2088,8 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
 					}]);
 				});
             }else if(flagIsShanHaiTrans){//山海線套用固定規則，竹南轉、彰化轉、成追線
-                rtAry.push([{goRange: [from, 'tra_1120'], line: fromInLine[0]}, {goRange: ['tra_1120', to], line: toInLine[0]}]);
-                rtAry.push([{goRange: [from, 'tra_1028'], line: fromInLine[0]}, {goRange: ['tra_1028', to], line: toInLine[0]}]);
+                rtAry.push([{goRange: [from, 'tra_3360'], line: fromInLine[0]}, {goRange: ['tra_3360', to], line: toInLine[0]}]);
+                rtAry.push([{goRange: [from, 'tra_1250'], line: fromInLine[0]}, {goRange: ['tra_1250', to], line: toInLine[0]}]);
         	}else{
 	        	fromInLine.map(function(line){
 	        		var ary = [line];
@@ -2162,10 +2162,10 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
             if(!TT.cData) TT.cData = {};//存放動態計算的固定資料，若曾建立過則下次不用再演算
             var cdt = TT.cData;
             //取東線及西線幹線列車運行經過車站
-            cdt.defEastTrainStation = cdt.defEastTrainStation || TT.fn.getTRA_throughStationByLine('tra_1012','tra_1632', ['tra_xibu','tra_yilan','tra_beihui','tra_huadong']).allStation;
-            cdt.defWestTrainStation = cdt.defWestTrainStation || TT.fn.getTRA_throughStationByLine('tra_1001','tra_1418', ['tra_xibu','tra_shan','tra_zhjy','tra_jygx','tra_pingdong']).allStation;
+            cdt.defEastTrainStation = cdt.defEastTrainStation || TT.fn.getTRA_throughStationByLine('tra_1040','tra_6000', ['tra_xibu','tra_yilan','tra_beihui','tra_huadong']).allStation;
+            cdt.defWestTrainStation = cdt.defWestTrainStation || TT.fn.getTRA_throughStationByLine('tra_0900','tra_5120', ['tra_xibu','tra_shan','tra_zhjy','tra_jygx','tra_pingdong']).allStation;
             //取東線及西線區域(東線+蘇澳+平溪線，西線+六家+沙崙+海線+集集線)
-            var eastAreaStation = cdt.defEastTrainStation.concat(TT.fn.getCommon_lineData('tra_pingxi').station).concat(['tra_1827']);
+            var eastAreaStation = cdt.defEastTrainStation.concat(TT.fn.getCommon_lineData('tra_pingxi').station).concat(['tra_7120']);
             var westAreaStation = cdt.defWestTrainStation.concat(TT.fn.getCommon_lineData('tra_hai').station).concat(TT.fn.getCommon_lineData('tra_liujia').station).concat(TT.fn.getCommon_lineData('tra_shalun').station).concat(TT.fn.getCommon_lineData('tra_jiji').station);
             var overTaipei = -1, overKaohsiung = -1, overTaidong = -1, overBadu = -1, overShuling = -1, overChaozhou = -1, overFangliao = -1,
                 displayPri = TT.defined.displayPri,
@@ -2188,7 +2188,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 routeConcatAry = [],
                 tmpA = false, tmpB = false, tmpC = false, tmpD = false;
         	//針對 linkMap 中的所有走法 (通常只會抓到一種) 依序進行下列演算，若可抓到最後一站即代表已有全程走法可結束並組合路由回傳
-            //測試語法 TT.fn.getTRA_linkRouteV1('tra_1715','tra_1418')
+            //測試語法 TT.fn.getTRA_linkRouteV1('tra_7000','tra_5120')
             function createRoute(routeX){
             	//回傳陣列內每個物件內容應為 {company:'yyy', line:'xxxx', takeRange:[a,b], transStation:transStation, transStationID: 'vvv'} 最後一段不用 transStation transStationID
             	routeMethd = [];
@@ -2216,14 +2216,14 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 ras = routeA.allStation;
                 flagBypassThisRoute = false;
                 routeMethd = [];
-                overTaipei = ras.indexOf('tra_1008')>-1; overKaohsiung = ras.indexOf('tra_1238')>-1; overTaidong = ras.indexOf('tra_1632')>-1;//跨東西線南迴線時在以上車站轉車
-                overBadu = ras.indexOf('tra_1002')>-1; overShuling = ras.indexOf('tra_1012')>-1; overChaozhou = ras.indexOf('tra_1411')>-1; overFangliao = ras.indexOf('tra_1418')>-1;//確認行程是否有跨運行區間
+                overTaipei = ras.indexOf('tra_1000')>-1; overKaohsiung = ras.indexOf('tra_4400')>-1; overTaidong = ras.indexOf('tra_6000')>-1;//跨東西線南迴線時在以上車站轉車
+                overBadu = ras.indexOf('tra_0920')>-1; overShuling = ras.indexOf('tra_1040')>-1; overChaozhou = ras.indexOf('tra_5050')>-1; overFangliao = ras.indexOf('tra_5120')>-1;//確認行程是否有跨運行區間
                 flagIsCrossWE = ((flagFromInWest && flagToInEast && !flagFromInEast && !flagToInWest) || (!flagFromInWest && !flagToInEast && flagFromInEast && flagToInWest)) && overTaipei;
                 wesMainStationAry = (function(stAry){
                 	var ary = [];
-                	if(overTaipei && flagIsCrossWE) ary.push({id: 'tra_1008', ptr: ras.indexOf('tra_1008')});
-                	//if(overKaohsiung) ary.push({id: 'tra_1238', ptr: ras.indexOf('tra_1238')}); //當南迴線啟用後打開這個設定
-                	//if(overTaidong) ary.push({id: 'tra_1632', ptr: ras.indexOf('tra_1632')});
+                	if(overTaipei && flagIsCrossWE) ary.push({id: 'tra_1000', ptr: ras.indexOf('tra_1000')});
+                	//if(overKaohsiung) ary.push({id: 'tra_4400', ptr: ras.indexOf('tra_4400')}); //當南迴線啟用後打開這個設定
+                	//if(overTaidong) ary.push({id: 'tra_6000', ptr: ras.indexOf('tra_6000')});
                 	ary.sort(function(a,b){return (a.ptr > b.ptr) ? 1 : -1;});
                 	return ary;
                 })(ras);
@@ -2778,11 +2778,10 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                 dataType: 'json',
                 success: function(xml) {
                     if(typeof(successFn)=='function'){
-                        //20190625 Update Station to v2 version ID and save Station to v3id tag
+                        //台鐵車站 ID 已全面改用 v3 站碼，時刻表的 Station 直接使用，另存一份到 v3id 維持原欄位
                         xml.TrainInfos.forEach(function(c){
                             c.TimeInfos.forEach(function(t){
                                 t.v3id = t.Station;
-                                t.Station = TT.ptx.tra.v3Sv2(t.Station);
                             })
                         });
                         successFn(xml);
@@ -2823,7 +2822,7 @@ if(!window.$trainTaiwanLib) window.$trainTaiwanLib = {};
                             DEPTime: (s.DepartureTime.split(':') == 1) ? s.DepartureTime + ':00' : s.DepartureTime,
                             Order: s.StopSequence.toString(),
                             Route: "",
-                            Station: TT.ptx.tra.v3Sv2(s.StationID),
+                            Station: s.StationID,
                             v3id: s.StationID
                         }
                         return tmpB;
